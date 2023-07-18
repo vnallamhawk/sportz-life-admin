@@ -13,11 +13,7 @@ export default function SideNav({ className }: { className: string }) {
     return null;
   }
   return (
-    <NavigationMenu.Root
-      className={className}
-      orientation="horizontal"
-      // className="w-60"
-    >
+    <NavigationMenu.Root className={className} orientation="horizontal">
       <div>
         <Image className="h-100 w-100" src="" alt="Sport Life" />
       </div>
