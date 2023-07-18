@@ -5,7 +5,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const { data: sessionData } = useSession();
 
   return (
-    <div className="flex max-w-screen-xl">
+    <div className="flex">
       {sessionData && <SideNav className="h-full w-60" />}
       <main className="w-full">{children}</main>
     </div>
