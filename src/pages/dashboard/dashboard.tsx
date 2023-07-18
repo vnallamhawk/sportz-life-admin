@@ -4,7 +4,7 @@ export default function dashboard() {
   return (
     <>
       <div className="mb-5 text-lg font-bold"> DASHBOARD </div>
-      <div className="flex">
+      <div className="flex max-w-3xl justify-between">
         <Card
           imageSrc="/images/batch.jpg"
           title="Total Centers"

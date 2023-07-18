@@ -13,7 +13,7 @@ export default function Card({
 }) {
   return (
     <>
-      <div className="max-w-sm overflow-hidden rounded shadow-lg">
+      <div className="max-w-xl overflow-hidden rounded shadow-lg">
         <div className="mb-5 flex">
           <Image
             src={imageSrc}
