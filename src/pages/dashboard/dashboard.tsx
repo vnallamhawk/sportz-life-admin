@@ -3,7 +3,8 @@ import Card from "../../components/Card";
 export default function dashboard() {
   return (
     <>
-      <div className="mb-5 text-lg font-bold"> DASHBOARD </div>
+      <div className="mb-10 text-lg font-bold"> DASHBOARD </div>
+      <div className="text-md mb-5 font-bold"> STATISTICS </div>
       <div className="flex max-w-3xl justify-between">
         <Card
           imageSrc="/images/batch.jpg"
