@@ -6,7 +6,7 @@ export default function dashboard() {
     <>
       <div className="mb-7 text-lg font-bold"> DASHBOARD </div>
       <div className="text-md mb-5 font-bold"> STATISTICS </div>
-      <div className="grid grid-cols-4 grid-rows-2 gap-1">
+      <div className="grid grid-cols-4 grid-rows-2 gap-3">
         <CardStats
           // className="row-start-1 row-end-2"
           imageSrc="/images/batch.jpg"
