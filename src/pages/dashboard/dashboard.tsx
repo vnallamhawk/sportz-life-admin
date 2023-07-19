@@ -8,14 +8,12 @@ export default function dashboard() {
       <div className="text-md mb-5 font-bold"> STATISTICS </div>
       <div className="grid grid-cols-4 grid-rows-2 gap-3">
         <CardStats
-          // className="row-start-1 row-end-2"
           imageSrc="/images/batch.jpg"
           title="Total Centers"
           count="25"
           percentChange="3"
         />
         <CardStats
-          // className="item2 row-start-1 row-end-2"
           imageSrc="/images/centers.jpg"
           title="Total Batches"
           count="32"
@@ -32,12 +30,36 @@ export default function dashboard() {
           className="col-start-4 col-end-4 row-start-1 row-end-3"
           title="TOP PERFORMER"
           peoples={[
-            { name: "John H.Martin", subtitle: "Volleyball" },
-            { name: "John H.Martin", subtitle: "Volleyball" },
-            { name: "John H.Martin", subtitle: "Volleyball" },
-            { name: "John H.Martin", subtitle: "Volleyball" },
-            { name: "John H.Martin", subtitle: "Volleyball" },
-            { name: "John H.Martin", subtitle: "Volleyball" },
+            {
+              name: "John H.Martin",
+              subtitle: "Volleyball",
+              src: "/images/sports1.jpg",
+            },
+            {
+              name: "John H.Martin",
+              subtitle: "Volleyball",
+              src: "/images/sports2.jpg",
+            },
+            {
+              name: "John H.Martin",
+              subtitle: "Volleyball",
+              src: "/images/sports3.jpg",
+            },
+            {
+              name: "John H.Martin",
+              subtitle: "Volleyball",
+              src: "/images/sports4.jpg",
+            },
+            {
+              name: "John H.Martin",
+              subtitle: "Volleyball",
+              src: "/images/sports5.jpg",
+            },
+            {
+              name: "John H.Martin",
+              subtitle: "Volleyball",
+              src: "/images/sports6.jpg",
+            },
           ]}
         />
       </div>

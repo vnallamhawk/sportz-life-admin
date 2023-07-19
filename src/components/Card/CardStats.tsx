@@ -16,9 +16,7 @@ export default function Card({
   return (
     <>
       <div
-        className={`max-w-xl overflow-hidden rounded shadow-lg ${
-          className ?? ""
-        }`}
+        className={`max-w-xl overflow-hidden p-5 shadow-lg ${className ?? ""}`}
       >
         <div className="mb-5 flex">
           <Image
