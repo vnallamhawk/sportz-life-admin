@@ -1,37 +1,35 @@
 import Image from "next/image";
 
 export default function Card({
-  count,
-  imageSrc,
+  className,
   title,
-  percentChange,
+  peoples,
 }: {
-  count: string;
-  imageSrc: string;
+  className?: string;
   title: string;
-  percentChange: string;
+  peoples: {
+    name: string;
+    subtitle: string;
+  }[];
 }) {
   return (
-    <>
-      <div className="max-w-xl overflow-hidden rounded shadow-lg">
-        <div className="mb-5 flex">
-          <Image
-            src={imageSrc}
-            alt="Sunset in the mountains"
-            width="50"
-            height="25"
-          />
-
-          <div className="ml-5">
-            <div className="font-bold">{title}</div>
-            <div className="text-3xl font-bold">{count}</div>
+    <div
+      className={`max-w-xl overflow-hidden rounded shadow-lg ${
+        className ?? ""
+      }`}
+    >
+      <div className="text-lg font-bold">{title}</div>
+      <div className="flex flex-col">
+        {peoples.map(({ name, subtitle }) => (
+          <div className="flex" key={name}>
+            <Image src={""} alt="" width="25" height="25" />
+            <div>
+              <div className="font-bold"> {name}</div>
+              <div> {subtitle} </div>
+            </div>
           </div>
-        </div>
-        <div className="flex justify-between">
-          <div>MONTH OVER MONTH {percentChange}%</div>
-          <div className="ml-5">&uarr;</div>
-        </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 }
