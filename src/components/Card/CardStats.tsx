@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Card from "./Card";
 
-export default function Card({
+export default function CardStats({
   className,
   count,
   imageSrc,
@@ -15,9 +16,7 @@ export default function Card({
 }) {
   return (
     <>
-      <div
-        className={`max-w-xl overflow-hidden p-5 shadow-lg ${className ?? ""}`}
-      >
+      <Card className={className ?? ""}>
         <div className="mb-5 flex">
           <Image
             src={imageSrc}
@@ -35,7 +34,7 @@ export default function Card({
           <div>MONTH OVER MONTH {percentChange}%</div>
           <div className="ml-5">&uarr;</div>
         </div>
-      </div>
+      </Card>
     </>
   );
 }
