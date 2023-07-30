@@ -1,6 +1,5 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { SIDE_NAV_ITEMS } from "../../constants/SideNavConstants";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 
