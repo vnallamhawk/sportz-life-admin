@@ -25,7 +25,7 @@ export default function SideNav({ className }: { className: string }) {
       <NavigationMenu.List>
         {SIDE_NAV_ITEMS.map(({ label, route }) => (
           <NavigationMenu.Link key={label} href={`${route}`}>
-            <NavigationMenu.Item>
+            <NavigationMenu.Item className="p-2">
               <NavigationMenu.Trigger>{label}</NavigationMenu.Trigger>
             </NavigationMenu.Item>
           </NavigationMenu.Link>
