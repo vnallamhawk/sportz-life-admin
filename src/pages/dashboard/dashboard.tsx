@@ -1,11 +1,54 @@
 import CardList from "~/components/Card/CardList";
 import Card from "../../components/Card/Card";
 import CardStats from "../../components/Card/CardStats";
-// import CardList from "../../components/Card/CardList";
-import HeadCountTrend from "../../components/HeadCountTrend";
 import BarChart from "~/components/BarChart";
+import LineChart from "~/components/LineChart";
 
 export default function dashboard() {
+  const headCountTrendData = [
+    {
+      name: "Monday",
+      centerA: 4000,
+      centerB: 2400,
+      amt: 2400,
+    },
+    {
+      name: "Tuesday",
+      centerA: 3000,
+      centerB: 1398,
+      amt: 2210,
+    },
+    {
+      name: "Wednesday",
+      centerA: 2000,
+      centerB: 9800,
+      amt: 2290,
+    },
+    {
+      name: "Thursday",
+      centerA: 2780,
+      centerB: 3908,
+      amt: 2000,
+    },
+    {
+      name: "Friday",
+      centerA: 1890,
+      centerB: 4800,
+      amt: 2181,
+    },
+    {
+      name: "Saturday",
+      centerA: 2390,
+      centerB: 3800,
+      amt: 2500,
+    },
+    {
+      name: "Sunday",
+      centerA: 3490,
+      centerB: 4300,
+      amt: 2100,
+    },
+  ];
   const centerWiseCountData = [
     {
       name: "Center A",
@@ -144,7 +187,7 @@ export default function dashboard() {
             <div> ACTIVITY CALENDAR </div>
           </Card>
           <Card className="row-end-9 col-start-1 col-end-7 row-start-6">
-            <HeadCountTrend />
+            <LineChart data={headCountTrendData} title="HEADCOUNT TREND DATA" />
           </Card>
           <Card className="row-end-9 row-start-12 col-start-1 col-end-4">
             <div> </div>
