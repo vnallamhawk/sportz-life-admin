@@ -34,16 +34,15 @@ export default function dashboard() {
           <Card className="col-start-1 col-end-7 row-start-2 row-end-3">
             <div> Gender Ratio</div>
           </Card>
-          <Card className="col-start-1 col-end-4">
+          <Card className="col-start-1 col-end-4 row-start-3 row-end-5">
             <div> CENTER WISE HEAD COUNT </div>
           </Card>
-          <Card className="col-start-4 col-end-7 row-start-3 row-end-4">
+          <Card className="col-start-4 col-end-7 row-start-3 row-end-5">
             <div> ACTIVITY CALENDAR </div>
           </Card>
         </div>
         <div className="grid w-3/12 gap-3">
           <CardList
-            // className="col-start-4 col-end-4 row-start-1 row-end-4"
             title="TOP PERFORMER"
             peoples={[
               {
@@ -80,7 +79,6 @@ export default function dashboard() {
             navRoute="/athletes"
           />
           <CardList
-            // className="col-start-4 col-end-4 row-start-1 row-end-4"
             title="TOP COACHES"
             peoples={[
               {
