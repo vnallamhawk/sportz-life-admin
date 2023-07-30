@@ -33,8 +33,8 @@ export default function CardList({
         </div>
       </header>
       <div className="flex flex-col">
-        {peoples.map(({ name, subtitle, src }) => (
-          <div className="flex" key={name}>
+        {peoples.map(({ name, subtitle, src }, index) => (
+          <div className="flex" key={`${name}-${index}`}>
             <Image
               className="h-6 rounded-full"
               src={src}
