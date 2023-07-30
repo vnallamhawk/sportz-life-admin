@@ -9,10 +9,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+  const AnyComponent = Component as any;
   return (
     <SessionProvider session={session}>
       <Layout>
-        <Component {...pageProps} />
+        <AnyComponent {...pageProps} />
       </Layout>
     </SessionProvider>
   );
