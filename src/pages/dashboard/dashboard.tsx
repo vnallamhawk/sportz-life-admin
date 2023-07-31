@@ -192,8 +192,11 @@ export default function dashboard() {
           >
             <div> Calendar content </div>
           </Card>
-          <Card className="row-end-9 col-start-1 col-end-7 row-start-6">
-            <LineChart data={headCountTrendData} title="HEADCOUNT TREND DATA" />
+          <Card
+            title="HEADCOUNT TREND DATA"
+            className="row-end-9 col-start-1 col-end-7 row-start-6"
+          >
+            <LineChart data={headCountTrendData} />
           </Card>
           <Card
             title="AGE WISE BREAKUP"
