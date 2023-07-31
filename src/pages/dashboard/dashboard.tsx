@@ -197,8 +197,9 @@ export default function dashboard() {
             <BarChart data={sportsWiseCountData} title="SPORTS WISE COUNT" />
           </Card>
         </div>
-        <div className="grid w-3/12 gap-3">
+        <div className="grid w-3/12 gap-3 ">
           <CardList
+            // className="row-span-1"
             title="TOP PERFORMER"
             peoples={[
               {
@@ -235,6 +236,7 @@ export default function dashboard() {
             navRoute="/athletes"
           />
           <CardList
+            // className="row-span-1"
             title="TOP COACHES"
             peoples={[
               {
@@ -270,6 +272,7 @@ export default function dashboard() {
             ]}
             navRoute="/coaches"
           />
+          <Card className="row-span-3">UPCOMING TOURNAMENT</Card>
         </div>
       </div>
     </>
