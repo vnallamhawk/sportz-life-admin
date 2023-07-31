@@ -174,27 +174,38 @@ export default function dashboard() {
             count="66"
             percentChange="3"
           />
-          <Card className="col-start-1 col-end-7 row-start-2 row-end-3">
-            <div> Gender Ratio</div>
+          <Card
+            title="GENDER RATIO"
+            className="col-start-1 col-end-7 row-start-2 row-end-3"
+          >
+            <div> Gender Ratio Content to be added</div>
           </Card>
-          <Card className="col-start-1 col-end-4 row-start-3 row-end-6">
-            <BarChart
-              title="CENTER WISE HEADCOUNT"
-              data={centerWiseCountData}
-            />
+          <Card
+            title="CENTER WISE HEADCOUNT"
+            className="col-start-1 col-end-4 row-start-3 row-end-6"
+          >
+            <BarChart data={centerWiseCountData} />
           </Card>
-          <Card className="col-start-4 col-end-7 row-start-3 row-end-6">
-            <div> ACTIVITY CALENDAR </div>
+          <Card
+            title="ACTIVITY CALENDAR"
+            className="col-start-4 col-end-7 row-start-3 row-end-6"
+          >
+            <div> Calendar content </div>
           </Card>
           <Card className="row-end-9 col-start-1 col-end-7 row-start-6">
             <LineChart data={headCountTrendData} title="HEADCOUNT TREND DATA" />
           </Card>
-          <Card className="row-end-9 row-start-12 col-start-1 col-end-4">
-            <div> </div>
-            <BarChart title="AGE WISE BREAKUP" data={ageWiseCountData} />
+          <Card
+            title="AGE WISE BREAKUP"
+            className="row-end-9 row-start-12 col-start-1 col-end-4"
+          >
+            <BarChart data={ageWiseCountData} />
           </Card>
-          <Card className="row-end-9 row-start-12 col-start-4 col-end-7">
-            <BarChart data={sportsWiseCountData} title="SPORTS WISE COUNT" />
+          <Card
+            title="SPORTS WISE COUNT"
+            className="row-end-9 row-start-12 col-start-4 col-end-7"
+          >
+            <BarChart data={sportsWiseCountData} />
           </Card>
         </div>
         <div className="grid w-3/12 gap-3 ">
@@ -272,7 +283,9 @@ export default function dashboard() {
             ]}
             navRoute="/coaches"
           />
-          <Card className="row-span-3">UPCOMING TOURNAMENT</Card>
+          <Card title="UPCOMING TOURNAMENT" className="row-span-3">
+            Content to be added
+          </Card>
         </div>
       </div>
     </>
