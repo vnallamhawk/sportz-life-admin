@@ -152,7 +152,7 @@ export default function dashboard() {
       <div className="mb-7 text-lg font-bold"> DASHBOARD </div>
       <div className="text-md mb-5 font-bold"> STATISTICS </div>
       <div className="flex">
-        <div className="grid-rows-12 grid w-9/12 grid-cols-6 gap-2">
+        <div className="grid-rows-12 grid w-9/12 grid-cols-1 grid-cols-6 gap-2">
           <CardStats
             className="col-start-1 col-end-3"
             imageSrc="/images/batch.jpg"
@@ -211,9 +211,9 @@ export default function dashboard() {
             <BarChart data={sportsWiseCountData} />
           </Card>
         </div>
-        <div className="grid w-3/12 gap-3 ">
+        <div className="grid-rows-12 grid w-3/12 grid-rows-[repeat(3,minmax(400px,550px))] gap-3 ">
           <CardList
-            // className="row-span-1"
+            // className="rows-span-2"
             title="TOP PERFORMER"
             peoples={[
               {
@@ -222,27 +222,77 @@ export default function dashboard() {
                 src: "/images/sports1.jpg",
               },
               {
-                name: "John H.Martin",
+                name: "Joe H.Martin",
                 subtitle: "Volleyball",
                 src: "/images/sports2.jpg",
               },
               {
-                name: "John H.Martin",
+                name: "Norton H.Martin",
                 subtitle: "Volleyball",
                 src: "/images/sports3.jpg",
               },
               {
-                name: "John H.Martin",
+                name: "Sanjay H.Martin",
                 subtitle: "Volleyball",
                 src: "/images/sports4.jpg",
               },
               {
-                name: "John H.Martin",
+                name: "Valentine H.Martin",
                 subtitle: "Volleyball",
                 src: "/images/sports5.jpg",
               },
               {
+                name: "Mal H.Martin",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: "Yohan H.Martin",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: "Prakash H.Martin",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
                 name: "John H.Martin",
+                subtitle: "Volleyball",
+                src: "/images/sports1.jpg",
+              },
+              {
+                name: "Joe H.Martin",
+                subtitle: "Volleyball",
+                src: "/images/sports2.jpg",
+              },
+              {
+                name: "Norton H.Martin",
+                subtitle: "Volleyball",
+                src: "/images/sports3.jpg",
+              },
+              {
+                name: "Sanjay H.Martin",
+                subtitle: "Volleyball",
+                src: "/images/sports4.jpg",
+              },
+              {
+                name: "Valentine H.Martin",
+                subtitle: "Volleyball",
+                src: "/images/sports5.jpg",
+              },
+              {
+                name: "Mal H.Martin",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: "Yohan H.Martin",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: "Prakash H.Martin",
                 subtitle: "Volleyball",
                 src: "/images/sports6.jpg",
               },
@@ -250,7 +300,7 @@ export default function dashboard() {
             navRoute="/athletes"
           />
           <CardList
-            // className="row-span-1"
+            // className="row-span-2"
             title="TOP COACHES"
             peoples={[
               {
@@ -259,34 +309,107 @@ export default function dashboard() {
                 src: "/images/sports1.jpg",
               },
               {
-                name: "John H.Martin",
+                name: "Rak",
                 subtitle: "Volleyball",
                 src: "/images/sports2.jpg",
               },
               {
-                name: "John H.Martin",
+                name: "Rev",
                 subtitle: "Volleyball",
                 src: "/images/sports3.jpg",
               },
               {
-                name: "John H.Martin",
+                name: "Laxman Geeda",
                 subtitle: "Volleyball",
                 src: "/images/sports4.jpg",
               },
               {
-                name: "John H.Martin",
+                name: "Priyanka K",
                 subtitle: "Volleyball",
                 src: "/images/sports5.jpg",
               },
               {
+                name: "Kaviya N",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: "Suma Manthena",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: "Maneesh P",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: "Bhanu Kumar",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: " Alena Camford",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
                 name: "John H.Martin",
+                subtitle: "Volleyball",
+                src: "/images/sports1.jpg",
+              },
+              {
+                name: "Rak",
+                subtitle: "Volleyball",
+                src: "/images/sports2.jpg",
+              },
+              {
+                name: "Rev",
+                subtitle: "Volleyball",
+                src: "/images/sports3.jpg",
+              },
+              {
+                name: "Laxman Geeda",
+                subtitle: "Volleyball",
+                src: "/images/sports4.jpg",
+              },
+              {
+                name: "Priyanka K",
+                subtitle: "Volleyball",
+                src: "/images/sports5.jpg",
+              },
+              {
+                name: "Kaviya N",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: "Suma Manthena",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: "Maneesh P",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: "Bhanu Kumar",
+                subtitle: "Volleyball",
+                src: "/images/sports6.jpg",
+              },
+              {
+                name: " Alena Camford",
                 subtitle: "Volleyball",
                 src: "/images/sports6.jpg",
               },
             ]}
             navRoute="/coaches"
           />
-          <Card title="UPCOMING TOURNAMENT" className="row-span-3">
+          <Card
+            // className="row-span-1"
+            title="UPCOMING TOURNAMENT"
+          >
             Content to be added
           </Card>
         </div>

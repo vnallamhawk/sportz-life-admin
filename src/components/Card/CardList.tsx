@@ -20,19 +20,12 @@ export default function CardList({
   return (
     <Card className={className ?? ""}>
       <header className="flex justify-between">
-        <div className="text-lg font-bold">{title}</div>
-        <div className="">
-          {/* <NavigationMenu.Link key={""} href={`${navRoute}`}> */}
-          {/* <NavigationMenu.List> */}
-          {/* <NavigationMenu.Item> VIEW ALL</NavigationMenu.Item> */}
-          {/* </NavigationMenu.List> */}
-          {/* </NavigationMenu.Link> */}
-          <Link href={navRoute} className="text-blue-500">
-            VIEW ALL
-          </Link>
-        </div>
+        <div className="mb-3 text-lg font-bold">{title}</div>
+        <Link href={navRoute} className="text-blue-500">
+          VIEW ALL
+        </Link>
       </header>
-      <div className="flex flex-col">
+      <div className="flex h-full flex-col overflow-scroll">
         {peoples.map(({ name, subtitle, src }, index) => (
           <div className="flex" key={`${name}-${index}`}>
             <Image

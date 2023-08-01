@@ -1,3 +1,5 @@
+import { isNullOrUndefinedOrEmptyString } from "~/services/booleanServices";
+
 interface Props {
   children: React.ReactNode;
   className?: string;
@@ -6,8 +8,10 @@ interface Props {
 
 const Card: React.FC<Props> = ({ children, title, className }) => {
   return (
-    <div className={`overflow-hidden p-5 shadow-lg ${className ?? ""}`}>
-      <div className="text-lg font-bold">{title}</div>
+    <div className={`p-10 shadow-lg ${className ?? ""}`}>
+      {!isNullOrUndefinedOrEmptyString(title) && (
+        <div className="mb-3 text-lg font-bold">{title}</div>
+      )}
       {children}
     </div>
   );
