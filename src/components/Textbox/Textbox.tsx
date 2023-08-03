@@ -1,3 +1,9 @@
-export default function Textbox() {
-  return <input type="text" placeholder="Enter Search Text" />;
+export default function Textbox(props) {
+  return (
+    <input
+      className="border-white-500 rounded border-2 border-solid "
+      type="text"
+      {...props}
+    />
+  );
 }

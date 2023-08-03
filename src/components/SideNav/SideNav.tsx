@@ -7,7 +7,6 @@ export default function SideNav({ className }: { className: string }) {
   // const { pathname } = useRouter();
   const { data: sessionData } = useSession();
 
-  console.log(sessionData);
   if (!sessionData) {
     return null;
   }

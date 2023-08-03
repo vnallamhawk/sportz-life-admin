@@ -20,6 +20,7 @@
     "@trpc/next": "10.26.0",
     "@trpc/react-query": "10.26.0",
     "@trpc/server": "10.26.0",
+    "classnames": "^2.3.2",
     "next": "13.4.4",
     "next-auth": "4.22.1",
     "radix-ui": "1.0.1",

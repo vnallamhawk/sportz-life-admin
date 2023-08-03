@@ -1,4 +1,4 @@
-import { coachTableBodyStub } from "./__stubs__/coachStubs";
+import { coachTableBodyStub } from "../../pages/coach/__stubs__/coachStubs";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { HamburgerMenuIcon, CheckIcon } from "@radix-ui/react-icons";
