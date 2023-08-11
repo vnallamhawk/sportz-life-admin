@@ -79,8 +79,8 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     id: "selectPayroll",
     type: "select",
     options: [
-      { label: "Male", value: "male", id: "male" },
-      { label: "Female", value: "female", id: "female" },
+      { label: "Junior Coach", value: "junior", id: "junior" },
+      { label: "Senior Coach", value: "senior", id: "senior" },
     ],
     placeHolder: "Select Payroll",
   },
@@ -94,5 +94,18 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
       { label: "Swimming", value: "swimming", id: "swimming" },
     ],
     placeHolder: "Coaching Sports",
+  },
+];
+
+export const COACH_CERTIFICATES_CONSTANTS = [
+  {
+    label: "Bachelor Certificate in Athlete Coaching",
+    id: "bachelorCertificate",
+    value: "bachelorCertificate",
+  },
+  {
+    label: "Diploma Certificate in General Coaching",
+    id: "diplomaCertificate",
+    value: "diplomaCertificate",
   },
 ];

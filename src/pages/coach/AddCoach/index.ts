@@ -1,1 +1,1 @@
-export { default } from "./AddCoach";
+export { default } from "./AddCoachMultiFormLayout";

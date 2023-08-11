@@ -6,6 +6,7 @@ import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
 import Select from "~/components/Select/Select";
 import Textbox from "~/components/Textbox";
 import { type COACH_DETAILS_CONSTANTS_TYPES } from "~/types/coach";
+import Button from "~/components/Button";
 
 export default function AddCoach() {
   let inputElement;
@@ -38,6 +39,9 @@ export default function AddCoach() {
           {COACH_DETAILS_CONSTANTS.map((props) => (
             <div key={props.id}>{getInputElement(props)}</div>
           ))}
+        </div>
+        <div className="mt-10 flex justify-center">
+          <Button>Next</Button>
         </div>
       </Card>
       <Card className="bg-gray-100">
