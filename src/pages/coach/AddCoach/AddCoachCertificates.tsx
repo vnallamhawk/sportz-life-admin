@@ -60,11 +60,10 @@ export default function AddCoachCertificates() {
           rules={{
             required: true,
           }}
-          render={({ field: { onChange, onBlur, value } }) => (
+          render={({ field: { onChange, value } }) => (
             <Textbox
               placeHolder="Institute Name"
               className="w-96"
-              onBlur={onBlur}
               onChangeHandler={onChange}
               value={value}
             />
