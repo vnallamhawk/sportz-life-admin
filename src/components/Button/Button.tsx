@@ -4,7 +4,7 @@ import React from "react";
 type Props = React.ComponentProps<"button">;
 
 const Button = React.forwardRef<HTMLButtonElement, Props>(
-  ({ children, ...props }, ref) => (
+  ({ children, className = "", ...props }, ref) => (
     <button
       ref={ref}
       {...props}
@@ -20,8 +20,8 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
         "radix-state-open:bg-gray-50 dark:radix-state-open:bg-gray-900",
         "radix-state-on:bg-gray-50 dark:radix-state-on:bg-gray-900",
         "radix-state-instant-open:bg-gray-50 radix-state-delayed-open:bg-gray-50",
-        props.className !== "",
-        "className"
+
+        { [`${className}`]: className !== "" }
       )}
     >
       {children}

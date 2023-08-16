@@ -1,9 +1,32 @@
-export default function Textbox(props) {
+import classNames from "classnames";
+
+interface Textbox {
+  className?: string;
+  onChangeHandler?: () => void;
+  onClick?: () => void;
+  placeHolder?: string;
+  value: string | number;
+}
+
+export default function Textbox({
+  className = "",
+  placeHolder,
+  onChangeHandler,
+  onClick,
+  value,
+  ...rest
+}: Textbox) {
   return (
     <input
-      className="border-white-500 rounded border-2 border-solid "
+      {...rest}
+      className={classNames("rounded border-2 border-solid", {
+        [`${className}`]: className !== "",
+      })}
+      placeholder={placeHolder}
+      value={value}
       type="text"
-      {...props}
+      onClick={onClick}
+      onChange={onChangeHandler}
     />
   );
 }

@@ -109,3 +109,18 @@ export const COACH_CERTIFICATES_CONSTANTS = [
     value: "diplomaCertificate",
   },
 ];
+
+export const COACH_CERTIFICATE_TABLE_HEADERS = [
+  {
+    label: "Certificate",
+    id: "certificate",
+  },
+  {
+    label: "Institute",
+    id: "institute",
+  },
+  {
+    label: "Action",
+    id: "action",
+  },
+];

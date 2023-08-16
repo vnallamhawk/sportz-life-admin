@@ -16,3 +16,8 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
   options?: SelectOption[];
   defaultValue?: string;
 }
+
+export interface COACH_CERTIFICATE_TABLE_TYPES {
+  instituteName: string;
+  certificate: string;
+}
