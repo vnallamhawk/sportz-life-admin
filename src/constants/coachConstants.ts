@@ -110,6 +110,37 @@ export const COACH_CERTIFICATES_CONSTANTS = [
   },
 ];
 
+export const CENTERS_CONSTANTS = [
+  {
+    label: "Nethaji Indoor Stadium",
+    id: "nethaji",
+    value: "nethaji",
+  },
+  {
+    label: "Biswa Bharat Stadium",
+    id: "biswa",
+    value: "biswa",
+  },
+];
+
+export const BATCHES_CONSTANTS = [
+  {
+    label: "Tennis-Advanced",
+    id: "tennis",
+    value: "tennis",
+  },
+  {
+    label: "Basketball-Beginner",
+    id: "basketball",
+    value: "basketball",
+  },
+  {
+    label: "Volleyball-Intermediate",
+    id: "volleyball",
+    value: "volleyball",
+  },
+];
+
 export const COACH_CERTIFICATE_TABLE_HEADERS = [
   {
     label: "Certificate",
@@ -118,6 +149,21 @@ export const COACH_CERTIFICATE_TABLE_HEADERS = [
   {
     label: "Institute",
     id: "institute",
+  },
+  {
+    label: "Action",
+    id: "action",
+  },
+];
+
+export const CENTER_BATCH_TABLE_HEADERS = [
+  {
+    label: "Center",
+    id: "center",
+  },
+  {
+    label: "Batch",
+    id: "batch",
   },
   {
     label: "Action",

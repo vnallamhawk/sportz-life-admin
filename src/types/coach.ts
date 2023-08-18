@@ -21,3 +21,8 @@ export interface COACH_CERTIFICATE_TABLE_TYPES {
   instituteName: string;
   certificate: string;
 }
+
+export interface ASSIGN_BATCHES_TYPES {
+  centerName: string;
+  batchName: string;
+}

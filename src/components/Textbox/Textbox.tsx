@@ -5,7 +5,7 @@ interface Textbox {
   onChangeHandler?: () => void;
   onClick?: () => void;
   placeHolder?: string;
-  value: string | number;
+  value?: string | number;
 }
 
 export default function Textbox({
