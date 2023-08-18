@@ -6,12 +6,12 @@ import {
 } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 
 export const Steps = ({
-  title,
+  // title,
   children,
   stepCount,
   maxCount,
 }: {
-  title: string;
+  // title: string;
   children: React.ReactNode;
   stepCount: number;
   maxCount: number;
@@ -30,15 +30,27 @@ export const Steps = ({
   };
 
   return (
-    <div>
-      <div className="text-lg font-bold">{title}</div>
-      <div className="h-full">{children}</div>
-      {currentStep !== 1 && <Button onClick={prevClickHandler}>Prev</Button>}
-      {stepCount !== maxCount && (
-        <Button onClick={nextClickHandler}>Next</Button>
-      )}
-      {stepCount === maxCount && <Button>Finish</Button>}
-    </div>
+    <>
+      {/* <div className="text-lg font-bold">{title}</div> */}
+      <div className="h-[calc(100%-5rem)]">{children}</div>
+      <div className="flex justify-end">
+        {currentStep !== 1 && (
+          <Button className="bg-pink-500" onClick={prevClickHandler}>
+            Prev
+          </Button>
+        )}
+        {/* <div className="mr-10 flex justify-end"> */}
+        {stepCount !== maxCount && (
+          <Button className="mx-3 bg-pink-500" onClick={nextClickHandler}>
+            Next
+          </Button>
+        )}
+        {stepCount === maxCount && (
+          <Button className="bg-pink-500">Finish</Button>
+        )}
+      </div>
+      {/* </div> */}
+    </>
   );
 };
 

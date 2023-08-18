@@ -44,7 +44,8 @@ export default function AssignBatches() {
         <>
           <div className="text-lg font-bold">ASSIGN BATCHES</div>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex justify-between">
+            {/* <div className="flex justify-between"> */}
+            <div>
               <Controller
                 control={control}
                 rules={{
@@ -77,11 +78,12 @@ export default function AssignBatches() {
                 name="batchName"
               />
               {errors.batchName && <span>This field is required</span>}
-
-              <Button type="submit" className="Button">
-                Add
-              </Button>
             </div>
+
+            <Button type="submit" className="Button">
+              Add
+            </Button>
+            {/* </div> */}
             {tableData.length !== 0 && (
               <Table
                 tableHeader={<CenterBatchTableHeader />}

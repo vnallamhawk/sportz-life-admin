@@ -27,7 +27,9 @@ export default function AddCoach() {
         );
         break;
       default:
-        inputElement = <Textbox placeHolder={props.label} />;
+        inputElement = (
+          <Textbox className="h-12 w-96" placeHolder={props.label} />
+        );
     }
 
     return inputElement;
@@ -36,18 +38,20 @@ export default function AddCoach() {
   return (
     <>
       {currentStep === 1 ? (
-        <div className="grid h-full grid-cols-4">
-          <Card className="col-span-3">
-            <CardTitle title="ADD COACH" />
-            <div className="font-bold">COACH DETAILS</div>
-            <div className="mt-10 grid grid-cols-2 gap-y-12">
-              {COACH_DETAILS_CONSTANTS.map((props) => (
-                <div key={props.id}>{getInputElement(props)}</div>
-              ))}
-            </div>
-          </Card>
-        </div>
-      ) : null}
+        // <div className="grid h-full grid-cols-4">
+        //   <Card className="col-span-4">
+        <>
+          <CardTitle title="ADD COACH" />
+          <div className="text-lg font-bold">COACH DETAILS</div>
+          <div className="mt-10 grid grid-cols-2 gap-y-12">
+            {COACH_DETAILS_CONSTANTS.map((props) => (
+              <div key={props.id}>{getInputElement(props)}</div>
+            ))}
+          </div>
+        </>
+      ) : //   </Card>
+      // </div>
+      null}
     </>
   );
 }

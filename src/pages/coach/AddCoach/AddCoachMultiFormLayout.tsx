@@ -38,12 +38,16 @@ export default function AddCoachMultiFormLayout() {
   return (
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
-        <Card className="col-span-4 h-full">
+        <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
+          {/* <div className="grid h-full grid-cols-4">
+            <Card className="col-span-4 pr-0"> */}
           <Steps title={"Add Coach"} stepCount={1} maxCount={3}>
             <AddCoach />
             <AddCoachCertificates />
             <AssignBatches />
           </Steps>
+          {/* </Card>
+          </div> */}
         </Card>
         <Card className="col-span-2 bg-gray-100">
           <div className="mb-10 font-bold">Coach Image</div>

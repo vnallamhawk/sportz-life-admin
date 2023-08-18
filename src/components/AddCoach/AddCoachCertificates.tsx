@@ -49,6 +49,8 @@ export default function AddCoachCertificates() {
     <>
       {currentStep === 2 ? (
         <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="text-lg font-bold">ADD COACH</div>
+          <div className="text-xl font-bold">ADD CERTIFICATES</div>
           <div className="flex justify-between">
             <Controller
               control={control}
