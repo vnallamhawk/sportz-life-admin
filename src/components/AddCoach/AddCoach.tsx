@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
 import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
 import Select from "~/components/Select/Select";

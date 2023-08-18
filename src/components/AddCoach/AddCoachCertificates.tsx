@@ -7,10 +7,7 @@ import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import Button from "~/components/Button/Button";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import Table from "~/components/Table";
-import {
-  ASSIGN_BATCHES_TYPES,
-  type COACH_CERTIFICATE_TABLE_TYPES,
-} from "~/types/coach";
+import { type COACH_CERTIFICATE_TABLE_TYPES } from "~/types/coach";
 import CertificateTableHeader from "../CertificateTable/CertificateTableHeader";
 import CertificateTableBody from "../CertificateTable/CertificateTableBody";
 import {
