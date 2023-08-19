@@ -8,12 +8,10 @@ import {
 export const Steps = ({
   // title,
   children,
-  stepCount,
-  maxCount,
+  maxCount = 3,
 }: {
   // title: string;
   children: React.ReactNode;
-  stepCount: number;
   maxCount: number;
 }) => {
   const { useContext } = React;
@@ -31,7 +29,6 @@ export const Steps = ({
 
   return (
     <>
-      {/* <div className="text-lg font-bold">{title}</div> */}
       <div className="h-[calc(100%-5rem)]">{children}</div>
       <div className="flex justify-end">
         {currentStep !== 1 && (
@@ -39,17 +36,15 @@ export const Steps = ({
             Prev
           </Button>
         )}
-        {/* <div className="mr-10 flex justify-end"> */}
-        {stepCount !== maxCount && (
+        {currentStep !== maxCount && (
           <Button className="mx-3 bg-pink-500" onClick={nextClickHandler}>
             Next
           </Button>
         )}
-        {stepCount === maxCount && (
-          <Button className="bg-pink-500">Finish</Button>
+        {currentStep === maxCount && (
+          <Button className="mx-3 bg-pink-500">Finish</Button>
         )}
       </div>
-      {/* </div> */}
     </>
   );
 };
