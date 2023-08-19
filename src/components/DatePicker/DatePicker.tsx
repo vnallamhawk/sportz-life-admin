@@ -26,7 +26,7 @@ export default function DatePicker(props: DatePicker) {
     useDayzed(props);
   if (calendars.length) {
     return (
-      <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center" }}>
+      <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
         <div>
           <button {...getBackProps({ calendars })}>Back</button>
           <button {...getForwardProps({ calendars })}>Next</button>
@@ -36,7 +36,7 @@ export default function DatePicker(props: DatePicker) {
             key={`${calendar.month}${calendar.year}`}
             style={{
               display: "inline-block",
-              width: "50%",
+              // width: "65%",
               padding: "0 10px 30px",
               boxSizing: "border-box",
             }}

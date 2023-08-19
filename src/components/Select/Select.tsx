@@ -6,6 +6,7 @@ import {
 import * as SelectPrimitive from "@radix-ui/react-select";
 import React from "react";
 import Button from "../Button/Button";
+import classNames from "classnames";
 
 interface Options {
   label: string;
@@ -14,12 +15,14 @@ interface Options {
 }
 
 const Select = ({
+  className = "",
   options,
   placeholder,
   defaultValue,
   onChangeHandler,
   ...rest
 }: {
+  className?: string;
   options: Options[];
   placeholder?: string;
   defaultValue?: string;
@@ -32,7 +35,11 @@ const Select = ({
       {...rest}
     >
       <SelectPrimitive.Trigger asChild>
-        <Button className="w-96">
+        <Button
+          className={classNames("w-96", {
+            [`${className}`]: className !== "",
+          })}
+        >
           <SelectPrimitive.Value className="w-96" placeholder={placeholder} />
           <SelectPrimitive.Icon className="ml-2">
             <ChevronDownIcon />

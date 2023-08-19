@@ -5,9 +5,11 @@ import { useState } from "react";
 import { DATE_TIME_FORMAT } from "~/globals/globals";
 
 export default function DatePickerWrapper({
+  className,
   placeHolder,
 }: // onDateSelectedCallback,
 {
+  className?: string;
   placeHolder: string;
   // onDateSelectedCallback: ({ date }: { date: Date }) => void;
 }) {
@@ -23,12 +25,13 @@ export default function DatePickerWrapper({
     <Popover.Root open={open}>
       <Popover.Trigger>
         <Textbox
+          className={className}
           onClick={() => setOpen(true)}
           value={selectedDate}
           placeHolder={placeHolder}
         />
       </Popover.Trigger>
-      <Popover.Content style={{ width: 360 }}>
+      <Popover.Content style={{ width: 250 }}>
         <Datepicker onDateSelected={onDateSelected} />
       </Popover.Content>
     </Popover.Root>

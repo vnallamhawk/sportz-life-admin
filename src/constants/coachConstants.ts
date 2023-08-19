@@ -43,6 +43,9 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     label: "Coach Name",
     id: "coachName",
     type: "textbox",
+    rules: {
+      required: true,
+    },
   },
   {
     label: "Designation",

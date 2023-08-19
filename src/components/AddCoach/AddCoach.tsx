@@ -37,8 +37,6 @@ export default function AddCoach() {
   return (
     <>
       {currentStep === 1 ? (
-        // <div className="grid h-full grid-cols-4">
-        //   <Card className="col-span-4">
         <>
           <CardTitle title="ADD COACH" />
           <div className="text-lg font-bold">COACH DETAILS</div>
@@ -48,9 +46,7 @@ export default function AddCoach() {
             ))}
           </div>
         </>
-      ) : //   </Card>
-      // </div>
-      null}
+      ) : null}
     </>
   );
 }

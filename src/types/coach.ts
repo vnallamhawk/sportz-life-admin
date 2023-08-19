@@ -15,6 +15,7 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
   placeHolder?: string;
   options?: SelectOption[];
   defaultValue?: string;
+  rules?: string[];
 }
 
 export interface COACH_CERTIFICATE_TABLE_TYPES {

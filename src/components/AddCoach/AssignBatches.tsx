@@ -12,6 +12,7 @@ import Table from "../Table";
 import CenterBatchTableHeader from "../CenterBatchTable/CenterBatchTableHeader";
 import CenterBatchTableBody from "../CenterBatchTable/CenterBatchTableBody";
 import Button from "../Button/Button";
+import CardTitle from "../Card/CardTitle";
 
 export default function AssignBatches() {
   const {
@@ -42,10 +43,11 @@ export default function AssignBatches() {
     <>
       {currentStep === 3 ? (
         <>
-          <div className="text-lg font-bold">ASSIGN BATCHES</div>
+          <CardTitle title="ADD COACH" />
+          <div className="mb-3 text-lg font-bold">ASSIGN BATCHES</div>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* <div className="flex justify-between"> */}
-            <div>
+            <div className="mb-3">
               <Controller
                 control={control}
                 rules={{
@@ -53,6 +55,7 @@ export default function AssignBatches() {
                 }}
                 render={({ field: { onChange } }) => (
                   <Select
+                    className="mr-3"
                     options={CENTERS_CONSTANTS}
                     placeholder={"Select Certificate"}
                     onChangeHandler={onChange}

@@ -14,6 +14,7 @@ import {
   FormContext,
   type FormContextTypes,
 } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
+import CardTitle from "../Card/CardTitle";
 
 export default function AddCoachCertificates() {
   const {
@@ -46,9 +47,9 @@ export default function AddCoachCertificates() {
     <>
       {currentStep === 2 ? (
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="text-lg font-bold">ADD COACH</div>
+          <CardTitle title="ADD COACH" />
           <div className="text-xl font-bold">ADD CERTIFICATES</div>
-          <div className="flex justify-between">
+          <div className="mt-10 flex justify-between">
             <Controller
               control={control}
               rules={{
@@ -59,12 +60,13 @@ export default function AddCoachCertificates() {
                   options={COACH_CERTIFICATES_CONSTANTS}
                   placeholder={"Select Certificate"}
                   onChangeHandler={onChange}
-                  // value={value}
                 />
               )}
               name="centers"
             />
-            {errors.centers && <span>This field is required</span>}
+            {errors.centers && (
+              <span className="text-red-800">This field is required</span>
+            )}
 
             <Controller
               control={control}
@@ -81,19 +83,14 @@ export default function AddCoachCertificates() {
               )}
               name="batches"
             />
-            {errors.batches && <span>This field is required</span>}
+            {errors.batches && (
+              <span className="text-red-800">This field is required</span>
+            )}
           </div>
-          <div></div>
-          <div>
-            <Datepicker
-              placeHolder="Start"
-              // onDateSelectedCallback={_handleOnDateSelected}
-            />
-            <Datepicker
-              placeHolder="End"
-              // onDateSelectedCallback={_handleOnDateSelected}
-            />
-            <Button type="submit" className="Button">
+          <div className="mt-10">
+            <Datepicker placeHolder="Start" className="h-12 w-48" />
+            <Datepicker className="ml-3 h-12 w-48" placeHolder="End" />
+            <Button type="submit" className="ml-3">
               Add
             </Button>
           </div>
