@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex">
-      {sessionData && <SideNav className="h-full w-60" />}
+      {sessionData && <SideNav className="h-screen w-60 bg-gray-950" />}
       <main className="w-full">{children}</main>
     </div>
   );

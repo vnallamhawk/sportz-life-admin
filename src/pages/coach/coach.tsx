@@ -18,7 +18,7 @@ export default function Coach() {
           <div>
             <Textbox placeHolder="Search By Name" />
             <Button
-              className="bg-pink-700 p-2"
+              className="ml-3 bg-pink-700 p-2"
               onClick={() => router.push("/coach/AddCoach")}
             >
               ADD COACH

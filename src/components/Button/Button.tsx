@@ -9,12 +9,7 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
       ref={ref}
       {...props}
       className={classNames(
-        "inline-flex select-none items-center justify-center rounded-md px-4 py-2 text-sm font-medium",
-        "bg-white text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-900",
-        "hover:bg-gray-50",
-        "rounded",
-        "border-2 border-solid",
-        "focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75",
+        "rounded-md px-4 py-2 text-white hover:bg-gray-50 dark:text-white dark:hover:bg-pink-900",
         // Register all radix states
         "group",
         "radix-state-open:bg-gray-50 dark:radix-state-open:bg-gray-900",
