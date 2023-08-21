@@ -72,18 +72,21 @@ model VerificationToken {
 model Coach {
   id            Int            @unique @default(autoincrement())
   name          String
+  age           Int
   createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  updatedAt     DateTime       @default(now()) @updatedAt
   contactNumber String
   email         String         @unique
   designation   String
   gender        Gender
   payroll       Payroll?
-  sports        Sports?
+  payrollId     Int?
+  sports        CoachesOnSports[]
   certificates  Certificates[]
-  Center        Center?        @relation(fields: [centerId], references: [id])
+  Centers       CoachesOnCenters[]
   centerId      Int?
   image         Bytes?
+  batch         Batches[]
 
   @@index([centerId])
 }
@@ -92,18 +95,15 @@ model Staff {
   id            Int      @unique @default(autoincrement())
   name          String
   createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  updatedAt     DateTime @default(now()) @updatedAt
   contactNumber String
   email         String   @unique
   designation   String
   gender        Gender
-  center        Center[]
+  center        StaffCenter[]
   image         Bytes?
-  payroll       Payroll? @relation(fields: [payrollId], references: [id])
+  payroll       Payroll?
   shift         Shift[]
-  payrollId     Int?
-
-  @@index([payrollId])
 }
 
 model Shift {
@@ -126,22 +126,56 @@ model Inventory {
 }
 
 model Payroll {
-  id        Int     @unique @default(autoincrement())
-  coach     Coach   @relation(fields: [payrollId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  payrollId Int     @unique
-  type      String
-  Staff     Staff[]
+  id      Int    @unique @default(autoincrement())
+  coach   Coach  @relation(fields: [coachId], references: [id])
+  coachId Int    @unique
+  type    String
+  staff   Staff  @relation(fields: [staffId], references: [id])
+  staffId Int    @unique
 }
 
 model Sports {
   id       Int     @unique @default(autoincrement())
   name     String
-  coach    Coach   @relation(fields: [sportId], references: [id])
-  sportId  Int     @unique
-  Center   Center? @relation(fields: [centerId], references: [id])
-  centerId Int?
+  coaches  CoachesOnSports[]
+  Center   SportsOnCenters[]
+}
 
+model SportsOnCenters {
+  sport Sports @relation(fields: [sportId], references: [id])
+  sportId Int 
+  center Center @relation(fields: [centerId], references: [id])
+  centerId Int 
+
+  @@id([sportId, centerId])
+  @@index([sportId])
   @@index([centerId])
+}
+
+model CoachesOnCenters {
+  coach Coach @relation(fields: [coachId],references: [id])
+  coachId Int
+  center Center @relation(fields: [centerId],references: [id])
+  centerId Int
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([coachId, centerId])
+  @@index([coachId])
+  @@index([centerId])
+}
+
+model CoachesOnSports {
+  coach Coach @relation(fields:[coachId],references: [id])
+  coachId Int
+  sport Sports @relation(fields:[sportId],references: [id])
+  sportId Int 
+  assignedAt DateTime @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+
+  @@id([coachId, sportId])
+  @@index([coachId])
+  @@index([sportId])
 }
 
 model Certificates {
@@ -155,25 +189,41 @@ model Certificates {
 
 model Center {
   id            Int         @unique @default(autoincrement())
+  name          String      @unique
   location      String
   contactNumber String
-  phoneNumber   String
-  sports        Sports[]
-  coach         Coach[]
+  sports        SportsOnCenters[]
   image         Bytes?
   inventory     Inventory[]
-  Staff         Staff?      @relation(fields: [staffId], references: [id])
-  staffId       Int?
-
-  @@index([staffId])
+  staff StaffCenter[]
+  coaches CoachesOnCenters[] 
+  batches Batches[]
 }
 
 model Batches {
   id   Int    @unique @default(autoincrement())
   name String
+  center Center @relation(fields: [centerId], references: [id])
+  centerId Int
+  coach Coach? @relation(fields: [coachId], references: [id])
+  coachId Int?
+
+  @@index([centerId])
+  @@index([coachId])
 }
 
 enum Gender {
   MALE
   FEMALE
+}
+
+model StaffCenter {
+  staff Staff @relation(fields: [staffId], references: [id])
+  center Center @relation(fields: [centerId], references: [id])
+  staffId Int
+  centerId Int
+
+   @@id([staffId, centerId])
+  @@index([staffId])
+  @@index([centerId])
 }
