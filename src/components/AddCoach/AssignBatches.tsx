@@ -57,7 +57,7 @@ export default function AssignBatches() {
                   <Select
                     className="mr-3"
                     options={CENTERS_CONSTANTS}
-                    placeholder={"Select Certificate"}
+                    placeholder={"Select Center"}
                     onChangeHandler={onChange}
                   />
                 )}

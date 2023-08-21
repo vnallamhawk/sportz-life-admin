@@ -7,29 +7,22 @@ export default function CoachTableBody() {
   let tableData;
   const { data: coaches } = api.coach.getAllCoaches.useQuery();
   const { data: sports } = api.sports.getAllSports.useQuery();
+  console.log(coaches);
   if (coaches && sports) {
     tableData = coaches.map((coach) => ({
       ...coach,
+      batch: coach.batch.length,
       sports: coach.sports
         .map((sport) => sports.find((s) => s.id === sport.sportId)?.name)
         .join(","),
     }));
   }
-  console.log(tableData);
 
   return (
     <>
       {tableData?.map(
         (
-          {
-            name,
-            age,
-            designation,
-            sports,
-            gender,
-            // batches,
-            contactNumber,
-          },
+          { name, age, designation, sports, gender, batch, contactNumber },
           index
         ) => (
           <tr
@@ -48,7 +41,7 @@ export default function CoachTableBody() {
             <td className="px-6 py-3 text-left">{designation}</td>
             <td className="px-6 py-3 text-left">{sports}</td>
             <td className="px-6 py-3 text-left">{gender}</td>
-            {/* <td className="px-6 py-3 text-left">{batches}</td> */}
+            <td className="px-6 py-3 text-left">{batch}</td>
             <td className="px-6 py-3 text-left">{contactNumber}</td>
             <td className="px-6 py-3 text-left">
               <DropdownMenu.Root>
