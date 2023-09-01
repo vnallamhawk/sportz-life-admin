@@ -20,7 +20,6 @@ export default function AddCoach() {
 
   const {
     control,
-    handleSubmit,
     trigger,
     formState: { errors },
   } = useForm<COACH_TYPES>();
@@ -96,13 +95,12 @@ export default function AddCoach() {
     }
   };
 
-  const onSubmit = (data: COACH_TYPES) => {
-    console.log(data);
-    if (!errors) {
-      setCurrentStep && setCurrentStep(currentStep + 1);
-    }
-  };
-  console.log(errors);
+  // const onSubmit = (data: COACH_TYPES) => {
+  //   console.log(data);
+  //   if (!errors) {
+  //     setCurrentStep && setCurrentStep(currentStep + 1);
+  //   }
+  // };
 
   return (
     <>

@@ -27,7 +27,7 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
 }
 
 export interface COACH_CERTIFICATE_TABLE_TYPES {
-  instituteName: string;
+  institute: string;
   certificate: string;
 }
 

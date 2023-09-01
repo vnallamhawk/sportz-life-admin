@@ -62,7 +62,7 @@ export default function AddCoachCertificates(
     // } else {
     //   setTableData([data]);
     // }
-    setCurrentStep(currentStep + 1);
+    setCurrentStep && setCurrentStep(currentStep + 1);
   };
 
   const onAddHandler = () => {
@@ -83,7 +83,7 @@ export default function AddCoachCertificates(
   // };
 
   const prevClickHandler = () => {
-    setCurrentStep(currentStep - 1);
+    setCurrentStep && setCurrentStep(currentStep - 1);
   };
 
   return (
