@@ -43,26 +43,42 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     label: "Coach Name",
     id: "coachName",
     type: "textbox",
+    rules: {
+      required: true,
+    },
   },
   {
     label: "Designation",
     id: "designation",
     type: "textbox",
+    rules: {
+      required: true,
+    },
   },
   {
     label: "Phone Number",
     id: "phoneNumber",
     type: "textbox",
+    rules: {
+      required: true,
+    },
   },
   {
     label: "Email Address",
     id: "emailAddress",
     type: "textbox",
+    rules: {
+      required: true,
+    },
   },
   {
     label: "Date of Birth",
     id: "dateOfBirth",
     type: "calendar",
+    placeHolder: "Date of Birth",
+    rules: {
+      required: true,
+    },
   },
   {
     label: "Gender",
@@ -73,10 +89,13 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
       { label: "Female", value: "female", id: "female" },
     ],
     placeHolder: "Select Gender",
+    rules: {
+      required: true,
+    },
   },
   {
     label: "Select Payroll",
-    id: "selectPayroll",
+    id: "payroll",
     type: "select",
     options: [
       { label: "Junior Coach", value: "junior", id: "junior" },

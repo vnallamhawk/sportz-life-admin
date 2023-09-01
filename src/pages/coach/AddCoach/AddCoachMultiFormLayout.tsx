@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Card from "~/components/Card";
-import Steps from "~/components/Steps";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { useForm } from "react-hook-form";
 import AddCoach from "../../../components/AddCoach/AddCoach";
@@ -16,7 +15,7 @@ const defaultValues = {
 export interface FormContextTypes {
   stepData: {
     currentStep: number;
-    setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+    setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
   };
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
@@ -28,26 +27,34 @@ export default function AddCoachMultiFormLayout() {
     currentStep,
     setCurrentStep,
   };
+
+  const {
+    control,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      centerName: "",
+      batchName: "",
+      certificate: "",
+      institute: "",
+    },
+  });
+
   const formProviderData = {
     ...methods,
     stepData,
+    control,
+    errors,
   };
-
-  console.log(stepData.currentStep);
 
   return (
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {/* <div className="grid h-full grid-cols-4">
-            <Card className="col-span-4 pr-0"> */}
-          <Steps title={"Add Coach"} stepCount={1} maxCount={3}>
-            <AddCoach />
-            <AddCoachCertificates />
-            <AssignBatches />
-          </Steps>
-          {/* </Card>
-          </div> */}
+          {currentStep === 1 && <AddCoach />}
+          {currentStep === 2 && <AddCoachCertificates />}
+          {currentStep === 3 && <AssignBatches />}
         </Card>
         <Card className="col-span-2 bg-gray-100">
           <div className="mb-10 font-bold">Coach Image</div>
@@ -70,6 +77,7 @@ export default function AddCoachMultiFormLayout() {
             </ul>
           </div>
         </Card>
+        <pre>{JSON.stringify(watch())}</pre>
       </div>
     </FormContext.Provider>
   );

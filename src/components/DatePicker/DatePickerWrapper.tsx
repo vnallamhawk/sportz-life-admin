@@ -7,18 +7,19 @@ import { DATE_TIME_FORMAT } from "~/globals/globals";
 export default function DatePickerWrapper({
   className,
   placeHolder,
-}: // onDateSelectedCallback,
-{
+  onChangeHandler,
+}: {
   className?: string;
-  placeHolder: string;
-  // onDateSelectedCallback: ({ date }: { date: Date }) => void;
+  placeHolder?: string;
+  onChangeHandler: ({ date }: { date: Date }) => void;
+  value?: string;
 }) {
   const [selectedDate, setSelectedDate] = useState("");
   const [open, setOpen] = useState(false);
 
   const onDateSelected = ({ date }: { date: Date }) => {
     setSelectedDate(DATE_TIME_FORMAT.format(date));
-    // onDateSelectedCallback();
+    onChangeHandler({ date });
     setOpen(false);
   };
   return (

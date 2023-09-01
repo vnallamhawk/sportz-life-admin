@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useContext, useState } from "react";
-import { Controller, type SubmitHandler, useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import Select from "../Select";
-import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import {
   BATCHES_CONSTANTS,
   CENTERS_CONSTANTS,
@@ -17,7 +16,6 @@ import CardTitle from "../Card/CardTitle";
 export default function AssignBatches() {
   const {
     control,
-    handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -26,76 +24,82 @@ export default function AssignBatches() {
     },
   });
 
-  const {
-    stepData: { currentStep },
-  } = useContext(FormContext);
-  const [tableData, setTableData] = useState<ASSIGN_BATCHES_TYPES[]>([]);
+  const [
+    tableData,
+    // setTableData
+  ] = useState<ASSIGN_BATCHES_TYPES[]>([]);
 
-  const onSubmit: SubmitHandler<ASSIGN_BATCHES_TYPES> = (data) => {
-    if (tableData?.length) {
-      setTableData([data, ...tableData]);
-    } else {
-      setTableData([data]);
-    }
+  // const onSubmit: SubmitHandler<ASSIGN_BATCHES_TYPES> = (data) => {
+  //   if (tableData?.length) {
+  //     setTableData([data, ...tableData]);
+  //   } else {
+  //     setTableData([data]);
+  //   }
+  // };
+
+  const submitCallback = () => {
+    console.log("submit");
   };
 
   return (
     <>
-      {currentStep === 3 ? (
-        <>
-          <CardTitle title="ADD COACH" />
-          <div className="mb-3 text-lg font-bold">ASSIGN BATCHES</div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* <div className="flex justify-between"> */}
-            <div className="mb-3">
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({ field: { onChange } }) => (
-                  <Select
-                    className="mr-3"
-                    options={CENTERS_CONSTANTS}
-                    placeholder={"Select Center"}
-                    onChangeHandler={onChange}
-                  />
-                )}
-                name="centerName"
-              />
-              {errors.centerName && <span>This field is required</span>}
+      <div>
+        <CardTitle title="ADD COACH" />
+        <div className="mb-3 text-lg font-bold">ASSIGN BATCHES</div>
 
-              <Controller
-                control={control}
-                rules={{
-                  required: true,
-                }}
-                render={({ field: { onChange } }) => (
-                  <Select
-                    options={BATCHES_CONSTANTS}
-                    placeholder={"Select Certificate"}
-                    onChangeHandler={onChange}
-                    // value={value}
-                  />
-                )}
-                name="batchName"
-              />
-              {errors.batchName && <span>This field is required</span>}
-            </div>
-
-            <Button type="submit" className="Button">
-              Add
-            </Button>
-            {/* </div> */}
-            {tableData.length !== 0 && (
-              <Table
-                tableHeader={<CenterBatchTableHeader />}
-                tableBody={<CenterBatchTableBody data={tableData} />}
+        {/* <div className="flex justify-between"> */}
+        <div className="mb-3">
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange } }) => (
+              <Select
+                className="mr-3"
+                options={CENTERS_CONSTANTS}
+                placeholder={"Select Center"}
+                onChangeHandler={onChange}
               />
             )}
-          </form>
-        </>
-      ) : null}
+            name="centerName"
+          />
+          {errors.centerName && <span>This field is required</span>}
+
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange } }) => (
+              <Select
+                options={BATCHES_CONSTANTS}
+                placeholder={"Select Certificate"}
+                onChangeHandler={onChange}
+                // value={value}
+              />
+            )}
+            name="batchName"
+          />
+          {errors.batchName && <span>This field is required</span>}
+        </div>
+
+        <Button type="submit" className="Button">
+          Add
+        </Button>
+        {/* </div> */}
+        {tableData.length !== 0 && (
+          <Table
+            tableHeader={<CenterBatchTableHeader />}
+            tableBody={<CenterBatchTableBody data={tableData} />}
+          />
+        )}
+
+        <Button className="mx-3 bg-pink-500" onClick={() => submitCallback}>
+          Finish
+        </Button>
+        {/* </form> */}
+      </div>
     </>
   );
 }

@@ -13,7 +13,7 @@ export default function SideNav({ className }: { className: string }) {
   }
   return (
     <NavigationMenu.Root
-      className={classNames("bg-gray-950", {
+      className={classNames("bg-gray-950 pl-5", {
         [`${className}`]: className !== "",
       })}
       orientation="horizontal"

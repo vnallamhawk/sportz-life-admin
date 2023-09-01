@@ -7,7 +7,7 @@ export default function CoachTableBody() {
   let tableData;
   const { data: coaches } = api.coach.getAllCoaches.useQuery();
   const { data: sports } = api.sports.getAllSports.useQuery();
-  console.log(coaches);
+
   if (coaches && sports) {
     tableData = coaches.map((coach) => ({
       ...coach,

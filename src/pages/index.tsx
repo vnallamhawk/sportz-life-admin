@@ -1,14 +1,13 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 // import Link from "next/link";
-import { api } from "~/utils/api";
+// import { api } from "~/utils/api";
 // import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 // import SideNav from "~/components/SideNav/SideNav";
 
 export default function Home() {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-  const { data: sessionData } = useSession();
-  console.log(sessionData);
+  // const { data: sessionData } = useSession();
 
   return (
     <>

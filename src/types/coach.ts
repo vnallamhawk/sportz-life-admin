@@ -10,12 +10,20 @@ interface SelectOption {
 
 export interface COACH_DETAILS_CONSTANTS_TYPES {
   label?: string;
-  id: string;
+  id:
+    | "coachName"
+    | "designation"
+    | "phoneNumber"
+    | "emailAddress"
+    | "payroll"
+    | "dateOfBirth"
+    | "gender"
+    | "coachingSports";
   type: Type;
   placeHolder?: string;
   options?: SelectOption[];
   defaultValue?: string;
-  rules?: string[];
+  rules?: Record<string, boolean>;
 }
 
 export interface COACH_CERTIFICATE_TABLE_TYPES {
@@ -26,4 +34,15 @@ export interface COACH_CERTIFICATE_TABLE_TYPES {
 export interface ASSIGN_BATCHES_TYPES {
   centerName: string;
   batchName: string;
+}
+
+export interface COACH_TYPES {
+  coachName: string;
+  designation: string;
+  phoneNumber: number;
+  emailAddress: string;
+  dateOfBirth: number;
+  gender: string;
+  payroll: string;
+  coachingSports: string;
 }
