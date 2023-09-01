@@ -88,45 +88,61 @@ export default function AddCoach() {
     return inputElement;
   };
 
+  const nextClickHandler = async () => {
+    console.log("inside");
+    const result = await trigger();
+    if (result) {
+      setCurrentStep && setCurrentStep(currentStep + 1);
+    }
+  };
+
   const onSubmit = (data: COACH_TYPES) => {
     console.log(data);
-    setCurrentStep && setCurrentStep(currentStep + 1);
+    if (!errors) {
+      setCurrentStep && setCurrentStep(currentStep + 1);
+    }
   };
   console.log(errors);
 
   return (
     <>
       {currentStep === 1 ? (
-        <form onSubmit={void handleSubmit(onSubmit)}>
-          <>
-            <CardTitle title="ADD COACH" />
-            <div className="text-lg font-bold">COACH DETAILS</div>
-            <div className="mt-10 grid grid-cols-2 gap-y-12">
-              {COACH_DETAILS_CONSTANTS.map((props) => (
-                <>
-                  <div key={props.id}>
-                    {getInputElement(props)}
+        // <form onSubmit={void handleSubmit(onSubmit)}>
+        // <form onSubmit={void handleSubmit(onSubmit)}>
+        <>
+          <CardTitle title="ADD COACH" />
+          <div className="text-lg font-bold">COACH DETAILS</div>
+          <div className="mt-10 grid grid-cols-2 gap-y-12">
+            {COACH_DETAILS_CONSTANTS.map((props) => (
+              <>
+                <div key={props.id}>
+                  {getInputElement(props)}
 
-                    <span className="text-red-800">
-                      {errors[props.id] && <div>This field is required</div>}
-                    </span>
-                  </div>
-                </>
-              ))}
-            </div>
-            <div className="mr-10 mt-10 flex justify-end">
-              <Button
-                className="mx-3 bg-pink-500"
-                onClick={() => {
-                  void trigger();
-                }}
-              >
-                Next
-              </Button>
-            </div>
-          </>
-        </form>
-      ) : null}
+                  <span className="text-red-800">
+                    {errors[props.id] && <div>This field is required</div>}
+                  </span>
+                </div>
+              </>
+            ))}
+          </div>
+          <div className="mr-10 mt-10 flex justify-end">
+            <Button
+              className="mx-3 bg-pink-500"
+              type="button"
+              onClick={() => void nextClickHandler()}
+              // onClick={async () => {
+              //   const result = await trigger();
+              //   if (result) {
+              //     setCurrentStep && setCurrentStep(currentStep + 1);
+              //   }
+              // }}
+            >
+              Next
+            </Button>
+          </div>
+        </>
+      ) : // </form>
+      null}
     </>
   );
 }
