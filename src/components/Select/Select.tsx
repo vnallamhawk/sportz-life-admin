@@ -53,7 +53,10 @@ const Select = ({
           })}
         >
           <div className="w-100 flex">
-            <SelectPrimitive.Value placeholder={placeholder} />
+            <SelectPrimitive.Value
+              className="flex-start flex"
+              placeholder={placeholder}
+            />
           </div>
           <SelectPrimitive.Icon className="ml-2">
             <div>

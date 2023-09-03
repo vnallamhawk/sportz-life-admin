@@ -39,7 +39,7 @@ export default function AddCoachCertificates({}) {
     COACH_CERTIFICATE_TABLE_TYPES[] | []
   >([]);
 
-  const onSubmit: SubmitHandler<COACH_CERTIFICATE_TABLE_TYPES> = (data) => {
+  const onSubmit: SubmitHandler<COACH_CERTIFICATE_TABLE_TYPES> = () => {
     // if (tableData?.length) {
     //   setTableData([data, ...tableData]);
     // } else {
@@ -82,7 +82,7 @@ export default function AddCoachCertificates({}) {
               control={control}
               render={({ field: { value, onChange } }) => (
                 <Select
-                  className="w-full"
+                  className="h-12 w-96"
                   {...COACH_CERTIFICATES_CONSTANTS}
                   onChangeHandler={onChange}
                   value={value}
@@ -101,7 +101,7 @@ export default function AddCoachCertificates({}) {
               render={({ field: { onChange, value } }) => (
                 <Textbox
                   placeHolder="Institute Name"
-                  className="w-96"
+                  className="h-12 w-96"
                   onChangeHandler={onChange}
                   value={value}
                 />

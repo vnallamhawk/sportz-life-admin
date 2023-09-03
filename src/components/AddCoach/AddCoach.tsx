@@ -38,6 +38,7 @@ export default function AddCoach() {
             render={({ field: { onChange, value } }) => {
               return (
                 <Select
+                  className="h-12 w-96"
                   options={options ?? []}
                   // defaultValue={props?.defaultValue}
                   placeholder={props.placeHolder}
@@ -60,7 +61,7 @@ export default function AddCoach() {
               return (
                 <Datepicker
                   placeHolder={props.placeHolder}
-                  className="h-12 w-48"
+                  className="h-12 w-96"
                   onChangeHandler={onChange}
                 />
               );

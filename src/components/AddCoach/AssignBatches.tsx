@@ -80,7 +80,7 @@ export default function AssignBatches({
         <CardTitle title="ADD COACH" />
         <div className="mb-3 text-lg font-bold">ASSIGN BATCHES</div>
 
-        <div className="mb-3">
+        <div className="mb-3 flex justify-between">
           <Controller
             control={control}
             rules={{
@@ -88,7 +88,7 @@ export default function AssignBatches({
             }}
             render={({ field: { onChange, value } }) => (
               <Select
-                className="mr-3"
+                className="h-12 w-96"
                 options={CENTERS_CONSTANTS}
                 placeholder={"Select Center"}
                 onChangeHandler={onChange}
@@ -106,6 +106,7 @@ export default function AssignBatches({
             }}
             render={({ field: { onChange, value } }) => (
               <Select
+                className="h-12 w-96"
                 options={BATCHES_CONSTANTS}
                 placeholder={"Select Certificate"}
                 onChangeHandler={onChange}
@@ -117,7 +118,7 @@ export default function AssignBatches({
           {errors.batchName && <span>This field is required</span>}
         </div>
 
-        <Button type="submit" className="Button" onClick={onAddBatchHandler}>
+        <Button type="submit" className="mb-5" onClick={onAddBatchHandler}>
           Add
         </Button>
         {tableData.length !== 0 && (
@@ -127,7 +128,7 @@ export default function AssignBatches({
           />
         )}
 
-        <div className="flex-end flex">
+        <div className="flex justify-end">
           <Button
             type="button"
             className=" mx-3 bg-pink-500"
