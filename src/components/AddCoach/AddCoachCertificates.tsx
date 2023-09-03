@@ -40,7 +40,6 @@ export default function AddCoachCertificates({}) {
   >([]);
 
   const onSubmit: SubmitHandler<COACH_CERTIFICATE_TABLE_TYPES> = (data) => {
-    console.log(data);
     // if (tableData?.length) {
     //   setTableData([data, ...tableData]);
     // } else {
@@ -78,13 +77,13 @@ export default function AddCoachCertificates({}) {
         <CardTitle title="ADD COACH" />
         <div className="text-xl font-bold">ADD CERTIFICATES</div>
         <div className="mt-10 flex justify-between">
-          <div>
+          <div className="w-96">
             <Controller
               control={control}
               render={({ field: { value, onChange } }) => (
                 <Select
-                  options={COACH_CERTIFICATES_CONSTANTS}
-                  placeholder={"Select Coach Certificate"}
+                  className="w-full"
+                  {...COACH_CERTIFICATES_CONSTANTS}
                   onChangeHandler={onChange}
                   value={value}
                 />

@@ -116,18 +116,27 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   },
 ];
 
-export const COACH_CERTIFICATES_CONSTANTS = [
-  {
-    label: "Bachelor Certificate in Athlete Coaching",
-    id: "bachelorCertificate",
-    value: "bachelorCertificate",
-  },
-  {
-    label: "Diploma Certificate in General Coaching",
-    id: "diplomaCertificate",
-    value: "diplomaCertificate",
-  },
-];
+export const COACH_CERTIFICATES_CONSTANTS = {
+  placeholder: "Select Coach Certificates",
+  id: "certificates",
+  options: [
+    {
+      label: "Bachelor Certificate in Sports",
+      id: "bachelorCertificate",
+      value: "bachelorCertificate",
+    },
+    {
+      label: "Masters Certificate in Sports",
+      id: "mastersCertificate",
+      value: "mastersCertificate",
+    },
+    {
+      label: "Diploma in Sports Coaching",
+      id: "diplomaSports",
+      value: "diplomaSports",
+    },
+  ],
+};
 
 export const CENTERS_CONSTANTS = [
   {

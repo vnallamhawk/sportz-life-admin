@@ -30,6 +30,7 @@ const Select = ({
   defaultValue?: string;
   onChangeHandler?: (value: string) => void;
 }) => {
+  console.log(placeholder);
   // const onChangeHandler1 = (label) => {
   //   if (Array.isArray(options)) {
   //     const value = options?.find(
@@ -47,13 +48,17 @@ const Select = ({
     >
       <SelectPrimitive.Trigger asChild>
         <Button
-          className={classNames("w-96", {
+          className={classNames("", {
             [`${className}`]: className !== "",
           })}
         >
-          <SelectPrimitive.Value className="w-96" placeholder={placeholder} />
+          <div className="w-100 flex">
+            <SelectPrimitive.Value placeholder={placeholder} />
+          </div>
           <SelectPrimitive.Icon className="ml-2">
-            <ChevronDownIcon />
+            <div>
+              <ChevronDownIcon />
+            </div>
           </SelectPrimitive.Icon>
         </Button>
       </SelectPrimitive.Trigger>

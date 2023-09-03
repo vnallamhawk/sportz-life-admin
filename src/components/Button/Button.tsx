@@ -9,7 +9,7 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
       ref={ref}
       {...props}
       className={classNames(
-        "inline-flex select-none items-center justify-center rounded-md px-4 py-2 text-sm font-medium",
+        "inline-flex select-none items-start justify-end rounded-md px-4 py-2 text-sm font-medium",
         "bg-white text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-900",
         "hover:bg-gray-50",
         "rounded",

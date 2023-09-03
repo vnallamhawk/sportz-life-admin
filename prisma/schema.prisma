@@ -182,8 +182,8 @@ model Certificates {
   name          String
   startEnd      DateTime
   endDate       DateTime
-  coach         Coach    @relation(fields: [certificateId], references: [id])
-  certificateId Int      @unique
+  coach         Coach    @relation(fields: [coachId], references: [id])
+  coachId Int      @unique
 }
 
 model Center {

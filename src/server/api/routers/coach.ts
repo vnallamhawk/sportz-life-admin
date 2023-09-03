@@ -31,7 +31,6 @@ export const coachRouter = createTRPCRouter({
         input: { name, contactNumber, emailAddress, designation, gender },
         ctx,
       }) => {
-        console.log(name);
         return await ctx.prisma.coach.create({
           data: {
             name: name,

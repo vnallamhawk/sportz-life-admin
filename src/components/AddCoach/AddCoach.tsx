@@ -31,6 +31,7 @@ export default function AddCoach() {
     switch (type) {
       case "select":
         const { options } = props;
+        console.log(props.defaultValue, props.placeHolder);
         inputElement = (
           <Controller
             control={control}
@@ -38,7 +39,7 @@ export default function AddCoach() {
               return (
                 <Select
                   options={options ?? []}
-                  defaultValue={props?.defaultValue}
+                  // defaultValue={props?.defaultValue}
                   placeholder={props.placeHolder}
                   onChangeHandler={onChange}
                   value={value}
@@ -55,8 +56,7 @@ export default function AddCoach() {
         inputElement = (
           <Controller
             control={control}
-            render={({ field: { onChange, value } }) => {
-              console.log(value);
+            render={({ field: { onChange } }) => {
               return (
                 <Datepicker
                   placeHolder={props.placeHolder}
