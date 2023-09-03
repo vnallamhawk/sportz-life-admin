@@ -16,10 +16,12 @@ export default function AddCoach() {
   let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
+    multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
   const {
     control,
+    getValues,
     trigger,
     formState: { errors },
   } = useForm<COACH_TYPES>();
@@ -32,15 +34,18 @@ export default function AddCoach() {
         inputElement = (
           <Controller
             control={control}
-            render={({ field: { onChange } }) => (
-              <Select
-                options={options ?? []}
-                defaultValue={props?.defaultValue}
-                placeholder={props.placeHolder}
-                onChangeHandler={onChange}
-                // {...rules}
-              />
-            )}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Select
+                  options={options ?? []}
+                  defaultValue={props?.defaultValue}
+                  placeholder={props.placeHolder}
+                  onChangeHandler={onChange}
+                  value={value}
+                  // {...rules}
+                />
+              );
+            }}
             name={id}
             rules={rules}
           />
@@ -88,9 +93,10 @@ export default function AddCoach() {
   };
 
   const nextClickHandler = async () => {
-    console.log("inside");
     const result = await trigger();
     if (result) {
+      const currentFormValues = getValues();
+      setFormData && setFormData({ ...formData, ...currentFormValues });
       setCurrentStep && setCurrentStep(currentStep + 1);
     }
   };

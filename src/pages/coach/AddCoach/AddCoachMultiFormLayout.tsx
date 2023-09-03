@@ -5,17 +5,42 @@ import { useForm } from "react-hook-form";
 import AddCoach from "../../../components/AddCoach/AddCoach";
 import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
 import AssignBatches from "~/components/AddCoach/AssignBatches";
+import { type MULTI_FORM_TYPES } from "~/types/coach";
+import { api } from "~/utils/api";
+
+const multiFormData: MULTI_FORM_TYPES = {
+  coachName: "",
+  designation: "",
+  phoneNumber: undefined,
+  emailAddress: "",
+  dateOfBirth: undefined,
+  gender: "",
+  payroll: "",
+  coachingSports: "",
+  certificateData: [],
+  batchData: [],
+  // certificate: "",
+  // institute: "",
+  // centerName: "",
+  // batchName: "",
+};
 
 const defaultValues = {
   stepData: {
     currentStep: 1,
   },
+  multiFormData: {
+    formData: multiFormData,
+  },
 };
-
 export interface FormContextTypes {
   stepData: {
     currentStep: number;
     setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
+  };
+  multiFormData: {
+    formData: MULTI_FORM_TYPES;
+    setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>;
   };
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
@@ -23,29 +48,25 @@ export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 export default function AddCoachMultiFormLayout() {
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const stepData = {
-    currentStep,
-    setCurrentStep,
-  };
-
-  const {
-    control,
-    watch,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      centerName: "",
-      batchName: "",
-      certificate: "",
-      institute: "",
-    },
-  });
+  const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
+    defaultValues.multiFormData.formData
+  );
 
   const formProviderData = {
     ...methods,
-    stepData,
-    control,
-    errors,
+    stepData: { currentStep, setCurrentStep },
+    multiFormData: { formData, setFormData },
+  };
+  const createCoach = api.coach.createCoach.useMutation();
+
+  const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
+    createCoach.mutate({
+      name: finalForm.coachName,
+      contactNumber: finalForm.phoneNumber,
+      emailAddress: finalForm.emailAddress,
+      designation: finalForm.designation,
+      gender: finalForm.gender,
+    });
   };
 
   return (
@@ -54,7 +75,11 @@ export default function AddCoachMultiFormLayout() {
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
           {currentStep === 1 && <AddCoach />}
           {currentStep === 2 && <AddCoachCertificates />}
-          {currentStep === 3 && <AssignBatches />}
+          {currentStep === 3 && (
+            <AssignBatches
+              finalFormSubmissionHandler={finalFormSubmissionHandler}
+            />
+          )}
         </Card>
         <Card className="col-span-2 bg-gray-100">
           <div className="mb-10 font-bold">Coach Image</div>
@@ -77,7 +102,7 @@ export default function AddCoachMultiFormLayout() {
             </ul>
           </div>
         </Card>
-        <pre>{JSON.stringify(watch())}</pre>
+        {/* <pre>{JSON.stringify(watch())}</pre> */}
       </div>
     </FormContext.Provider>
   );

@@ -10,7 +10,7 @@ import classNames from "classnames";
 
 interface Options {
   label: string;
-  value: string;
+  value?: string;
   id: string;
 }
 
@@ -19,17 +19,28 @@ const Select = ({
   options,
   placeholder,
   defaultValue,
+  value,
   onChangeHandler,
   ...rest
 }: {
+  value?: string;
   className?: string;
   options: Options[];
   placeholder?: string;
   defaultValue?: string;
-  onChangeHandler?: () => void;
+  onChangeHandler?: (value: string) => void;
 }) => {
+  // const onChangeHandler1 = (label) => {
+  //   if (Array.isArray(options)) {
+  //     const value = options?.find(
+  //       (option) => option.label.toLowerCase() === label.toLowerCase()
+  //     ).value;
+  //     onChangeHandler && onChangeHandler(value);
+  //   }
+  // };
   return (
     <SelectPrimitive.Root
+      value={value}
       defaultValue={defaultValue}
       onValueChange={onChangeHandler}
       {...rest}
@@ -52,10 +63,10 @@ const Select = ({
         </SelectPrimitive.ScrollUpButton>
         <SelectPrimitive.Viewport className="w-200 rounded-lg bg-white p-2 shadow-lg dark:bg-gray-100">
           <SelectPrimitive.Group>
-            {options?.map(({ label }, index) => (
+            {options?.map(({ label, value }, index) => (
               <SelectPrimitive.Item
                 key={`${label}-${index}`}
-                value={label.toLowerCase()}
+                value={value ? value : ""}
                 className="w-200 radix-disabled:opacity-50 relative flex rounded-md px-8 py-2 text-sm font-medium text-gray-700 focus:bg-gray-100 focus:outline-none dark:text-gray-300 dark:focus:bg-gray-900"
               >
                 <SelectPrimitive.ItemText>{label}</SelectPrimitive.ItemText>

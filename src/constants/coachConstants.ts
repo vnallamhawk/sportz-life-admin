@@ -85,8 +85,8 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     id: "gender",
     type: "select",
     options: [
-      { label: "Male", value: "male", id: "male" },
-      { label: "Female", value: "female", id: "female" },
+      { label: "Male", value: "MALE", id: "MALE" },
+      { label: "Female", value: "FEMALE", id: "FEMALE" },
     ],
     placeHolder: "Select Gender",
     rules: {

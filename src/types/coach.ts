@@ -36,13 +36,19 @@ export interface ASSIGN_BATCHES_TYPES {
   batchName: string;
 }
 
+export const GENDER_VALUES = ["MALE", "FEMALE"] as const;
 export interface COACH_TYPES {
   coachName: string;
   designation: string;
-  phoneNumber: number;
+  phoneNumber: string;
   emailAddress: string;
-  dateOfBirth: number;
-  gender: string;
+  dateOfBirth?: Date;
+  gender: (typeof GENDER_VALUES)[number];
   payroll: string;
   coachingSports: string;
+}
+
+export interface MULTI_FORM_TYPES extends COACH_TYPES {
+  certificateData: COACH_CERTIFICATE_TABLE_TYPES[];
+  batchData: ASSIGN_BATCHES_TYPES[];
 }

@@ -1,22 +1,32 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Select from "../Select";
 import {
   BATCHES_CONSTANTS,
   CENTERS_CONSTANTS,
 } from "~/constants/coachConstants";
-import { type ASSIGN_BATCHES_TYPES } from "~/types/coach";
+import {
+  type MULTI_FORM_TYPES,
+  type ASSIGN_BATCHES_TYPES,
+} from "~/types/coach";
 import Table from "../Table";
 import CenterBatchTableHeader from "../CenterBatchTable/CenterBatchTableHeader";
 import CenterBatchTableBody from "../CenterBatchTable/CenterBatchTableBody";
 import Button from "../Button/Button";
 import CardTitle from "../Card/CardTitle";
+import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 
-export default function AssignBatches() {
+export default function AssignBatches({
+  finalFormSubmissionHandler,
+}: {
+  finalFormSubmissionHandler: (data: MULTI_FORM_TYPES) => void;
+}) {
   const {
     control,
     formState: { errors },
+    getValues,
+    reset,
   } = useForm({
     defaultValues: {
       centerName: "",
@@ -24,10 +34,14 @@ export default function AssignBatches() {
     },
   });
 
-  const [
-    tableData,
-    // setTableData
-  ] = useState<ASSIGN_BATCHES_TYPES[]>([]);
+  const [tableData, setTableData] = useState<ASSIGN_BATCHES_TYPES[]>([]);
+  const {
+    stepData: { currentStep, setCurrentStep },
+    multiFormData: {
+      formData,
+      // setFormData
+    },
+  } = useContext(FormContext);
 
   // const onSubmit: SubmitHandler<ASSIGN_BATCHES_TYPES> = (data) => {
   //   if (tableData?.length) {
@@ -38,7 +52,26 @@ export default function AssignBatches() {
   // };
 
   const submitCallback = () => {
-    console.log("submit");
+    // const currentFormData = getValues();
+    const finalFormData = { ...formData, batchData: tableData };
+    finalFormSubmissionHandler(finalFormData);
+    // setFormData && setFormData(finalFormData);
+  };
+
+  const prevClickHandler = () => {
+    setCurrentStep && setCurrentStep(currentStep - 1);
+  };
+
+  const onAddBatchHandler = () => {
+    const data = getValues();
+    if (Object.keys(errors).length === 0) {
+      if (tableData?.length) {
+        setTableData([data, ...tableData]);
+      } else {
+        setTableData([data]);
+      }
+      reset();
+    }
   };
 
   return (
@@ -47,19 +80,19 @@ export default function AssignBatches() {
         <CardTitle title="ADD COACH" />
         <div className="mb-3 text-lg font-bold">ASSIGN BATCHES</div>
 
-        {/* <div className="flex justify-between"> */}
         <div className="mb-3">
           <Controller
             control={control}
             rules={{
               required: true,
             }}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
               <Select
                 className="mr-3"
                 options={CENTERS_CONSTANTS}
                 placeholder={"Select Center"}
                 onChangeHandler={onChange}
+                value={value}
               />
             )}
             name="centerName"
@@ -71,12 +104,12 @@ export default function AssignBatches() {
             rules={{
               required: true,
             }}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
               <Select
                 options={BATCHES_CONSTANTS}
                 placeholder={"Select Certificate"}
                 onChangeHandler={onChange}
-                // value={value}
+                value={value}
               />
             )}
             name="batchName"
@@ -84,10 +117,9 @@ export default function AssignBatches() {
           {errors.batchName && <span>This field is required</span>}
         </div>
 
-        <Button type="submit" className="Button">
+        <Button type="submit" className="Button" onClick={onAddBatchHandler}>
           Add
         </Button>
-        {/* </div> */}
         {tableData.length !== 0 && (
           <Table
             tableHeader={<CenterBatchTableHeader />}
@@ -95,9 +127,22 @@ export default function AssignBatches() {
           />
         )}
 
-        <Button className="mx-3 bg-pink-500" onClick={() => submitCallback}>
-          Finish
-        </Button>
+        <div className="flex-end flex">
+          <Button
+            type="button"
+            className=" mx-3 bg-pink-500"
+            onClick={prevClickHandler}
+          >
+            Prev
+          </Button>
+          <Button
+            type="button"
+            className="mx-3 bg-pink-500"
+            onClick={submitCallback}
+          >
+            Finish
+          </Button>
+        </div>
         {/* </form> */}
       </div>
     </>

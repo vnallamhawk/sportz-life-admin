@@ -72,7 +72,6 @@ model VerificationToken {
 model Coach {
   id            Int            @unique @default(autoincrement())
   name          String
-  age           Int
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now()) @updatedAt
   contactNumber String
@@ -157,8 +156,8 @@ model CoachesOnCenters {
   coachId Int
   center Center @relation(fields: [centerId],references: [id])
   centerId Int
-  assignedAt DateTime @default(now())
-  assignedBy String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([coachId, centerId])
   @@index([coachId])

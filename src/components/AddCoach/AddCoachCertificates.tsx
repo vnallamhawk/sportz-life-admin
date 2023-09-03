@@ -16,28 +16,11 @@ import {
 } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import CardTitle from "../Card/CardTitle";
 
-export default function AddCoachCertificates(
-  {
-    // control,
-    // errors,
-    // handleSubmit,
-  }
-) {
-  // const {
-  //   control,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm({
-  //   defaultValues: {
-  //     certificate: "",
-  //     institute: "",
-  //   },
-  // });
-
+export default function AddCoachCertificates({}) {
   const {
     control,
     handleSubmit,
-    trigger,
+    reset,
     formState: { errors },
     getValues,
   } = useForm({
@@ -49,6 +32,7 @@ export default function AddCoachCertificates(
 
   const {
     stepData: { currentStep, setCurrentStep },
+    multiFormData: { formData, setFormData },
   } = useContext<FormContextTypes>(FormContext);
 
   const [tableData, setTableData] = useState<
@@ -62,28 +46,30 @@ export default function AddCoachCertificates(
     // } else {
     //   setTableData([data]);
     // }
-    setCurrentStep && setCurrentStep(currentStep + 1);
+    // setCurrentStep && setCurrentStep(currentStep + 1);
   };
 
   const onAddHandler = () => {
     const data = getValues();
-    if (!errors) {
+    if (Object.keys(errors).length === 0) {
       if (tableData?.length) {
         setTableData([data, ...tableData]);
       } else {
         setTableData([data]);
       }
+      reset();
     }
   };
 
-  // const nextClickHandler = (trigger) => {
-  //   console.log(trigger);
-  //   trigger();
-  //   setCurrentStep(currentStep + 1);
-  // };
-
   const prevClickHandler = () => {
     setCurrentStep && setCurrentStep(currentStep - 1);
+  };
+
+  const onNextClickHandler = () => {
+    if (Object.keys(errors).length === 0) {
+      setFormData && setFormData({ ...formData, certificateData: tableData });
+      setCurrentStep && setCurrentStep(currentStep + 1);
+    }
   };
 
   return (
@@ -92,41 +78,41 @@ export default function AddCoachCertificates(
         <CardTitle title="ADD COACH" />
         <div className="text-xl font-bold">ADD CERTIFICATES</div>
         <div className="mt-10 flex justify-between">
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange } }) => (
-              <Select
-                options={COACH_CERTIFICATES_CONSTANTS}
-                placeholder={"Select Certificate"}
-                onChangeHandler={onChange}
-              />
-            )}
-            name="certificate"
-          />
-          {errors.certificate && (
-            <span className="text-red-800">This field is required</span>
-          )}
+          <div>
+            <Controller
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <Select
+                  options={COACH_CERTIFICATES_CONSTANTS}
+                  placeholder={"Select Coach Certificate"}
+                  onChangeHandler={onChange}
+                  value={value}
+                />
+              )}
+              name="certificate"
+            />
+            {/* {errors.certificate && (
+              <div className="text-red-800">This field is required</div>
+            )} */}
+          </div>
 
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange } }) => (
-              <Textbox
-                placeHolder="Institute Name"
-                className="w-96"
-                onChangeHandler={onChange}
-              />
-            )}
-            name="institute"
-          />
-          {errors.institute && (
-            <span className="text-red-800">This field is required</span>
-          )}
+          <div>
+            <Controller
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Textbox
+                  placeHolder="Institute Name"
+                  className="w-96"
+                  onChangeHandler={onChange}
+                  value={value}
+                />
+              )}
+              name="institute"
+            />
+            {/* {errors.institute && (
+              <div className="text-red-800">This field is required</div>
+            )} */}
+          </div>
         </div>
         <div className="mt-10">
           <Datepicker placeHolder="Start" className="h-12 w-48" />
@@ -151,12 +137,7 @@ export default function AddCoachCertificates(
           <Button className="bg-pink-500" onClick={prevClickHandler}>
             Prev
           </Button>
-          <Button
-            className="mx-3 bg-pink-500"
-            onClick={() => {
-              void trigger();
-            }}
-          >
+          <Button className="mx-3 bg-pink-500" onClick={onNextClickHandler}>
             Next
           </Button>
         </div>
