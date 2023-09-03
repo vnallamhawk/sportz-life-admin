@@ -11,7 +11,7 @@ export default function DatePickerWrapper({
 }: {
   className?: string;
   placeHolder?: string;
-  onChangeHandler?: ({ date }: { date: Date }) => void;
+  onChangeHandler?: (arg0: string) => void;
   value?: string;
 }) {
   const [selectedDate, setSelectedDate] = useState("");
@@ -19,7 +19,7 @@ export default function DatePickerWrapper({
 
   const onDateSelected = ({ date }: { date: Date }) => {
     setSelectedDate(DATE_TIME_FORMAT.format(date));
-    onChangeHandler && onChangeHandler({ date });
+    onChangeHandler && onChangeHandler(DATE_TIME_FORMAT.format(date));
     setOpen(false);
   };
   return (

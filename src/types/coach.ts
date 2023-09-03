@@ -42,8 +42,8 @@ export interface COACH_TYPES {
   designation: string;
   phoneNumber: string;
   emailAddress: string;
-  dateOfBirth?: Date;
-  gender: (typeof GENDER_VALUES)[number];
+  dateOfBirth?: string;
+  gender?: (typeof GENDER_VALUES)[number];
   payroll: string;
   coachingSports: string;
 }

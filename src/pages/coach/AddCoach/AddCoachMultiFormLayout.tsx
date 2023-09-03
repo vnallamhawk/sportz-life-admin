@@ -9,12 +9,11 @@ import { type MULTI_FORM_TYPES } from "~/types/coach";
 import { api } from "~/utils/api";
 
 const multiFormData: MULTI_FORM_TYPES = {
+  phoneNumber: "",
   coachName: "",
   designation: "",
-  phoneNumber: undefined,
   emailAddress: "",
   dateOfBirth: undefined,
-  gender: "",
   payroll: "",
   coachingSports: "",
   certificateData: [],
@@ -65,7 +64,7 @@ export default function AddCoachMultiFormLayout() {
       contactNumber: finalForm.phoneNumber,
       emailAddress: finalForm.emailAddress,
       designation: finalForm.designation,
-      gender: finalForm.gender,
+      gender: finalForm?.gender ? finalForm?.gender : "MALE",
     });
   };
 

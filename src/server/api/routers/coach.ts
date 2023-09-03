@@ -39,7 +39,6 @@ export const coachRouter = createTRPCRouter({
             email: emailAddress,
             designation: designation,
             gender: gender,
-            age: 12,
           },
 
           // data: {
