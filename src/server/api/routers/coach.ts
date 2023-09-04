@@ -1,9 +1,17 @@
-import { z } from "zod";
+import { object, z } from "zod";
 import {
   createTRPCRouter,
   publicProcedure,
   // protectedProcedure,
 } from "~/server/api/trpc";
+import { type MULTI_FORM_TYPES } from "~/types/coach";
+
+const certificatesSchema = z.object({
+  institute: z.string(),
+  certificate: z.string(),
+});
+
+// Now add this object into an array
 
 const genderValues = ["MALE", "FEMALE"] as const;
 export const coachRouter = createTRPCRouter({
@@ -24,11 +32,19 @@ export const coachRouter = createTRPCRouter({
         emailAddress: z.string(),
         designation: z.string(),
         gender: z.enum(genderValues),
+        certificates: certificatesSchema,
       })
     )
     .mutation(
       async ({
-        input: { name, contactNumber, emailAddress, designation, gender },
+        input: {
+          name,
+          contactNumber,
+          emailAddress,
+          designation,
+          gender,
+          certificates,
+        },
         ctx,
       }) => {
         return await ctx.prisma.coach.create({
@@ -38,6 +54,10 @@ export const coachRouter = createTRPCRouter({
             email: emailAddress,
             designation: designation,
             gender: gender,
+            // TODO: fix this TS error
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            certificates: certificates,
           },
 
           // data: {

@@ -58,13 +58,16 @@ export default function AddCoachMultiFormLayout() {
   };
   const createCoach = api.coach.createCoach.useMutation();
 
-  const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
+  const finalFormSubmissionHandler = (
+    finalForm: Required<MULTI_FORM_TYPES>
+  ) => {
     createCoach.mutate({
       name: finalForm.coachName,
       contactNumber: finalForm.phoneNumber,
       emailAddress: finalForm.emailAddress,
       designation: finalForm.designation,
-      gender: finalForm?.gender ? finalForm?.gender : "MALE",
+      gender: finalForm.gender,
+      certificates: finalForm.certificateData,
     });
   };
 

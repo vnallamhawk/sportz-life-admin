@@ -180,10 +180,11 @@ model CoachesOnSports {
 model Certificates {
   id            Int      @unique @default(autoincrement())
   name          String
-  startEnd      DateTime
-  endDate       DateTime
+  startEnd      DateTime?
+  instituteName String
+  endDate       DateTime?
   coach         Coach    @relation(fields: [coachId], references: [id])
-  coachId Int      @unique
+  coachId       Int      @unique
 }
 
 model Center {
