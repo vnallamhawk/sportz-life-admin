@@ -132,15 +132,9 @@ export default function AddCoach() {
           </div>
           <div className="mr-10 mt-10 flex justify-end">
             <Button
-              className="mx-3 bg-pink-500"
+              className="border-1 mx-3 bg-pink-600 hover:bg-pink-800"
               type="button"
               onClick={() => void nextClickHandler()}
-              // onClick={async () => {
-              //   const result = await trigger();
-              //   if (result) {
-              //     setCurrentStep && setCurrentStep(currentStep + 1);
-              //   }
-              // }}
             >
               Next
             </Button>

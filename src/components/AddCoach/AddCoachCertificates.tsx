@@ -80,14 +80,16 @@ export default function AddCoachCertificates({}) {
           <div className="w-96">
             <Controller
               control={control}
-              render={({ field: { value, onChange } }) => (
-                <Select
-                  className="h-12 w-96"
-                  {...COACH_CERTIFICATES_CONSTANTS}
-                  onChangeHandler={onChange}
-                  value={value}
-                />
-              )}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <Select
+                    className="h-12 w-96"
+                    {...COACH_CERTIFICATES_CONSTANTS}
+                    onChangeHandler={onChange}
+                    value={value ?? undefined}
+                  />
+                );
+              }}
               name="certificate"
             />
             {/* {errors.certificate && (
@@ -133,10 +135,16 @@ export default function AddCoachCertificates({}) {
           </div>
         )}
         <div className="mt-5 flex justify-end">
-          <Button className="bg-pink-500" onClick={prevClickHandler}>
+          <Button
+            className="bg-pink-600 hover:bg-pink-800"
+            onClick={prevClickHandler}
+          >
             Prev
           </Button>
-          <Button className="mx-3 bg-pink-500" onClick={onNextClickHandler}>
+          <Button
+            className="mx-3 bg-pink-600 hover:bg-pink-800"
+            onClick={onNextClickHandler}
+          >
             Next
           </Button>
         </div>

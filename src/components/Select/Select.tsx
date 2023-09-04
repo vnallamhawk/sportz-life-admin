@@ -41,7 +41,11 @@ const Select = ({
   // };
   return (
     <SelectPrimitive.Root
-      value={value}
+      value={
+        value === "" || value === undefined || value === null
+          ? undefined
+          : value
+      }
       defaultValue={defaultValue}
       onValueChange={onChangeHandler}
       {...rest}
@@ -52,7 +56,7 @@ const Select = ({
             [`${className}`]: className !== "",
           })}
         >
-          <div className="w-100 flex">
+          <div className="flex w-full justify-start">
             <SelectPrimitive.Value
               className="flex-start flex"
               placeholder={placeholder}

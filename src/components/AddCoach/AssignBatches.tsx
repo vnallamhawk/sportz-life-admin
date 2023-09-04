@@ -86,29 +86,32 @@ export default function AssignBatches({
             rules={{
               required: true,
             }}
-            render={({ field: { onChange, value } }) => (
-              <Select
-                className="h-12 w-96"
-                options={CENTERS_CONSTANTS}
-                placeholder={"Select Center"}
-                onChangeHandler={onChange}
-                value={value}
-              />
-            )}
+            render={({ field: { onChange, value } }) => {
+              console.log(value);
+              return (
+                <Select
+                  className="h-12 w-96"
+                  options={CENTERS_CONSTANTS}
+                  placeholder={"Select Center"}
+                  onChangeHandler={onChange}
+                  value={value}
+                />
+              );
+            }}
             name="centerName"
           />
           {errors.centerName && <span>This field is required</span>}
 
           <Controller
             control={control}
-            rules={{
-              required: true,
-            }}
+            // rules={{
+            //   required: true,
+            // }}
             render={({ field: { onChange, value } }) => (
               <Select
                 className="h-12 w-96"
                 options={BATCHES_CONSTANTS}
-                placeholder={"Select Certificate"}
+                placeholder="Select Certificate"
                 onChangeHandler={onChange}
                 value={value}
               />
@@ -131,14 +134,14 @@ export default function AssignBatches({
         <div className="flex justify-end">
           <Button
             type="button"
-            className=" mx-3 bg-pink-500"
+            className="mx-3 bg-pink-600 hover:bg-pink-800"
             onClick={prevClickHandler}
           >
             Prev
           </Button>
           <Button
             type="button"
-            className="mx-3 bg-pink-500"
+            className="mx-3 bg-pink-600 hover:bg-pink-800"
             onClick={submitCallback}
           >
             Finish
