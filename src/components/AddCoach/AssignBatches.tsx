@@ -2,10 +2,7 @@
 import React, { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Select from "../Select";
-import {
-  BATCHES_CONSTANTS,
-  CENTERS_CONSTANTS,
-} from "~/constants/coachConstants";
+import { BATCHES_CONSTANTS } from "~/constants/coachConstants";
 import {
   type MULTI_FORM_TYPES,
   type ASSIGN_BATCHES_TYPES,

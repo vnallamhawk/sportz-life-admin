@@ -138,19 +138,6 @@ export const COACH_CERTIFICATES_CONSTANTS = {
   ],
 };
 
-export const CENTERS_CONSTANTS = [
-  {
-    label: "Nethaji Indoor Stadium",
-    id: "nethaji",
-    value: "nethaji",
-  },
-  {
-    label: "Biswa Bharat Stadium",
-    id: "biswa",
-    value: "biswa",
-  },
-];
-
 export const BATCHES_CONSTANTS = [
   {
     label: "Tennis-Advanced",
