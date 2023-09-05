@@ -5,10 +5,12 @@ import {
   // protectedProcedure,
 } from "~/server/api/trpc";
 
-const certificatesSchema = z.object({
-  institute: z.string(),
-  certificate: z.string(),
-});
+const certificatesSchema = z.array(
+  z.object({
+    instituteName: z.string(),
+    name: z.string(),
+  })
+);
 
 // Now add this object into an array
 
@@ -46,6 +48,7 @@ export const coachRouter = createTRPCRouter({
         },
         ctx,
       }) => {
+        console.log(certificates);
         return await ctx.prisma.coach.create({
           data: {
             name: name,
@@ -53,10 +56,9 @@ export const coachRouter = createTRPCRouter({
             email: emailAddress,
             designation: designation,
             gender: gender,
-            // TODO: fix this TS error
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-expect-error
-            certificates: certificates,
+            certificates: {
+              create: certificates,
+            },
           },
 
           // data: {

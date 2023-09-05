@@ -16,6 +16,7 @@ import CenterBatchTableBody from "../CenterBatchTable/CenterBatchTableBody";
 import Button from "../Button/Button";
 import CardTitle from "../Card/CardTitle";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
+import { api } from "~/utils/api";
 
 export default function AssignBatches({
   finalFormSubmissionHandler,
@@ -42,6 +43,8 @@ export default function AssignBatches({
       // setFormData
     },
   } = useContext(FormContext);
+
+  const { data: centers } = api.center.getAllCenters.useQuery();
 
   // const onSubmit: SubmitHandler<ASSIGN_BATCHES_TYPES> = (data) => {
   //   if (tableData?.length) {
@@ -91,7 +94,13 @@ export default function AssignBatches({
               return (
                 <Select
                   className="h-12 w-96"
-                  options={CENTERS_CONSTANTS}
+                  options={
+                    centers?.map(({ id, name }) => ({
+                      label: name,
+                      value: id,
+                      id: id,
+                    })) ?? []
+                  }
                   placeholder={"Select Center"}
                   onChangeHandler={onChange}
                   value={value}
@@ -104,14 +113,11 @@ export default function AssignBatches({
 
           <Controller
             control={control}
-            // rules={{
-            //   required: true,
-            // }}
             render={({ field: { onChange, value } }) => (
               <Select
                 className="h-12 w-96"
                 options={BATCHES_CONSTANTS}
-                placeholder="Select Certificate"
+                placeholder="Select Batches"
                 onChangeHandler={onChange}
                 value={value}
               />
@@ -147,7 +153,6 @@ export default function AssignBatches({
             Finish
           </Button>
         </div>
-        {/* </form> */}
       </div>
     </>
   );

@@ -58,15 +58,13 @@ export default function AddCoachMultiFormLayout() {
   };
   const createCoach = api.coach.createCoach.useMutation();
 
-  const finalFormSubmissionHandler = (
-    finalForm: Required<MULTI_FORM_TYPES>
-  ) => {
+  const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
     createCoach.mutate({
       name: finalForm.coachName,
       contactNumber: finalForm.phoneNumber,
       emailAddress: finalForm.emailAddress,
       designation: finalForm.designation,
-      gender: finalForm.gender,
+      gender: finalForm.gender ?? "MALE",
       certificates: finalForm.certificateData,
     });
   };
@@ -75,9 +73,9 @@ export default function AddCoachMultiFormLayout() {
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 1 && <AddCoach />}
+          {currentStep === 3 && <AddCoach />}
           {currentStep === 2 && <AddCoachCertificates />}
-          {currentStep === 3 && (
+          {currentStep === 1 && (
             <AssignBatches
               finalFormSubmissionHandler={finalFormSubmissionHandler}
             />

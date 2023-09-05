@@ -10,8 +10,8 @@ import classNames from "classnames";
 
 interface Options {
   label: string;
-  value?: string;
-  id: string;
+  value?: string | number;
+  id: string | number;
 }
 
 const Select = ({
@@ -78,7 +78,7 @@ const Select = ({
             {options?.map(({ label, value }, index) => (
               <SelectPrimitive.Item
                 key={`${label}-${index}`}
-                value={value ? value : ""}
+                value={value ? value.toString() : ""}
                 className="w-200 radix-disabled:opacity-50 relative flex rounded-md px-8 py-2 text-sm font-medium text-gray-700 focus:bg-gray-100 focus:outline-none dark:text-gray-300 dark:focus:bg-gray-900"
               >
                 <SelectPrimitive.ItemText>{label}</SelectPrimitive.ItemText>

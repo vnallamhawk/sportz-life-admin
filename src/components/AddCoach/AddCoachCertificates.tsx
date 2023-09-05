@@ -25,8 +25,8 @@ export default function AddCoachCertificates({}) {
     getValues,
   } = useForm({
     defaultValues: {
-      certificate: "",
-      institute: "",
+      name: "",
+      instituteName: "",
     },
   });
 
@@ -90,7 +90,7 @@ export default function AddCoachCertificates({}) {
                   />
                 );
               }}
-              name="certificate"
+              name="name"
             />
             {/* {errors.certificate && (
               <div className="text-red-800">This field is required</div>
@@ -108,7 +108,7 @@ export default function AddCoachCertificates({}) {
                   value={value}
                 />
               )}
-              name="institute"
+              name="instituteName"
             />
             {/* {errors.institute && (
               <div className="text-red-800">This field is required</div>

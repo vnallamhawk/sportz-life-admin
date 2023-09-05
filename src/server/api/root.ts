@@ -2,6 +2,7 @@ import { exampleRouter } from "~/server/api/routers/example";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { coachRouter } from "./routers/coach";
 import { sportRouter } from "./routers/sports";
+import { centerRouter } from "./routers/center";
 
 /**
  * This is the primary router for your server.
@@ -10,6 +11,7 @@ import { sportRouter } from "./routers/sports";
  */
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
+  center: centerRouter,
   coach: coachRouter,
   sports: sportRouter,
 });

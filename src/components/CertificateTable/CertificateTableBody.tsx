@@ -9,10 +9,10 @@ export default function CertificateTableBody({
 }) {
   return (
     <>
-      {data.map(({ institute, certificate }, index) => (
-        <tr key={`${institute}-${index}`}>
-          <td>{certificate}</td>
-          <td>{institute}</td>
+      {data.map(({ instituteName, name }, index) => (
+        <tr key={`${instituteName}-${index}`}>
+          <td>{instituteName}</td>
+          <td>{name}</td>
           <td>
             <Button> Remove </Button>
           </td>

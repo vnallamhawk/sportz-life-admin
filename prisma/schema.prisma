@@ -184,7 +184,9 @@ model Certificates {
   instituteName String
   endDate       DateTime?
   coach         Coach    @relation(fields: [coachId], references: [id])
-  coachId       Int      @unique
+  coachId       Int      
+
+  @@index([coachId])
 }
 
 model Center {

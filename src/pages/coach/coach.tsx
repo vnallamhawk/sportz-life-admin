@@ -7,7 +7,6 @@ import Table from "~/components/Table/Table";
 import CoachTableHeader from "../../components/AllCoaches/CoachTableHeader";
 import CoachTableBody from "../../components/AllCoaches/CoachTableBody";
 import { useRouter } from "next/navigation";
-// import { useSession } from "next-auth/react";
 
 export default function Coach() {
   const router = useRouter();
