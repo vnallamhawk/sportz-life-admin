@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { useDayzed } from "dayzed";
 
 const monthNamesShort = [
@@ -21,12 +21,15 @@ interface DatePicker {
   onDateSelected: ({ date }: { date: Date }) => void;
 }
 
-export default function DatePicker(props: DatePicker) {
+const DatePicker = forwardRef<HTMLDivElement, DatePicker>((props, ref) => {
   const { calendars, getBackProps, getForwardProps, getDateProps } =
     useDayzed(props);
   if (calendars.length) {
     return (
-      <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
+      <div
+        style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}
+        ref={ref}
+      >
         <div>
           <button {...getBackProps({ calendars })}>Back</button>
           <button {...getForwardProps({ calendars })}>Next</button>
@@ -36,7 +39,6 @@ export default function DatePicker(props: DatePicker) {
             key={`${calendar.month}${calendar.year}`}
             style={{
               display: "inline-block",
-              // width: "65%",
               padding: "0 10px 30px",
               boxSizing: "border-box",
             }}
@@ -99,4 +101,8 @@ export default function DatePicker(props: DatePicker) {
     );
   }
   return null;
-}
+});
+
+DatePicker.displayName = "DatePicker";
+
+export default DatePicker;

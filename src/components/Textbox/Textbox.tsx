@@ -3,7 +3,7 @@ import classNames from "classnames";
 interface Textbox {
   className?: string;
   onChangeHandler?: () => void;
-  onClick?: () => void;
+  onClick?: (e: React.FormEvent<HTMLInputElement>) => void;
   placeHolder?: string;
   value?: string;
 }
