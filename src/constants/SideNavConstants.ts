@@ -44,18 +44,6 @@ export const SIDE_NAV_ITEMS = [
     route: "/pricing",
   },
   {
-    label: "Staff Payroll",
-    route: "/payroll",
-  },
-  {
-    label: "Financial Analytics",
-    route: "/financialanalytics",
-  },
-  {
-    label: "Inventory",
-    route: "/inventory",
-  },
-  {
     label: "Post",
     route: "/post",
   },
