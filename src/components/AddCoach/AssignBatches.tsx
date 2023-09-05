@@ -87,7 +87,6 @@ export default function AssignBatches({
               required: true,
             }}
             render={({ field: { onChange, value } }) => {
-              console.log(value);
               return (
                 <Select
                   className="h-12 w-96"

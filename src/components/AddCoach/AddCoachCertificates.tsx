@@ -61,6 +61,7 @@ export default function AddCoachCertificates({}) {
   };
 
   const prevClickHandler = () => {
+    setFormData && setFormData({ ...formData, certificateData: tableData });
     setCurrentStep && setCurrentStep(currentStep - 1);
   };
 

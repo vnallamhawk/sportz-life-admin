@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import CardTitle from "~/components/Card/CardTitle";
 import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
 import Select from "~/components/Select/Select";
@@ -22,16 +22,25 @@ export default function AddCoach() {
   const {
     control,
     getValues,
+    reset,
     trigger,
     formState: { errors },
   } = useForm<COACH_TYPES>();
+  const currentFormValues = getValues();
+
+  useEffect(() => {
+    reset({
+      ...currentFormValues,
+      ...formData,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getInputElement = (props: COACH_DETAILS_CONSTANTS_TYPES) => {
     const { type, rules, id } = props;
     switch (type) {
       case "select":
         const { options } = props;
-        console.log(props.defaultValue, props.placeHolder);
         inputElement = (
           <Controller
             control={control}
@@ -82,7 +91,6 @@ export default function AddCoach() {
                 placeHolder={props.label}
                 onChangeHandler={onChange}
                 value={value}
-                // {...rules}
               />
             )}
             rules={rules}

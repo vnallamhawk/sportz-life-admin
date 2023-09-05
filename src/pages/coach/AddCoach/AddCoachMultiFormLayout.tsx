@@ -73,9 +73,9 @@ export default function AddCoachMultiFormLayout() {
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 3 && <AddCoach />}
+          {currentStep === 1 && <AddCoach />}
           {currentStep === 2 && <AddCoachCertificates />}
-          {currentStep === 1 && (
+          {currentStep === 3 && (
             <AssignBatches
               finalFormSubmissionHandler={finalFormSubmissionHandler}
             />

@@ -48,7 +48,6 @@ export const coachRouter = createTRPCRouter({
         },
         ctx,
       }) => {
-        console.log(certificates);
         return await ctx.prisma.coach.create({
           data: {
             name: name,

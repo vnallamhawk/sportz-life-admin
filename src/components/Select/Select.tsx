@@ -30,7 +30,6 @@ const Select = ({
   defaultValue?: string;
   onChangeHandler?: (value: string) => void;
 }) => {
-  console.log(placeholder);
   // const onChangeHandler1 = (label) => {
   //   if (Array.isArray(options)) {
   //     const value = options?.find(
