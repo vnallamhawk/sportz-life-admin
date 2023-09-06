@@ -8,6 +8,15 @@ interface SelectOption {
   id: string;
 }
 
+interface Pattern {
+  value: RegExp;
+  message: string;
+}
+
+interface Rules {
+  required?: boolean;
+  pattern?: Pattern;
+}
 export interface COACH_DETAILS_CONSTANTS_TYPES {
   label?: string;
   id:
@@ -23,7 +32,8 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
   placeHolder?: string;
   options?: SelectOption[];
   defaultValue?: string;
-  rules?: Record<string, boolean>;
+  rules?: Rules;
+  pattern?: Pattern;
 }
 
 export interface COACH_CERTIFICATE_TABLE_TYPES {

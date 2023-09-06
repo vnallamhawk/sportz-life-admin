@@ -25,8 +25,9 @@ export default function AddCoach() {
     reset,
     trigger,
     formState: { errors },
-  } = useForm<COACH_TYPES>();
+  } = useForm<COACH_TYPES>({ mode: "onChange" });
   const currentFormValues = getValues();
+  console.log(errors);
 
   useEffect(() => {
     reset({
@@ -37,7 +38,7 @@ export default function AddCoach() {
   }, []);
 
   const getInputElement = (props: COACH_DETAILS_CONSTANTS_TYPES) => {
-    const { type, rules, id } = props;
+    const { type, rules, id, pattern } = props;
     switch (type) {
       case "select":
         const { options } = props;
@@ -49,11 +50,9 @@ export default function AddCoach() {
                 <Select
                   className="h-12 w-96"
                   options={options ?? []}
-                  // defaultValue={props?.defaultValue}
                   placeholder={props.placeHolder}
                   onChangeHandler={onChange}
                   value={value}
-                  // {...rules}
                 />
               );
             }}
@@ -76,7 +75,7 @@ export default function AddCoach() {
               );
             }}
             name={id}
-            rules={{ required: true }}
+            rules={rules}
           />
         );
         break;
@@ -94,6 +93,8 @@ export default function AddCoach() {
               />
             )}
             rules={rules}
+            {...(pattern ? { pattern } : {})}
+            // ...(pattern) && {pattern})
           />
         );
     }
@@ -132,7 +133,12 @@ export default function AddCoach() {
                   {getInputElement(props)}
 
                   <span className="text-red-800">
-                    {errors[props.id] && <div>This field is required</div>}
+                    {errors[props.id]?.type === "required" && (
+                      <div>This field is required</div>
+                    )}
+                    {errors[props.id]?.type === "pattern" && (
+                      <div> This field is not matching the format</div>
+                    )}
                   </span>
                 </div>
               </>

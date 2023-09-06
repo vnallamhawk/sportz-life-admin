@@ -69,6 +69,10 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     type: "textbox",
     rules: {
       required: true,
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+        message: "Please enter a valid email !",
+      },
     },
   },
   {
