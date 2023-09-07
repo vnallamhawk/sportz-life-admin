@@ -137,7 +137,7 @@ export default function AddCoach() {
                       <div>This field is required</div>
                     )}
                     {errors[props.id]?.type === "pattern" && (
-                      <div> This field is not matching the format</div>
+                      <div> This field is not matching the pattern</div>
                     )}
                   </span>
                 </div>

@@ -34,6 +34,7 @@ export const coachRouter = createTRPCRouter({
         designation: z.string(),
         gender: z.enum(genderValues),
         certificates: certificatesSchema,
+        dateOfBirth: z.date(),
       })
     )
     .mutation(
@@ -45,9 +46,11 @@ export const coachRouter = createTRPCRouter({
           designation,
           gender,
           certificates,
+          dateOfBirth,
         },
         ctx,
       }) => {
+        console.log(dateOfBirth);
         return await ctx.prisma.coach.create({
           data: {
             name: name,
@@ -58,6 +61,7 @@ export const coachRouter = createTRPCRouter({
             certificates: {
               create: certificates,
             },
+            dateOfBirth: dateOfBirth,
           },
 
           // data: {
