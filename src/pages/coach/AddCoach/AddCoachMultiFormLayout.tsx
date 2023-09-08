@@ -7,7 +7,6 @@ import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
 import AssignBatches from "~/components/AddCoach/AssignBatches";
 import { type MULTI_FORM_TYPES } from "~/types/coach";
 import { api } from "~/utils/api";
-import { prisma } from "~/server/db";
 import { useRouter } from "next/router";
 
 const multiFormData: MULTI_FORM_TYPES = {
