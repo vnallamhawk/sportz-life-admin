@@ -128,20 +128,18 @@ export default function AddCoach() {
           <div className="text-lg font-bold">COACH DETAILS</div>
           <div className="mt-10 grid grid-cols-2 gap-y-12">
             {COACH_DETAILS_CONSTANTS.map((props) => (
-              <>
-                <div key={props.id}>
-                  {getInputElement(props)}
+              <div key={props.id}>
+                {getInputElement(props)}
 
-                  <span className="text-red-800">
-                    {errors[props.id]?.type === "required" && (
-                      <div>This field is required</div>
-                    )}
-                    {errors[props.id]?.type === "pattern" && (
-                      <div> This field is not matching the pattern</div>
-                    )}
-                  </span>
-                </div>
-              </>
+                <span className="text-red-800">
+                  {errors[props.id]?.type === "required" && (
+                    <div>This field is required</div>
+                  )}
+                  {errors[props.id]?.type === "pattern" && (
+                    <div> This field is not matching the pattern</div>
+                  )}
+                </span>
+              </div>
             ))}
           </div>
           <div className="mr-10 mt-10 flex justify-end">

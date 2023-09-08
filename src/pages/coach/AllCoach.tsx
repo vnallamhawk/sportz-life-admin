@@ -8,7 +8,7 @@ import CoachTableHeader from "../../components/AllCoaches/CoachTableHeader";
 import CoachTableBody from "../../components/AllCoaches/CoachTableBody";
 import { useRouter } from "next/navigation";
 
-export default function Coach() {
+export default function AllCoach() {
   const router = useRouter();
 
   return (

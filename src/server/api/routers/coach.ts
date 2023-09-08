@@ -50,8 +50,7 @@ export const coachRouter = createTRPCRouter({
         },
         ctx,
       }) => {
-        console.log(dateOfBirth);
-        return await ctx.prisma.coach.create({
+        const response = await ctx.prisma.coach.create({
           data: {
             name: name,
             contactNumber: contactNumber,
@@ -63,15 +62,8 @@ export const coachRouter = createTRPCRouter({
             },
             dateOfBirth: dateOfBirth,
           },
-
-          // data: {
-          //   name: "testCoach8name",
-          //   contactNumber: "testCoach8number",
-          //   email: "testCoach8name@gmail.com",
-          //   designation: "testCoach8namedesignation",
-          //   gender: "MALE",
-          // },
         });
+        return response;
       }
     ),
 

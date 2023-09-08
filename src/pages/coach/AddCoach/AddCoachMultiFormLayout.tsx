@@ -7,6 +7,8 @@ import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
 import AssignBatches from "~/components/AddCoach/AssignBatches";
 import { type MULTI_FORM_TYPES } from "~/types/coach";
 import { api } from "~/utils/api";
+import { prisma } from "~/server/db";
+import { useRouter } from "next/router";
 
 const multiFormData: MULTI_FORM_TYPES = {
   phoneNumber: "",
@@ -18,10 +20,6 @@ const multiFormData: MULTI_FORM_TYPES = {
   coachingSports: "",
   certificateData: [],
   batchData: [],
-  // certificate: "",
-  // institute: "",
-  // centerName: "",
-  // batchName: "",
 };
 
 const defaultValues = {
@@ -50,18 +48,44 @@ export default function AddCoachMultiFormLayout() {
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
+  const router = useRouter();
 
   const formProviderData = {
     ...methods,
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   };
-  const createCoach = api.coach.createCoach.useMutation();
+  const {
+    // data,
+    mutate,
+    // isLoading: isLoading,
+  } = api.coach.createCoach.useMutation({
+    onSuccess: (response) => {
+      console.log("inside");
+      console.log(response);
+
+      void router.push(`/coach/${response?.id ?? ""}`);
+    },
+  });
 
   const finalFormSubmissionHandler = (
     finalForm: Required<MULTI_FORM_TYPES>
   ) => {
-    createCoach.mutate({
+    // const response = await prisma.coach.create({
+    //   data: {
+    //     name: finalForm.coachName,
+    //     contactNumber: finalForm.phoneNumber,
+    //     email: finalForm.emailAddress,
+    //     designation: finalForm.designation,
+    //     gender: finalForm.gender ?? "MALE",
+    //     certificates: {
+    //       create: finalForm.certificateData,
+    //     },
+    //     dateOfBirth: new Date(finalForm.dateOfBirth),
+    //   },
+    // });
+    // console.log(response);
+    mutate({
       name: finalForm.coachName,
       contactNumber: finalForm.phoneNumber,
       emailAddress: finalForm.emailAddress,
