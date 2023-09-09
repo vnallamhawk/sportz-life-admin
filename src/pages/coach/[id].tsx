@@ -44,7 +44,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 //   image: null,
 // };
 
-export default function Page({ coach }: { coach: Coach }) {
+type CoachInfo = Omit<Coach, "dateOfBirth"> & {
+  dateOfBirth: string;
+};
+
+export default function Page({ coach }: { coach: CoachInfo }) {
   return (
     <Card className="h-100 mx-5">
       <header className="flex justify-between">
@@ -79,7 +83,7 @@ export default function Page({ coach }: { coach: Coach }) {
             <div>
               <div className="text-gray-400">DOB</div>
               <div className="font-bold text-gray-600">
-                {coach.dateOfBirth ? coach.dateOfBirth.toDateString() : ""}
+                {coach.dateOfBirth ? coach.dateOfBirth : ""}
               </div>
             </div>
             <div>
