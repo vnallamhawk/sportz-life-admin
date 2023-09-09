@@ -2,23 +2,49 @@ import Button from "~/components/Button";
 import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
 import Image from "next/image";
+import { prisma } from "~/server/db";
+import { type GetServerSideProps } from "next";
+import { type Coach } from "@prisma/client";
 
-export const coach = {
-  id: 27,
-  name: "coach94",
-  createdAt: "2023-09-08T05:46:22.701Z",
-  updatedAt: "2023-09-08T05:46:22.701Z",
-  dateOfBirth: "2023-09-07T19:30:00.000Z",
-  contactNumber: "coach94",
-  email: "coach94@gmail.com",
-  designation: "coach94",
-  gender: "MALE",
-  payrollId: null,
-  centerId: null,
-  image: null,
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const coach = await prisma.coach.findUnique({
+    where: {
+      id: params?.id ? Number(params?.id) : undefined,
+    },
+    include: {
+      batch: true,
+      sports: true,
+    },
+  });
+
+  return {
+    props: {
+      coach: {
+        ...coach,
+        createdAt: coach?.createdAt?.toISOString(),
+        updatedAt: coach?.updatedAt?.toISOString(),
+        dateOfBirth: coach?.dateOfBirth?.toISOString(),
+      },
+    },
+  };
 };
 
-export default function Page() {
+// export const coach = {
+//   id: 27,
+//   name: "coach94",
+//   createdAt: "2023-09-08T05:46:22.701Z",
+//   updatedAt: "2023-09-08T05:46:22.701Z",
+//   dateOfBirth: "2023-09-07T19:30:00.000Z",
+//   contactNumber: "coach94",
+//   email: "coach94@gmail.com",
+//   designation: "coach94",
+//   gender: "MALE",
+//   payrollId: null,
+//   centerId: null,
+//   image: null,
+// };
+
+export default function Page({ coach }: { coach: Coach }) {
   return (
     <Card className="h-100 mx-5">
       <header className="flex justify-between">
@@ -52,7 +78,9 @@ export default function Page() {
             </div>
             <div>
               <div className="text-gray-400">DOB</div>
-              <div className="font-bold text-gray-600">{coach.dateOfBirth}</div>
+              <div className="font-bold text-gray-600">
+                {coach.dateOfBirth ? coach.dateOfBirth.toDateString() : ""}
+              </div>
             </div>
             <div>
               <div className="text-gray-400">Gender</div>
