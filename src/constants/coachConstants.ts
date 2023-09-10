@@ -128,11 +128,12 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     label: "Coaching Sports",
     id: "coachingSports",
     type: "select",
-    options: [
-      { label: "Volleyball", value: "volleyball", id: "volleyball" },
-      { label: "Basketball", value: "basketball", id: "basketball" },
-      { label: "Swimming", value: "swimming", id: "swimming" },
-    ],
+    options: [],
+    // options: [
+    //   { label: "Volleyball", value: "volleyball", id: "volleyball" },
+    //   { label: "Basketball", value: "basketball", id: "basketball" },
+    //   { label: "Swimming", value: "swimming", id: "swimming" },
+    // ],
     placeHolder: "Coaching Sports",
     rules: {
       required: true,

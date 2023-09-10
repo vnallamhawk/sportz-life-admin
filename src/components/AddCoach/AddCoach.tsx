@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import CardTitle from "~/components/Card/CardTitle";
 import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
 import Select from "~/components/Select/Select";
@@ -11,6 +11,7 @@ import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import Button from "../Button";
 import { Controller, useForm } from "react-hook-form";
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
+import { api } from "~/utils/api";
 
 export default function AddCoach() {
   let inputElement;
@@ -27,7 +28,33 @@ export default function AddCoach() {
     formState: { errors },
   } = useForm<COACH_TYPES>({ mode: "onChange" });
   const currentFormValues = getValues();
-  console.log(errors);
+  const { data: sports } = api.sports.getAllSports.useQuery();
+
+  const [formConstantValues, setFormConstantValues] = useState(
+    COACH_DETAILS_CONSTANTS
+  );
+
+  useEffect(() => {
+    if (sports?.length) {
+      const updatedFormConstantValues = formConstantValues.map(
+        (formConstant) => {
+          if (formConstant.id === "coachingSports") {
+            return {
+              ...formConstant,
+              options: sports.map((sport: { name: string; id: number }) => ({
+                label: sport.name,
+                value: sport.id.toString(),
+                id: sport.id.toString(),
+              })),
+            };
+          } else {
+            return formConstant;
+          }
+        }
+      );
+      setFormConstantValues(updatedFormConstantValues);
+    }
+  }, [formConstantValues, sports, sports?.length]);
 
   useEffect(() => {
     reset({
@@ -129,7 +156,7 @@ export default function AddCoach() {
           <CardTitle title="ADD COACH" />
           <div className="text-lg font-bold">COACH DETAILS</div>
           <div className="mt-10 grid grid-cols-2 gap-y-12">
-            {COACH_DETAILS_CONSTANTS.map((props) => (
+            {formConstantValues.map((props) => (
               <div key={props.id}>
                 {getInputElement(props)}
 
