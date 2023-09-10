@@ -2,6 +2,7 @@ import * as Checkbox from "@radix-ui/react-checkbox";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { HamburgerMenuIcon, CheckIcon } from "@radix-ui/react-icons";
 import { api } from "~/utils/api";
+import { differenceInYears } from "date-fns";
 
 export default function CoachTableBody() {
   let tableData;
@@ -22,7 +23,15 @@ export default function CoachTableBody() {
     <>
       {tableData?.map(
         (
-          { name, age, designation, sports, gender, batch, contactNumber },
+          {
+            name,
+            dateOfBirth,
+            designation,
+            sports,
+            gender,
+            batch,
+            contactNumber,
+          },
           index
         ) => (
           <tr
@@ -37,7 +46,9 @@ export default function CoachTableBody() {
               </Checkbox.Root>
             </td>
             <td className="whitespace-nowrap px-6 py-3 text-left">{name}</td>
-            <td className="px-6 py-3 text-left">{age}</td>
+            <td className="px-6 py-3 text-left">
+              {differenceInYears(new Date(), new Date(dateOfBirth))}
+            </td>
             <td className="px-6 py-3 text-left">{designation}</td>
             <td className="px-6 py-3 text-left">{sports}</td>
             <td className="px-6 py-3 text-left">{gender}</td>
