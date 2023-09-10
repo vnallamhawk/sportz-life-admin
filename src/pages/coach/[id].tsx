@@ -5,7 +5,7 @@ import Image from "next/image";
 import { prisma } from "~/server/db";
 import { type GetServerSideProps } from "next";
 import { type Coach } from "@prisma/client";
-import format from "date-fns/format";
+import { DATE_TIME_FORMAT } from "~/globals/globals";
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const coach = await prisma.coach.findUnique({
@@ -85,7 +85,7 @@ export default function Page({ coach }: { coach: CoachInfo }) {
               <div className="text-gray-400">DOB</div>
               <div className="font-bold text-gray-600">
                 {coach.dateOfBirth
-                  ? format(new Date(coach.dateOfBirth), "dd/MM/yyyy")
+                  ? DATE_TIME_FORMAT.format(new Date(coach.dateOfBirth))
                   : ""}
               </div>
             </div>
