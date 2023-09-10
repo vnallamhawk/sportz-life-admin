@@ -3,18 +3,26 @@ import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
 import Image from "next/image";
 import { prisma } from "~/server/db";
-import { type GetServerSideProps } from "next";
-import { type Coach } from "@prisma/client";
-import { DATE_TIME_FORMAT } from "~/globals/globals";
+import { type GetServerSidePropsContext } from "next";
+import { type Coach, type Certificates } from "@prisma/client";
+import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+type CoachWithCertificates = Coach & {
+  certificates: Certificates[];
+};
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const id = context?.params?.id;
   const coach = await prisma.coach.findUnique({
     where: {
-      id: params?.id ? Number(params?.id) : undefined,
+      id: id ? Number(id) : undefined,
     },
     include: {
       batch: true,
       sports: true,
+      certificates: true,
     },
   });
 
@@ -24,32 +32,21 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         ...coach,
         createdAt: coach?.createdAt?.toISOString(),
         updatedAt: coach?.updatedAt?.toISOString(),
-        dateOfBirth: coach?.dateOfBirth?.toISOString(),
+        dateOfBirth: coach?.dateOfBirth
+          ? coach?.dateOfBirth?.toISOString()
+          : "",
+        sports: coach?.sports.map((sport) => ({
+          ...sport,
+          assignedAt: sport?.assignedAt ? sport?.assignedAt?.toISOString() : "",
+          updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
+        })),
       },
     },
   };
 };
 
-// export const coach = {
-//   id: 27,
-//   name: "coach94",
-//   createdAt: "2023-09-08T05:46:22.701Z",
-//   updatedAt: "2023-09-08T05:46:22.701Z",
-//   dateOfBirth: "2023-09-07T19:30:00.000Z",
-//   contactNumber: "coach94",
-//   email: "coach94@gmail.com",
-//   designation: "coach94",
-//   gender: "MALE",
-//   payrollId: null,
-//   centerId: null,
-//   image: null,
-// };
-
-type CoachInfo = Omit<Coach, "dateOfBirth"> & {
-  dateOfBirth: string;
-};
-
-export default function Page({ coach }: { coach: CoachInfo }) {
+export default function Page({ coach }: { coach: CoachWithCertificates }) {
+  console.log(coach);
   return (
     <Card className="h-100 mx-5">
       <header className="flex justify-between">
@@ -107,7 +104,9 @@ export default function Page({ coach }: { coach: CoachInfo }) {
         </div>
         <div className="w-60 rounded-lg border-2 border-solid border-gray-400 p-5">
           <div className="font-bold"> Certificates</div>
-          <div className="text-4xl font-bold"> 03</div>
+          <div className="text-4xl font-bold">
+            {coach?.certificates?.length ?? NO_DATA}
+          </div>
         </div>
       </div>
     </Card>

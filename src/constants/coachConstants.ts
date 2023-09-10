@@ -113,16 +113,17 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
       required: true,
     },
   },
-  {
-    label: "Select Payroll",
-    id: "payroll",
-    type: "select",
-    options: [
-      { label: "Junior Coach", value: "junior", id: "junior" },
-      { label: "Senior Coach", value: "senior", id: "senior" },
-    ],
-    placeHolder: "Select Payroll",
-  },
+  // TODO: add this functionality for second phase
+  // {
+  //   label: "Select Payroll",
+  //   id: "payroll",
+  //   type: "select",
+  //   options: [
+  //     { label: "Junior Coach", value: "junior", id: "junior" },
+  //     { label: "Senior Coach", value: "senior", id: "senior" },
+  //   ],
+  //   placeHolder: "Select Payroll",
+  // },
   {
     label: "Coaching Sports",
     id: "coachingSports",
@@ -133,6 +134,9 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
       { label: "Swimming", value: "swimming", id: "swimming" },
     ],
     placeHolder: "Coaching Sports",
+    rules: {
+      required: true,
+    },
   },
 ];
 

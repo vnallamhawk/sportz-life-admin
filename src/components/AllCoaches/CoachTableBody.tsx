@@ -3,9 +3,11 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { HamburgerMenuIcon, CheckIcon } from "@radix-ui/react-icons";
 import { api } from "~/utils/api";
 import { differenceInYears } from "date-fns";
+import { useRouter } from "next/router";
 
 export default function CoachTableBody() {
   let tableData;
+  const router = useRouter();
   const { data: coaches } = api.coach.getAllCoaches.useQuery();
   const { data: sports } = api.sports.getAllSports.useQuery();
 
@@ -19,6 +21,10 @@ export default function CoachTableBody() {
     }));
   }
 
+  const onClickHandler = (id: number) => {
+    void router.push(`/coach/${id ?? ""}`);
+  };
+
   return (
     <>
       {tableData?.map(
@@ -31,12 +37,14 @@ export default function CoachTableBody() {
             gender,
             batch,
             contactNumber,
+            id,
           },
           index
         ) => (
           <tr
             key={`${name}-${index}`}
-            className="border-b border-gray-200 hover:bg-gray-100"
+            className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
+            onClick={() => onClickHandler(id)}
           >
             <td className="px-6 py-3 text-left">
               <Checkbox.Root className="CheckboxRoot" defaultChecked id="c1">
