@@ -118,6 +118,8 @@ export default function AddCoach() {
   //   }
   // };
 
+  console.log(errors["emailAddress"]);
+
   return (
     <>
       {currentStep === 1 ? (
@@ -137,6 +139,11 @@ export default function AddCoach() {
                   )}
                   {errors[props.id]?.type === "pattern" && (
                     <div> This field is not matching the pattern</div>
+                  )}
+                  {errors[props.id]?.type === "maxLength" && (
+                    <div>
+                      {`This field is exceeding the max. character limit`}
+                    </div>
                   )}
                 </span>
               </div>

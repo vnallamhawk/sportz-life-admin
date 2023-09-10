@@ -13,9 +13,15 @@ interface Pattern {
   message: string;
 }
 
+interface MaxLength {
+  value: number;
+  message: string;
+}
+
 interface Rules {
   required?: boolean;
   pattern?: Pattern;
+  maxLength?: MaxLength;
 }
 export interface COACH_DETAILS_CONSTANTS_TYPES {
   label?: string;
