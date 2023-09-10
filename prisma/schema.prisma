@@ -74,7 +74,7 @@ model Coach {
   name          String
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @default(now()) @updatedAt
-  dateOfBirth   DateTime?
+  dateOfBirth   DateTime
   contactNumber String
   email         String         @unique
   designation   String
