@@ -91,9 +91,6 @@ export default function AddCoach() {
               return (
                 <Select
                   isMulti={props?.isMulti ?? false}
-                  // TODO: fix this TS error
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-expect-error
                   options={options}
                   value={value}
                   onChange={(element) => {
