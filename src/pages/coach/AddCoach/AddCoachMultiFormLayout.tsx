@@ -16,7 +16,7 @@ const multiFormData: MULTI_FORM_TYPES = {
   emailAddress: "",
   dateOfBirth: undefined,
   payroll: "",
-  coachingSports: "",
+  coachingSports: [],
   certificateData: [],
   batchData: [],
 };
@@ -67,19 +67,6 @@ export default function AddCoachMultiFormLayout() {
   const finalFormSubmissionHandler = (
     finalForm: Required<MULTI_FORM_TYPES>
   ) => {
-    // const response = await prisma.coach.create({
-    //   data: {
-    //     name: finalForm.coachName,
-    //     contactNumber: finalForm.phoneNumber,
-    //     email: finalForm.emailAddress,
-    //     designation: finalForm.designation,
-    //     gender: finalForm.gender ?? "MALE",
-    //     certificates: {
-    //       create: finalForm.certificateData,
-    //     },
-    //     dateOfBirth: new Date(finalForm.dateOfBirth),
-    //   },
-    // });
     mutate({
       name: finalForm.coachName,
       contactNumber: finalForm.phoneNumber,

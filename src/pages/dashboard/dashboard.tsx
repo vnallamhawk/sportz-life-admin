@@ -163,7 +163,6 @@ export default function dashboard() {
             navRoute="/athletes"
           />
           <CardList
-            // className="row-span-2"
             title="TOP COACHES"
             peoples={[
               {
@@ -269,12 +268,7 @@ export default function dashboard() {
             ]}
             navRoute="/coaches"
           />
-          <Card
-            // className="row-span-1"
-            title="UPCOMING TOURNAMENT"
-          >
-            Content to be added
-          </Card>
+          <Card title="UPCOMING TOURNAMENT">Content to be added</Card>
         </div>
       </div>
     </>

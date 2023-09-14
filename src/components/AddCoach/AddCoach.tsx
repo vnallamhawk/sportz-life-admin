@@ -16,11 +16,6 @@ import { type Sports } from "@prisma/client";
 import Select from "react-select";
 import { ValueType } from "tailwindcss/types/config";
 
-interface SelectOptions {
-  id: string;
-  name: string;
-}
-
 export default function AddCoach() {
   let inputElement;
   const {
@@ -143,7 +138,6 @@ export default function AddCoach() {
             )}
             rules={rules}
             {...(pattern ? { pattern } : {})}
-            // ...(pattern) && {pattern})
           />
         );
     }
@@ -160,18 +154,9 @@ export default function AddCoach() {
     }
   };
 
-  // const onSubmit = (data: COACH_TYPES) => {
-  //   console.log(data);
-  //   if (!errors) {
-  //     setCurrentStep && setCurrentStep(currentStep + 1);
-  //   }
-  // };
-
   return (
     <>
       {currentStep === 1 ? (
-        // <form onSubmit={void handleSubmit(onSubmit)}>
-        // <form onSubmit={void handleSubmit(onSubmit)}>
         <>
           <CardTitle title="ADD COACH" />
           <div className="text-lg font-bold">COACH DETAILS</div>

@@ -40,12 +40,7 @@ export default function AddCoachCertificates({}) {
   >([]);
 
   const onSubmit: SubmitHandler<COACH_CERTIFICATE_TABLE_TYPES> = () => {
-    // if (tableData?.length) {
-    //   setTableData([data, ...tableData]);
-    // } else {
-    //   setTableData([data]);
-    // }
-    // setCurrentStep && setCurrentStep(currentStep + 1);
+    console.log("onSubmit");
   };
 
   const onAddHandler = () => {
