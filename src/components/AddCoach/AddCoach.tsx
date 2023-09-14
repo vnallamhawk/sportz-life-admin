@@ -1,17 +1,25 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import CardTitle from "~/components/Card/CardTitle";
 import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
-import Select from "~/components/Select/Select";
 import Textbox from "~/components/Textbox";
 import {
   type COACH_TYPES,
   type COACH_DETAILS_CONSTANTS_TYPES,
+  MultiSelectOption,
 } from "~/types/coach";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import Button from "../Button";
 import { Controller, useForm } from "react-hook-form";
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import { api } from "~/utils/api";
+import { type Sports } from "@prisma/client";
+import Select from "react-select";
+import { ValueType } from "tailwindcss/types/config";
+
+interface SelectOptions {
+  id: string;
+  name: string;
+}
 
 export default function AddCoach() {
   let inputElement;
@@ -27,15 +35,25 @@ export default function AddCoach() {
     trigger,
     formState: { errors },
   } = useForm<COACH_TYPES>({ mode: "onChange" });
+  const [selectedOption, setSelectedOption] = useState([]);
   const currentFormValues = getValues();
   const { data: sports } = api.sports.getAllSports.useQuery();
+  const hasExecuted = useRef(true);
 
   const [formConstantValues, setFormConstantValues] = useState(
     COACH_DETAILS_CONSTANTS
   );
 
+  const getOptionLabel = (starwarsName: string) => {
+    return starwarsName;
+  };
+
+  const getOptionValue = (starwarsName: string) => {
+    return starwarsName;
+  };
+
   useEffect(() => {
-    if (sports?.length) {
+    if (sports?.length && hasExecuted.current) {
       const updatedFormConstantValues = formConstantValues.map(
         (formConstant) => {
           if (formConstant.id === "coachingSports") {
@@ -44,7 +62,6 @@ export default function AddCoach() {
               options: sports.map((sport: { name: string; id: number }) => ({
                 label: sport.name,
                 value: sport.id.toString(),
-                id: sport.id.toString(),
               })),
             };
           } else {
@@ -52,6 +69,7 @@ export default function AddCoach() {
           }
         }
       );
+      hasExecuted.current = false;
       setFormConstantValues(updatedFormConstantValues);
     }
   }, [formConstantValues, sports, sports?.length]);
@@ -72,19 +90,23 @@ export default function AddCoach() {
         inputElement = (
           <Controller
             control={control}
+            name={id}
+            rules={rules}
             render={({ field: { onChange, value } }) => {
               return (
                 <Select
-                  className="h-12 w-96"
-                  options={options ?? []}
-                  placeholder={props.placeHolder}
-                  onChangeHandler={onChange}
+                  isMulti={props?.isMulti ?? false}
+                  // TODO: fix this TS error
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-expect-error
+                  options={options}
                   value={value}
+                  onChange={(element) => {
+                    onChange(element);
+                  }}
                 />
               );
             }}
-            name={id}
-            rules={rules}
           />
         );
         break;
@@ -144,8 +166,6 @@ export default function AddCoach() {
   //     setCurrentStep && setCurrentStep(currentStep + 1);
   //   }
   // };
-
-  console.log(errors["emailAddress"]);
 
   return (
     <>

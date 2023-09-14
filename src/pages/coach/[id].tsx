@@ -4,17 +4,25 @@ import CardTitle from "~/components/Card/CardTitle";
 import Image from "next/image";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import { type Coach, type Certificates } from "@prisma/client";
+import {
+  type Coach,
+  type Certificates,
+  type Sports,
+  type CoachesOnSports,
+} from "@prisma/client";
 import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
 
-type CoachWithCertificates = Coach & {
+type CoachWithRelations = Coach & {
   certificates: Certificates[];
+  sports: CoachesOnSports[];
 };
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const id = context?.params?.id;
+  const sports = await prisma.sports.findMany();
+  console.log(sports);
   const coach = await prisma.coach.findUnique({
     where: {
       id: id ? Number(id) : undefined,
@@ -41,12 +49,26 @@ export const getServerSideProps = async (
           updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
         })),
       },
+      sports: sports,
     },
   };
 };
 
-export default function Page({ coach }: { coach: CoachWithCertificates }) {
-  console.log(coach);
+export default function Page({
+  coach,
+  sports,
+}: {
+  coach: CoachWithRelations;
+  sports: Sports[];
+}) {
+  const sportsDictionary = sports?.reduce(
+    (accumulator: Record<number, string>, current) => {
+      accumulator[current.id] = current.name;
+      return accumulator;
+    },
+    {}
+  );
+
   return (
     <Card className="h-100 mx-5">
       <header className="flex justify-between">
@@ -66,7 +88,11 @@ export default function Page({ coach }: { coach: CoachWithCertificates }) {
             <span> {coach.name} </span>
             <span> ({coach.designation})</span>
           </div>
-          <div className="text-orange-400"> Basket Ball, Volley, Tennis</div>
+          <div className="text-orange-400">
+            {coach.sports
+              .map(({ sportId }) => sportsDictionary[sportId])
+              .join(",")}
+          </div>
           <div className="mt-5 flex justify-between">
             <div>
               <div className="text-gray-400"> Contact Number </div>

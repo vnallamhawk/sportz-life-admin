@@ -8,6 +8,11 @@ interface SelectOption {
   id: string;
 }
 
+export interface MultiSelectOption {
+  value: string;
+  label: string;
+}
+
 interface Pattern {
   value: RegExp;
   message: string;
@@ -36,10 +41,11 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
     | "coachingSports";
   type: Type;
   placeHolder?: string;
-  options?: SelectOption[];
+  options?: MultiSelectOption[];
   defaultValue?: string;
   rules?: Rules;
   pattern?: Pattern;
+  isMulti?: boolean;
 }
 
 export interface COACH_CERTIFICATE_TABLE_TYPES {
@@ -59,9 +65,9 @@ export interface COACH_TYPES {
   phoneNumber: string;
   emailAddress: string;
   dateOfBirth?: string;
-  gender?: (typeof GENDER_VALUES)[number];
+  gender?: MultiSelectOption;
   payroll: string;
-  coachingSports: string;
+  coachingSports: MultiSelectOption[];
 }
 
 export interface MULTI_FORM_TYPES extends COACH_TYPES {

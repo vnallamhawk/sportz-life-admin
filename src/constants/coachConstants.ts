@@ -105,8 +105,8 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     id: "gender",
     type: "select",
     options: [
-      { label: "Male", value: "MALE", id: "MALE" },
-      { label: "Female", value: "FEMALE", id: "FEMALE" },
+      { label: "Male", value: "MALE" },
+      { label: "Female", value: "FEMALE" },
     ],
     placeHolder: "Select Gender",
     rules: {
@@ -129,15 +129,11 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     id: "coachingSports",
     type: "select",
     options: [],
-    // options: [
-    //   { label: "Volleyball", value: "volleyball", id: "volleyball" },
-    //   { label: "Basketball", value: "basketball", id: "basketball" },
-    //   { label: "Swimming", value: "swimming", id: "swimming" },
-    // ],
     placeHolder: "Coaching Sports",
     rules: {
       required: true,
     },
+    isMulti: true,
   },
 ];
 

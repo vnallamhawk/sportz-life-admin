@@ -136,7 +136,7 @@ model Payroll {
 
 model Sports {
   id       Int     @unique @default(autoincrement())
-  name     String
+  name     String @unique
   coaches  CoachesOnSports[]
   Center   SportsOnCenters[]
 }

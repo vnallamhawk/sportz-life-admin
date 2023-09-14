@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import AddCoach from "../../../components/AddCoach/AddCoach";
 import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
 import AssignBatches from "~/components/AddCoach/AssignBatches";
-import { type MULTI_FORM_TYPES } from "~/types/coach";
+import { GENDER_VALUES, type MULTI_FORM_TYPES } from "~/types/coach";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 
@@ -60,9 +60,6 @@ export default function AddCoachMultiFormLayout() {
     // isLoading: isLoading,
   } = api.coach.createCoach.useMutation({
     onSuccess: (response) => {
-      console.log("inside");
-      console.log(response);
-
       void router.push(`/coach/${response?.id ?? ""}`);
     },
   });
@@ -83,15 +80,15 @@ export default function AddCoachMultiFormLayout() {
     //     dateOfBirth: new Date(finalForm.dateOfBirth),
     //   },
     // });
-    // console.log(response);
     mutate({
       name: finalForm.coachName,
       contactNumber: finalForm.phoneNumber,
       emailAddress: finalForm.emailAddress,
       designation: finalForm.designation,
-      gender: finalForm.gender ?? "MALE",
+      gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
       certificates: finalForm.certificateData,
       dateOfBirth: new Date(finalForm.dateOfBirth),
+      sports: finalForm.coachingSports,
     });
   };
 
