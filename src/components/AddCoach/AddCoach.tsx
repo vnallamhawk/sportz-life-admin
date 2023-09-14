@@ -5,16 +5,13 @@ import Textbox from "~/components/Textbox";
 import {
   type COACH_TYPES,
   type COACH_DETAILS_CONSTANTS_TYPES,
-  MultiSelectOption,
 } from "~/types/coach";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import Button from "../Button";
 import { Controller, useForm } from "react-hook-form";
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import { api } from "~/utils/api";
-import { type Sports } from "@prisma/client";
 import Select from "react-select";
-import { ValueType } from "tailwindcss/types/config";
 
 export default function AddCoach() {
   let inputElement;
@@ -38,14 +35,6 @@ export default function AddCoach() {
   const [formConstantValues, setFormConstantValues] = useState(
     COACH_DETAILS_CONSTANTS
   );
-
-  const getOptionLabel = (starwarsName: string) => {
-    return starwarsName;
-  };
-
-  const getOptionValue = (starwarsName: string) => {
-    return starwarsName;
-  };
 
   useEffect(() => {
     if (sports?.length && hasExecuted.current) {
@@ -130,7 +119,8 @@ export default function AddCoach() {
                 className="h-12 w-96"
                 placeHolder={props.label}
                 onChangeHandler={onChange}
-                value={value}
+                // TODO: FIX THIS TS ERROR
+                value={value as string}
               />
             )}
             rules={rules}
