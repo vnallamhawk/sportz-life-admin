@@ -8,7 +8,7 @@ import {
   centerWiseCountData,
   headCountTrendData,
   sportsWiseCountData,
-} from "./__stubs__/dashboardStubs";
+} from "../../__stubs__/dashboardStubs";
 
 export default function dashboard() {
   return (
