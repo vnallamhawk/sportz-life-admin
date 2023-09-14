@@ -27,7 +27,6 @@ export default function AddCoach() {
     trigger,
     formState: { errors },
   } = useForm<COACH_TYPES>({ mode: "onChange" });
-  const [selectedOption, setSelectedOption] = useState([]);
   const currentFormValues = getValues();
   const { data: sports } = api.sports.getAllSports.useQuery();
   const hasExecuted = useRef(true);

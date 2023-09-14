@@ -16,7 +16,7 @@ export default function dashboard() {
       <div className="mb-7 text-lg font-bold"> DASHBOARD </div>
       <div className="text-md mb-5 font-bold"> STATISTICS </div>
       <div className="flex">
-        <div className="grid-rows-12 grid w-9/12 grid-cols-1 grid-cols-6 gap-2">
+        <div className="grid-rows-12 grid w-9/12 grid-cols-6 gap-2">
           <CardStats
             className="col-start-1 col-end-3"
             imageSrc="/images/batch.jpg"
