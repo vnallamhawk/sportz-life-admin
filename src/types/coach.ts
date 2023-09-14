@@ -2,12 +2,6 @@ export const InputType = ["textbox", "select", "calendar"] as const;
 
 type Type = (typeof InputType)[number];
 
-interface SelectOption {
-  label: string;
-  value: string;
-  id: string;
-}
-
 export interface MultiSelectOption {
   value: string;
   label: string;
