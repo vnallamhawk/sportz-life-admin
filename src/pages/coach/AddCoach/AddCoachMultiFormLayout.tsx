@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import AddCoach from "../../../components/AddCoach/AddCoach";
 import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
 import AssignBatches from "~/components/AddCoach/AssignBatches";
-import { GENDER_VALUES, type MULTI_FORM_TYPES } from "~/types/coach";
+import { type GENDER_VALUES, type MULTI_FORM_TYPES } from "~/types/coach";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 
