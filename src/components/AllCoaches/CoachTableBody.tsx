@@ -4,22 +4,12 @@ import { HamburgerMenuIcon, CheckIcon } from "@radix-ui/react-icons";
 import { api } from "~/utils/api";
 import { differenceInYears } from "date-fns";
 import { useRouter } from "next/router";
-import { type Coach, type Sports } from "@prisma/client";
-import coach from "~/pages/coach";
-
-// interface CoachWithRelations {
-//   sports: Sports[];
-// }
-// interface CoachTableData extends Coach {
-//   sportsTable: string;
-// }
 
 export default function CoachTableBody() {
   let tableData;
   const router = useRouter();
   const { data: coaches } = api.coach.getAllCoaches.useQuery();
   const { data: sports } = api.sports.getAllSports.useQuery();
-  console.log(coaches);
 
   if (coaches && sports) {
     tableData = coaches.map((coach) => ({
