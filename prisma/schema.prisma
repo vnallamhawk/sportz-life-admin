@@ -70,34 +70,34 @@ model VerificationToken {
 }
 
 model Coach {
-  id            Int            @unique @default(autoincrement())
-  name          String
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @default(now()) @updatedAt
-  dateOfBirth   DateTime
-  contactNumber String
-  email         String         @unique
-  designation   String
-  gender        Gender
-  payroll       Payroll?
-  payrollId     Int?
-  sports        CoachesOnSports[]
-  certificates  Certificates[]
-  Centers       CoachesOnCenters[]
-  centerId      Int?
-  image         Bytes?
-  batch         Batches[]
+  id               Int                @unique @default(autoincrement())
+  name             String
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @default(now()) @updatedAt
+  dateOfBirth      DateTime
+  contactNumber    String
+  email            String             @unique
+  designation      String
+  gender           Gender
+  payroll          Payroll?
+  payrollId        Int?
+  sports           CoachesOnSports[]
+  certificates     Certificates[]
+  Centers          CoachesOnCenters[]
+  centerId         Int?
+  image            Bytes?
+  CoachesOnBatches CoachesOnBatches[]
 
   @@index([centerId])
 }
 
 model Staff {
-  id            Int      @unique @default(autoincrement())
+  id            Int           @unique @default(autoincrement())
   name          String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now()) @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
   contactNumber String
-  email         String   @unique
+  email         String        @unique
   designation   String
   gender        Gender
   center        StaffCenter[]
@@ -135,17 +135,17 @@ model Payroll {
 }
 
 model Sports {
-  id       Int     @unique @default(autoincrement())
-  name     String @unique
-  coaches  CoachesOnSports[]
-  Center   SportsOnCenters[]
+  id      Int               @unique @default(autoincrement())
+  name    String            @unique
+  coaches CoachesOnSports[]
+  Center  SportsOnCenters[]
 }
 
 model SportsOnCenters {
-  sport Sports @relation(fields: [sportId], references: [id])
-  sportId Int 
-  center Center @relation(fields: [centerId], references: [id])
-  centerId Int 
+  sport    Sports @relation(fields: [sportId], references: [id])
+  sportId  Int
+  center   Center @relation(fields: [centerId], references: [id])
+  centerId Int
 
   @@id([sportId, centerId])
   @@index([sportId])
@@ -153,10 +153,10 @@ model SportsOnCenters {
 }
 
 model CoachesOnCenters {
-  coach Coach @relation(fields: [coachId],references: [id])
-  coachId Int
-  center Center @relation(fields: [centerId],references: [id])
-  centerId Int
+  coach     Coach    @relation(fields: [coachId], references: [id])
+  coachId   Int
+  center    Center   @relation(fields: [centerId], references: [id])
+  centerId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -166,12 +166,12 @@ model CoachesOnCenters {
 }
 
 model CoachesOnSports {
-  coach Coach @relation(fields:[coachId],references: [id])
-  coachId Int
-  sport Sports @relation(fields:[sportId],references: [id])
-  sportId Int 
+  coach      Coach    @relation(fields: [coachId], references: [id])
+  coachId    Int
+  sport      Sports   @relation(fields: [sportId], references: [id])
+  sportId    Int
   assignedAt DateTime @default(now())
-  updatedAt     DateTime       @default(now()) @updatedAt
+  updatedAt  DateTime @default(now()) @updatedAt
 
   @@id([coachId, sportId])
   @@index([coachId])
@@ -179,40 +179,51 @@ model CoachesOnSports {
 }
 
 model Certificates {
-  id            Int      @unique @default(autoincrement())
+  id            Int       @unique @default(autoincrement())
   name          String
   startEnd      DateTime?
   instituteName String
   endDate       DateTime?
-  coach         Coach    @relation(fields: [coachId], references: [id])
-  coachId       Int      
+  coach         Coach     @relation(fields: [coachId], references: [id])
+  coachId       Int
 
   @@index([coachId])
 }
 
 model Center {
-  id            Int         @unique @default(autoincrement())
-  name          String      @unique
+  id            Int                @unique @default(autoincrement())
+  name          String             @unique
   location      String
   contactNumber String
   sports        SportsOnCenters[]
   image         Bytes?
   inventory     Inventory[]
-  staff StaffCenter[]
-  coaches CoachesOnCenters[] 
-  batches Batches[]
+  staff         StaffCenter[]
+  coaches       CoachesOnCenters[]
+  batches       Batches[]
 }
 
 model Batches {
-  id   Int    @unique @default(autoincrement())
-  name String
-  center Center @relation(fields: [centerId], references: [id])
-  centerId Int
-  coach Coach? @relation(fields: [coachId], references: [id])
-  coachId Int?
+  id               Int                @unique @default(autoincrement())
+  name             String
+  center           Center             @relation(fields: [centerId], references: [id])
+  centerId         Int
+  CoachesOnBatches CoachesOnBatches[]
 
   @@index([centerId])
+}
+
+model CoachesOnBatches {
+  coach      Coach    @relation(fields: [coachId], references: [id])
+  coachId    Int
+  batch      Batches  @relation(fields: [batchId], references: [id])
+  batchId    Int
+  assignedAt DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@id([coachId, batchId])
   @@index([coachId])
+  @@index([batchId])
 }
 
 enum Gender {
@@ -221,12 +232,12 @@ enum Gender {
 }
 
 model StaffCenter {
-  staff Staff @relation(fields: [staffId], references: [id])
-  center Center @relation(fields: [centerId], references: [id])
-  staffId Int
+  staff    Staff  @relation(fields: [staffId], references: [id])
+  center   Center @relation(fields: [centerId], references: [id])
+  staffId  Int
   centerId Int
 
-   @@id([staffId, centerId])
+  @@id([staffId, centerId])
   @@index([staffId])
   @@index([centerId])
 }
