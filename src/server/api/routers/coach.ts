@@ -32,21 +32,6 @@ export const coachRouter = createTRPCRouter({
     });
     return allCoaches;
   }),
-  // getCoachById: publicProcedure
-  //   .input(
-  //     z.object({
-  //       id: z.string(),
-  //     })
-  //   )
-  //   .query(({ ctx }) => {
-  //     const { id } = input;
-  //     const coach = ctx?.prisma?.coach?.findUnique({
-  //       where: {
-  //         id: 22,
-  //       },
-  //     });
-  //     return coach;
-  //   }),
   createCoach: publicProcedure
     .input(
       z.object({
