@@ -11,7 +11,6 @@ import classNames from "classnames";
 interface Options {
   label: string;
   value?: string | number;
-  id: string | number;
 }
 
 const Select = ({

@@ -28,7 +28,6 @@ export const getServerSideProps = async (
       id: id ? Number(id) : undefined,
     },
     include: {
-      batch: true,
       sports: true,
       certificates: true,
     },

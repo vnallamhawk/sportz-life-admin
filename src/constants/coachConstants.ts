@@ -159,24 +159,6 @@ export const COACH_CERTIFICATES_CONSTANTS = {
   ],
 };
 
-export const BATCHES_CONSTANTS = [
-  {
-    label: "Tennis-Advanced",
-    id: "tennis",
-    value: "tennis",
-  },
-  {
-    label: "Basketball-Beginner",
-    id: "basketball",
-    value: "basketball",
-  },
-  {
-    label: "Volleyball-Intermediate",
-    id: "volleyball",
-    value: "volleyball",
-  },
-];
-
 export const COACH_CERTIFICATE_TABLE_HEADERS = [
   {
     label: "Certificate",

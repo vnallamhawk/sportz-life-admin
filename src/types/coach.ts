@@ -48,7 +48,7 @@ export interface COACH_CERTIFICATE_TABLE_TYPES {
 }
 
 export interface ASSIGN_BATCHES_TYPES {
-  centerName: string;
+  centerName: string | { label: string; value: string | number };
   batchName: string;
 }
 

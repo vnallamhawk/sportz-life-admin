@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import Select from "../Select";
-import { BATCHES_CONSTANTS } from "~/constants/coachConstants";
+import Select from "react-select";
 import {
   type MULTI_FORM_TYPES,
   type ASSIGN_BATCHES_TYPES,
@@ -14,6 +13,11 @@ import Button from "../Button/Button";
 import CardTitle from "../Card/CardTitle";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import { api } from "~/utils/api";
+
+interface Table {
+  name: string;
+  id: number;
+}
 
 export default function AssignBatches({
   finalFormSubmissionHandler,
@@ -35,27 +39,52 @@ export default function AssignBatches({
   const [tableData, setTableData] = useState<ASSIGN_BATCHES_TYPES[]>([]);
   const {
     stepData: { currentStep, setCurrentStep },
-    multiFormData: {
-      formData,
-      // setFormData
-    },
+    multiFormData: { formData },
   } = useContext(FormContext);
+  console.log(getValues());
 
-  const { data: centers } = api.center.getAllCenters.useQuery();
+  const { data: centers, isLoading: isCentersDataLoading } =
+    api.center.getAllCenters.useQuery();
+  const { data: batches, isLoading: isBatchesDataLoading } =
+    api.batches.getAllBatches.useQuery();
 
-  // const onSubmit: SubmitHandler<ASSIGN_BATCHES_TYPES> = (data) => {
-  //   if (tableData?.length) {
-  //     setTableData([data, ...tableData]);
-  //   } else {
-  //     setTableData([data]);
-  //   }
-  // };
+  const dropDownFormatter = <T extends Table>(options: T[]) => {
+    return (
+      options?.map(({ id, name }) => ({
+        label: name,
+        value: id,
+      })) ?? []
+    );
+  };
+
+  const [centersOptions, setCentersOptions] = useState(
+    centers?.map(({ id, name }) => ({
+      label: name,
+      value: id,
+    })) ?? []
+  );
+  const [batchesOptions, setBatchesOptions] = useState(
+    batches?.map(({ id, name }) => ({
+      label: name,
+      value: id,
+    })) ?? []
+  );
+
+  useEffect(() => {
+    if (centers && !isCentersDataLoading) {
+      setCentersOptions(dropDownFormatter(centers));
+    }
+  }, [centers, isCentersDataLoading]);
+
+  useEffect(() => {
+    if (batches && !isBatchesDataLoading) {
+      setBatchesOptions(dropDownFormatter(batches));
+    }
+  }, [batches, isBatchesDataLoading]);
 
   const submitCallback = () => {
-    // const currentFormData = getValues();
     const finalFormData = { ...formData, batchData: tableData };
     finalFormSubmissionHandler(finalFormData);
-    // setFormData && setFormData(finalFormData);
   };
 
   const prevClickHandler = () => {
@@ -87,18 +116,28 @@ export default function AssignBatches({
               required: true,
             }}
             render={({ field: { onChange, value } }) => {
+              console.log(value);
               return (
                 <Select
                   className="h-12 w-96"
-                  options={
-                    centers?.map(({ id, name }) => ({
-                      label: name,
-                      value: id,
-                      id: id,
-                    })) ?? []
-                  }
+                  // Todo: fix this TS error
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore: Unreachable code error
+                  options={centersOptions}
                   placeholder={"Select Center"}
-                  onChangeHandler={onChange}
+                  onChange={(event) => {
+                    setBatchesOptions(
+                      dropDownFormatter(
+                        batches?.filter(({ centerId }) => {
+                          // Todo: fix this TS error
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-ignore: Unreachable code error
+                          centerId === event?.value;
+                        }) ?? []
+                      )
+                    );
+                    onChange(event);
+                  }}
                   value={value}
                 />
               );
@@ -112,9 +151,14 @@ export default function AssignBatches({
             render={({ field: { onChange, value } }) => (
               <Select
                 className="h-12 w-96"
-                options={BATCHES_CONSTANTS}
+                // Todo: fix this TS error
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore: Unreachable code error
+                options={batchesOptions}
                 placeholder="Select Batches"
-                onChangeHandler={onChange}
+                onChange={(event) => {
+                  onChange(event);
+                }}
                 value={value}
               />
             )}

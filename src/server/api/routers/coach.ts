@@ -26,8 +26,8 @@ export const coachRouter = createTRPCRouter({
   getAllCoaches: publicProcedure.query(({ ctx }) => {
     const allCoaches = ctx?.prisma?.coach?.findMany({
       include: {
-        batch: true,
         sports: true,
+        CoachesOnBatches: true,
       },
     });
     return allCoaches;
