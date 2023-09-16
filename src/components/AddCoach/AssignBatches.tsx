@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import {
@@ -14,7 +14,7 @@ import CardTitle from "../Card/CardTitle";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import { api } from "~/utils/api";
 
-interface Table {
+interface ApiData {
   name: string;
   id: number;
 }
@@ -41,14 +41,21 @@ export default function AssignBatches({
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData },
   } = useContext(FormContext);
+  const centersDataSet = useRef(false);
+  const batchesDataSet = useRef(false);
   console.log(getValues());
 
-  const { data: centers, isLoading: isCentersDataLoading } =
-    api.center.getAllCenters.useQuery();
-  const { data: batches, isLoading: isBatchesDataLoading } =
-    api.batches.getAllBatches.useQuery();
+  const { data: centers } = api.center.getAllCenters.useQuery();
+  const { data: batches } = api.batches.getAllBatches.useQuery();
 
-  const dropDownFormatter = <T extends Table>(options: T[]) => {
+  const dropDownFormatter = <T extends ApiData>(options: T[]) => {
+    console.log(options);
+    console.log(
+      options?.map(({ id, name }) => ({
+        label: name,
+        value: id,
+      }))
+    );
     return (
       options?.map(({ id, name }) => ({
         label: name,
@@ -71,16 +78,18 @@ export default function AssignBatches({
   );
 
   useEffect(() => {
-    if (centers && !isCentersDataLoading) {
+    if (centers) {
       setCentersOptions(dropDownFormatter(centers));
+      centersDataSet.current = true;
     }
-  }, [centers, isCentersDataLoading]);
+  }, [centers]);
 
   useEffect(() => {
-    if (batches && !isBatchesDataLoading) {
+    if (batches) {
       setBatchesOptions(dropDownFormatter(batches));
+      batchesDataSet.current = true;
     }
-  }, [batches, isBatchesDataLoading]);
+  }, [batches]);
 
   const submitCallback = () => {
     const finalFormData = { ...formData, batchData: tableData };
@@ -128,12 +137,15 @@ export default function AssignBatches({
                   onChange={(event) => {
                     setBatchesOptions(
                       dropDownFormatter(
-                        batches?.filter(({ centerId }) => {
-                          // Todo: fix this TS error
-                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                          // @ts-ignore: Unreachable code error
-                          centerId === event?.value;
-                        }) ?? []
+                        batches
+                          ? batches.filter(
+                              ({ centerId }) =>
+                                // Todo: fix this TS error
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-ignore: Unreachable code error
+                                centerId === event?.value
+                            )
+                          : []
                       )
                     );
                     onChange(event);
@@ -160,6 +172,7 @@ export default function AssignBatches({
                   onChange(event);
                 }}
                 value={value}
+                isMulti={true}
               />
             )}
             name="batchName"
