@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import {
@@ -29,6 +29,7 @@ export default function AssignBatches({
     formState: { errors },
     getValues,
     reset,
+    trigger,
   } = useForm({
     defaultValues: {
       centerName: "",
@@ -41,21 +42,11 @@ export default function AssignBatches({
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData },
   } = useContext(FormContext);
-  const centersDataSet = useRef(false);
-  const batchesDataSet = useRef(false);
-  console.log(getValues());
 
   const { data: centers } = api.center.getAllCenters.useQuery();
   const { data: batches } = api.batches.getAllBatches.useQuery();
 
   const dropDownFormatter = <T extends ApiData>(options: T[]) => {
-    console.log(options);
-    console.log(
-      options?.map(({ id, name }) => ({
-        label: name,
-        value: id,
-      }))
-    );
     return (
       options?.map(({ id, name }) => ({
         label: name,
@@ -80,14 +71,12 @@ export default function AssignBatches({
   useEffect(() => {
     if (centers) {
       setCentersOptions(dropDownFormatter(centers));
-      centersDataSet.current = true;
     }
   }, [centers]);
 
   useEffect(() => {
     if (batches) {
       setBatchesOptions(dropDownFormatter(batches));
-      batchesDataSet.current = true;
     }
   }, [batches]);
 
@@ -100,9 +89,12 @@ export default function AssignBatches({
     setCurrentStep && setCurrentStep(currentStep - 1);
   };
 
-  const onAddBatchHandler = () => {
+  const onAddBatchHandler = async (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
     const data = getValues();
-    if (Object.keys(errors).length === 0) {
+    const result = await trigger();
+
+    if (result && Object.keys(errors).length === 0) {
       if (tableData?.length) {
         setTableData([data, ...tableData]);
       } else {
@@ -113,100 +105,104 @@ export default function AssignBatches({
   };
 
   return (
-    <>
-      <div>
-        <CardTitle title="ADD COACH" />
-        <div className="mb-3 text-lg font-bold">ASSIGN BATCHES</div>
+    <div>
+      <CardTitle title="ADD COACH" />
+      <div className="mb-3 text-lg font-bold">ASSIGN BATCHES</div>
 
-        <div className="mb-3 flex justify-between">
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, value } }) => {
-              console.log(value);
-              return (
-                <Select
-                  className="h-12 w-96"
-                  // Todo: fix this TS error
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore: Unreachable code error
-                  options={centersOptions}
-                  placeholder={"Select Center"}
-                  onChange={(event) => {
-                    setBatchesOptions(
-                      dropDownFormatter(
-                        batches
-                          ? batches.filter(
-                              ({ centerId }) =>
-                                // Todo: fix this TS error
-                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                // @ts-ignore: Unreachable code error
-                                centerId === event?.value
-                            )
-                          : []
-                      )
-                    );
-                    onChange(event);
-                  }}
-                  value={value}
-                />
-              );
-            }}
-            name="centerName"
-          />
-          {errors.centerName && <span>This field is required</span>}
-
-          <Controller
-            control={control}
-            render={({ field: { onChange, value } }) => (
+      <div className="mb-3 flex justify-between">
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, value } }) => {
+            return (
               <Select
                 className="h-12 w-96"
                 // Todo: fix this TS error
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore: Unreachable code error
-                options={batchesOptions}
-                placeholder="Select Batches"
+                options={centersOptions}
+                placeholder={"Select Center"}
                 onChange={(event) => {
+                  setBatchesOptions(
+                    dropDownFormatter(
+                      batches
+                        ? batches.filter(
+                            ({ centerId }) =>
+                              // Todo: fix this TS error
+                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                              // @ts-ignore: Unreachable code error
+                              centerId === event?.value
+                          )
+                        : []
+                    )
+                  );
                   onChange(event);
                 }}
                 value={value}
-                isMulti={true}
               />
-            )}
-            name="batchName"
-          />
-          {errors.batchName && <span>This field is required</span>}
+            );
+          }}
+          name="centerName"
+        />
+        <div className="text-red-800">
+          {errors.centerName && <span>This field is required</span>}
         </div>
 
-        <Button type="submit" className="mb-5" onClick={onAddBatchHandler}>
-          Add
-        </Button>
-        {tableData.length !== 0 && (
-          <Table
-            tableHeader={<CenterBatchTableHeader />}
-            tableBody={<CenterBatchTableBody data={tableData} />}
-          />
+        <Controller
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <Select
+              className="h-12 w-96"
+              // Todo: fix this TS error
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore: Unreachable code error
+              options={batchesOptions}
+              placeholder="Select Batches"
+              onChange={(event) => {
+                onChange(event);
+              }}
+              value={value}
+              isMulti={true}
+            />
+          )}
+          rules={{
+            required: true,
+          }}
+          name="batchName"
+        />
+        {errors.batchName && (
+          <div className="text-red-800">This field is required</div>
         )}
-
-        <div className="flex justify-end">
-          <Button
-            type="button"
-            className="mx-3 bg-pink-600 hover:bg-pink-800"
-            onClick={prevClickHandler}
-          >
-            Prev
-          </Button>
-          <Button
-            type="button"
-            className="mx-3 bg-pink-600 hover:bg-pink-800"
-            onClick={submitCallback}
-          >
-            Finish
-          </Button>
-        </div>
       </div>
-    </>
+
+      <Button type="button" className="mb-5" onClick={onAddBatchHandler}>
+        Add
+      </Button>
+      {tableData.length !== 0 && (
+        <Table
+          tableHeader={<CenterBatchTableHeader />}
+          tableBody={<CenterBatchTableBody data={tableData} />}
+        />
+      )}
+
+      <div className="flex justify-end">
+        <Button
+          type="button"
+          className="mx-3 bg-pink-600 hover:bg-pink-800"
+          onClick={prevClickHandler}
+        >
+          Prev
+        </Button>
+        <Button
+          type="button"
+          className="mx-3 bg-pink-600 hover:bg-pink-800"
+          onClick={submitCallback}
+        >
+          Finish
+        </Button>
+      </div>
+    </div>
   );
 }
