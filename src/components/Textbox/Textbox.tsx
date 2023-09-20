@@ -6,13 +6,12 @@ interface Textbox {
   onClick?: (e: React.FormEvent<HTMLInputElement>) => void;
   placeHolder?: string;
   value: string;
-  setValue: (value: string) => void;
+  setValue?: (value: string) => void;
 }
 
 export default function Textbox({
   className = "",
   placeHolder,
-  onChangeHandler,
   onClick,
   value,
   setValue,
@@ -29,6 +28,7 @@ export default function Textbox({
       type="text"
       onClick={onClick}
       onChange={ e => {
+        if (setValue == undefined) return;
         e.target.value == value ? value : setValue(e.target.value);
       }}
     />
