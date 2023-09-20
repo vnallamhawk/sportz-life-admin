@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "~/components/Card/Card";
 import CardTitle from "~/components/Card/CardTitle";
 import Textbox from "~/components/Textbox/Textbox";
@@ -11,13 +11,18 @@ import { useRouter } from "next/navigation";
 export default function AllCoach() {
   const router = useRouter();
 
+  const [ filterByName, setFilterByName ] = useState("");
+
   return (
     <>
       <Card className="h-full">
         <header className="flex justify-between p-2">
           <CardTitle title="ALL COACHES" />
           <div>
-            <Textbox placeHolder="Search By Name" />
+            <Textbox 
+              value={ filterByName }
+              setValue={ setFilterByName }
+              placeHolder="Search By Name" />
             <Button
               className="ml-3 bg-pink-700 p-2"
               onClick={() => router.push("/coach/AddCoach")}
@@ -26,7 +31,7 @@ export default function AllCoach() {
             </Button>
           </div>
         </header>
-        <Table tableHeader={CoachTableHeader()} tableBody={CoachTableBody()} />
+        <Table tableHeader={CoachTableHeader()} tableBody={CoachTableBody({ name: filterByName })} />
       </Card>
     </>
   );

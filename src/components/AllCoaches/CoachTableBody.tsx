@@ -5,10 +5,17 @@ import { api } from "~/utils/api";
 import { differenceInYears } from "date-fns";
 import { useRouter } from "next/router";
 
-export default function CoachTableBody() {
+interface coachTableFilter {
+  name: string
+}
+
+export default function CoachTableBody(filter: coachTableFilter) {
   let tableData;
   const router = useRouter();
-  const { data: coaches } = api.coach.getAllCoaches.useQuery();
+
+  const { data: coaches } = filter.name == "" ? 
+    api.coach.getAllCoaches.useQuery() :
+    api.coach.getCoachesByName.useQuery(filter);
   const { data: sports } = api.sports.getAllSports.useQuery();
 
   if (coaches && sports) {

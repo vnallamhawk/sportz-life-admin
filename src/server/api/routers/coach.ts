@@ -32,6 +32,25 @@ export const coachRouter = createTRPCRouter({
     });
     return allCoaches;
   }),
+  getCoachesByName: publicProcedure
+    .input(z.object({
+      name: z.string()
+    }))
+    .query(async (opts) => {
+      const coaches = await opts.ctx?.prisma?.coach?.findMany({
+        where: {
+          name: {
+            contains: opts.input.name
+          }
+        },
+        include: {
+          sports: true,
+          CoachesOnBatches: true
+        }
+      });
+
+      return coaches;
+  }),
   createCoach: publicProcedure
     .input(
       z.object({
