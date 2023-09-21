@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { BaseSyntheticEvent, ChangeEvent } from "react";
+import { BaseSyntheticEvent } from "react";
 
 interface Textbox {
   className?: string;
@@ -33,7 +33,7 @@ export default function Textbox({
         if (setValue == undefined) {
           if (onChangeHandler != undefined) onChangeHandler(e);
           return;
-        };
+        }
         e.target.value == value ? value : setValue(e.target.value);
       }}
     />
