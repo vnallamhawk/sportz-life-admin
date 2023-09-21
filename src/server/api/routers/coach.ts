@@ -4,7 +4,7 @@ import {
   publicProcedure,
   // protectedProcedure,
 } from "~/server/api/trpc";
-import { GENDER_VALUES } from "~/types/coach";
+import { EXPERIENCE_LEVEL, GENDER_VALUES, TRAINING_LEVEL } from "~/types/coach";
 
 const certificatesSchema = z.array(
   z.object({
@@ -55,6 +55,7 @@ export const coachRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
+        about: z.string(),
         contactNumber: z.string(),
         emailAddress: z.string(),
         designation: z.string(),
@@ -62,12 +63,15 @@ export const coachRouter = createTRPCRouter({
         certificates: certificatesSchema,
         dateOfBirth: z.date(),
         sports: coachingSportsSchema,
+        trainingLevel: z.enum(TRAINING_LEVEL),
+        experienceLevel: z.enum(EXPERIENCE_LEVEL)
       })
     )
     .mutation(
       async ({
         input: {
           name,
+          about,
           contactNumber,
           emailAddress,
           designation,
@@ -75,6 +79,8 @@ export const coachRouter = createTRPCRouter({
           certificates,
           dateOfBirth,
           sports,
+          trainingLevel,
+          experienceLevel
         },
         ctx,
       }) => {
@@ -82,6 +88,7 @@ export const coachRouter = createTRPCRouter({
         const response = await ctx.prisma.coach.create({
           data: {
             name: name,
+            about: about,
             contactNumber: contactNumber,
             email: emailAddress,
             designation: designation,
@@ -99,6 +106,8 @@ export const coachRouter = createTRPCRouter({
               })),
             },
             dateOfBirth: dateOfBirth,
+            trainingLevel: trainingLevel,
+            experienceLevel: experienceLevel
           },
         });
         return response;

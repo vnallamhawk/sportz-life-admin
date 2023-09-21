@@ -26,13 +26,16 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
   label?: string;
   id:
     | "coachName"
+    | "about"
     | "designation"
     | "phoneNumber"
     | "emailAddress"
     | "payroll"
     | "dateOfBirth"
     | "gender"
-    | "coachingSports";
+    | "coachingSports"
+    | "trainingLevel"
+    | "experienceLevel";
   type: Type;
   placeHolder?: string;
   options?: MultiSelectOption[];
@@ -53,8 +56,19 @@ export interface ASSIGN_BATCHES_TYPES {
 }
 
 export const GENDER_VALUES = ["MALE", "FEMALE"] as const;
+export const TRAINING_LEVEL = [
+  "BEGINNER",
+  "DEVELOPER",
+  "INTERMEDIATE_LEVEL",
+  "ADVANCED_LEVEL",] as const;
+export const EXPERIENCE_LEVEL = [
+  "ZERO_ONE",
+  "TWO_FIVE",
+  "SIX_TEN",
+  "TEN_OVER"] as const;
 export interface COACH_TYPES {
   coachName: string;
+  about: string;
   designation: string;
   phoneNumber: string;
   emailAddress: string;
@@ -62,6 +76,8 @@ export interface COACH_TYPES {
   gender?: MultiSelectOption;
   payroll: string;
   coachingSports: MultiSelectOption[];
+  trainingLevel: MultiSelectOption;
+  experienceLevel: MultiSelectOption;
 }
 
 export interface MULTI_FORM_TYPES extends COACH_TYPES {
