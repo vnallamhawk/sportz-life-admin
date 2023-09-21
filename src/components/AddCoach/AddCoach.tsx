@@ -26,7 +26,7 @@ export default function AddCoach() {
     reset,
     trigger,
     formState: { errors },
-  } = useForm<COACH_TYPES>({ mode: "onChange" });
+  } = useForm<COACH_TYPES>({ mode: "onSubmit" });
   const currentFormValues = getValues();
   const { data: sports } = api.sports.getAllSports.useQuery();
   const hasExecuted = useRef(true);

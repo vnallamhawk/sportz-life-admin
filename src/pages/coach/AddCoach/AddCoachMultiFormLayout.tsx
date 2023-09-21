@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import AddCoach from "../../../components/AddCoach/AddCoach";
 import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
 import AssignBatches from "~/components/AddCoach/AssignBatches";
-import { type GENDER_VALUES, type MULTI_FORM_TYPES } from "~/types/coach";
+import { TRAINING_LEVEL, type GENDER_VALUES, type MULTI_FORM_TYPES, EXPERIENCE_LEVEL } from "~/types/coach";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 
@@ -14,11 +14,20 @@ const multiFormData: MULTI_FORM_TYPES = {
   coachName: "",
   designation: "",
   emailAddress: "",
+  about: "",
   dateOfBirth: undefined,
   payroll: "",
   coachingSports: [],
   certificateData: [],
   batchData: [],
+  trainingLevel: {
+    value: "",
+    label: ""
+  },
+  experienceLevel: {
+    value: "",
+    label: ""
+  },
 };
 
 const defaultValues = {
@@ -69,6 +78,7 @@ export default function AddCoachMultiFormLayout() {
   ) => {
     mutate({
       name: finalForm.coachName,
+      about: finalForm.about,
       contactNumber: finalForm.phoneNumber,
       emailAddress: finalForm.emailAddress,
       designation: finalForm.designation,
@@ -76,6 +86,8 @@ export default function AddCoachMultiFormLayout() {
       certificates: finalForm.certificateData,
       dateOfBirth: new Date(finalForm.dateOfBirth),
       sports: finalForm.coachingSports,
+      trainingLevel: finalForm.trainingLevel.value as (typeof TRAINING_LEVEL)[number],
+      experienceLevel: finalForm.experienceLevel.value as (typeof EXPERIENCE_LEVEL)[number],
     });
   };
 

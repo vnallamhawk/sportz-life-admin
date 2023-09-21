@@ -1,8 +1,9 @@
 import classNames from "classnames";
+import { BaseSyntheticEvent } from "react";
 
 interface Textbox {
   className?: string;
-  onChangeHandler?: () => void;
+  onChangeHandler?: (e: BaseSyntheticEvent) => void;
   onClick?: (e: React.FormEvent<HTMLInputElement>) => void;
   placeHolder?: string;
   value: string;
@@ -12,6 +13,7 @@ interface Textbox {
 export default function Textbox({
   className = "",
   placeHolder,
+  onChangeHandler,
   onClick,
   value,
   setValue,
@@ -28,7 +30,10 @@ export default function Textbox({
       type="text"
       onClick={onClick}
       onChange={ e => {
-        if (setValue == undefined) return;
+        if (setValue == undefined) {
+          if (onChangeHandler != undefined) onChangeHandler(e);
+          return;
+        }
         e.target.value == value ? value : setValue(e.target.value);
       }}
     />
