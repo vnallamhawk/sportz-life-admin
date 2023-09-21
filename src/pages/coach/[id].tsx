@@ -11,6 +11,7 @@ import {
   type CoachesOnSports,
 } from "@prisma/client";
 import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
+import { ExperienceLevelEnum, TrainingLevelEnum } from "~/types/coach";
 
 type CoachWithRelations = Coach & {
   certificates: Certificates[];
@@ -92,7 +93,29 @@ export default function Page({
               .map(({ sportId }) => sportsDictionary[sportId])
               .join(",")}
           </div>
-          <div className="mt-5 flex justify-between">
+          <div className="mt-5 flex">
+            <div className="about">
+              <div className="text-gray-400"> About </div>
+              <div className="font-bold text-gray-600">
+                {coach.about}
+              </div>
+            </div>
+          </div>
+          <div className="mt-2 flex justify-between">
+            <div className="training-level">
+              <div className="text-gray-400"> Training level Expertise </div>
+              <div className="font-bold text-gray-600">
+                {TrainingLevelEnum[coach.trainingLevel]}
+              </div>
+            </div>
+            <div className="experience-level">
+              <div className="text-gray-400"> Years of Coaching Experience </div>
+              <div className="font-bold text-gray-600">
+                {ExperienceLevelEnum[coach.experienceLevel]}
+              </div>
+            </div>
+          </div>
+          <div className="mt-2 flex justify-between">
             <div>
               <div className="text-gray-400"> Contact Number </div>
               <div className="font-bold text-gray-600">

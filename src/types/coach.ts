@@ -84,3 +84,17 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   certificateData: COACH_CERTIFICATE_TABLE_TYPES[];
   batchData: ASSIGN_BATCHES_TYPES[];
 }
+
+export enum TrainingLevelEnum {
+  BEGINNER = "Beginner",
+  DEVELOPER = "Developer",
+  INTERMEDIATE_LEVEL = "Intermediate Level",
+  ADVANCED_LEVEL = "Advanced Level"
+}
+
+export enum ExperienceLevelEnum {
+  ZERO_ONE = "0-1 year",
+  TWO_FIVE = "2-5 years",
+  SIX_TEN = "6-10 years",
+  TEN_OVER = "10+ years"
+}
