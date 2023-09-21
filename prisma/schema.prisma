@@ -74,6 +74,7 @@ model Coach {
   name             String
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @default(now()) @updatedAt
+  about            String
   dateOfBirth      DateTime
   contactNumber    String
   email            String             @unique
@@ -84,6 +85,8 @@ model Coach {
   sports           CoachesOnSports[]
   certificates     Certificates[]
   Centers          CoachesOnCenters[]
+  trainingLevel    TrainingLevel
+  experienceLevel  ExperienceLevel
   centerId         Int?
   image            Bytes?
   CoachesOnBatches CoachesOnBatches[]
@@ -229,6 +232,20 @@ model CoachesOnBatches {
 enum Gender {
   MALE
   FEMALE
+}
+
+enum TrainingLevel {
+  BEGINNER
+  DEVELOPER
+  INTERMEDIATE_LEVEL
+  ADVANCED_LEVEL
+}
+
+enum ExperienceLevel {
+  ZERO_ONE
+  TWO_FIVE
+  SIX_TEN
+  TEN_OVER
 }
 
 model StaffCenter {
