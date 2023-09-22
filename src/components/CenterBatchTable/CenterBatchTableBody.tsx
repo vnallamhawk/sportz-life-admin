@@ -1,12 +1,8 @@
 import React from "react";
 import Button from "~/components/Button";
-import { type ASSIGN_BATCHES_TYPES } from "~/types/coach";
+import { type BatchData } from "~/types/coach";
 
-export default function CenterBatchTableBody({
-  data,
-}: {
-  data: ASSIGN_BATCHES_TYPES[];
-}) {
+export default function CenterBatchTableBody({ data }: { data: BatchData[] }) {
   return (
     <>
       {data.map(({ centerName, batchName }, index) => (

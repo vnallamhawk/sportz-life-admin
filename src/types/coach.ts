@@ -82,7 +82,7 @@ export interface COACH_TYPES {
   experienceLevel: MultiSelectOption;
 }
 
-interface BatchData {
+export interface BatchData {
   centerName: string;
   batchName: string;
 }
