@@ -2,10 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
-import {
-  type MULTI_FORM_TYPES,
-  type ASSIGN_BATCHES_TYPES,
-} from "~/types/coach";
+import { type MULTI_FORM_TYPES } from "~/types/coach";
 import Table from "../Table";
 import CenterBatchTableHeader from "../CenterBatchTable/CenterBatchTableHeader";
 import CenterBatchTableBody from "../CenterBatchTable/CenterBatchTableBody";
@@ -13,6 +10,7 @@ import Button from "../Button/Button";
 import CardTitle from "../Card/CardTitle";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import { api } from "~/utils/api";
+import { formatBatchesTableData } from "~/helpers/batches";
 
 interface ApiData {
   name: string;
@@ -32,12 +30,17 @@ export default function AssignBatches({
     trigger,
   } = useForm({
     defaultValues: {
-      centerName: "",
-      batchName: "",
+      centerName: undefined,
+      batchName: undefined,
     },
   });
 
-  const [tableData, setTableData] = useState<ASSIGN_BATCHES_TYPES[]>([]);
+  const [tableData, setTableData] = useState<
+    {
+      centerName: string;
+      batchName: string;
+    }[]
+  >([]);
   const {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData },
@@ -92,13 +95,15 @@ export default function AssignBatches({
   const onAddBatchHandler = async (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     const data = getValues();
+    const tableDataFormatter = formatBatchesTableData(data);
     const result = await trigger();
 
+    console.log(data);
     if (result && Object.keys(errors).length === 0) {
       if (tableData?.length) {
-        setTableData([data, ...tableData]);
+        setTableData((prev) => [...prev, tableDataFormatter]);
       } else {
-        setTableData([data]);
+        setTableData([tableDataFormatter]);
       }
       reset();
     }

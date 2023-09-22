@@ -5,7 +5,12 @@ import { useForm } from "react-hook-form";
 import AddCoach from "../../../components/AddCoach/AddCoach";
 import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
 import AssignBatches from "~/components/AddCoach/AssignBatches";
-import { TRAINING_LEVEL, type GENDER_VALUES, type MULTI_FORM_TYPES, EXPERIENCE_LEVEL } from "~/types/coach";
+import {
+  type TRAINING_LEVEL,
+  type GENDER_VALUES,
+  type MULTI_FORM_TYPES,
+  type EXPERIENCE_LEVEL,
+} from "~/types/coach";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 
@@ -22,11 +27,11 @@ const multiFormData: MULTI_FORM_TYPES = {
   batchData: [],
   trainingLevel: {
     value: "",
-    label: ""
+    label: "",
   },
   experienceLevel: {
     value: "",
-    label: ""
+    label: "",
   },
 };
 
@@ -86,8 +91,10 @@ export default function AddCoachMultiFormLayout() {
       certificates: finalForm.certificateData,
       dateOfBirth: new Date(finalForm.dateOfBirth),
       sports: finalForm.coachingSports,
-      trainingLevel: finalForm.trainingLevel.value as (typeof TRAINING_LEVEL)[number],
-      experienceLevel: finalForm.experienceLevel.value as (typeof EXPERIENCE_LEVEL)[number],
+      trainingLevel: finalForm.trainingLevel
+        .value as (typeof TRAINING_LEVEL)[number],
+      experienceLevel: finalForm.experienceLevel
+        .value as (typeof EXPERIENCE_LEVEL)[number],
     });
   };
 
@@ -95,9 +102,9 @@ export default function AddCoachMultiFormLayout() {
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 1 && <AddCoach />}
+          {currentStep === 3 && <AddCoach />}
           {currentStep === 2 && <AddCoachCertificates />}
-          {currentStep === 3 && (
+          {currentStep === 1 && (
             <AssignBatches
               // TODO: fix this TS error
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
