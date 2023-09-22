@@ -9,5 +9,8 @@ export const formatBatchesTableData = (data: {
     batchName: data.batchName
       ? data.batchName.map(({ label }) => label).join(",")
       : "",
+    batchIds: data.batchName
+      ? data.batchName.map(({ value }) => Number(value))
+      : [],
   };
 };

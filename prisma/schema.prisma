@@ -84,12 +84,12 @@ model Coach {
   payrollId        Int?
   sports           CoachesOnSports[]
   certificates     Certificates[]
-  Centers          CoachesOnCenters[]
+  centers          CoachesOnCenters[]
   trainingLevel    TrainingLevel
   experienceLevel  ExperienceLevel
   centerId         Int?
   image            Bytes?
-  CoachesOnBatches CoachesOnBatches[]
+  batches CoachesOnBatches[]
 
   @@index([centerId])
 }

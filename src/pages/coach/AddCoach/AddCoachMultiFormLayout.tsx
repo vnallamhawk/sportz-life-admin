@@ -95,6 +95,7 @@ export default function AddCoachMultiFormLayout() {
         .value as (typeof TRAINING_LEVEL)[number],
       experienceLevel: finalForm.experienceLevel
         .value as (typeof EXPERIENCE_LEVEL)[number],
+      batchIds: finalForm.batchIds,
     });
   };
 

@@ -89,7 +89,7 @@ export interface BatchData {
 
 export interface MULTI_FORM_TYPES extends COACH_TYPES {
   certificateData: COACH_CERTIFICATE_TABLE_TYPES[];
-  batchData: BatchData[];
+  batchIds: number[];
 }
 
 export enum TrainingLevelEnum {

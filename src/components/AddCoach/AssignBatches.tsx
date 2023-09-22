@@ -39,6 +39,7 @@ export default function AssignBatches({
     {
       centerName: string;
       batchName: string;
+      batchIds: number[];
     }[]
   >([]);
   const {
@@ -84,7 +85,15 @@ export default function AssignBatches({
   }, [batches]);
 
   const submitCallback = () => {
-    const finalFormData = { ...formData, batchData: tableData };
+    const finalFormData = {
+      ...formData,
+      batchIds: tableData.reduce<number[]>((accumulator, current) => {
+        if (current.batchIds.length) {
+          accumulator.push(...current.batchIds);
+        }
+        return accumulator;
+      }, []),
+    };
     finalFormSubmissionHandler(finalFormData);
   };
 
