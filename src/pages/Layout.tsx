@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import SideNav from "../components/SideNav";
 import { useSession } from "next-auth/react";
-import { openCoachCreatedToast } from "~/contexts/Contexts";
+import { ToastContext } from "~/contexts/Contexts";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { data: sessionData } = useSession();
@@ -12,9 +12,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="flex">
       {sessionData && <SideNav className="h-screen w-60 bg-gray-950" />}
       <main className="w-full">
-        <openCoachCreatedToast.Provider value={ toastValue }>
+        <ToastContext.Provider value={ toastValue }>
           {children}
-        </openCoachCreatedToast.Provider>
+        </ToastContext.Provider>
       </main>
     </div>
   );

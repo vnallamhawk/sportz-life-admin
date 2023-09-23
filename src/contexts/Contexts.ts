@@ -1,6 +1,6 @@
-import { createContext, useState, Dispatch } from 'react';
+import { createContext } from 'react';
 
-export const openCoachCreatedToast = createContext({
+export const ToastContext = createContext({
     openToast: false,
     setOpenToast: (set: boolean) : void => {/* do nothing */}
 });

@@ -13,7 +13,7 @@ import {
 } from "~/types/coach";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
-import { openCoachCreatedToast } from "~/contexts/Contexts";
+import { ToastContext } from "~/contexts/Contexts";
 
 const multiFormData: MULTI_FORM_TYPES = {
   phoneNumber: "",
@@ -62,7 +62,7 @@ export default function AddCoachMultiFormLayout() {
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
-  const { openToast, setOpenToast } = useContext(openCoachCreatedToast);
+  const { openToast, setOpenToast } = useContext(ToastContext);
   const router = useRouter();
 
   const formProviderData = {

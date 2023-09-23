@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import * as Toast from "@radix-ui/react-toast";
 import styles from "./AddCoachSuccessToast.module.css"
 

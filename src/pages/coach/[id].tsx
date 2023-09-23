@@ -14,7 +14,7 @@ import {
 import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
 import { ExperienceLevelEnum, TrainingLevelEnum } from "~/types/coach";
 import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
-import { openCoachCreatedToast } from '~/contexts/Contexts';
+import { ToastContext } from '~/contexts/Contexts';
 
 type CoachWithRelations = Coach & {
   certificates: Certificates[];
@@ -78,7 +78,7 @@ export default function Page({
     },
     {}
   );
-  const { openToast, setOpenToast } = useContext(openCoachCreatedToast);
+  const { openToast, setOpenToast } = useContext(ToastContext);
   
   return (
     <Card className="h-100 mx-5">
