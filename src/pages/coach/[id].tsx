@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import Button from "~/components/Button";
 import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
@@ -12,6 +13,8 @@ import {
 } from "@prisma/client";
 import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
 import { ExperienceLevelEnum, TrainingLevelEnum } from "~/types/coach";
+import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
+import { ToastContext } from '~/contexts/Contexts';
 
 type CoachWithRelations = Coach & {
   certificates: Certificates[];
@@ -75,7 +78,8 @@ export default function Page({
     },
     {}
   );
-
+  const { openToast, setOpenToast } = useContext(ToastContext);
+  
   return (
     <Card className="h-100 mx-5">
       <header className="flex justify-between">
@@ -165,6 +169,9 @@ export default function Page({
           </div>
         </div>
       </div>
+      <AddCoachSuccessToast
+        open= { openToast }
+        setOpen={ setOpenToast }></AddCoachSuccessToast>
     </Card>
   );
 }
