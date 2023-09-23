@@ -4,19 +4,20 @@ import { HamburgerMenuIcon, CheckIcon } from "@radix-ui/react-icons";
 import { api } from "~/utils/api";
 import { differenceInYears } from "date-fns";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 interface coachTableFilter {
   name: string
 }
 
-export default function CoachTableBody(filter: coachTableFilter) {
+export default function CoachTableBody(filter: coachTableFilter, handleIsLoading: (isLoading: boolean) => void) {
   let tableData;
   const router = useRouter();
 
   const { data: coaches } = filter.name == "" ? 
     api.coach.getAllCoaches.useQuery() :
     api.coach.getCoachesByName.useQuery(filter);
-  const { data: sports } = api.sports.getAllSports.useQuery();
+  const { data: sports, isLoading } = api.sports.getAllSports.useQuery();
 
   if (coaches && sports) {
     tableData = coaches.map((coach) => ({
@@ -29,13 +30,17 @@ export default function CoachTableBody(filter: coachTableFilter) {
     }));
   }
 
+  useEffect(() => {
+    handleIsLoading(isLoading)
+  }, [isLoading])
+
   const onClickHandler = (id: number) => {
     void router.push(`/coach/${id ?? ""}`);
   };
 
   return (
     <>
-      {tableData?.map(
+        {tableData?.map(
         (
           { name, dateOfBirth, designation, sports, gender, contactNumber, id },
           index
@@ -73,6 +78,8 @@ export default function CoachTableBody(filter: coachTableFilter) {
           </tr>
         )
       )}
+
+
     </>
   );
 }
