@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import Button from "~/components/Button";
 import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
@@ -12,6 +13,8 @@ import {
 } from "@prisma/client";
 import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
 import { ExperienceLevelEnum, TrainingLevelEnum } from "~/types/coach";
+import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
+import { ToastContext } from '~/contexts/Contexts';
 
 type CoachWithRelations = Coach & {
   certificates: Certificates[];
@@ -31,6 +34,7 @@ export const getServerSideProps = async (
     include: {
       sports: true,
       certificates: true,
+      batches: true,
     },
   });
 
@@ -48,6 +52,11 @@ export const getServerSideProps = async (
           assignedAt: sport?.assignedAt ? sport?.assignedAt?.toISOString() : "",
           updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
         })),
+        batches: coach?.batches.map((batch) => ({
+          ...batch,
+          assignedAt: batch?.assignedAt ? batch?.assignedAt?.toISOString() : "",
+          updatedAt: batch?.updatedAt ? batch?.updatedAt?.toISOString() : "",
+        })),
       },
       sports: sports,
     },
@@ -61,6 +70,7 @@ export default function Page({
   coach: CoachWithRelations;
   sports: Sports[];
 }) {
+  console.log(coach);
   const sportsDictionary = sports?.reduce(
     (accumulator: Record<number, string>, current) => {
       accumulator[current.id] = current.name;
@@ -68,7 +78,8 @@ export default function Page({
     },
     {}
   );
-
+  const { openToast, setOpenToast } = useContext(ToastContext);
+  
   return (
     <Card className="h-100 mx-5">
       <header className="flex justify-between">
@@ -96,9 +107,7 @@ export default function Page({
           <div className="mt-5 flex">
             <div className="about">
               <div className="text-gray-400"> About </div>
-              <div className="font-bold text-gray-600">
-                {coach.about}
-              </div>
+              <div className="font-bold text-gray-600">{coach.about}</div>
             </div>
           </div>
           <div className="mt-2 flex justify-between">
@@ -109,7 +118,10 @@ export default function Page({
               </div>
             </div>
             <div className="experience-level">
-              <div className="text-gray-400"> Years of Coaching Experience </div>
+              <div className="text-gray-400">
+                {" "}
+                Years of Coaching Experience{" "}
+              </div>
               <div className="font-bold text-gray-600">
                 {ExperienceLevelEnum[coach.experienceLevel]}
               </div>
@@ -157,6 +169,9 @@ export default function Page({
           </div>
         </div>
       </div>
+      <AddCoachSuccessToast
+        open= { openToast }
+        setOpen={ setOpenToast }></AddCoachSuccessToast>
     </Card>
   );
 }

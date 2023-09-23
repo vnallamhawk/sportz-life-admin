@@ -27,30 +27,34 @@ export const coachRouter = createTRPCRouter({
     const allCoaches = ctx?.prisma?.coach?.findMany({
       include: {
         sports: true,
-        CoachesOnBatches: true,
+        batches: true,
+        centers: true,
       },
     });
     return allCoaches;
   }),
   getCoachesByName: publicProcedure
-    .input(z.object({
-      name: z.string()
-    }))
+    .input(
+      z.object({
+        name: z.string(),
+      })
+    )
     .query(async (opts) => {
       const coaches = await opts.ctx?.prisma?.coach?.findMany({
         where: {
           name: {
-            contains: opts.input.name
-          }
+            contains: opts.input.name,
+          },
         },
         include: {
           sports: true,
-          CoachesOnBatches: true
-        }
+          batches: true,
+          centers: true,
+        },
       });
 
       return coaches;
-  }),
+    }),
   createCoach: publicProcedure
     .input(
       z.object({
@@ -64,7 +68,8 @@ export const coachRouter = createTRPCRouter({
         dateOfBirth: z.date(),
         sports: coachingSportsSchema,
         trainingLevel: z.enum(TRAINING_LEVEL),
-        experienceLevel: z.enum(EXPERIENCE_LEVEL)
+        experienceLevel: z.enum(EXPERIENCE_LEVEL),
+        batchIds: z.array(z.number()),
       })
     )
     .mutation(
@@ -80,7 +85,8 @@ export const coachRouter = createTRPCRouter({
           dateOfBirth,
           sports,
           trainingLevel,
-          experienceLevel
+          experienceLevel,
+          batchIds,
         },
         ctx,
       }) => {
@@ -105,9 +111,18 @@ export const coachRouter = createTRPCRouter({
                 },
               })),
             },
+            batches: {
+              create: batchIds.map((id) => ({
+                batch: {
+                  connect: {
+                    id: Number(id),
+                  },
+                },
+              })),
+            },
             dateOfBirth: dateOfBirth,
             trainingLevel: trainingLevel,
-            experienceLevel: experienceLevel
+            experienceLevel: experienceLevel,
           },
         });
         return response;

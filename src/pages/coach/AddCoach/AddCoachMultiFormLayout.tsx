@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { useForm } from "react-hook-form";
 import AddCoach from "../../../components/AddCoach/AddCoach";
 import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
 import AssignBatches from "~/components/AddCoach/AssignBatches";
-import { TRAINING_LEVEL, type GENDER_VALUES, type MULTI_FORM_TYPES, EXPERIENCE_LEVEL } from "~/types/coach";
+import {
+  type TRAINING_LEVEL,
+  type GENDER_VALUES,
+  type MULTI_FORM_TYPES,
+  type EXPERIENCE_LEVEL,
+} from "~/types/coach";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
+import { ToastContext } from "~/contexts/Contexts";
 
 const multiFormData: MULTI_FORM_TYPES = {
   phoneNumber: "",
@@ -19,14 +25,14 @@ const multiFormData: MULTI_FORM_TYPES = {
   payroll: "",
   coachingSports: [],
   certificateData: [],
-  batchData: [],
+  batchIds: [],
   trainingLevel: {
     value: "",
-    label: ""
+    label: "",
   },
   experienceLevel: {
     value: "",
-    label: ""
+    label: "",
   },
 };
 
@@ -56,6 +62,7 @@ export default function AddCoachMultiFormLayout() {
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
+  const { openToast, setOpenToast } = useContext(ToastContext);
   const router = useRouter();
 
   const formProviderData = {
@@ -69,6 +76,7 @@ export default function AddCoachMultiFormLayout() {
     // isLoading: isLoading,
   } = api.coach.createCoach.useMutation({
     onSuccess: (response) => {
+      setOpenToast(true);
       void router.push(`/coach/${response?.id ?? ""}`);
     },
   });
@@ -86,8 +94,11 @@ export default function AddCoachMultiFormLayout() {
       certificates: finalForm.certificateData,
       dateOfBirth: new Date(finalForm.dateOfBirth),
       sports: finalForm.coachingSports,
-      trainingLevel: finalForm.trainingLevel.value as (typeof TRAINING_LEVEL)[number],
-      experienceLevel: finalForm.experienceLevel.value as (typeof EXPERIENCE_LEVEL)[number],
+      trainingLevel: finalForm.trainingLevel
+        .value as (typeof TRAINING_LEVEL)[number],
+      experienceLevel: finalForm.experienceLevel
+        .value as (typeof EXPERIENCE_LEVEL)[number],
+      batchIds: finalForm.batchIds,
     });
   };
 
