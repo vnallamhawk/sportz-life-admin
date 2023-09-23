@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "~/components/Card/Card";
 import CardTitle from "~/components/Card/CardTitle";
 import Textbox from "~/components/Textbox/Textbox";
@@ -7,12 +7,18 @@ import Table from "~/components/Table/Table";
 import CoachTableHeader from "../../components/AllCoaches/CoachTableHeader";
 import CoachTableBody from "../../components/AllCoaches/CoachTableBody";
 import { useRouter } from "next/navigation";
+import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
 
 export default function AllCoach() {
   const router = useRouter();
 
-  const [ filterByName, setFilterByName ] = useState("");
+  const [filterByName, setFilterByName] = useState("");
+  const [loading, setLoading] = useState(true) 
 
+  const handleIsLoading = (isLoading: boolean) => {
+    setLoading(isLoading)
+  }
+  
   return (
     <>
       <Card className="h-full">
@@ -31,8 +37,10 @@ export default function AllCoach() {
             </Button>
           </div>
         </header>
-        <Table tableHeader={CoachTableHeader()} tableBody={CoachTableBody({ name: filterByName })} />
+        <Table tableHeader={CoachTableHeader()} tableBody={CoachTableBody({ name: filterByName }, (handleIsLoading))} />
+        {loading ? <LoadingSpinner /> : ""}
       </Card>
+    
     </>
   );
 }
