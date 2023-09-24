@@ -11,3 +11,8 @@
 a {
   @apply cursor-pointer text-blue-600 underline visited:text-purple-600 hover:text-blue-800;
 }
+
+button[role="combobox"] {
+  width: 100%;
+}
+
