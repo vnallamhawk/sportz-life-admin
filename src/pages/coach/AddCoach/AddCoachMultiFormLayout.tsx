@@ -62,7 +62,7 @@ export default function AddCoachMultiFormLayout() {
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
-  const { openToast, setOpenToast } = useContext(ToastContext);
+  const { setOpenToast } = useContext(ToastContext);
   const router = useRouter();
 
   const formProviderData = {
@@ -106,8 +106,8 @@ export default function AddCoachMultiFormLayout() {
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 1 && <AddCoach />}
-          {currentStep === 2 && <AddCoachCertificates />}
+          {currentStep === 2 && <AddCoach />}
+          {currentStep === 1 && <AddCoachCertificates />}
           {currentStep === 3 && (
             <AssignBatches
               // TODO: fix this TS error

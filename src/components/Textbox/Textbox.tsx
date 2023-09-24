@@ -6,7 +6,7 @@ interface Textbox {
   onChangeHandler?: (e: BaseSyntheticEvent) => void;
   onClick?: (e: React.FormEvent<HTMLInputElement>) => void;
   placeHolder?: string;
-  value: string;
+  value?: string;
   setValue?: (value: string) => void;
 }
 
@@ -29,7 +29,7 @@ export default function Textbox({
       value={value}
       type="text"
       onClick={onClick}
-      onChange={ e => {
+      onChange={(e) => {
         if (setValue == undefined) {
           if (onChangeHandler != undefined) onChangeHandler(e);
           return;
