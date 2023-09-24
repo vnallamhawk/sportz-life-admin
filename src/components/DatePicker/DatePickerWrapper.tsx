@@ -6,6 +6,7 @@ import { DATE_TIME_FORMAT } from "~/globals/globals";
 import useOutsideClick from "~/hooks/useOutsideClick";
 
 export default function DatePickerWrapper({
+  value,
   className,
   placeHolder,
   onChangeHandler,
@@ -15,6 +16,8 @@ export default function DatePickerWrapper({
   onChangeHandler?: (arg0: string) => void;
   value?: string;
 }) {
+  console.log(value === "");
+  console.log(typeof value);
   const [selectedDate, setSelectedDate] = useState("");
   const [open, setOpen] = useState(false);
   const datePickerRef = useRef<HTMLDivElement>(null);
@@ -37,7 +40,7 @@ export default function DatePickerWrapper({
             e.stopPropagation();
             setOpen(true);
           }}
-          value={selectedDate}
+          value={value === "" ? "" : selectedDate}
           placeHolder={placeHolder}
         />
       </Popover.Trigger>

@@ -21,12 +21,15 @@ export default function AddCoachCertificates({}) {
     control,
     handleSubmit,
     reset,
+    trigger,
     formState: { errors },
     getValues,
   } = useForm({
     defaultValues: {
       name: "",
       instituteName: "",
+      startDate: "",
+      endDate: "",
     },
   });
 
@@ -43,9 +46,13 @@ export default function AddCoachCertificates({}) {
     console.log("onSubmit");
   };
 
-  const onAddHandler = () => {
+  const onAddHandler = async () => {
     const data = getValues();
-    if (Object.keys(errors).length === 0) {
+    let result = true;
+    if (!data.name || !data.instituteName) {
+      result = await trigger();
+    }
+    if (result) {
       if (tableData?.length) {
         setTableData([data, ...tableData]);
       } else {
@@ -69,7 +76,7 @@ export default function AddCoachCertificates({}) {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <div onSubmit={handleSubmit(onSubmit)}>
         <CardTitle title="ADD COACH" />
         <div className="text-xl font-bold">ADD CERTIFICATES</div>
         <div className="mt-10 flex justify-between">
@@ -86,11 +93,12 @@ export default function AddCoachCertificates({}) {
                   />
                 );
               }}
+              rules={{ required: true }}
               name="name"
             />
-            {/* {errors.certificate && (
+            {errors.name && (
               <div className="text-red-800">This field is required</div>
-            )} */}
+            )}
           </div>
 
           <div>
@@ -105,20 +113,44 @@ export default function AddCoachCertificates({}) {
                 />
               )}
               name="instituteName"
+              rules={{ required: true }}
             />
-            {/* {errors.institute && (
+            {errors.instituteName && (
               <div className="text-red-800">This field is required</div>
-            )} */}
+            )}
           </div>
         </div>
         <div className="mt-10">
-          <Datepicker placeHolder="Start" className="h-12 w-48" />
-          <Datepicker className="ml-3 h-12 w-48" placeHolder="End" />
-          <Button
-            className="ml-3"
-            // type="submit"
-            onClick={onAddHandler}
-          >
+          <Controller
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Datepicker
+                  placeHolder="Start"
+                  className="h-12 w-48"
+                  onChangeHandler={onChange}
+                  value={value}
+                />
+              );
+            }}
+            name="startDate"
+          />
+          <Controller
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              console.log(value);
+              return (
+                <Datepicker
+                  className="ml-3 h-12 w-48"
+                  placeHolder="End"
+                  onChangeHandler={onChange}
+                  value={value}
+                />
+              );
+            }}
+            name="endDate"
+          />
+          <Button className="ml-3" onClick={onAddHandler}>
             Add
           </Button>
         </div>
@@ -144,7 +176,7 @@ export default function AddCoachCertificates({}) {
             Next
           </Button>
         </div>
-      </form>
+      </div>
     </>
   );
 }

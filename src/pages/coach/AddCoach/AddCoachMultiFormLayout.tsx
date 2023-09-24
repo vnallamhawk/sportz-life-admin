@@ -62,7 +62,7 @@ export default function AddCoachMultiFormLayout() {
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
-  const { openToast, setOpenToast } = useContext(ToastContext);
+  const { setOpenToast } = useContext(ToastContext);
   const router = useRouter();
 
   const formProviderData = {

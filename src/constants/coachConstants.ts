@@ -160,7 +160,7 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     placeHolder: "Training level expertise",
     rules: {
       required: true,
-    }
+    },
   },
   {
     label: "Years of Coaching Experience",
@@ -175,7 +175,7 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     placeHolder: "Training level expertise",
     rules: {
       required: true,
-    }
+    },
   },
 ];
 
@@ -209,6 +209,14 @@ export const COACH_CERTIFICATE_TABLE_HEADERS = [
   {
     label: "Institute",
     id: "institute",
+  },
+  {
+    label: "Start Date",
+    id: "startDate",
+  },
+  {
+    label: "End Date",
+    id: "endDate",
   },
   {
     label: "Action",
