@@ -79,7 +79,7 @@ export default function AddCoachCertificates({}) {
       <div onSubmit={handleSubmit(onSubmit)}>
         <CardTitle title="ADD COACH" />
         <div className="text-xl font-bold">ADD CERTIFICATES</div>
-        <div className="mt-10 flex flex-row gap-5 justify-between">
+        <div className="mt-10 flex flex-row justify-between gap-5">
           <div className="w-full">
             <Controller
               control={control}
@@ -120,7 +120,7 @@ export default function AddCoachCertificates({}) {
             )}
           </div>
         </div>
-        <div className="mt-10 grid grid-cols-3 w-2/3">
+        <div className="mt-10 grid w-2/3 grid-cols-3">
           <Controller
             control={control}
             render={({ field: { onChange, value } }) => {
@@ -134,8 +134,6 @@ export default function AddCoachCertificates({}) {
               );
             }}
             name="startDate"
-            className="w-1/3"
-
           />
           <Controller
             control={control}
@@ -151,7 +149,6 @@ export default function AddCoachCertificates({}) {
               );
             }}
             name="endDate"
-            className="w-1/3"
           />
           <Button className="ml-5 w-20" onClick={onAddHandler}>
             Add
