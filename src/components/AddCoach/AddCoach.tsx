@@ -28,8 +28,8 @@ export default function AddCoach() {
     formState: { errors },
   } = useForm<COACH_TYPES>({ mode: "onSubmit" });
   const currentFormValues = getValues();
-  const { data: sports } = api.sports.getAllSports.useQuery();
   const hasExecuted = useRef(true);
+  const { data: sports, isLoading } = api.sports.getAllSports.useQuery();
 
   const [formConstantValues, setFormConstantValues] = useState(
     COACH_DETAILS_CONSTANTS
@@ -66,7 +66,7 @@ export default function AddCoach() {
   }, []);
 
   const getInputElement = (props: COACH_DETAILS_CONSTANTS_TYPES) => {
-    const { type, rules, id, pattern } = props;
+    const { type, rules, id, pattern, placeHolder } = props;
     switch (type) {
       case "select":
         const { options } = props;
@@ -81,6 +81,8 @@ export default function AddCoach() {
                   isMulti={props?.isMulti ?? false}
                   options={options}
                   value={value}
+                  placeholder={placeHolder}
+                  className="w-full"
                   onChange={(element) => {
                     onChange(element);
                   }}
@@ -98,7 +100,7 @@ export default function AddCoach() {
               return (
                 <Datepicker
                   placeHolder={props.placeHolder}
-                  className="h-12 w-96"
+                  className="h-12 w-full"
                   onChangeHandler={onChange}
                 />
               );
@@ -115,7 +117,7 @@ export default function AddCoach() {
             name={id}
             render={({ field: { onChange, value } }) => (
               <Textbox
-                className="h-12 w-96"
+                className="h-12 w-full"
                 placeHolder={props.label}
                 onChangeHandler={onChange}
                 // TODO: FIX THIS TS ERROR
@@ -146,7 +148,7 @@ export default function AddCoach() {
         <>
           <CardTitle title="ADD COACH" />
           <div className="text-lg font-bold">COACH DETAILS</div>
-          <div className="mt-10 grid grid-cols-2 gap-y-12">
+          <div className="mt-10 grid grid-cols-2 gap-x-10 gap-y-12">
             {formConstantValues.map((props) => (
               <div key={props.id}>
                 {getInputElement(props)}

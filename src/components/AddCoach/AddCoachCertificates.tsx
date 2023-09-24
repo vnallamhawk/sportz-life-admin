@@ -79,14 +79,14 @@ export default function AddCoachCertificates({}) {
       <div onSubmit={handleSubmit(onSubmit)}>
         <CardTitle title="ADD COACH" />
         <div className="text-xl font-bold">ADD CERTIFICATES</div>
-        <div className="mt-10 flex justify-between">
-          <div className="w-96">
+        <div className="mt-10 flex flex-row gap-5 justify-between">
+          <div className="w-full">
             <Controller
               control={control}
               render={({ field: { value, onChange } }) => {
                 return (
                   <Select
-                    className="h-12 w-96"
+                    className="h-12 w-full"
                     {...COACH_CERTIFICATES_CONSTANTS}
                     onChangeHandler={onChange}
                     value={value ?? undefined}
@@ -101,13 +101,13 @@ export default function AddCoachCertificates({}) {
             )}
           </div>
 
-          <div>
+          <div className="w-full">
             <Controller
               control={control}
               render={({ field: { onChange, value } }) => (
                 <Textbox
                   placeHolder="Institute Name"
-                  className="h-12 w-96"
+                  className="h-12 w-full"
                   onChangeHandler={onChange}
                   value={value}
                 />
@@ -120,20 +120,22 @@ export default function AddCoachCertificates({}) {
             )}
           </div>
         </div>
-        <div className="mt-10">
+        <div className="mt-10 grid grid-cols-3 w-2/3">
           <Controller
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
                 <Datepicker
                   placeHolder="Start"
-                  className="h-12 w-48"
+                  className="h-12 w-full"
                   onChangeHandler={onChange}
                   value={value}
                 />
               );
             }}
             name="startDate"
+            className="w-1/3"
+
           />
           <Controller
             control={control}
@@ -141,7 +143,7 @@ export default function AddCoachCertificates({}) {
               console.log(value);
               return (
                 <Datepicker
-                  className="ml-3 h-12 w-48"
+                  className="ml-3 h-12 w-full"
                   placeHolder="End"
                   onChangeHandler={onChange}
                   value={value}
@@ -149,8 +151,9 @@ export default function AddCoachCertificates({}) {
               );
             }}
             name="endDate"
+            className="w-1/3"
           />
-          <Button className="ml-3" onClick={onAddHandler}>
+          <Button className="ml-5 w-20" onClick={onAddHandler}>
             Add
           </Button>
         </div>

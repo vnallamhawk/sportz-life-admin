@@ -123,7 +123,7 @@ export default function AssignBatches({
       <CardTitle title="ADD COACH" />
       <div className="mb-3 text-lg font-bold">ASSIGN BATCHES</div>
 
-      <div className="mb-3 flex justify-between">
+      <div className="mb-3 flex gap-2 justify-between">
         <Controller
           control={control}
           rules={{
@@ -132,7 +132,7 @@ export default function AssignBatches({
           render={({ field: { onChange, value } }) => {
             return (
               <Select
-                className="h-12 w-96"
+                className="h-12 w-full"
                 // Todo: fix this TS error
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore: Unreachable code error
@@ -168,7 +168,7 @@ export default function AssignBatches({
           control={control}
           render={({ field: { onChange, value } }) => (
             <Select
-              className="h-12 w-96"
+              className="h-12 w-full"
               // Todo: fix this TS error
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore: Unreachable code error
