@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { BaseSyntheticEvent } from "react";
+import { type BaseSyntheticEvent } from "react";
 
 interface Textbox {
   className?: string;

@@ -1,6 +1,9 @@
-import { createContext } from 'react';
+import { createContext } from "react";
 
 export const ToastContext = createContext({
-    openToast: false,
-    setOpenToast: (set: boolean) : void => {/* do nothing */}
+  openToast: false,
+  setOpenToast: (a: boolean): void => {
+    console.log(a);
+    /* do nothing */
+  },
 });
