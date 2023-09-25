@@ -10,13 +10,11 @@ export default function DatePickerWrapper({
 }: {
   className?: string;
   placeHolder?: string;
-  onChangeHandler?: (arg0: string) => void;
-  value?: string;
+  onChangeHandler?: (arg0: Date) => void;
+  value?: Date;
 }) {
   //console.log(value === "");
   // console.log(typeof value);
-
-  const [selectedDate, setSelectedDate] = useState(new Date(0));
   //const [open, setOpen] = useState(false);
   //const datePickerRef = useRef<HTMLDivElement>(null);
 
@@ -29,7 +27,9 @@ export default function DatePickerWrapper({
   //   onChangeHandler && onChangeHandler(DATE_TIME_FORMAT.format(date));
   //   setOpen(false);
   // };
-  function dateFormat(date: Date): string {
+  function dateFormat(date: Date | undefined): string {
+    if (date == undefined) return "";
+    
     let dd = date.getDate().toString();
     let mm = (date.getMonth() + 1).toString();
     const yyyy = date.getFullYear().toString();
@@ -47,16 +47,16 @@ export default function DatePickerWrapper({
       })}
       placeholderText={ placeHolder }
       value={ 
-        selectedDate.toString() == new Date(0).toString() ? 
+        value?.toString() == "Invalid Date" ? 
           "" : 
-          dateFormat(selectedDate)
+          dateFormat(value)
       }
       selected={ 
-        selectedDate.toString() == new Date(0).toString() ? 
+        value?.toString() == "Invalid Date" ? 
           new Date() : 
-          selectedDate
+          value
       } 
-      onChange={ date => setSelectedDate(date!) }
+      onChange={ date => onChangeHandler!(date as Date) }
       showMonthDropdown
       showYearDropdown
       dropdownMode="select" 

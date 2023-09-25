@@ -96,10 +96,11 @@ export default function AddCoach() {
         inputElement = (
           <Controller
             control={control}
-            render={({ field: { onChange } }) => {
+            render={({ field: { onChange, value } }) => {
               return (
                 <Datepicker
                   placeHolder={props.placeHolder}
+                  value={ new Date(value as string) }
                   className="h-12 w-full"
                   onChangeHandler={onChange}
                 />
