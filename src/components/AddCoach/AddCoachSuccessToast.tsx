@@ -1,6 +1,6 @@
 import React from "react";
 import * as Toast from "@radix-ui/react-toast";
-import styles from "./AddCoachSuccessToast.module.css"
+import styles from "./css/AddCoachSuccessToast.module.css"
 
 export default function AddCoachSuccessToast({
   open,
