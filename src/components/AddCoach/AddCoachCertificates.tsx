@@ -28,7 +28,7 @@ export default function AddCoachCertificates({}) {
     defaultValues: {
       name: "",
       instituteName: "",
-      startDate: "",
+      startEnd: "",
       endDate: "",
     },
   });
@@ -52,6 +52,8 @@ export default function AddCoachCertificates({}) {
     if (!data.name || !data.instituteName) {
       result = await trigger();
     }
+    if (data.startEnd) data.startEnd = new Date(data.startEnd).toISOString();
+    if (data.endDate) data.endDate = new Date(data.endDate).toISOString();
     if (result) {
       if (tableData?.length) {
         setTableData([data, ...tableData]);
@@ -133,12 +135,11 @@ export default function AddCoachCertificates({}) {
                 />
               );
             }}
-            name="startDate"
+            name="startEnd"
           />
           <Controller
             control={control}
             render={({ field: { onChange, value } }) => {
-              console.log(value);
               return (
                 <Datepicker
                   className="ml-3 h-12 w-full"
