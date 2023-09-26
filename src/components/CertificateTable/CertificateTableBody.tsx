@@ -11,12 +11,12 @@ export default function CertificateTableBody({
   console.log(data);
   return (
     <>
-      {data.map(({ instituteName, name, startDate, endDate }, index) => (
+      {data.map(({ instituteName, name, startEnd, endDate }, index) => (
         <tr key={`${instituteName}-${index}`}>
           <td>{instituteName}</td>
           <td>{name}</td>
           <td>
-            {startDate ? DATE_TIME_FORMAT.format(new Date(startDate)) : NO_DATA}
+            {startEnd ? DATE_TIME_FORMAT.format(new Date(startEnd)) : NO_DATA}
           </td>
           <td>
             {endDate ? DATE_TIME_FORMAT.format(new Date(endDate)) : NO_DATA}

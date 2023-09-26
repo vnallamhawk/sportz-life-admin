@@ -48,7 +48,7 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
 export interface COACH_CERTIFICATE_TABLE_TYPES {
   instituteName: string;
   name: string;
-  startDate: string;
+  startEnd: string;
   endDate: string;
 }
 
