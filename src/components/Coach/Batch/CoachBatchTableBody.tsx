@@ -1,5 +1,4 @@
-import { CoachWithRelations } from "~/pages/coach/[id]";
-import { type batchWithCenter } from "~/types/coach";
+import type { CoachWithRelations } from "~/pages/coach/[id]";
 
 export default function CoachCertificateTableBody({
     coach
