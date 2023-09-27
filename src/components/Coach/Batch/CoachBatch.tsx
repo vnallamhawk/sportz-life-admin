@@ -20,7 +20,7 @@ export default function CoachCertificate({
         const newBatch = coach.batches.filter( batch => {
             return batch.batch.name.toLowerCase().includes(filter);
         });
-        let newTableCoach = {...tableCoach};
+        const newTableCoach = {...tableCoach};
         newTableCoach.batches = [...newBatch];
         setTableCoach(newTableCoach);
         setFilterByBatch(filter);
