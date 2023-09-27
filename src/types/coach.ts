@@ -1,3 +1,5 @@
+import { Batches, Center, CoachesOnBatches } from "@prisma/client";
+
 export const InputType = ["textbox", "select", "calendar"] as const;
 
 type Type = (typeof InputType)[number];
@@ -92,6 +94,11 @@ export interface BatchData {
 export interface MULTI_FORM_TYPES extends COACH_TYPES {
   certificateData: COACH_CERTIFICATE_TABLE_TYPES[];
   batchIds: number[];
+}
+
+export interface batchWithCenter extends CoachesOnBatches {
+  batch: Batches;
+  center: Center;
 }
 
 export enum TrainingLevelEnum {
