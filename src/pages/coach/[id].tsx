@@ -12,15 +12,17 @@ import {
   type CoachesOnSports,
 } from "@prisma/client";
 import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
-import { ExperienceLevelEnum, TrainingLevelEnum } from "~/types/coach";
+import { ExperienceLevelEnum, TrainingLevelEnum, type batchWithCenter } from "~/types/coach";
 import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
 import { ToastContext } from '~/contexts/Contexts';
 import CoachCertificate from '~/components/Coach/Certificate/CoachCertificates';
 import { dateFormat } from '~/helpers/date';
+import CoachBatch from '~/components/Coach/Batch/CoachBatch';
 
 export type CoachWithRelations = Coach & {
   certificates: Certificates[];
   sports: CoachesOnSports[];
+  batches: batchWithCenter[];
 };
 
 export const getServerSideProps = async (
@@ -28,7 +30,6 @@ export const getServerSideProps = async (
 ) => {
   const id = context?.params?.id;
   const sports = await prisma.sports.findMany();
-  console.log(sports);
   const coach = await prisma.coach.findUnique({
     where: {
       id: id ? Number(id) : undefined,
@@ -37,7 +38,22 @@ export const getServerSideProps = async (
       sports: true,
       certificates: true,
       batches: true,
+      centers: true
     },
+  });
+  const batches = await prisma.batches.findMany({
+    where: {
+      id: {
+        in: coach?.batches.map( batch => batch.batchId)
+      }
+    }
+  });
+  const centers = await prisma.center.findMany({
+    where: {
+      id: {
+        in: batches.map( batch => batch.centerId)
+      }
+    }
   });
 
   return {
@@ -59,13 +75,17 @@ export const getServerSideProps = async (
           startEnd: cert.startEnd ? dateFormat(cert.startEnd) : "",
           endDate: cert.endDate ? dateFormat(cert.endDate) : ""
         })),
-        batches: coach?.batches.map((batch) => ({
-          ...batch,
-          assignedAt: batch?.assignedAt ? batch?.assignedAt?.toISOString() : "",
-          updatedAt: batch?.updatedAt ? batch?.updatedAt?.toISOString() : "",
+        batches: coach?.batches.map( coachBatch => ({
+          ...coachBatch,
+          assignedAt: coachBatch?.assignedAt ? dateFormat(coachBatch?.assignedAt) : "",
+          updatedAt: coachBatch?.updatedAt ? dateFormat(coachBatch?.updatedAt) : "",
+          batch: batches.find( batch => batch.id == coachBatch.batchId),
+          center: centers.find( center => center.id == batches.find( batch => batch.id == coachBatch.batchId)?.centerId)
         })),
       },
       sports: sports,
+      batches: batches,
+      centers: centers
     },
   };
 };
@@ -77,7 +97,6 @@ export default function Page({
   coach: CoachWithRelations;
   sports: Sports[];
 }) {
-  console.log(coach);
   const sportsDictionary = sports?.reduce(
     (accumulator: Record<number, string>, current) => {
       accumulator[current.id] = current.name;
@@ -87,11 +106,11 @@ export default function Page({
   );
   
   const [ displayCertificate, setDisplayCertificate ] = useState(false);
+  const [ displayBatch, setDisplayBatch ] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
 
-  function handleCertificateClick() { 
-    setDisplayCertificate(!displayCertificate);
-  }
+  const handleCertificateClick = () => setDisplayCertificate(!displayCertificate);
+  const handleBatchClick = () => setDisplayBatch(!displayBatch);
   
   return (
     <>
@@ -172,12 +191,16 @@ export default function Page({
             <div className="font-bold"> Attendance</div>
             <div className="text-4xl font-bold"> 60%</div>
           </div>
-          <div className="w-60 rounded-lg border-2 border-solid border-gray-400 p-5">
+          <div 
+            className={`w-60 rounded-lg border-2 border-solid p-5 cursor-pointer ${ displayBatch ? "border-rose-400" : "border-gray-400"}`}
+            onClick={ handleBatchClick }>
             <div className="font-bold"> Batches</div>
-            <div className="text-4xl font-bold"> 04</div>
+            <div className="text-4xl font-bold">
+              {coach?.batches?.length ?? NO_DATA}
+            </div>
           </div>
           <div 
-            className="w-60 rounded-lg border-2 border-solid border-gray-400 p-5"
+            className={`w-60 rounded-lg border-2 border-solid p-5 cursor-pointer ${ displayCertificate ? "border-indigo-600" : "border-gray-400"}`}
             onClick={ handleCertificateClick }>
             <div className="font-bold"> Certificates</div>
             <div className="text-4xl font-bold">
@@ -192,6 +215,9 @@ export default function Page({
       <CoachCertificate
         coach={ coach }
         displayCertificate={ displayCertificate } />
+      <CoachBatch
+        coach={ coach }
+        displayBatch={ displayBatch } />
     </>
   );
 }

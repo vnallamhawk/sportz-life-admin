@@ -89,7 +89,7 @@ model Coach {
   experienceLevel  ExperienceLevel
   centerId         Int?
   image            Bytes?
-  batches CoachesOnBatches[]
+  batches          CoachesOnBatches[]
 
   @@index([centerId])
 }
