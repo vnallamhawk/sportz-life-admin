@@ -29,7 +29,7 @@ export default function AddCoach() {
   } = useForm<COACH_TYPES>({ mode: "onSubmit" });
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
-  const { data: sports, isLoading } = api.sports.getAllSports.useQuery();
+  const { data: sports } = api.sports.getAllSports.useQuery();
 
   const [formConstantValues, setFormConstantValues] = useState(
     COACH_DETAILS_CONSTANTS
@@ -100,7 +100,7 @@ export default function AddCoach() {
               return (
                 <Datepicker
                   placeHolder={props.placeHolder}
-                  value={ new Date(value as string) }
+                  value={new Date(value as string)}
                   className="h-12 w-full"
                   onChangeHandler={onChange}
                 />

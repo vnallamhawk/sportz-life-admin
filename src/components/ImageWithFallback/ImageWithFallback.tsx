@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 
 const ImageWithFallback = ({
+  className,
   height,
   width,
   src,
@@ -9,6 +10,7 @@ const ImageWithFallback = ({
   alt,
   ...rest
 }: {
+  className?: string;
   height: number;
   width: number;
   src: string;
@@ -20,6 +22,7 @@ const ImageWithFallback = ({
   return (
     <Image
       {...rest}
+      className={className}
       width={width}
       height={height}
       src={imgSrc}

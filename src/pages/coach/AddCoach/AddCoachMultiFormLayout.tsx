@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,7 @@ import {
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import { ToastContext } from "~/contexts/Contexts";
+import FileUpload from "~/components/FileUpload";
 
 const multiFormData: MULTI_FORM_TYPES = {
   phoneNumber: "",
@@ -26,14 +27,6 @@ const multiFormData: MULTI_FORM_TYPES = {
   coachingSports: [],
   certificateData: [],
   batchIds: [],
-  trainingLevel: {
-    value: "",
-    label: "",
-  },
-  experienceLevel: {
-    value: "",
-    label: "",
-  },
 };
 
 const defaultValues = {
@@ -64,6 +57,7 @@ export default function AddCoachMultiFormLayout() {
   );
   const { setOpenToast } = useContext(ToastContext);
   const router = useRouter();
+  const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
 
   const formProviderData = {
     ...methods,
@@ -80,6 +74,17 @@ export default function AddCoachMultiFormLayout() {
       void router.push(`/coach/${response?.id ?? ""}`);
     },
   });
+
+  const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
+    setPreview(
+      acceptedFiles.map((upFile) =>
+        Object.assign(upFile, {
+          preview: URL.createObjectURL(upFile),
+        })
+      )
+    );
+  }, []);
+  console.log(preview);
 
   const finalFormSubmissionHandler = (
     finalForm: Required<MULTI_FORM_TYPES>
@@ -119,16 +124,50 @@ export default function AddCoachMultiFormLayout() {
         </Card>
         <Card className="col-span-2 bg-gray-100">
           <div className="mb-10 font-bold">Coach Image</div>
+
           <div>
-            <ImageWithFallback
+            {preview.length ? (
+              preview.map((upFile, index) => {
+                return (
+                  <div
+                    className="previewImage mb-5 flex justify-center rounded-full"
+                    key={index}
+                  >
+                    <ImageWithFallback
+                      className="rounded-2xl"
+                      src={upFile.preview}
+                      alt="preview"
+                      height={205}
+                      width={205}
+                      fallbackSrc="/images/fallback.png"
+                    />
+                  </div>
+                );
+              })
+            ) : (
+              <div className="previewImage">
+                <ImageWithFallback
+                  src={""}
+                  alt="preview"
+                  height={500}
+                  width={500}
+                  fallbackSrc="/images/fallback.png"
+                />
+              </div>
+            )}
+            <div className="mb-5 flex justify-center">
+              <FileUpload onDropCallback={onDropCallback} />{" "}
+            </div>
+
+            {/* <ImageWithFallback
               width={500}
               height={500}
               src=""
               alt=""
               fallbackSrc="/images/fallback.png"
-            />
+            /> */}
           </div>
-          <a className="mb-10 flex justify-center"> Upload Image</a>
+          {/* <a className="mb-10 flex justify-center"> Upload Image</a> */}
           <div>
             <span className="mb-5 font-bold">Note</span>
             <ul className="list-disc">

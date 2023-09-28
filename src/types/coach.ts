@@ -80,8 +80,8 @@ export interface COACH_TYPES {
   gender?: MultiSelectOption;
   payroll: string;
   coachingSports: MultiSelectOption[];
-  trainingLevel: MultiSelectOption;
-  experienceLevel: MultiSelectOption;
+  trainingLevel?: MultiSelectOption;
+  experienceLevel?: MultiSelectOption;
 }
 
 export interface BatchData {
