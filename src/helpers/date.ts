@@ -9,4 +9,4 @@ export function dateFormat(date: Date | undefined): string {
     mm.length == 1 ? mm = "0" + mm : mm;
 
     return dd + "/" + mm + "/" + yyyy;
-    }
+}
