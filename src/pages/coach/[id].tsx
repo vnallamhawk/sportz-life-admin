@@ -18,6 +18,7 @@ import { ToastContext } from '~/contexts/Contexts';
 import CoachCertificate from '~/components/Coach/Certificate/CoachCertificates';
 import { dateFormat } from '~/helpers/date';
 import CoachBatch from '~/components/Coach/Batch/CoachBatch';
+import CoachAttendance from '~/components/Coach/Attendance/CoachAttendance';
 
 export type CoachWithRelations = Coach & {
   certificates: Certificates[];
@@ -107,10 +108,12 @@ export default function Page({
   
   const [ displayCertificate, setDisplayCertificate ] = useState(false);
   const [ displayBatch, setDisplayBatch ] = useState(false);
+  const [ displayAttendance, setDisplayAttendance ] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
 
   const handleCertificateClick = () => setDisplayCertificate(!displayCertificate);
   const handleBatchClick = () => setDisplayBatch(!displayBatch);
+  const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
   
   return (
     <>
@@ -187,7 +190,9 @@ export default function Page({
           </div>
         </div>
         <div className="mt-5 flex w-10/12 justify-between">
-          <div className="w-60 rounded-lg border-2 border-solid border-gray-400 p-5">
+          <div 
+            className={`w-60 rounded-lg border-2 border-solid p-5 cursor-pointer ${ displayAttendance ? "border-fuchsia-800" : "border-gray-400"}`}
+            onClick={ handleAttendanceClick }>
             <div className="font-bold"> Attendance</div>
             <div className="text-4xl font-bold"> 60%</div>
           </div>
@@ -218,6 +223,9 @@ export default function Page({
       <CoachBatch
         coach={ coach }
         displayBatch={ displayBatch } />
+      <CoachAttendance 
+        coach={ coach }
+        displayAttendance={ displayAttendance } />
     </>
   );
 }
