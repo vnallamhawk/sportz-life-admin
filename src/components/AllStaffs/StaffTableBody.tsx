@@ -23,6 +23,8 @@ export default function StaffTableBody(
       ? api.staff.getAllStaffs.useQuery()
       : api.staff.getAllStaffsByName.useQuery(filter);
 
+  console.log(staffs);
+
   useEffect(() => {
     handleIsLoading(isLoading);
   }, [handleIsLoading, isLoading]);

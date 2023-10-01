@@ -25,8 +25,12 @@ export const staffRouter = createTRPCRouter({
             contains: opts.input.name,
           },
         },
+        include: {
+          center: true,
+        },
       });
 
+      console.log(staffs);
       return staffs;
     }),
 });
