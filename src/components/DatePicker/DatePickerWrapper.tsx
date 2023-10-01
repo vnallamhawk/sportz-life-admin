@@ -36,7 +36,7 @@ export default function DatePickerWrapper({
       placeholderText={placeHolder}
       value={value?.toString() == "Invalid Date" ? "" : dateFormat(value)}
       selected={value?.toString() == "Invalid Date" ? new Date() : value}
-      onChange={(date) => onChangeHandler!(date as Date)}
+      onChange={(date) => onChangeHandler?.(date as Date)}
       showMonthDropdown
       showYearDropdown
       dropdownMode="select"
