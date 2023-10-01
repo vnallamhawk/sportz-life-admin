@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState } from "react";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
@@ -12,13 +12,17 @@ import {
   type CoachesOnSports,
 } from "@prisma/client";
 import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
-import { ExperienceLevelEnum, TrainingLevelEnum, type batchWithCenter } from "~/types/coach";
+import {
+  ExperienceLevelEnum,
+  TrainingLevelEnum,
+  type batchWithCenter,
+} from "~/types/coach";
 import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
-import { ToastContext } from '~/contexts/Contexts';
-import CoachCertificate from '~/components/Coach/Certificate/CoachCertificates';
-import { dateFormat } from '~/helpers/date';
-import CoachBatch from '~/components/Coach/Batch/CoachBatch';
-import CoachAttendance from '~/components/Coach/Attendance/CoachAttendance';
+import { ToastContext } from "~/contexts/Contexts";
+import CoachCertificate from "~/components/Coach/Certificate/CoachCertificates";
+import { dateFormat } from "~/helpers/date";
+import CoachBatch from "~/components/Coach/Batch/CoachBatch";
+import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
 
 export type CoachWithRelations = Coach & {
   certificates: Certificates[];
@@ -39,22 +43,22 @@ export const getServerSideProps = async (
       sports: true,
       certificates: true,
       batches: true,
-      centers: true
+      centers: true,
     },
   });
   const batches = await prisma.batches.findMany({
     where: {
       id: {
-        in: coach?.batches.map( batch => batch.batchId)
-      }
-    }
+        in: coach?.batches.map((batch) => batch.batchId),
+      },
+    },
   });
   const centers = await prisma.center.findMany({
     where: {
       id: {
-        in: batches.map( batch => batch.centerId)
-      }
-    }
+        in: batches.map((batch) => batch.centerId),
+      },
+    },
   });
 
   return {
@@ -71,22 +75,30 @@ export const getServerSideProps = async (
           assignedAt: sport?.assignedAt ? sport?.assignedAt?.toISOString() : "",
           updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
         })),
-        certificates: coach?.certificates.map( cert => ({
+        certificates: coach?.certificates.map((cert) => ({
           ...cert,
           startEnd: cert.startEnd ? dateFormat(cert.startEnd) : "",
-          endDate: cert.endDate ? dateFormat(cert.endDate) : ""
+          endDate: cert.endDate ? dateFormat(cert.endDate) : "",
         })),
-        batches: coach?.batches.map( coachBatch => ({
+        batches: coach?.batches.map((coachBatch) => ({
           ...coachBatch,
-          assignedAt: coachBatch?.assignedAt ? dateFormat(coachBatch?.assignedAt) : "",
-          updatedAt: coachBatch?.updatedAt ? dateFormat(coachBatch?.updatedAt) : "",
-          batch: batches.find( batch => batch.id == coachBatch.batchId),
-          center: centers.find( center => center.id == batches.find( batch => batch.id == coachBatch.batchId)?.centerId)
+          assignedAt: coachBatch?.assignedAt
+            ? dateFormat(coachBatch?.assignedAt)
+            : "",
+          updatedAt: coachBatch?.updatedAt
+            ? dateFormat(coachBatch?.updatedAt)
+            : "",
+          batch: batches.find((batch) => batch.id == coachBatch.batchId),
+          center: centers.find(
+            (center) =>
+              center.id ==
+              batches.find((batch) => batch.id == coachBatch.batchId)?.centerId
+          ),
         })),
       },
       sports: sports,
       batches: batches,
-      centers: centers
+      centers: centers,
     },
   };
 };
@@ -105,16 +117,17 @@ export default function Page({
     },
     {}
   );
-  
-  const [ displayCertificate, setDisplayCertificate ] = useState(false);
-  const [ displayBatch, setDisplayBatch ] = useState(false);
-  const [ displayAttendance, setDisplayAttendance ] = useState(false);
+
+  const [displayCertificate, setDisplayCertificate] = useState(false);
+  const [displayBatch, setDisplayBatch] = useState(false);
+  const [displayAttendance, setDisplayAttendance] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
 
-  const handleCertificateClick = () => setDisplayCertificate(!displayCertificate);
+  const handleCertificateClick = () =>
+    setDisplayCertificate(!displayCertificate);
   const handleBatchClick = () => setDisplayBatch(!displayBatch);
   const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
-  
+
   return (
     <>
       <Card className="h-100 mx-5">
@@ -190,23 +203,32 @@ export default function Page({
           </div>
         </div>
         <div className="mt-5 flex w-10/12 justify-between">
-          <div 
-            className={`w-60 rounded-lg border-2 border-solid p-5 cursor-pointer ${ displayAttendance ? "border-fuchsia-800" : "border-gray-400"}`}
-            onClick={ handleAttendanceClick }>
+          <div
+            className={`w-60 cursor-pointer rounded-lg border-2 border-solid p-5 ${
+              displayAttendance ? "border-fuchsia-800" : "border-gray-400"
+            }`}
+            onClick={handleAttendanceClick}
+          >
             <div className="font-bold"> Attendance</div>
             <div className="text-4xl font-bold"> 60%</div>
           </div>
-          <div 
-            className={`w-60 rounded-lg border-2 border-solid p-5 cursor-pointer ${ displayBatch ? "border-rose-400" : "border-gray-400"}`}
-            onClick={ handleBatchClick }>
+          <div
+            className={`w-60 cursor-pointer rounded-lg border-2 border-solid p-5 ${
+              displayBatch ? "border-rose-400" : "border-gray-400"
+            }`}
+            onClick={handleBatchClick}
+          >
             <div className="font-bold"> Batches</div>
             <div className="text-4xl font-bold">
               {coach?.batches?.length ?? NO_DATA}
             </div>
           </div>
-          <div 
-            className={`w-60 rounded-lg border-2 border-solid p-5 cursor-pointer ${ displayCertificate ? "border-indigo-600" : "border-gray-400"}`}
-            onClick={ handleCertificateClick }>
+          <div
+            className={`w-60 cursor-pointer rounded-lg border-2 border-solid p-5 ${
+              displayCertificate ? "border-indigo-600" : "border-gray-400"
+            }`}
+            onClick={handleCertificateClick}
+          >
             <div className="font-bold"> Certificates</div>
             <div className="text-4xl font-bold">
               {coach?.certificates?.length ?? NO_DATA}
@@ -214,18 +236,13 @@ export default function Page({
           </div>
         </div>
         <AddCoachSuccessToast
-          open= { openToast }
-          setOpen={ setOpenToast }></AddCoachSuccessToast>
+          open={openToast}
+          setOpen={setOpenToast}
+        ></AddCoachSuccessToast>
       </Card>
-      <CoachCertificate
-        coach={ coach }
-        displayCertificate={ displayCertificate } />
-      <CoachBatch
-        coach={ coach }
-        displayBatch={ displayBatch } />
-      <CoachAttendance 
-        coach={ coach }
-        displayAttendance={ displayAttendance } />
+      <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
+      <CoachBatch coach={coach} displayBatch={displayBatch} />
+      <CoachAttendance coach={coach} displayAttendance={displayAttendance} />
     </>
   );
 }

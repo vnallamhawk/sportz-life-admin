@@ -131,7 +131,7 @@ export default function AddCoachCertificates({}) {
                   placeHolder="Start"
                   className="h-12 w-full"
                   onChangeHandler={onChange}
-                  value={ new Date(value) }
+                  value={new Date(value)}
                 />
               );
             }}
@@ -145,7 +145,7 @@ export default function AddCoachCertificates({}) {
                   className="ml-3 h-12 w-full"
                   placeHolder="End"
                   onChangeHandler={onChange}
-                  value={ new Date(value) }
+                  value={new Date(value)}
                 />
               );
             }}

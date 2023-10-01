@@ -1,4 +1,8 @@
-import { Batches, Center, CoachesOnBatches } from "@prisma/client";
+import {
+  type Batches,
+  type Center,
+  type CoachesOnBatches,
+} from "@prisma/client";
 
 export const InputType = ["textbox", "select", "calendar"] as const;
 

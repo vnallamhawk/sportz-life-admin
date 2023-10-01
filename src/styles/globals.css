@@ -1,11 +1,10 @@
-@import '@radix-ui/colors/black-alpha.css';
-@import '@radix-ui/colors/green.css';
-@import '@radix-ui/colors/mauve.css';
-@import '@radix-ui/colors/slate.css';
-@import '@radix-ui/colors/violet.css';
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/green.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/slate.css";
+@import "@radix-ui/colors/violet.css";
 @import "react-datepicker/dist/react-datepicker.css";
-@import 'react-tabs/style/react-tabs.css';
-
+@import "react-tabs/style/react-tabs.css";
 
 @tailwind base;
 @tailwind components;
@@ -19,7 +18,6 @@ button[role="combobox"] {
   width: 100%;
 }
 
-
 /*******************************************************************************************************/
 /*                              Coach attendance calendar view                                         */
 /*******************************************************************************************************/
@@ -31,7 +29,7 @@ button[role="combobox"] {
   background-color: transparent;
 }
 
-.coachAttendanceCalendarView .react-datepicker__day--keyboard-selected, 
+.coachAttendanceCalendarView .react-datepicker__day--keyboard-selected,
 .coachAttendanceCalendarView .react-datepicker__day:hover {
   background-color: transparent;
 }
@@ -58,10 +56,15 @@ button[role="combobox"] {
   width: 100%;
 }
 
-.coachAttendanceCalendarView, 
-.coachAttendanceCalendarView > div.react-datepicker-wrapper, 
-.coachAttendanceCalendarView > div > div.react-datepicker__input-container
-.coachAttendanceCalendarView > div > div.react-datepicker__input-container input {
-   width: 100%;
-   height: 100%;
+.coachAttendanceCalendarView,
+.coachAttendanceCalendarView > div.react-datepicker-wrapper,
+.coachAttendanceCalendarView
+  > div
+  > div.react-datepicker__input-container
+  .coachAttendanceCalendarView
+  > div
+  > div.react-datepicker__input-container
+  input {
+  width: 100%;
+  height: 100%;
 }
