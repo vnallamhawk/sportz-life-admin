@@ -5,7 +5,6 @@ import type { CoachWithRelations } from "~/pages/coach/[id]";
 import { useState } from "react";
 import CoachBatchTableHeader from "./CoachBatchTableHeader";
 import CoachBatchTableBody from "./CoachBatchTableBody";
-import type { Batches, Center } from "@prisma/client";
 
 export default function CoachCertificate({
   coach,
