@@ -42,21 +42,5 @@ export default function DatePickerWrapper({
       dropdownMode="select"
       wrapperClassName="w-full"
     />
-    // <Popover.Root open={open}>
-    //   <Popover.Trigger>
-    //     <Textbox
-    //       className={className}
-    //       onClick={(e) => {
-    //         e.stopPropagation();
-    //         setOpen(true);
-    //       }}
-    //       value={value === "" ? "" : selectedDate.toString()}
-    //       placeHolder={placeHolder}
-    //     />
-    //   </Popover.Trigger>
-    //   <Popover.Content style={{ width: 250 }}>
-    //     {/*<Datepicker onDateSelected={onDateSelected} ref={datePickerRef} />*/}
-    //   </Popover.Content>
-    // </Popover.Root>
   );
 }
