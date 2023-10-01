@@ -1,33 +1,29 @@
 import React, { useState } from "react";
 import Card from "~/components/Card/Card";
 import CardTitle from "~/components/Card/CardTitle";
-import Textbox from "~/components/Textbox/Textbox";
-import Button from "~/components/Button/Button";
-import { useRouter } from "next/navigation";
+import { Input } from "~/components/ui/input";
+import { Button } from "~/components/ui/button";
 import { api } from "~/utils/api";
 import { DataTable } from "~/components/coaches/data-table,";
 import { type Coach, columns } from "~/components/coaches/columns";
 import { differenceInYears } from "date-fns";
+import Link from "next/link";
+import { useDebounce } from "usehooks-ts";
 
 export default function AllCoach() {
-  const router = useRouter();
-
   const [filterByName, setFilterByName] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  const handleIsLoading = (isLoading: boolean) => {
-    setLoading(isLoading);
-  };
+  const debouncedFilter = useDebounce<string>(filterByName, 200);
 
   const { data: coaches } =
-    filterByName == ""
+    debouncedFilter == ""
       ? api.coach.getAllCoaches.useQuery()
-      : api.coach.getCoachesByName.useQuery({ name: filterByName });
+      : api.coach.getCoachesByName.useQuery({ name: debouncedFilter });
   const { data: allSports } = api.sports.getAllSports.useQuery();
 
   const tableData: Coach[] = coaches
     ? coaches.map((coach) => {
         const {
+          id,
           name,
           dateOfBirth,
           designation,
@@ -52,6 +48,7 @@ export default function AllCoach() {
         }
 
         return {
+          id,
           name,
           age: differenceInYears(new Date(), new Date(dateOfBirth)),
           designation,
@@ -76,17 +73,14 @@ export default function AllCoach() {
       <Card className="h-full">
         <header className="flex justify-between p-2">
           <CardTitle title="ALL COACHES" />
-          <div>
-            <Textbox
+          <div className="flex items-center gap-2">
+            <Input
+              onChange={(e) => setFilterByName(e.target.value)}
               value={filterByName}
-              setValue={setFilterByName}
-              placeHolder="Search By Name"
+              placeholder="Search By Name..."
             />
-            <Button
-              className="ml-3 bg-pink-700 p-2"
-              onClick={() => router.push("/coach/AddCoach")}
-            >
-              ADD COACH
+            <Button asChild className="whitespace-nowrap">
+              <Link href={"/coach/AddCoach"}>Add New Coach</Link>
             </Button>
           </div>
         </header>

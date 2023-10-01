@@ -10,8 +10,10 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { api } from "~/utils/api";
 
 export type Coach = {
+  id: number;
   name: string;
   age: number;
   designation: string;
@@ -98,6 +100,17 @@ export const columns: ColumnDef<Coach>[] = [
     id: "actions",
     cell: ({ row }) => {
       const coach = row.original;
+      const utils = api.useContext();
+
+      const {
+        // data,
+        mutate,
+        // isLoading: isLoading,
+      } = api.coach.deleteCoach.useMutation({
+        onSettled: async () => {
+          await utils.coach.invalidate();
+        },
+      });
 
       return (
         <DropdownMenu>
@@ -110,7 +123,13 @@ export const columns: ColumnDef<Coach>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                mutate({ id: coach.id });
+              }}
+            >
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

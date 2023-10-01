@@ -130,6 +130,15 @@ export const coachRouter = createTRPCRouter({
         return response;
       }
     ),
+  deleteCoach: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .mutation(async ({ input: { id }, ctx }) => {
+      return ctx.prisma.coach.delete({ where: { id } });
+    }),
 
   // getSecretMessage: protectedProcedure.query(() => {
   //   return "you can now see this secret message!";

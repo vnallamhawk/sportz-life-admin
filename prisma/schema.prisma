@@ -70,26 +70,26 @@ model VerificationToken {
 }
 
 model Coach {
-  id               Int                @unique @default(autoincrement())
-  name             String
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @default(now()) @updatedAt
-  about            String
-  dateOfBirth      DateTime
-  contactNumber    String
-  email            String             @unique
-  designation      String
-  gender           Gender
-  payroll          Payroll?
-  payrollId        Int?
-  sports           CoachesOnSports[]
-  certificates     Certificates[]
-  centers          CoachesOnCenters[]
-  trainingLevel    TrainingLevel
-  experienceLevel  ExperienceLevel
-  centerId         Int?
-  image            Bytes?
-  batches          CoachesOnBatches[]
+  id              Int                @unique @default(autoincrement())
+  name            String
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @default(now()) @updatedAt
+  about           String
+  dateOfBirth     DateTime
+  contactNumber   String
+  email           String             @unique
+  designation     String
+  gender          Gender
+  payroll         Payroll?
+  payrollId       Int?
+  sports          CoachesOnSports[]
+  certificates    Certificates[]
+  centers         CoachesOnCenters[]
+  trainingLevel   TrainingLevel
+  experienceLevel ExperienceLevel
+  centerId        Int?
+  image           Bytes?
+  batches         CoachesOnBatches[]
 
   @@index([centerId])
 }
@@ -170,7 +170,7 @@ model CoachesOnCenters {
 }
 
 model CoachesOnSports {
-  coach      Coach    @relation(fields: [coachId], references: [id])
+  coach      Coach    @relation(fields: [coachId], references: [id], onDelete: Cascade)
   coachId    Int
   sport      Sports   @relation(fields: [sportId], references: [id])
   sportId    Int
@@ -188,7 +188,7 @@ model Certificates {
   startEnd      DateTime?
   instituteName String
   endDate       DateTime?
-  coach         Coach     @relation(fields: [coachId], references: [id])
+  coach         Coach     @relation(fields: [coachId], references: [id], onDelete: Cascade)
   coachId       Int
 
   @@index([coachId])
