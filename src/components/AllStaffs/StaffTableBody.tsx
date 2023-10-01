@@ -6,6 +6,7 @@ import { differenceInYears } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { NO_DATA } from "~/globals/globals";
+import { centerDictionaryServices } from "~/services/centerServices";
 
 interface staffTableFilter {
   name: string;
@@ -18,10 +19,13 @@ export default function StaffTableBody(
   // let tableData;
   const router = useRouter();
 
+  const { data: centers } = api.center.getAllCenters.useQuery();
+
   const { data: staffs, isLoading } =
     filter.name == ""
       ? api.staff.getAllStaffs.useQuery()
       : api.staff.getAllStaffsByName.useQuery(filter);
+  const centerDictionary = centerDictionaryServices(centers);
 
   useEffect(() => {
     handleIsLoading(isLoading);
@@ -35,7 +39,7 @@ export default function StaffTableBody(
     <>
       {staffs?.map(
         (
-          { name, dateOfBirth, designation, gender, contactNumber, id },
+          { center, name, dateOfBirth, designation, gender, contactNumber, id },
           index
         ) => (
           <tr
@@ -63,7 +67,11 @@ export default function StaffTableBody(
               {gender}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {NO_DATA}
+              {center?.length
+                ? center
+                    .map(({ centerId }) => centerDictionary?.[centerId]?.name)
+                    .join(", ")
+                : NO_DATA}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
               {contactNumber}
