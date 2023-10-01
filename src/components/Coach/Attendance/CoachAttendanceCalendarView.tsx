@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import DatePicker, {
   type ReactDatePickerCustomHeaderProps,
 } from "react-datepicker";
-import CardTitle from "~/components/Card/CardTitle";
 
 export default function CoachAttendanceCalendarView() {
   const customHeader = ({
@@ -35,7 +34,7 @@ export default function CoachAttendanceCalendarView() {
     <div className="text-xs text-gray-500">{day.slice(0, 3).toUpperCase()}</div>
   );
 
-  const renderDayContents = (dayOfMonth: number, date?: Date) => {
+  const renderDayContents = (dayOfMonth: number) => {
     if (dayOfMonth % 2 == 0)
       return (
         <div className={`relative`}>

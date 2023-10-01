@@ -2,28 +2,15 @@ import CardTitle from "~/components/Card/CardTitle";
 import Card from "../../Card";
 import CoachAttendanceCard from "./CoachAttendanceCard";
 import type { CoachWithRelations } from "~/pages/coach/[id]";
-import { useState } from "react";
 import CoachAttendanceCalendarView from "./CoachAttendanceCalendarView";
 import CoachAttendanceInfo from "./CoachAttendanceInfo";
 
 export default function CoachAttendance({
-  coach,
   displayAttendance,
 }: {
   coach: CoachWithRelations;
   displayAttendance: boolean;
 }) {
-  const [certificates, setCertificates] = useState(coach.certificates);
-  const [filterByCertificate, setFilterByCertificate] = useState("");
-  const handleFilterByCertificateChange = (filter: string) => {
-    setCertificates(
-      coach.certificates.filter((cert) => {
-        return cert.name.toLowerCase().includes(filter);
-      })
-    );
-    setFilterByCertificate(filter);
-  };
-
   return (
     <Card className={`${displayAttendance ? "" : "hidden"} h-100`}>
       <header className="ml-5 flex justify-between">

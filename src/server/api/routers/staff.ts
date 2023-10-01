@@ -30,7 +30,6 @@ export const staffRouter = createTRPCRouter({
         },
       });
 
-      console.log(staffs);
       return staffs;
     }),
 });

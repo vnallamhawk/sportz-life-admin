@@ -84,7 +84,6 @@ export default function AddCoachMultiFormLayout() {
       )
     );
   }, []);
-  console.log(preview);
 
   const finalFormSubmissionHandler = (
     finalForm: Required<MULTI_FORM_TYPES>

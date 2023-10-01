@@ -30,7 +30,6 @@ export default function StaffTableBody(
   const onClickHandler = (id: number) => {
     void router.push(`/staff/${id ?? ""}`);
   };
-  console.log(staffs);
 
   return (
     <>
