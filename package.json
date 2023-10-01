@@ -10,6 +10,11 @@
     "start": "next start",
     "prepare": "husky install"
   },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "next lint --fix"
+    ]
+  },
   "dependencies": {
     "@next-auth/prisma-adapter": "1.0.5",
     "@prisma/client": "5.1.1",
@@ -26,6 +31,7 @@
     "classnames": "2.3.2",
     "date-fns": "2.30.0",
     "dayzed": "3.2.3",
+    "lint-staged": "^14.0.1",
     "next": "13.4.4",
     "next-auth": "4.22.1",
     "radix-ui": "1.0.1",
@@ -61,14 +67,5 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.15.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx}": "eslint --cache --fix",
-    "*.{js,css,md,ts,tsx}": "prettier --write"
   }
 }

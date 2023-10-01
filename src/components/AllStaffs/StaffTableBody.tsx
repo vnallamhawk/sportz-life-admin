@@ -23,8 +23,6 @@ export default function StaffTableBody(
       ? api.staff.getAllStaffs.useQuery()
       : api.staff.getAllStaffsByName.useQuery(filter);
 
-  console.log(staffs);
-
   useEffect(() => {
     handleIsLoading(isLoading);
   }, [handleIsLoading, isLoading]);
@@ -32,6 +30,7 @@ export default function StaffTableBody(
   const onClickHandler = (id: number) => {
     void router.push(`/staff/${id ?? ""}`);
   };
+  console.log(staffs);
 
   return (
     <>
