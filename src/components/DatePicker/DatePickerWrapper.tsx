@@ -27,43 +27,20 @@ export default function DatePickerWrapper({
   //   onChangeHandler && onChangeHandler(DATE_TIME_FORMAT.format(date));
   //   setOpen(false);
   // };
-  
+
   return (
-    <DatePicker 
+    <DatePicker
       className={classNames("rounded-lg border-2 border-solid pl-3", {
         [className as string]: className !== "",
       })}
-      placeholderText={ placeHolder }
-      value={ 
-        value?.toString() == "Invalid Date" ? 
-          "" : 
-          dateFormat(value)
-      }
-      selected={ 
-        value?.toString() == "Invalid Date" ? 
-          new Date() : 
-          value
-      } 
-      onChange={ date => onChangeHandler!(date as Date) }
+      placeholderText={placeHolder}
+      value={value?.toString() == "Invalid Date" ? "" : dateFormat(value)}
+      selected={value?.toString() == "Invalid Date" ? new Date() : value}
+      onChange={(date) => onChangeHandler?.(date as Date)}
       showMonthDropdown
       showYearDropdown
-      dropdownMode="select" 
-      wrapperClassName="w-full" />
-    // <Popover.Root open={open}>
-    //   <Popover.Trigger>
-    //     <Textbox
-    //       className={className}
-    //       onClick={(e) => {
-    //         e.stopPropagation();
-    //         setOpen(true);
-    //       }}
-    //       value={value === "" ? "" : selectedDate.toString()}
-    //       placeHolder={placeHolder}
-    //     />
-    //   </Popover.Trigger>
-    //   <Popover.Content style={{ width: 250 }}>
-    //     {/*<Datepicker onDateSelected={onDateSelected} ref={datePickerRef} />*/}
-    //   </Popover.Content>
-    // </Popover.Root>
+      dropdownMode="select"
+      wrapperClassName="w-full"
+    />
   );
 }

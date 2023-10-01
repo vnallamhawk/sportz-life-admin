@@ -1,9 +1,9 @@
-import { COACH_TABLE_HEADERS } from "~/constants/coachConstants";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { HamburgerMenuIcon, CheckIcon } from "@radix-ui/react-icons";
+import { STAFF_TABLE_HEADERS } from "~/constants/staffConstants";
 
-export default function CoachTableHeader() {
+export default function StaffTableHeader() {
   const getRenderComponent = (id: string, label?: string) => {
     let component;
     if (id === "selectControl") {
@@ -32,7 +32,7 @@ export default function CoachTableHeader() {
 
   return (
     <tr className="text-sm uppercase leading-normal text-gray-600">
-      {COACH_TABLE_HEADERS.map(({ id, label }) => (
+      {STAFF_TABLE_HEADERS.map(({ id, label }) => (
         <th key={id} className="px-6 py-3 text-left">
           {getRenderComponent(id, label)}
         </th>

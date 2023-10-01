@@ -107,7 +107,6 @@ export default function AssignBatches({
     const tableDataFormatter = formatBatchesTableData(data);
     const result = await trigger();
 
-    console.log(data);
     if (result && Object.keys(errors).length === 0) {
       if (tableData?.length) {
         setTableData((prev) => [...prev, tableDataFormatter]);
@@ -123,7 +122,7 @@ export default function AssignBatches({
       <CardTitle title="ADD COACH" />
       <div className="mb-3 text-lg font-bold">ASSIGN BATCHES</div>
 
-      <div className="mb-3 flex gap-2 justify-between">
+      <div className="mb-3 flex justify-between gap-2">
         <Controller
           control={control}
           rules={{

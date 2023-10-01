@@ -8,7 +8,6 @@ export default function CertificateTableBody({
 }: {
   data: COACH_CERTIFICATE_TABLE_TYPES[];
 }) {
-  console.log(data);
   return (
     <>
       {data.map(({ instituteName, name, startEnd, endDate }, index) => (

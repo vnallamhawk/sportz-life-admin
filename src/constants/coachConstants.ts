@@ -172,7 +172,7 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
       { label: "6-10 years", value: "SIX_TEN" },
       { label: "10+ years", value: "TEN_OVER" },
     ],
-    placeHolder: "Training level expertise",
+    placeHolder: "Experience Level",
     rules: {
       required: true,
     },

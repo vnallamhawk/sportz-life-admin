@@ -5,48 +5,37 @@ import { api } from "~/utils/api";
 import { differenceInYears } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { NO_DATA } from "~/globals/globals";
 
-interface coachTableFilter {
+interface staffTableFilter {
   name: string;
 }
 
-export default function CoachTableBody(
-  filter: coachTableFilter,
+export default function StaffTableBody(
+  filter: staffTableFilter,
   handleIsLoading: (isLoading: boolean) => void
 ) {
-  let tableData;
+  // let tableData;
   const router = useRouter();
 
-  const { data: coaches } =
+  const { data: staffs, isLoading } =
     filter.name == ""
-      ? api.coach.getAllCoaches.useQuery()
-      : api.coach.getCoachesByName.useQuery(filter);
-  const { data: sports, isLoading } = api.sports.getAllSports.useQuery();
-
-  if (coaches && sports) {
-    tableData = coaches.map((coach) => ({
-      ...coach,
-      sports: coach?.sports
-        ? coach?.sports
-            ?.map((sport) => sports.find((s) => s.id === sport.sportId)?.name)
-            ?.join(",")
-        : "",
-    }));
-  }
+      ? api.staff.getAllStaffs.useQuery()
+      : api.staff.getAllStaffsByName.useQuery(filter);
 
   useEffect(() => {
     handleIsLoading(isLoading);
   }, [handleIsLoading, isLoading]);
 
   const onClickHandler = (id: number) => {
-    void router.push(`/coach/${id ?? ""}`);
+    void router.push(`/staff/${id ?? ""}`);
   };
 
   return (
     <>
-      {tableData?.map(
+      {staffs?.map(
         (
-          { name, dateOfBirth, designation, sports, gender, contactNumber, id },
+          { name, dateOfBirth, designation, gender, contactNumber, id },
           index
         ) => (
           <tr
@@ -71,12 +60,11 @@ export default function CoachTableBody(
               {designation}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {sports}
-            </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
               {gender}
             </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">{`batch`}</td>
+            <td className="border-y-2 border-solid px-6 py-3 text-left">
+              {NO_DATA}
+            </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
               {contactNumber}
             </td>

@@ -102,6 +102,7 @@ model Staff {
   contactNumber String
   email         String        @unique
   designation   String
+  dateOfBirth   DateTime
   gender        Gender
   center        StaffCenter[]
   image         Bytes?
