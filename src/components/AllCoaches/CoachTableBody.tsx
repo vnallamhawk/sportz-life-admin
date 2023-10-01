@@ -7,16 +7,20 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 interface coachTableFilter {
-  name: string
+  name: string;
 }
 
-export default function CoachTableBody(filter: coachTableFilter, handleIsLoading: (isLoading: boolean) => void) {
+export default function CoachTableBody(
+  filter: coachTableFilter,
+  handleIsLoading: (isLoading: boolean) => void
+) {
   let tableData;
   const router = useRouter();
 
-  const { data: coaches } = filter.name == "" ? 
-    api.coach.getAllCoaches.useQuery() :
-    api.coach.getCoachesByName.useQuery(filter);
+  const { data: coaches } =
+    filter.name == ""
+      ? api.coach.getAllCoaches.useQuery()
+      : api.coach.getCoachesByName.useQuery(filter);
   const { data: sports, isLoading } = api.sports.getAllSports.useQuery();
 
   if (coaches && sports) {
@@ -31,8 +35,8 @@ export default function CoachTableBody(filter: coachTableFilter, handleIsLoading
   }
 
   useEffect(() => {
-    handleIsLoading(isLoading)
-  }, [isLoading])
+    handleIsLoading(isLoading);
+  }, [isLoading]);
 
   const onClickHandler = (id: number) => {
     void router.push(`/coach/${id ?? ""}`);
@@ -40,7 +44,7 @@ export default function CoachTableBody(filter: coachTableFilter, handleIsLoading
 
   return (
     <>
-        {tableData?.map(
+      {tableData?.map(
         (
           { name, dateOfBirth, designation, sports, gender, contactNumber, id },
           index
@@ -50,23 +54,33 @@ export default function CoachTableBody(filter: coachTableFilter, handleIsLoading
             className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
             onClick={() => onClickHandler(id)}
           >
-            <td className="px-6 py-3 text-left">
+            <td className="rounded-l-lg border-y-2 border-l-2 border-solid pl-5">
               <Checkbox.Root className="CheckboxRoot" defaultChecked id="c1">
                 <Checkbox.Indicator className="CheckboxIndicator">
                   <CheckIcon />
                 </Checkbox.Indicator>
               </Checkbox.Root>
             </td>
-            <td className="whitespace-nowrap px-6 py-3 text-left">{name}</td>
-            <td className="px-6 py-3 text-left">
+            <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
+              {name}
+            </td>
+            <td className="border-y-2 border-solid px-6 py-3 text-left">
               {differenceInYears(new Date(), new Date(dateOfBirth))}
             </td>
-            <td className="px-6 py-3 text-left">{designation}</td>
-            <td className="px-6 py-3 text-left">{sports}</td>
-            <td className="px-6 py-3 text-left">{gender}</td>
-            <td className="px-6 py-3 text-left">{`batch`}</td>
-            <td className="px-6 py-3 text-left">{contactNumber}</td>
-            <td className="px-6 py-3 text-left">
+            <td className="border-y-2 border-solid px-6 py-3 text-left">
+              {designation}
+            </td>
+            <td className="border-y-2 border-solid px-6 py-3 text-left">
+              {sports}
+            </td>
+            <td className="border-y-2 border-solid px-6 py-3 text-left">
+              {gender}
+            </td>
+            <td className="border-y-2 border-solid px-6 py-3 text-left">{`batch`}</td>
+            <td className="border-y-2 border-solid px-6 py-3 text-left">
+              {contactNumber}
+            </td>
+            <td className="rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left">
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild>
                   <button className="IconButton" aria-label="Customise options">
@@ -78,8 +92,6 @@ export default function CoachTableBody(filter: coachTableFilter, handleIsLoading
           </tr>
         )
       )}
-
-
     </>
   );
 }

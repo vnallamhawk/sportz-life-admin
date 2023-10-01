@@ -13,22 +13,23 @@ export default function AllCoach() {
   const router = useRouter();
 
   const [filterByName, setFilterByName] = useState("");
-  const [loading, setLoading] = useState(true) 
+  const [loading, setLoading] = useState(true);
 
   const handleIsLoading = (isLoading: boolean) => {
-    setLoading(isLoading)
-  }
-  
+    setLoading(isLoading);
+  };
+
   return (
     <>
       <Card className="h-full">
         <header className="flex justify-between p-2">
           <CardTitle title="ALL COACHES" />
           <div>
-            <Textbox 
-              value={ filterByName }
-              setValue={ setFilterByName }
-              placeHolder="Search By Name" />
+            <Textbox
+              value={filterByName}
+              setValue={setFilterByName}
+              placeHolder="Search By Name"
+            />
             <Button
               className="ml-3 bg-pink-700 p-2"
               onClick={() => router.push("/coach/AddCoach")}
@@ -37,10 +38,13 @@ export default function AllCoach() {
             </Button>
           </div>
         </header>
-        <Table tableHeader={CoachTableHeader()} tableBody={CoachTableBody({ name: filterByName }, (handleIsLoading))} />
+        <Table
+          className="mt-1 w-full table-auto border-separate border-spacing-y-3 place-self-center"
+          tableHeader={CoachTableHeader()}
+          tableBody={CoachTableBody({ name: filterByName }, handleIsLoading)}
+        />
         {loading ? <LoadingSpinner /> : ""}
       </Card>
-    
     </>
   );
 }

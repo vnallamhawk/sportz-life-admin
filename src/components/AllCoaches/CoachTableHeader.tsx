@@ -31,7 +31,7 @@ export default function CoachTableHeader() {
   };
 
   return (
-    <tr className="bg-gray-200 text-sm uppercase leading-normal text-gray-600">
+    <tr className="text-sm uppercase leading-normal text-gray-600">
       {COACH_TABLE_HEADERS.map(({ id, label }) => (
         <th key={id} className="px-6 py-3 text-left">
           {getRenderComponent(id, label)}
