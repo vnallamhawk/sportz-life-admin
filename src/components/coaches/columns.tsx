@@ -9,6 +9,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 export type Coach = {
   name: string;
@@ -18,6 +19,7 @@ export type Coach = {
   gender: string;
   batches: string;
   contact: string;
+  avatar: string;
 };
 
 export const columns: ColumnDef<Coach>[] = [
@@ -43,6 +45,30 @@ export const columns: ColumnDef<Coach>[] = [
   {
     accessorKey: "name",
     header: "Name",
+    cell: ({ row }) => {
+      const coach = row.original;
+
+      const getInitials = (fullName: string) => {
+        const allNames = fullName.trim().split(" ");
+        const initials = allNames.reduce((acc, curr, index) => {
+          if (index === 0 || index === allNames.length - 1) {
+            acc = `${acc}${curr.charAt(0).toUpperCase()}`;
+          }
+          return acc;
+        }, "");
+        return initials;
+      };
+
+      return (
+        <div className="flex items-center gap-2">
+          <Avatar>
+            <AvatarImage src={coach.avatar} />
+            <AvatarFallback>{getInitials(coach.name)}</AvatarFallback>
+          </Avatar>
+          <span className="font-semibold">{coach.name}</span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "age",
