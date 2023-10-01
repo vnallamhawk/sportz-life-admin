@@ -61,5 +61,14 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.15.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "eslint --cache --fix",
+    "*.{js,css,md,ts,tsx}": "prettier --write"
   }
 }

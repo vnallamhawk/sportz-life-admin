@@ -9,7 +9,7 @@ export const SIDE_NAV_ITEMS = [
   },
   {
     label: "Staffs",
-    route: "/staffs",
+    route: "/staff",
   },
   {
     label: "Coach",
