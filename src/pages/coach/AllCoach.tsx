@@ -39,7 +39,6 @@ export default function AllCoach() {
           </div>
         </header>
         <Table
-          className="mt-1 w-full table-auto border-separate border-spacing-y-3 place-self-center"
           tableHeader={CoachTableHeader()}
           tableBody={CoachTableBody({ name: filterByName }, handleIsLoading)}
         />
