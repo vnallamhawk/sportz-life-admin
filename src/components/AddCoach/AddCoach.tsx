@@ -101,7 +101,7 @@ export default function AddCoach() {
                 <Datepicker
                   placeHolder={props.placeHolder}
                   value={new Date(value as string)}
-                  className="h-12 w-full"
+                  className="h-12"
                   onChangeHandler={onChange}
                 />
               );
