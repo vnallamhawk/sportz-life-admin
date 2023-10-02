@@ -17,21 +17,6 @@ export default function DatePickerWrapper({
   onChangeHandler?: (arg0: Date) => void;
   value?: Date;
 }) {
-  //console.log(value === "");
-  // console.log(typeof value);
-  //const [open, setOpen] = useState(false);
-  //const datePickerRef = useRef<HTMLDivElement>(null);
-
-  // useOutsideClick(datePickerRef, () => {
-  //   setOpen(false);
-  // });
-
-  // const onDateSelected = ({ date }: { date: Date }) => {
-  //   setSelectedDate(DATE_TIME_FORMAT.format(date));
-  //   onChangeHandler && onChangeHandler(DATE_TIME_FORMAT.format(date));
-  //   setOpen(false);
-  // };
-
   const CustomInput = forwardRef(function CustomInput(
     {
       value,
