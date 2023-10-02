@@ -43,7 +43,7 @@ export default function DatePickerWrapper({
       onChange: React.MouseEventHandler;
     },
     ref
-  ) {
+  ): JSX.Element {
     return (
       <div>
         <Textbox
