@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "~/components/Button";
-import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
 import { type COACH_CERTIFICATE_TABLE_TYPES } from "~/types/coach";
 
 export default function CertificateTableBody({
@@ -8,7 +7,9 @@ export default function CertificateTableBody({
   setData,
 }: {
   data: COACH_CERTIFICATE_TABLE_TYPES[];
-  setData: () => COACH_CERTIFICATE_TABLE_TYPES[];
+  setData: React.Dispatch<
+    React.SetStateAction<COACH_CERTIFICATE_TABLE_TYPES[]>
+  >;
 }) {
   const onDeleteHandler = (index: number) => {
     if (data?.length) {
@@ -18,7 +19,7 @@ export default function CertificateTableBody({
 
   return (
     <>
-      {data.map(({ instituteName, name, startEnd, endDate }, index) => (
+      {data.map(({ instituteName, name }, index) => (
         <tr
           key={`${instituteName}-${index}`}
           className="rounded-l-lg border-b border-l-2 border-solid border-gray-200 hover:bg-gray-100"

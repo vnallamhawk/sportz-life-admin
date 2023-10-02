@@ -157,11 +157,7 @@ export default function AddCoachCertificates({}) {
             <Table
               tableHeader={<CertificateTableHeader />}
               tableBody={
-                <CertificateTableBody
-                  data={tableData}
-                  setData={setTableData}
-                  className="border-seperate border-spacing-y-3 place-self-center"
-                />
+                <CertificateTableBody data={tableData} setData={setTableData} />
               }
             />
           </div>
