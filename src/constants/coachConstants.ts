@@ -210,14 +210,14 @@ export const COACH_CERTIFICATE_TABLE_HEADERS = [
     label: "Institute",
     id: "institute",
   },
-  {
-    label: "Start Date",
-    id: "startDate",
-  },
-  {
-    label: "End Date",
-    id: "endDate",
-  },
+  // {
+  //   label: "Start Date",
+  //   id: "startDate",
+  // },
+  // {
+  //   label: "End Date",
+  //   id: "endDate",
+  // },
   {
     label: "Action",
     id: "action",

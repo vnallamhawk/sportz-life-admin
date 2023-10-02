@@ -48,7 +48,9 @@ export default function AddCoachCertificates({}) {
       result = await trigger();
     }
     if (data.startEnd) data.startEnd = new Date(data.startEnd).toISOString();
+
     if (data.endDate) data.endDate = new Date(data.endDate).toISOString();
+
     if (result) {
       if (tableData?.length) {
         setTableData([data, ...tableData]);
@@ -117,7 +119,7 @@ export default function AddCoachCertificates({}) {
             )}
           </div>
         </div>
-        <div className="mt-10 grid w-2/3 grid-cols-3">
+        <div className="mt-10 grid w-2/3 grid-cols-3 gap-5">
           <Controller
             control={control}
             render={({ field: { onChange, value } }) => {
@@ -146,7 +148,7 @@ export default function AddCoachCertificates({}) {
             }}
             name="endDate"
           />
-          <Button className="ml-5 w-20" onClick={onAddHandler}>
+          <Button className="ml-2 w-20" onClick={onAddHandler}>
             Add
           </Button>
         </div>
@@ -154,7 +156,9 @@ export default function AddCoachCertificates({}) {
           <div className="mt-5">
             <Table
               tableHeader={<CertificateTableHeader />}
-              tableBody={<CertificateTableBody data={tableData} />}
+              tableBody={
+                <CertificateTableBody data={tableData} setData={setTableData} />
+              }
             />
           </div>
         )}

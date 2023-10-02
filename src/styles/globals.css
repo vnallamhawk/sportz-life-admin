@@ -68,3 +68,16 @@ button[role="combobox"] {
   width: 100%;
   height: 100%;
 }
+
+.react-datepicker__tab-loop {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.date-picker-icon {
+    float: right;
+    margin-right: 20px;
+    margin-top: -30px;
+    position: relative;
+    z-index: 2;
+}
