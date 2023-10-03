@@ -3,31 +3,12 @@ import {
   type Center,
   type CoachesOnBatches,
 } from "@prisma/client";
+import { type Pattern, type Rules } from "./rules";
+import { type MultiSelectOption } from "./select";
 
 export const InputType = ["textbox", "select", "calendar"] as const;
 
 type Type = (typeof InputType)[number];
-
-export interface MultiSelectOption {
-  value: string;
-  label: string;
-}
-
-interface Pattern {
-  value: RegExp;
-  message: string;
-}
-
-interface MaxLength {
-  value: number;
-  message: string;
-}
-
-interface Rules {
-  required?: boolean;
-  pattern?: Pattern;
-  maxLength?: MaxLength;
-}
 export interface COACH_DETAILS_CONSTANTS_TYPES {
   label?: string;
   id:

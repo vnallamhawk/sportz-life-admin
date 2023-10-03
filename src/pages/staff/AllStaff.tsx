@@ -32,7 +32,7 @@ export default function AllCoach() {
             />
             <Button
               className="ml-3 bg-pink-700 p-2"
-              onClick={() => router.push("/coach/AddStaff")}
+              onClick={() => router.push("/staff/AddStaff")}
             >
               ADD New Staff
             </Button>
