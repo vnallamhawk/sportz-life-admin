@@ -71,8 +71,7 @@ export default function AddStaffMultiFormLayout() {
   //     finalForm: Required<MULTI_FORM_TYPES>
   //   ) => {
   //     mutate({
-  //       name: finalForm.coachName,
-  //       about: finalForm.about,
+  //       name: finalForm.staffName,
   //       contactNumber: finalForm.phoneNumber,
   //       emailAddress: finalForm.emailAddress,
   //       designation: finalForm.designation,
