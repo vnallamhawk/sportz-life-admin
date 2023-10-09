@@ -1,4 +1,4 @@
-import type { CoachWithRelations } from "~/pages/coach/[id]";
+import { type CoachWithRelations } from "~/types/coach";
 
 export default function CoachCertificateTableBody({
   coach,

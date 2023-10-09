@@ -3,8 +3,8 @@ import Card from "../../Card";
 import Textbox from "~/components/Textbox";
 import CoachCertificateTableHeader from "./CoachCertificateTableHeader";
 import CoachCertificateTableBody from "./CoachCertificateTableBody";
-import type { CoachWithRelations } from "~/pages/coach/[id]";
 import { useState } from "react";
+import { type CoachWithRelations } from "~/types/coach";
 
 export default function CoachCertificate({
   coach,
