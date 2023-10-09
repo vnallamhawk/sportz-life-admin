@@ -1,10 +1,10 @@
 import CardTitle from "~/components/Card/CardTitle";
 import Card from "../../Card";
 import Textbox from "~/components/Textbox";
-import type { CoachWithRelations } from "~/pages/coach/[id]";
 import { useState } from "react";
 import CoachBatchTableHeader from "./CoachBatchTableHeader";
 import CoachBatchTableBody from "./CoachBatchTableBody";
+import { type CoachWithRelations } from "~/types/coach";
 
 export default function CoachCertificate({
   coach,
