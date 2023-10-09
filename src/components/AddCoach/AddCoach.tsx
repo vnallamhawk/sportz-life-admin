@@ -12,6 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import { api } from "~/utils/api";
 import Select from "react-select";
+import { useRouter } from "next/router";
 
 export default function AddCoach() {
   let inputElement;
@@ -30,6 +31,8 @@ export default function AddCoach() {
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
+  const { asPath } = useRouter();
+  const isEditMode = asPath.includes("edit");
 
   const [formConstantValues, setFormConstantValues] = useState(
     COACH_DETAILS_CONSTANTS
@@ -58,12 +61,15 @@ export default function AddCoach() {
   }, [formConstantValues, sports, sports?.length]);
 
   useEffect(() => {
+    // if (!isEditMode) {
+    // eslint-disable-next-line no-console
     reset({
       ...currentFormValues,
       ...formData,
     });
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [formData]);
 
   const getInputElement = (props: COACH_DETAILS_CONSTANTS_TYPES) => {
     const { type, rules, id, pattern, placeHolder } = props;

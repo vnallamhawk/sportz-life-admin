@@ -60,7 +60,7 @@ export const STAFF_DETAILS_CONSTANTS: STAFF_DETAILS_CONSTANTS_TYPES[] = [
   },
   {
     label: "Phone Number",
-    id: "phoneNumber",
+    id: "contactNumber",
     type: "textbox",
     rules: {
       required: true,
@@ -72,7 +72,7 @@ export const STAFF_DETAILS_CONSTANTS: STAFF_DETAILS_CONSTANTS_TYPES[] = [
   },
   {
     label: "Email Address",
-    id: "emailAddress",
+    id: "email",
     type: "textbox",
     rules: {
       required: true,

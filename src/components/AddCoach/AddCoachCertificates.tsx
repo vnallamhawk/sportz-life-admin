@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Select from "~/components/Select";
 import { COACH_CERTIFICATES_CONSTANTS } from "~/constants/coachConstants";
 import Textbox from "~/components/Textbox/Textbox";
@@ -37,9 +37,9 @@ export default function AddCoachCertificates({}) {
     multiFormData: { formData, setFormData },
   } = useContext<FormContextTypes>(FormContext);
 
-  const [tableData, setTableData] = useState<
-    COACH_CERTIFICATE_TABLE_TYPES[] | []
-  >([]);
+  const [tableData, setTableData] = useState<COACH_CERTIFICATE_TABLE_TYPES[]>(
+    []
+  );
 
   const onAddHandler = async () => {
     const data = getValues();
@@ -62,16 +62,22 @@ export default function AddCoachCertificates({}) {
   };
 
   const prevClickHandler = () => {
-    setFormData && setFormData({ ...formData, certificateData: tableData });
+    setFormData && setFormData({ ...formData, certificates: tableData });
     setCurrentStep && setCurrentStep(currentStep - 1);
   };
 
   const onNextClickHandler = () => {
     if (Object.keys(errors).length === 0) {
-      setFormData && setFormData({ ...formData, certificateData: tableData });
+      setFormData && setFormData({ ...formData, certificates: tableData });
       setCurrentStep && setCurrentStep(currentStep + 1);
     }
   };
+
+  useEffect(() => {
+    if (formData?.certificates) {
+      setTableData(formData.certificates);
+    }
+  }, [formData?.certificates]);
 
   return (
     <>

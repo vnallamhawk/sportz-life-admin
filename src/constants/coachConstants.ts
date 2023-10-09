@@ -6,7 +6,7 @@ export const COACH_TABLE_HEADERS = [
   },
   {
     label: "Coach Name",
-    id: "coachName",
+    id: "name",
   },
   {
     label: "Age",
@@ -41,7 +41,7 @@ export const COACH_TABLE_HEADERS = [
 export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   {
     label: "Coach Name",
-    id: "coachName",
+    id: "name",
     type: "textbox",
     rules: {
       required: true,
@@ -77,7 +77,7 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   },
   {
     label: "Phone Number",
-    id: "phoneNumber",
+    id: "contactNumber",
     type: "textbox",
     rules: {
       required: true,
@@ -89,7 +89,7 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   },
   {
     label: "Email Address",
-    id: "emailAddress",
+    id: "email",
     type: "textbox",
     rules: {
       required: true,

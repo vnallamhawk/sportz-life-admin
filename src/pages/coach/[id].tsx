@@ -5,17 +5,12 @@ import CardTitle from "~/components/Card/CardTitle";
 import Image from "next/image";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import {
-  type Coach,
-  type Certificates,
-  type Sports,
-  type CoachesOnSports,
-} from "@prisma/client";
+import { type Sports } from "@prisma/client";
 import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
 import {
+  type CoachWithRelations,
   ExperienceLevelEnum,
   TrainingLevelEnum,
-  type batchWithCenter,
 } from "~/types/coach";
 import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
 import { ToastContext } from "~/contexts/Contexts";
@@ -23,12 +18,7 @@ import CoachCertificate from "~/components/Coach/Certificate/CoachCertificates";
 import { dateFormat } from "~/helpers/date";
 import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
-
-export type CoachWithRelations = Coach & {
-  certificates: Certificates[];
-  sports: CoachesOnSports[];
-  batches: batchWithCenter[];
-};
+import router from "next/router";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -46,6 +36,7 @@ export const getServerSideProps = async (
       centers: true,
     },
   });
+
   const batches = await prisma.batches.findMany({
     where: {
       id: {
@@ -70,6 +61,13 @@ export const getServerSideProps = async (
         dateOfBirth: coach?.dateOfBirth
           ? coach?.dateOfBirth?.toISOString()
           : "",
+        centers: coach?.centers.map((center) => ({
+          ...center,
+          assignedAt: center?.assignedAt
+            ? center?.assignedAt.toISOString()
+            : "",
+          updatedAt: center?.updatedAt ? center?.updatedAt.toISOString() : "",
+        })),
         sports: coach?.sports.map((sport) => ({
           ...sport,
           assignedAt: sport?.assignedAt ? sport?.assignedAt?.toISOString() : "",
@@ -98,7 +96,6 @@ export const getServerSideProps = async (
       },
       sports: sports,
       batches: batches,
-      centers: centers,
     },
   };
 };
@@ -110,6 +107,7 @@ export default function Page({
   coach: CoachWithRelations;
   sports: Sports[];
 }) {
+  // eslint-disable-next-line no-console
   const sportsDictionary = sports?.reduce(
     (accumulator: Record<number, string>, current) => {
       accumulator[current.id] = current.name;
@@ -127,13 +125,17 @@ export default function Page({
     setDisplayCertificate(!displayCertificate);
   const handleBatchClick = () => setDisplayBatch(!displayBatch);
   const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
+  // eslint-disable-next-line no-console
+  console.log(coach);
 
   return (
     <>
       <Card className="h-100 mx-5">
         <header className="flex justify-between">
           <CardTitle title="COACH DETAILS" />
-          <Button>Edit Coach</Button>
+          <Button onClick={() => void router.push(`/edit-coach-${coach.id}`)}>
+            Edit Coach
+          </Button>
         </header>
         <div className="flex">
           <Image

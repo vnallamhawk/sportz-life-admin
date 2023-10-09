@@ -7,10 +7,10 @@ import FileUpload from "~/components/FileUpload";
 import { type STAFF_MULTI_FORM_TYPES } from "~/types/staff";
 
 const multiFormData: STAFF_MULTI_FORM_TYPES = {
-  phoneNumber: "",
+  contactNumber: "",
   staffName: "",
   designation: "",
-  emailAddress: "",
+  email: "",
   dateOfBirth: undefined,
   center: [],
 };
@@ -72,11 +72,11 @@ export default function AddStaffMultiFormLayout() {
   //   ) => {
   //     mutate({
   //       name: finalForm.staffName,
-  //       contactNumber: finalForm.phoneNumber,
-  //       emailAddress: finalForm.emailAddress,
+  //       contactNumber: finalForm.contactNumber,
+  //       email: finalForm.email,
   //       designation: finalForm.designation,
   //       gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-  //       certificates: finalForm.certificateData,
+  //       certificates: finalForm.certificates,
   //       dateOfBirth: new Date(finalForm.dateOfBirth),
   //       centers: finalForm.centers,
   //     });

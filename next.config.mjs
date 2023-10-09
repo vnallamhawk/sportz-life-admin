@@ -18,6 +18,14 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  async rewrites() {
+    return [
+      {
+        source: "/edit-coach-:id",
+        destination: "/coach/AddCoach",
+      },
+    ];
+  },
 };
 
 export default config;

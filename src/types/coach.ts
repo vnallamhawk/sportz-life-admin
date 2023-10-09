@@ -1,10 +1,14 @@
 import {
+  type Coach,
   type Batches,
   type Center,
   type CoachesOnBatches,
+  type Certificates,
+  type CoachesOnSports,
 } from "@prisma/client";
 import { type Pattern, type Rules } from "./rules";
 import { type MultiSelectOption } from "./select";
+import { type BatchTableData } from "./batch";
 
 export const InputType = ["textbox", "select", "calendar"] as const;
 
@@ -12,11 +16,11 @@ type Type = (typeof InputType)[number];
 export interface COACH_DETAILS_CONSTANTS_TYPES {
   label?: string;
   id:
-    | "coachName"
+    | "name"
     | "about"
     | "designation"
-    | "phoneNumber"
-    | "emailAddress"
+    | "contactNumber"
+    | "email"
     | "payroll"
     | "dateOfBirth"
     | "gender"
@@ -58,14 +62,14 @@ export const EXPERIENCE_LEVEL = [
   "TEN_OVER",
 ] as const;
 export interface COACH_TYPES {
-  coachName: string;
+  name: string;
   about: string;
   designation: string;
-  phoneNumber: string;
-  emailAddress: string;
+  contactNumber: string;
+  email: string;
   dateOfBirth?: string;
   gender?: MultiSelectOption;
-  payroll: string;
+  payroll?: string;
   coachingSports: MultiSelectOption[];
   trainingLevel?: MultiSelectOption;
   experienceLevel?: MultiSelectOption;
@@ -77,8 +81,10 @@ export interface BatchData {
 }
 
 export interface MULTI_FORM_TYPES extends COACH_TYPES {
-  certificateData: COACH_CERTIFICATE_TABLE_TYPES[];
-  batchIds: number[];
+  certificates: COACH_CERTIFICATE_TABLE_TYPES[];
+  batchTableData?: BatchTableData[];
+  batchIds?: number[];
+  centerIds?: number[];
 }
 
 export interface batchWithCenter extends CoachesOnBatches {
@@ -99,3 +105,16 @@ export enum ExperienceLevelEnum {
   SIX_TEN = "6-10 years",
   TEN_OVER = "10+ years",
 }
+
+export type CoachWithRelations = Coach & {
+  certificates: Certificates[];
+  sports: CoachesOnSports[];
+  batches: batchWithCenter[];
+};
+
+export type CoachWithRelationsEditForm = Coach & {
+  certificates: Certificates[];
+  sports: CoachesOnSports[];
+  batches: CoachesOnBatches[];
+  batchTableData?: BatchTableData[];
+};

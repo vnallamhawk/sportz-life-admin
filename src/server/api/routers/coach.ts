@@ -18,7 +18,7 @@ const certificatesSchema = z.array(
 const coachingSportsSchema = z.array(
   z.object({
     label: z.string(),
-    value: z.string(),
+    value: z.union([z.string(), z.number()]),
   })
 );
 
@@ -35,6 +35,27 @@ export const coachRouter = createTRPCRouter({
     });
     return allCoaches;
   }),
+  getCoachById: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .query(async (opts) => {
+      const coaches = await opts.ctx?.prisma?.coach?.findUnique({
+        where: {
+          id: opts.input.id,
+        },
+        include: {
+          sports: true,
+          batches: true,
+          centers: true,
+          certificates: true,
+        },
+      });
+
+      return coaches;
+    }),
   getCoachesByName: publicProcedure
     .input(
       z.object({
@@ -63,7 +84,7 @@ export const coachRouter = createTRPCRouter({
         name: z.string(),
         about: z.string(),
         contactNumber: z.string(),
-        emailAddress: z.string(),
+        email: z.string(),
         designation: z.string(),
         gender: z.enum(GENDER_VALUES),
         certificates: certificatesSchema,
@@ -72,6 +93,7 @@ export const coachRouter = createTRPCRouter({
         trainingLevel: z.enum(TRAINING_LEVEL),
         experienceLevel: z.enum(EXPERIENCE_LEVEL),
         batchIds: z.array(z.number()),
+        centerIds: z.array(z.number()),
       })
     )
     .mutation(
@@ -80,7 +102,7 @@ export const coachRouter = createTRPCRouter({
           name,
           about,
           contactNumber,
-          emailAddress,
+          email,
           designation,
           gender,
           certificates,
@@ -89,6 +111,7 @@ export const coachRouter = createTRPCRouter({
           trainingLevel,
           experienceLevel,
           batchIds,
+          centerIds,
         },
         ctx,
       }) => {
@@ -98,7 +121,7 @@ export const coachRouter = createTRPCRouter({
             name: name,
             about: about,
             contactNumber: contactNumber,
-            email: emailAddress,
+            email: email,
             designation: designation,
             gender: gender,
             certificates: {
@@ -107,6 +130,15 @@ export const coachRouter = createTRPCRouter({
             sports: {
               create: sportsId.map((id) => ({
                 sport: {
+                  connect: {
+                    id: Number(id),
+                  },
+                },
+              })),
+            },
+            centers: {
+              create: centerIds.map((id) => ({
+                center: {
                   connect: {
                     id: Number(id),
                   },

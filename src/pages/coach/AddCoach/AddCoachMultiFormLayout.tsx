@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { useForm } from "react-hook-form";
@@ -10,23 +10,29 @@ import {
   type GENDER_VALUES,
   type MULTI_FORM_TYPES,
   type EXPERIENCE_LEVEL,
+  type CoachWithRelationsEditForm,
 } from "~/types/coach";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import { ToastContext } from "~/contexts/Contexts";
 import FileUpload from "~/components/FileUpload";
+import { getSportsDictionaryServices } from "~/services/sportServices";
+import { type BatchTableData } from "~/types/batch";
+import { dateFormat } from "~/helpers/date";
+import { type MultiSelectOption } from "~/types/select";
 
 const multiFormData: MULTI_FORM_TYPES = {
-  phoneNumber: "",
-  coachName: "",
+  contactNumber: "",
+  name: "",
   designation: "",
-  emailAddress: "",
+  email: "",
   about: "",
   dateOfBirth: undefined,
   payroll: "",
   coachingSports: [],
-  certificateData: [],
+  certificates: [],
   batchIds: [],
+  centerIds: [],
 };
 
 const defaultValues = {
@@ -50,14 +56,96 @@ export interface FormContextTypes {
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 
 export default function AddCoachMultiFormLayout() {
+  let coach: CoachWithRelationsEditForm | null | undefined;
+  const router = useRouter();
+  const id = Number(router?.query?.id);
+  if (id) {
+    // eslint-disable-next-line no-console
+    // console.log(id);
+    coach = api.coach.getCoachById.useQuery({ id: id }).data;
+  }
+
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
   const { setOpenToast } = useContext(ToastContext);
-  const router = useRouter();
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
+  const { data: sports } = api.sports.getAllSports.useQuery();
+  const sportsDictionary = getSportsDictionaryServices(sports);
+  const { data: centers } = api.center.getAllCenters.useQuery();
+  const { data: batches } = api.batches.getAllBatches.useQuery();
+  // eslint-disable-next-line no-console
+  console.log(coach);
+
+  useEffect(() => {
+    if (coach) {
+      setFormData({
+        ...coach,
+        dateOfBirth: coach?.dateOfBirth
+          ? coach?.dateOfBirth?.toISOString()
+          : "",
+        gender: { label: coach.gender, value: coach.gender },
+        coachingSports: coach?.sports?.reduce(
+          (accumulator: MultiSelectOption[], sport) => {
+            const label = sportsDictionary?.[sport.sportId]?.name;
+            const value = sportsDictionary?.[sport.sportId]?.id;
+            if (label && value) {
+              accumulator.push({
+                label: label,
+                value: value,
+              });
+            }
+            return accumulator;
+          },
+          []
+        ),
+        trainingLevel: {
+          label: coach.trainingLevel,
+          value: coach.trainingLevel,
+        },
+        experienceLevel: {
+          label: coach.experienceLevel,
+          value: coach.experienceLevel,
+        },
+        certificates: coach?.certificates.map((cert) => ({
+          ...cert,
+          startEnd: cert.startEnd ? dateFormat(cert.startEnd) : "",
+          endDate: cert.endDate ? dateFormat(cert.endDate) : "",
+        })),
+        batchTableData:
+          coach.batches.reduce((accumulator: BatchTableData[], coachBatch) => {
+            const batch = batches?.find(
+              (batch: { id: number }) => batch.id == coachBatch.batchId
+            );
+            const center = centers?.find(
+              (center) =>
+                center.id ==
+                batches?.find((batch) => batch.id == coachBatch.batchId)
+                  ?.centerId
+            );
+            if (batch && center) {
+              accumulator.push({
+                centerId: center?.id,
+                batchIds: [batch?.id],
+                centerName: center?.name,
+                batchName: batch?.name,
+              });
+            }
+            return accumulator;
+          }, []) ?? undefined,
+        batchIds: [],
+        centerIds: [],
+      });
+      // methods.reset(coach);
+    }
+  }, [batches, centers, coach, sportsDictionary]);
+
+  // centerId: string;
+  // centerName: string;
+  // batchName: string;
+  // batchIds: number[];
 
   const formProviderData = {
     ...methods,
@@ -89,13 +177,13 @@ export default function AddCoachMultiFormLayout() {
     finalForm: Required<MULTI_FORM_TYPES>
   ) => {
     mutate({
-      name: finalForm.coachName,
+      name: finalForm.name,
       about: finalForm.about,
-      contactNumber: finalForm.phoneNumber,
-      emailAddress: finalForm.emailAddress,
+      contactNumber: finalForm.contactNumber,
+      email: finalForm.email,
       designation: finalForm.designation,
       gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-      certificates: finalForm.certificateData,
+      certificates: finalForm.certificates,
       dateOfBirth: new Date(finalForm.dateOfBirth),
       sports: finalForm.coachingSports,
       trainingLevel: finalForm.trainingLevel
@@ -103,9 +191,9 @@ export default function AddCoachMultiFormLayout() {
       experienceLevel: finalForm.experienceLevel
         .value as (typeof EXPERIENCE_LEVEL)[number],
       batchIds: finalForm.batchIds,
+      centerIds: finalForm.centerIds,
     });
   };
-
   return (
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">

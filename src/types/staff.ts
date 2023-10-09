@@ -10,8 +10,8 @@ export interface STAFF_DETAILS_CONSTANTS_TYPES {
   id:
     | "staffName"
     | "designation"
-    | "phoneNumber"
-    | "emailAddress"
+    | "contactNumber"
+    | "email"
     | "dateOfBirth"
     | "gender"
     | "center";
@@ -27,8 +27,8 @@ export interface STAFF_DETAILS_CONSTANTS_TYPES {
 export interface STAFF_TYPES {
   staffName: string;
   designation: string;
-  phoneNumber: string;
-  emailAddress: string;
+  contactNumber: string;
+  email: string;
   dateOfBirth?: string;
   gender?: MultiSelectOption;
   center: MultiSelectOption[];

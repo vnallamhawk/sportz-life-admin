@@ -161,8 +161,8 @@ model CoachesOnCenters {
   coachId   Int
   center    Center   @relation(fields: [centerId], references: [id])
   centerId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  assignedAt DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 
   @@id([coachId, centerId])
   @@index([coachId])

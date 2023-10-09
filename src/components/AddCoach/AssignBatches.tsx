@@ -11,6 +11,7 @@ import CardTitle from "../Card/CardTitle";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import { api } from "~/utils/api";
 import { formatBatchesTableData } from "~/helpers/batches";
+import { type BatchTableData } from "~/types/batch";
 
 interface ApiData {
   name: string;
@@ -35,13 +36,7 @@ export default function AssignBatches({
     },
   });
 
-  const [tableData, setTableData] = useState<
-    {
-      centerName: string;
-      batchName: string;
-      batchIds: number[];
-    }[]
-  >([]);
+  const [tableData, setTableData] = useState<BatchTableData[]>([]);
   const {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData },
@@ -84,12 +79,24 @@ export default function AssignBatches({
     }
   }, [batches]);
 
+  useEffect(() => {
+    if (formData?.batchTableData?.length) {
+      setTableData(formData?.batchTableData);
+    }
+  }, [formData?.batchTableData]);
+
   const submitCallback = () => {
     const finalFormData = {
       ...formData,
-      batchIds: tableData.reduce<number[]>((accumulator, current) => {
-        if (current.batchIds.length) {
+      batchIds: tableData?.reduce<number[]>((accumulator, current) => {
+        if (current?.batchIds?.length) {
           accumulator.push(...current.batchIds);
+        }
+        return accumulator;
+      }, []),
+      centerIds: tableData?.reduce<number[]>((accumulator, current) => {
+        if (current.centerId) {
+          accumulator.push(Number(current.centerId));
         }
         return accumulator;
       }, []),
@@ -107,6 +114,8 @@ export default function AssignBatches({
     const tableDataFormatter = formatBatchesTableData(data);
     const result = await trigger();
 
+    // eslint-disable-next-line no-console
+
     if (result && Object.keys(errors).length === 0) {
       if (tableData?.length) {
         setTableData((prev) => [...prev, tableDataFormatter]);
@@ -116,6 +125,8 @@ export default function AssignBatches({
       reset();
     }
   };
+  // eslint-disable-next-line no-console
+  console.log(tableData);
 
   return (
     <div>
@@ -193,7 +204,7 @@ export default function AssignBatches({
       <Button type="button" className="mb-5" onClick={onAddBatchHandler}>
         Add
       </Button>
-      {tableData.length !== 0 && (
+      {tableData?.length !== 0 && (
         <Table
           tableHeader={<CenterBatchTableHeader />}
           tableBody={<CenterBatchTableBody data={tableData} />}

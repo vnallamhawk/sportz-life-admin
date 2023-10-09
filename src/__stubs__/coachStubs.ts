@@ -1,6 +1,6 @@
 export const coachTableBodyStub = [
   {
-    coachName: "John",
+    name: "John",
     age: "28",
     designation: "Head Coach",
     sportCoaching: "Basketball, Tennis",
@@ -9,7 +9,7 @@ export const coachTableBodyStub = [
     contactNo: "+41234567890",
   },
   {
-    coachName: "John",
+    name: "John",
     age: "28",
     designation: "Head Coach",
     sportCoaching: "Basketball, Tennis",
@@ -18,7 +18,7 @@ export const coachTableBodyStub = [
     contactNo: "+41234567890",
   },
   {
-    coachName: "John",
+    name: "John",
     age: "28",
     designation: "Head Coach",
     sportCoaching: "Basketball, Tennis",
@@ -27,7 +27,7 @@ export const coachTableBodyStub = [
     contactNo: "+41234567890",
   },
   {
-    coachName: "John",
+    name: "John",
     age: "28",
     designation: "Head Coach",
     sportCoaching: "Basketball, Tennis",
@@ -36,7 +36,7 @@ export const coachTableBodyStub = [
     contactNo: "+41234567890",
   },
   {
-    coachName: "John",
+    name: "John",
     age: "28",
     designation: "Head Coach",
     sportCoaching: "Basketball, Tennis",
@@ -45,7 +45,7 @@ export const coachTableBodyStub = [
     contactNo: "+41234567890",
   },
   {
-    coachName: "John",
+    name: "John",
     age: "28",
     designation: "Head Coach",
     sportCoaching: "Basketball, Tennis",
@@ -54,7 +54,7 @@ export const coachTableBodyStub = [
     contactNo: "+41234567890",
   },
   {
-    coachName: "John",
+    name: "John",
     age: "28",
     designation: "Head Coach",
     sportCoaching: "Basketball, Tennis",
@@ -63,7 +63,7 @@ export const coachTableBodyStub = [
     contactNo: "+41234567890",
   },
   {
-    coachName: "John",
+    name: "John",
     age: "28",
     designation: "Head Coach",
     sportCoaching: "Basketball, Tennis",
@@ -72,7 +72,7 @@ export const coachTableBodyStub = [
     contactNo: "+41234567890",
   },
   {
-    coachName: "John",
+    name: "John",
     age: "28",
     designation: "Head Coach",
     sportCoaching: "Basketball, Tennis",
