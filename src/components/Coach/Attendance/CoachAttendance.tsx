@@ -1,9 +1,9 @@
 import CardTitle from "~/components/Card/CardTitle";
 import Card from "../../Card";
 import CoachAttendanceCard from "./CoachAttendanceCard";
-import type { CoachWithRelations } from "~/pages/coach/[id]";
 import CoachAttendanceCalendarView from "./CoachAttendanceCalendarView";
 import CoachAttendanceInfo from "./CoachAttendanceInfo";
+import { type CoachWithRelations } from "~/types/coach";
 
 export default function CoachAttendance({
   displayAttendance,
