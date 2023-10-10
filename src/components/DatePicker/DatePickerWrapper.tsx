@@ -23,9 +23,9 @@ export default function DatePickerWrapper({
       onClick,
       onChange,
     }: {
-      value: string;
-      onClick: React.MouseEventHandler;
-      onChange: React.MouseEventHandler;
+      value?: string;
+      onClick?: React.MouseEventHandler;
+      onChange?: React.MouseEventHandler;
     },
     ref
   ): JSX.Element {
