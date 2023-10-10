@@ -17,27 +17,20 @@ export default function DatePickerWrapper({
   onChangeHandler?: (arg0: Date) => void;
   value?: Date;
 }) {
-  const CustomInput = forwardRef(function CustomInput(
-    {
-      value,
-      onClick,
-      onChange,
-    }: {
-      value?: string;
-      onClick?: React.MouseEventHandler;
-      onChange?: React.MouseEventHandler;
-    },
-    ref
-  ): JSX.Element {
+  const CustomInput = forwardRef(function CustomInput({
+    placeholder,
+    ...props
+  }: {
+    placeholder?: string;
+  }): // ref
+  JSX.Element {
     return (
       <div>
         <Textbox
-          value={value}
+          {...props}
+          placeHolder={placeholder}
           className="h-12 w-full"
-          onClick={onClick}
-          onChange={onChange}
-          placeHolder={placeHolder}
-          ref={ref}
+          // ref={ref}
         ></Textbox>
         <CgCalendarDates className="date-picker-icon"></CgCalendarDates>
       </div>
@@ -57,7 +50,7 @@ export default function DatePickerWrapper({
       showYearDropdown
       dropdownMode="select"
       wrapperClassName="w-full"
-      customInput={<CustomInput />}
+      customInput={<CustomInput placeholder={placeHolder} />}
     />
     // </div>
     // <Popover.Root open={open}>

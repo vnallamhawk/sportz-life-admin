@@ -1,10 +1,10 @@
 import classNames from "classnames";
-import { type BaseSyntheticEvent } from "react";
+import { type ChangeEvent, type BaseSyntheticEvent } from "react";
 
 interface Textbox {
   className?: string;
-  onChangeHandler?: (e: BaseSyntheticEvent) => void;
-  onClick?: (e: React.FormEvent<HTMLInputElement>) => void;
+  onChangeHandler?: (event: ChangeEvent<HTMLInputElement>) => void;
+  onClick?: (e?: React.FormEvent<HTMLInputElement>) => void;
   placeHolder?: string;
   value?: string;
   setValue?: (value: string) => void;
