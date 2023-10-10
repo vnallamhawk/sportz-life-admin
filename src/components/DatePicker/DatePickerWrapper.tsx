@@ -22,15 +22,13 @@ export default function DatePickerWrapper({
     ...props
   }: {
     placeholder?: string;
-  }): // ref
-  JSX.Element {
+  }) {
     return (
       <div>
         <Textbox
           {...props}
           placeHolder={placeholder}
           className="h-12 w-full"
-          // ref={ref}
         ></Textbox>
         <CgCalendarDates className="date-picker-icon"></CgCalendarDates>
       </div>
