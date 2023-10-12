@@ -85,6 +85,8 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   batchTableData?: BatchTableData[];
   batchIds?: number[];
   centerIds?: number[];
+  isEditMode: boolean;
+  coachId?: number;
 }
 
 export interface batchWithCenter extends CoachesOnBatches {

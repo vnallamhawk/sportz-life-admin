@@ -1,4 +1,10 @@
-import React, { useState, useContext, useCallback, useEffect } from "react";
+import React, {
+  useState,
+  useContext,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { useForm } from "react-hook-form";
@@ -33,6 +39,8 @@ const multiFormData: MULTI_FORM_TYPES = {
   certificates: [],
   batchIds: [],
   centerIds: [],
+  isEditMode: false,
+  coachId: undefined,
 };
 
 const defaultValues = {
@@ -76,11 +84,10 @@ export default function AddCoachMultiFormLayout() {
   const sportsDictionary = getSportsDictionaryServices(sports);
   const { data: centers } = api.center.getAllCenters.useQuery();
   const { data: batches } = api.batches.getAllBatches.useQuery();
-  // eslint-disable-next-line no-console
-  console.log(coach);
+  const hasCoachUseEffectRun = useRef(false);
 
   useEffect(() => {
-    if (coach) {
+    if (coach && !hasCoachUseEffectRun.current) {
       setFormData({
         ...coach,
         dateOfBirth: coach?.dateOfBirth
@@ -137,8 +144,10 @@ export default function AddCoachMultiFormLayout() {
           }, []) ?? undefined,
         batchIds: [],
         centerIds: [],
+        isEditMode: true,
+        coachId: coach.id,
       });
-      // methods.reset(coach);
+      hasCoachUseEffectRun.current = true;
     }
   }, [batches, centers, coach, sportsDictionary]);
 
@@ -152,11 +161,14 @@ export default function AddCoachMultiFormLayout() {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   };
-  const {
-    // data,
-    mutate,
-    // isLoading: isLoading,
-  } = api.coach.createCoach.useMutation({
+  const { mutate: createMutate } = api.coach.createCoach.useMutation({
+    onSuccess: (response) => {
+      setOpenToast(true);
+      void router.push(`/coach/${response?.id ?? ""}`);
+    },
+  });
+
+  const { mutate: editMutate } = api.coach.editCoach.useMutation({
     onSuccess: (response) => {
       setOpenToast(true);
       void router.push(`/coach/${response?.id ?? ""}`);
@@ -176,23 +188,44 @@ export default function AddCoachMultiFormLayout() {
   const finalFormSubmissionHandler = (
     finalForm: Required<MULTI_FORM_TYPES>
   ) => {
-    mutate({
-      name: finalForm.name,
-      about: finalForm.about,
-      contactNumber: finalForm.contactNumber,
-      email: finalForm.email,
-      designation: finalForm.designation,
-      gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-      certificates: finalForm.certificates,
-      dateOfBirth: new Date(finalForm.dateOfBirth),
-      sports: finalForm.coachingSports,
-      trainingLevel: finalForm.trainingLevel
-        .value as (typeof TRAINING_LEVEL)[number],
-      experienceLevel: finalForm.experienceLevel
-        .value as (typeof EXPERIENCE_LEVEL)[number],
-      batchIds: finalForm.batchIds,
-      centerIds: finalForm.centerIds,
-    });
+    if (formData.isEditMode) {
+      editMutate({
+        name: finalForm.name,
+        about: finalForm.about,
+        contactNumber: finalForm.contactNumber,
+        email: finalForm.email,
+        designation: finalForm.designation,
+        gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+        certificates: finalForm.certificates,
+        dateOfBirth: new Date(finalForm.dateOfBirth),
+        sports: finalForm.coachingSports,
+        trainingLevel: finalForm.trainingLevel
+          .value as (typeof TRAINING_LEVEL)[number],
+        experienceLevel: finalForm.experienceLevel
+          .value as (typeof EXPERIENCE_LEVEL)[number],
+        batchIds: finalForm.batchIds,
+        centerIds: finalForm.centerIds,
+        coachId: finalForm.coachId,
+      });
+    } else {
+      createMutate({
+        name: finalForm.name,
+        about: finalForm.about,
+        contactNumber: finalForm.contactNumber,
+        email: finalForm.email,
+        designation: finalForm.designation,
+        gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+        certificates: finalForm.certificates,
+        dateOfBirth: new Date(finalForm.dateOfBirth),
+        sports: finalForm.coachingSports,
+        trainingLevel: finalForm.trainingLevel
+          .value as (typeof TRAINING_LEVEL)[number],
+        experienceLevel: finalForm.experienceLevel
+          .value as (typeof EXPERIENCE_LEVEL)[number],
+        batchIds: finalForm.batchIds,
+        centerIds: finalForm.centerIds,
+      });
+    }
   };
   return (
     <FormContext.Provider value={formProviderData}>
@@ -245,16 +278,7 @@ export default function AddCoachMultiFormLayout() {
             <div className="mb-5 flex justify-center">
               <FileUpload onDropCallback={onDropCallback} />{" "}
             </div>
-
-            {/* <ImageWithFallback
-              width={500}
-              height={500}
-              src=""
-              alt=""
-              fallbackSrc="/images/fallback.png"
-            /> */}
           </div>
-          {/* <a className="mb-10 flex justify-center"> Upload Image</a> */}
           <div>
             <span className="mb-5 font-bold">Note</span>
             <ul className="list-disc">
@@ -264,7 +288,6 @@ export default function AddCoachMultiFormLayout() {
             </ul>
           </div>
         </Card>
-        {/* <pre>{JSON.stringify(watch())}</pre> */}
       </div>
     </FormContext.Provider>
   );

@@ -162,6 +162,95 @@ export const coachRouter = createTRPCRouter({
         return response;
       }
     ),
+  editCoach: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        about: z.string(),
+        contactNumber: z.string(),
+        email: z.string(),
+        designation: z.string(),
+        gender: z.enum(GENDER_VALUES),
+        certificates: certificatesSchema,
+        dateOfBirth: z.date(),
+        sports: coachingSportsSchema,
+        trainingLevel: z.enum(TRAINING_LEVEL),
+        experienceLevel: z.enum(EXPERIENCE_LEVEL),
+        batchIds: z.array(z.number()),
+        centerIds: z.array(z.number()),
+        coachId: z.number(),
+      })
+    )
+    .mutation(
+      async ({
+        input: {
+          name,
+          about,
+          contactNumber,
+          email,
+          designation,
+          gender,
+          certificates,
+          dateOfBirth,
+          // sports,
+          trainingLevel,
+          experienceLevel,
+          // batchIds,
+          // centerIds,
+          coachId,
+        },
+        ctx,
+      }) => {
+        // const sportsId = sports.map(({ value }) => value);
+        const response = await ctx.prisma.coach.update({
+          where: {
+            id: coachId,
+          },
+          data: {
+            name: name,
+            about: about,
+            contactNumber: contactNumber,
+            email: email,
+            designation: designation,
+            gender: gender,
+            certificates: {
+              create: certificates,
+            },
+            // sports: {
+            //   create: sportsId.map((id) => ({
+            //     sport: {
+            //       connect: {
+            //         id: Number(id),
+            //       },
+            //     },
+            //   })),
+            // },
+            // centers: {
+            //   create: centerIds.map((id) => ({
+            //     center: {
+            //       connect: {
+            //         id: Number(id),
+            //       },
+            //     },
+            //   })),
+            // },
+            // batches: {
+            //   create: batchIds.map((id) => ({
+            //     batch: {
+            //       connect: {
+            //         id: Number(id),
+            //       },
+            //     },
+            //   })),
+            // },
+            dateOfBirth: dateOfBirth,
+            trainingLevel: trainingLevel,
+            experienceLevel: experienceLevel,
+          },
+        });
+        return response;
+      }
+    ),
 
   // getSecretMessage: protectedProcedure.query(() => {
   //   return "you can now see this secret message!";
