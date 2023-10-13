@@ -51,36 +51,36 @@ export default function CoachTableBody(
         ) => (
           <tr
             key={`${name}-${index}`}
-            className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
+            className="cursor-pointer rounded-lg bg-white outline outline-2  outline-zinc-100  hover:shadow-lg"
             onClick={() => onClickHandler(id)}
           >
-            <td className="rounded-l-lg border-y-2 border-l-2 border-solid pl-5">
+            <td className="rounded-lg pl-5">
               <Checkbox.Root className="CheckboxRoot" defaultChecked id="c1">
                 <Checkbox.Indicator className="CheckboxIndicator">
                   <CheckIcon />
                 </Checkbox.Indicator>
               </Checkbox.Root>
             </td>
-            <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
+            <td className="text-zink-600  whitespace-nowrap px-6 py-3 text-left text-base font-semibold">
               {name}
             </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
+            <td className=" text-zink-600 px-6 py-3 text-left text-base">
               {differenceInYears(new Date(), new Date(dateOfBirth))}
             </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
+            <td className="text-zink-600 px-6 py-3 text-left text-base">
               {designation}
             </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
+            <td className="text-zink-600 px-6 py-3 text-left text-base">
               {sports}
             </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
+            <td className="text-zink-600 px-6 py-3 text-left text-base">
               {gender}
             </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">{`batch`}</td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
+            <td className="text-zink-600 px-6 py-3 text-left text-base">{`batch`}</td>
+            <td className="text-zink-600 px-6 py-3 text-left text-base">
               {contactNumber}
             </td>
-            <td className="rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left">
+            <td className="rounded-lg px-6 py-3 text-left">
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild>
                   <button className="IconButton" aria-label="Customise options">
