@@ -91,7 +91,7 @@ export default function AddCoachCertificates({}) {
               render={({ field: { value, onChange } }) => {
                 return (
                   <Select
-                    className="h-12 w-full"
+                    className="h-12 w-full text-base font-normal focus-within:outline-none"
                     {...COACH_CERTIFICATES_CONSTANTS}
                     onChangeHandler={onChange}
                     value={value ?? undefined}
@@ -125,7 +125,7 @@ export default function AddCoachCertificates({}) {
             )}
           </div>
         </div>
-        <div className="mt-10 grid w-2/3 grid-cols-3 gap-5">
+        <div className="mt-24 grid w-full grid-cols-3 gap-5">
           <Controller
             control={control}
             render={({ field: { onChange, value } }) => {
@@ -154,7 +154,10 @@ export default function AddCoachCertificates({}) {
             }}
             name="endDate"
           />
-          <Button className="ml-2 w-20" onClick={onAddHandler}>
+          <Button
+            className="ml-2 h-10 w-20 border-orange-600 capitalize text-orange-600 hover:shadow-sm hover:shadow-orange-600"
+            onClick={onAddHandler}
+          >
             Add
           </Button>
         </div>
@@ -168,15 +171,15 @@ export default function AddCoachCertificates({}) {
             />
           </div>
         )}
-        <div className="mt-5 flex justify-end">
+        <div className="mt-10 flex justify-end gap-4">
           <Button
-            className="bg-pink-600 hover:bg-pink-800"
+            className="w-20 bg-pink-600 hover:border-zinc-400 hover:bg-pink-800 hover:text-white"
             onClick={prevClickHandler}
           >
             Prev
           </Button>
           <Button
-            className="mx-3 bg-pink-600 hover:bg-pink-800"
+            className="w-20 bg-pink-600 hover:border-zinc-400 hover:bg-pink-800 hover:text-white"
             onClick={onNextClickHandler}
           >
             Next

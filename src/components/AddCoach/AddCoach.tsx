@@ -88,7 +88,15 @@ export default function AddCoach() {
                   options={options}
                   value={value}
                   placeholder={placeHolder}
-                  className="w-full"
+                  //https://react-select.com/styles#the-styles-prop
+                  styles={{
+                    control: (baseStyles, state) => ({
+                      ...baseStyles,
+                      boxShadow: "none",
+                      border: 0,
+                    }),
+                  }}
+                  className="h-12 w-full rounded-lg border-2 border-zinc-200 pl-3 focus-within:border-zinc-500"
                   onChange={(element) => {
                     onChange(element);
                   }}
@@ -178,7 +186,7 @@ export default function AddCoach() {
           </div>
           <div className="mr-10 mt-10 flex justify-end">
             <Button
-              className="border-1 mx-3 bg-pink-600 hover:bg-pink-800"
+              className="w-20 bg-pink-600 text-black hover:border-zinc-400 hover:bg-pink-800 hover:text-white"
               type="button"
               onClick={() => void nextClickHandler()}
             >

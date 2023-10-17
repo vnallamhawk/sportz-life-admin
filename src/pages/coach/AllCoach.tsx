@@ -41,7 +41,7 @@ export default function AllCoach() {
               />
             </div>
             <Button
-              className="ml-3 rounded-lg bg-rose-500 p-2 text-white hover:border-2 hover:border-zinc-400"
+              className="ml-3 bg-pink-600 p-2 text-white hover:border-zinc-400 hover:bg-pink-800"
               onClick={() => router.push("/coach/AddCoach")}
             >
               ADD COACH

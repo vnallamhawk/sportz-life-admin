@@ -51,7 +51,7 @@ export default function CoachTableBody(
         ) => (
           <tr
             key={`${name}-${index}`}
-            className="cursor-pointer rounded-lg bg-white outline outline-2  outline-zinc-100  hover:shadow-lg"
+            className="cursor-pointer rounded-lg bg-white outline outline-2  outline-zinc-100  hover:shadow-xl"
             onClick={() => onClickHandler(id)}
           >
             <td className="rounded-lg pl-5">

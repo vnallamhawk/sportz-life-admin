@@ -142,7 +142,14 @@ export default function AssignBatches({
           render={({ field: { onChange, value } }) => {
             return (
               <Select
-                className="h-12 w-full"
+                styles={{
+                  control: (baseStyles, state) => ({
+                    ...baseStyles,
+                    boxShadow: "none",
+                    border: 0,
+                  }),
+                }}
+                className="h-12 w-full rounded-lg border-2 border-zinc-200 pl-3 focus-within:border-zinc-500"
                 // Todo: fix this TS error
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore: Unreachable code error
@@ -178,7 +185,15 @@ export default function AssignBatches({
           control={control}
           render={({ field: { onChange, value } }) => (
             <Select
-              className="h-12 w-full"
+              //https://react-select.com/styles#the-styles-prop
+              styles={{
+                control: (baseStyles, state) => ({
+                  ...baseStyles,
+                  boxShadow: "none",
+                  border: 0,
+                }),
+              }}
+              className="h-12 w-full rounded-lg border-2 border-zinc-200 pl-3 focus-within:border-zinc-500"
               // Todo: fix this TS error
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore: Unreachable code error
@@ -201,7 +216,11 @@ export default function AssignBatches({
         )}
       </div>
 
-      <Button type="button" className="mb-5" onClick={onAddBatchHandler}>
+      <Button
+        type="button"
+        className="mt-5 h-10 w-20 border-orange-600 capitalize text-orange-600 hover:shadow-sm hover:shadow-orange-600"
+        onClick={onAddBatchHandler}
+      >
         Add
       </Button>
       {tableData?.length !== 0 && (
@@ -211,17 +230,17 @@ export default function AssignBatches({
         />
       )}
 
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-4">
         <Button
           type="button"
-          className="mx-3 bg-pink-600 hover:bg-pink-800"
+          className="w-20 bg-pink-600 hover:border-zinc-400 hover:bg-pink-800 hover:text-white"
           onClick={prevClickHandler}
         >
           Prev
         </Button>
         <Button
           type="button"
-          className="mx-3 bg-pink-600 hover:bg-pink-800"
+          className="w-20 bg-pink-600 hover:border-zinc-400 hover:bg-pink-800 hover:text-white"
           onClick={submitCallback}
         >
           Finish
