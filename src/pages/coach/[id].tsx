@@ -130,14 +130,25 @@ export default function Page({
 
   return (
     <>
-      <Card className="h-100 mx-5">
-        <header className="flex justify-between">
+      <Card className="h-100 mx-5 flex flex-col justify-between gap-5">
+        <header className="flex items-center justify-between">
           <CardTitle title="COACH DETAILS" />
-          <Button onClick={() => void router.push(`/edit-coach-${coach.id}`)}>
-            Edit Coach
-          </Button>
+          <div className="flex items-center justify-center gap-2 rounded-lg border-2 bg-pink-600 px-2 text-white hover:border-zinc-400 hover:bg-pink-800">
+            <Image
+              width="14"
+              height="14"
+              src="/icons/edit.svg"
+              alt="edit icon"
+            />
+            <Button
+              onClick={() => void router.push(`/edit-coach-${coach.id}`)}
+              className="border-none px-0"
+            >
+              Edit Coach
+            </Button>
+          </div>
         </header>
-        <div className="flex">
+        <div className="flex items-center">
           <Image
             className="h-40 w-40 rounded-full"
             src={"/images/rugby.jpg"}
@@ -146,8 +157,8 @@ export default function Page({
             height="200"
           />
           <div className="w-10/12 px-10">
-            <div className="mt-5 font-bold">
-              <span> {coach.name} </span>
+            <div className="mt-5 text-xl font-bold">
+              <span className="uppercase"> {coach.name} </span>
               <span> ({coach.designation})</span>
             </div>
             <div className="text-orange-400">
@@ -204,36 +215,96 @@ export default function Page({
             </div>
           </div>
         </div>
-        <div className="mt-5 flex w-10/12 justify-between">
+        <div className="mt-5 flex w-full justify-between">
           <div
-            className={`w-60 cursor-pointer rounded-lg border-2 border-solid p-5 ${
-              displayAttendance ? "border-fuchsia-800" : "border-gray-400"
+            className={`w-60 cursor-pointer rounded-2xl border-2 border-solid bg-white p-5 py-5 pr-6 ${
+              displayAttendance
+                ? "border-pink-800 shadow-md shadow-pink-800"
+                : "border-pink-200"
             }`}
             onClick={handleAttendanceClick}
           >
-            <div className="font-bold"> Attendance</div>
-            <div className="text-4xl font-bold"> 60%</div>
-          </div>
-          <div
-            className={`w-60 cursor-pointer rounded-lg border-2 border-solid p-5 ${
-              displayBatch ? "border-rose-400" : "border-gray-400"
-            }`}
-            onClick={handleBatchClick}
-          >
-            <div className="font-bold"> Batches</div>
-            <div className="text-4xl font-bold">
-              {coach?.batches?.length ?? NO_DATA}
+            <div className="flex items-center justify-around">
+              <Image
+                className="h-10 w-10 rounded-xl bg-pink-800"
+                width="15"
+                height="5"
+                src="/icons/calander.svg"
+                alt="attendance icon"
+              />
+              <div className="flex flex-col items-start justify-around gap-2">
+                <div
+                  className={`text-lg font-bold ${
+                    displayAttendance ? "text-pink-800" : "text-pink-600"
+                  }`}
+                >
+                  {" "}
+                  Attendance
+                </div>
+                <div className="text-4xl font-bold"> 60%</div>
+              </div>
             </div>
           </div>
           <div
-            className={`w-60 cursor-pointer rounded-lg border-2 border-solid p-5 ${
-              displayCertificate ? "border-indigo-600" : "border-gray-400"
+            className={`w-60 cursor-pointer rounded-2xl border-2 border-solid bg-white p-5 pr-6 ${
+              displayBatch
+                ? "border-rose-500 shadow-md shadow-rose-500"
+                : "border-rose-200"
+            }`}
+            onClick={handleBatchClick}
+          >
+            <div className="flex items-center justify-around">
+              <Image
+                className="h-10 w-10 rounded-xl bg-rose-500"
+                width="15"
+                height="5"
+                src="/icons/batch.svg"
+                alt="batch icon"
+              />
+              <div className="flex flex-col items-start justify-around gap-2">
+                <div
+                  className={`text-lg font-bold ${
+                    displayBatch ? "text-rose-500" : "text-rose-400"
+                  }`}
+                >
+                  {" "}
+                  Batches
+                </div>
+                <div className="text-4xl font-bold">
+                  {coach?.batches?.length ?? NO_DATA}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`w-60 cursor-pointer rounded-2xl border-2 border-solid bg-white p-5 pr-6 ${
+              displayCertificate
+                ? "border-slate-600 shadow-md shadow-slate-600"
+                : "border-slate-200"
             }`}
             onClick={handleCertificateClick}
           >
-            <div className="font-bold"> Certificates</div>
-            <div className="text-4xl font-bold">
-              {coach?.certificates?.length ?? NO_DATA}
+            <div className="flex items-center justify-around">
+              <Image
+                className="h-10 w-10 rounded-xl bg-slate-600"
+                width="15"
+                height="5"
+                src="/icons/certificate.svg"
+                alt="certificate icon"
+              />
+              <div className="flex flex-col items-start justify-around gap-2">
+                <div
+                  className={`text-lg font-bold ${
+                    displayCertificate ? "text-stone-600" : "text-stone-400"
+                  }`}
+                >
+                  {" "}
+                  Certificates
+                </div>
+                <div className="text-4xl font-bold">
+                  {coach?.certificates?.length ?? NO_DATA}
+                </div>
+              </div>
             </div>
           </div>
         </div>

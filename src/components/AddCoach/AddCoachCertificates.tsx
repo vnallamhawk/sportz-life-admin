@@ -155,7 +155,7 @@ export default function AddCoachCertificates({}) {
             name="endDate"
           />
           <Button
-            className="ml-2 h-10 w-20 border-orange-600 capitalize text-orange-600 hover:shadow-sm hover:shadow-orange-600"
+            className="ml-2 h-10 w-20 border-orange-600 uppercase text-orange-600 hover:shadow-sm hover:shadow-orange-600"
             onClick={onAddHandler}
           >
             Add

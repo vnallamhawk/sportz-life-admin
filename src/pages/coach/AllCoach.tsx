@@ -36,7 +36,7 @@ export default function AllCoach() {
               <Image
                 width="20"
                 height="20"
-                src="/images/search.svg"
+                src="/icons/search.svg"
                 alt="search icon"
               />
             </div>
