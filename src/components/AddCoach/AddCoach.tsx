@@ -12,7 +12,6 @@ import { Controller, useForm } from "react-hook-form";
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import { api } from "~/utils/api";
 import Select from "react-select";
-import { useRouter } from "next/router";
 
 export default function AddCoach() {
   let inputElement;
@@ -31,8 +30,6 @@ export default function AddCoach() {
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
-  const { asPath } = useRouter();
-  const isEditMode = asPath.includes("edit");
 
   const [formConstantValues, setFormConstantValues] = useState(
     COACH_DETAILS_CONSTANTS
@@ -151,43 +148,36 @@ export default function AddCoach() {
 
   return (
     <>
-      {currentStep === 1 ? (
-        <>
-          <CardTitle title="ADD COACH" />
-          <div className="text-lg font-bold">COACH DETAILS</div>
-          <div className="mt-10 grid grid-cols-2 gap-x-10 gap-y-12">
-            {formConstantValues.map((props) => (
-              <div key={props.id}>
-                {getInputElement(props)}
+      <CardTitle title="ADD COACH" />
+      <div className="text-lg font-bold">COACH DETAILS</div>
+      <div className="mt-10 grid grid-cols-2 gap-x-10 gap-y-12">
+        {formConstantValues.map((props) => (
+          <div key={props.id}>
+            {getInputElement(props)}
 
-                <span className="text-red-800">
-                  {errors[props.id]?.type === "required" && (
-                    <div>This field is required</div>
-                  )}
-                  {errors[props.id]?.type === "pattern" && (
-                    <div> This field is not matching the pattern</div>
-                  )}
-                  {errors[props.id]?.type === "maxLength" && (
-                    <div>
-                      {`This field is exceeding the max. character limit`}
-                    </div>
-                  )}
-                </span>
-              </div>
-            ))}
+            <span className="text-red-800">
+              {errors[props.id]?.type === "required" && (
+                <div>This field is required</div>
+              )}
+              {errors[props.id]?.type === "pattern" && (
+                <div> This field is not matching the pattern</div>
+              )}
+              {errors[props.id]?.type === "maxLength" && (
+                <div>{`This field is exceeding the max. character limit`}</div>
+              )}
+            </span>
           </div>
-          <div className="mr-10 mt-10 flex justify-end">
-            <Button
-              className="border-1 mx-3 bg-pink-600 hover:bg-pink-800"
-              type="button"
-              onClick={() => void nextClickHandler()}
-            >
-              Next
-            </Button>
-          </div>
-        </>
-      ) : // </form>
-      null}
+        ))}
+      </div>
+      <div className="mr-10 mt-10 flex justify-end">
+        <Button
+          className="border-1 mx-3 bg-pink-600 hover:bg-pink-800"
+          type="button"
+          onClick={() => void nextClickHandler()}
+        >
+          Next
+        </Button>
+      </div>
     </>
   );
 }

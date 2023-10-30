@@ -1,4 +1,4 @@
-import { STAFF_DETAILS_CONSTANTS_TYPES } from "~/types/staff";
+import { type STAFF_DETAILS_CONSTANTS_TYPES } from "~/types/staff";
 
 export const STAFF_TABLE_HEADERS = [
   {

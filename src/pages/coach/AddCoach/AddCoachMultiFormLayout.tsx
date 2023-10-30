@@ -68,8 +68,6 @@ export default function AddCoachMultiFormLayout() {
   const router = useRouter();
   const id = Number(router?.query?.id);
   if (id) {
-    // eslint-disable-next-line no-console
-    // console.log(id);
     coach = api.coach.getCoachById.useQuery({ id: id }).data;
   }
 
@@ -150,11 +148,6 @@ export default function AddCoachMultiFormLayout() {
       hasCoachUseEffectRun.current = true;
     }
   }, [batches, centers, coach, sportsDictionary]);
-
-  // centerId: string;
-  // centerName: string;
-  // batchName: string;
-  // batchIds: number[];
 
   const formProviderData = {
     ...methods,
