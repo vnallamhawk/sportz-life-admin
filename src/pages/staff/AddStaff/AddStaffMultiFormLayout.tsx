@@ -75,7 +75,7 @@ export default function AddStaffMultiFormLayout() {
           {currentStep === 1 && <AddStaffShift />}
         </Card>
         <Card className="col-span-2 bg-gray-100">
-          <div className="mb-10 font-bold">Coach Image</div>
+          <div className="mb-10 font-bold">Staff Image</div>
 
           <div>
             {preview.length ? (
