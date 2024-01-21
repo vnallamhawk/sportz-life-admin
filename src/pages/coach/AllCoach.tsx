@@ -21,7 +21,7 @@ export default function AllCoach() {
 
   return (
     <>
-      <Card className="h-full">
+      <Card className="relative mx-auto mb-[167px] mt-[112px] h-full max-h-[612px] w-full max-w-[1120px] rounded-2xl bg-white ">
         <header className="flex justify-between p-2">
           <CardTitle title="ALL COACHES" />
           <div>
@@ -29,9 +29,10 @@ export default function AllCoach() {
               value={filterByName}
               setValue={setFilterByName}
               placeHolder="Search By Name"
+              className="SearchByName font-['DM Sans'] mr-4 text-base font-medium leading-tight text-stone-300"
             />
             <Button
-              className="ml-3 bg-pink-700 p-2"
+              className=" font-['DM Sans'] inline-flex h-12 w-48 items-center justify-center gap-2 rounded-lg border-transparent bg-rose-500 px-6 py-3 text-lg font-medium capitalize tracking-tight dark:text-white "
               onClick={() => router.push("/coach/AddCoach")}
             >
               ADD COACH

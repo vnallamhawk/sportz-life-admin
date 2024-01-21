@@ -9,10 +9,6 @@ export const COACH_TABLE_HEADERS = [
     id: "name",
   },
   {
-    label: "Age",
-    id: "age",
-  },
-  {
     label: "Designation",
     id: "designation",
   },
@@ -20,7 +16,10 @@ export const COACH_TABLE_HEADERS = [
     label: "Sport Coaching",
     id: "sportCoaching",
   },
-
+  {
+    label: "Age",
+    id: "age",
+  },
   {
     label: "Gender",
     id: "gender",

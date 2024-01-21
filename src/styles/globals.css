@@ -5,6 +5,7 @@
 @import "@radix-ui/colors/violet.css";
 @import "react-datepicker/dist/react-datepicker.css";
 @import "react-tabs/style/react-tabs.css";
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200&family=Teko:wght@500&display=swap');
 
 @tailwind base;
 @tailwind components;

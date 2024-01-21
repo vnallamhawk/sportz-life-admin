@@ -54,7 +54,7 @@ export default function CoachTableBody(
             className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
             onClick={() => onClickHandler(id)}
           >
-            <td className="rounded-l-lg border-y-2 border-l-2 border-solid pl-5">
+            <td className="rounded-l-lg border-y-2 border-l-2 border-solid  pl-5">
               <Checkbox.Root className="CheckboxRoot" defaultChecked id="c1">
                 <Checkbox.Indicator className="CheckboxIndicator">
                   <CheckIcon />
