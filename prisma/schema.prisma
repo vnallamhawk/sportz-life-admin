@@ -3,9 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
+
 model Account {
   id                       String  @id @default(cuid())
   userId                   String
@@ -197,10 +198,13 @@ model Center {
 
 model Batches {
   id               Int                @unique @default(autoincrement())
+  maxCapacity      Int
   name             String
+  createdAt        DateTime           @default(now())
   centerId         Int
   center           Center             @relation(fields: [centerId], references: [id])
   CoachesOnBatches CoachesOnBatches[]
+  BatchSchedule    BatchSchedule[]
 
   @@index([centerId])
 }
@@ -271,4 +275,23 @@ enum ExperienceLevel {
   TWO_FIVE
   SIX_TEN
   TEN_OVER
+}
+
+enum day_of_week {
+  mon
+  tue
+  wed
+  thu
+  fri
+  sat
+  sun
+}
+
+model BatchSchedule {
+  id        Int         @id @default(autoincrement())
+  startTime DateTime
+  endTime   DateTime
+  day       day_of_week
+  Batches   Batches?    @relation(fields: [batchesId], references: [id])
+  batchesId Int?
 }

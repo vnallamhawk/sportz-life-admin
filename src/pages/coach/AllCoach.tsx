@@ -34,7 +34,7 @@ export default function AllCoach() {
               className="ml-3 bg-pink-700 p-2"
               onClick={() => router.push("/coach/AddCoach")}
             >
-              ADD COACH
+              ADD NEW COACH
             </Button>
           </div>
         </header>
