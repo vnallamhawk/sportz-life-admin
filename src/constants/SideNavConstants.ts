@@ -20,6 +20,10 @@ export const SIDE_NAV_ITEMS = [
     route: "/athlete",
   },
   {
+    label: "Injury Logs",
+    route: "/injury",
+  },
+  {
     label: "Assessments",
     route: "/assessments",
   },
