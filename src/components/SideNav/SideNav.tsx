@@ -33,7 +33,7 @@ export default function SideNav({ className }: { className: string }) {
           >
             <NavigationMenu.Item className="p-2 hover:fill-side-nav-orange hover:text-side-nav-orange">
               <NavigationMenu.Trigger>
-                <div className="ml-2 flex space-x-1">
+                <div className="ml-2 flex space-x-2">
                   {icon}
                   <span>{label}</span>
                 </div>
