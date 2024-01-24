@@ -10,6 +10,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Teko:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,500&display=swap");
+
+@layer base {
+  html {
+    font-family: "DM Sans", sans-serif;
+  }
+}
+
 a {
   @apply cursor-pointer text-blue-600 underline visited:text-purple-600 hover:text-blue-800;
 }
@@ -70,14 +79,14 @@ button[role="combobox"] {
 }
 
 .react-datepicker__tab-loop {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .date-picker-icon {
-    float: right;
-    margin-right: 20px;
-    margin-top: -30px;
-    position: relative;
-    z-index: 2;
+  float: right;
+  margin-right: 20px;
+  margin-top: -30px;
+  position: relative;
+  z-index: 2;
 }
