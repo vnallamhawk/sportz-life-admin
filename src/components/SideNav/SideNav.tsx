@@ -35,7 +35,7 @@ export default function SideNav({ className }: { className: string }) {
             key={label}
             href={`${route}`}
           >
-            <NavigationMenu.Item className="p-2">
+            <NavigationMenu.Item className="p-2 hover:text-side-nav-orange">
               <NavigationMenu.Trigger>
                 <div className="ml-2 flex space-x-1">
                   <Image
