@@ -3,6 +3,7 @@ import { SIDE_NAV_ITEMS } from "../../constants/SideNavConstants";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import classNames from "classnames";
+import SiteLogoIcon from "../Icons/SiteLogoIcon";
 
 export default function SideNav({ className }: { className: string }) {
   // const { pathname } = useRouter();
@@ -19,12 +20,7 @@ export default function SideNav({ className }: { className: string }) {
       orientation="horizontal"
     >
       <div className="mb-7 mt-5 flex items-center justify-center space-x-1">
-        <Image
-          width="35"
-          height="35"
-          src="/icons/site-logo.svg"
-          alt="Sportz Life"
-        />
+        <SiteLogoIcon />
         <span className="font-heading text-white">SPORTZ TRACK</span>
       </div>
 
@@ -35,15 +31,10 @@ export default function SideNav({ className }: { className: string }) {
             key={label}
             href={`${route}`}
           >
-            <NavigationMenu.Item className="p-2">
+            <NavigationMenu.Item className="p-2 hover:fill-side-nav-orange hover:text-side-nav-orange">
               <NavigationMenu.Trigger>
                 <div className="ml-2 flex space-x-1">
-                  <Image
-                    width="25"
-                    height="25"
-                    src={`/icons/${icon}`}
-                    alt="Sportz Life"
-                  />
+                  {icon}
                   <span>{label}</span>
                 </div>
               </NavigationMenu.Trigger>
