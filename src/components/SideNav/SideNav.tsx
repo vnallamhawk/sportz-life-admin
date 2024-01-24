@@ -13,29 +13,40 @@ export default function SideNav({ className }: { className: string }) {
   }
   return (
     <NavigationMenu.Root
-      className={classNames("bg-gray-950 pl-5", {
+      className={classNames("bg-gray-950", {
         [`${className}`]: className !== "",
       })}
       orientation="horizontal"
     >
-      <div>
+      <div className="mb-7 mt-5 flex items-center justify-center space-x-1">
         <Image
-          width="100"
-          height="100"
-          src="/images/SPORTZ_LIFE_LOGO.jpg"
+          width="35"
+          height="35"
+          src="/icons/site-logo.svg"
           alt="Sportz Life"
         />
+        <span className="text-white">SPORTZ TRACK</span>
       </div>
 
       <NavigationMenu.List>
-        {SIDE_NAV_ITEMS.map(({ label, route }) => (
+        {SIDE_NAV_ITEMS.map(({ label, route, icon }) => (
           <NavigationMenu.Link
             className="text-zinc-500"
             key={label}
             href={`${route}`}
           >
             <NavigationMenu.Item className="p-2">
-              <NavigationMenu.Trigger>{label}</NavigationMenu.Trigger>
+              <NavigationMenu.Trigger>
+                <div className="ml-2 flex space-x-1">
+                  <Image
+                    width="25"
+                    height="25"
+                    src={`/icons/${icon}`}
+                    alt="Sportz Life"
+                  />
+                  <span>{label}</span>
+                </div>
+              </NavigationMenu.Trigger>
             </NavigationMenu.Item>
           </NavigationMenu.Link>
         ))}
