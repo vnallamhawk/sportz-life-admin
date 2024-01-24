@@ -25,7 +25,7 @@ export default function SideNav({ className }: { className: string }) {
           src="/icons/site-logo.svg"
           alt="Sportz Life"
         />
-        <span className="text-white">SPORTZ TRACK</span>
+        <span className="font-heading text-white">SPORTZ TRACK</span>
       </div>
 
       <NavigationMenu.List>
