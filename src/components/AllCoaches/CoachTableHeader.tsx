@@ -8,7 +8,10 @@ export default function CoachTableHeader() {
     let component;
     if (id === "selectControl") {
       component = (
-        <Checkbox.Root className="absolute left-1 top-0 h-full w-full" id="c1">
+        <Checkbox.Root
+          className="absolute left-1 top-0 h-full w-5 rounded-md border-2 border-red-100 font-medium"
+          id="c1"
+        >
           <Checkbox.Indicator className="CheckboxIndicator">
             <CheckIcon />
           </Checkbox.Indicator>
@@ -33,10 +36,7 @@ export default function CoachTableHeader() {
   return (
     <tr className="text-base leading-tight text-neutral-400 ">
       {COACH_TABLE_HEADERS.map(({ id, label }) => (
-        <th
-          key={id}
-          className="font-['DM Sans'] relative w-3 rounded-md border-red-100 text-left font-medium first:border-2 first:text-center "
-        >
+        <th key={id} className="font-['DM Sans'] relative w-3 font-medium ">
           {getRenderComponent(id, label)}
         </th>
       ))}

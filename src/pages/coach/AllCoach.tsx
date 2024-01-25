@@ -21,7 +21,7 @@ export default function AllCoach() {
 
   return (
     <>
-      <Card className="relative mx-auto mb-[167px] mt-[112px] h-full max-h-[612px] w-full max-w-[1120px] rounded-2xl bg-white ">
+      <Card className="container relative mx-auto mb-[167px] mt-[112px] h-full max-h-[721px] w-full max-w-[1440px] rounded-2xl bg-white ">
         <header className="flex justify-between p-2">
           <CardTitle title="ALL COACHES" />
           <div>
