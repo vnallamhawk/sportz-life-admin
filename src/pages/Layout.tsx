@@ -10,8 +10,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex">
-      {sessionData && <SideNav className="min-h-screen w-60 bg-gray-950" />}
-      <main className="w-full">
+      {sessionData && (
+        <SideNav className="min-h-screen flex-none bg-gray-950" />
+      )}
+      <main className="w-full flex-auto">
         <ToastContext.Provider value={toastValue}>
           {children}
         </ToastContext.Provider>
