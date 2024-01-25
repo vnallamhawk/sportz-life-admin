@@ -12,6 +12,10 @@ export default function SideNav({ className }: { className: string }) {
   if (!sessionData) {
     return null;
   }
+
+  let currentPath = new URL(window.location.href).pathname;
+  let currentActiveNav = currentPath.split("/")[1];
+
   return (
     <NavigationMenu.Root
       className={classNames("bg-gray-950", {
@@ -24,22 +28,27 @@ export default function SideNav({ className }: { className: string }) {
         <span className="font-heading text-white">SPORTZ TRACK</span>
       </div>
 
-      <NavigationMenu.List>
+      <NavigationMenu.List className="mb-4 ml-1 space-y-4">
         {SIDE_NAV_ITEMS.map(({ label, route, icon }) => (
-          <NavigationMenu.Link
-            className="text-zinc-500"
-            key={label}
-            href={`${route}`}
-          >
-            <NavigationMenu.Item className="p-2 hover:fill-side-nav-orange hover:text-side-nav-orange">
-              <NavigationMenu.Trigger>
-                <div className="ml-2 flex space-x-2">
-                  {icon}
-                  <span>{label}</span>
+          <NavigationMenu.Item key={label}>
+            <NavigationMenu.Link
+              className={`text-zinc-500 no-underline visited:text-zinc-500 hover:fill-side-nav-orange hover:text-side-nav-orange data-[active]:text-side-nav-orange`}
+              active={"/" + currentActiveNav == route}
+              href={`${route}`}
+            >
+              {"/" + currentActiveNav == route ? (
+                <div className="absolute w-1 rounded-sm bg-side-nav-orange">
+                  &nbsp;
                 </div>
-              </NavigationMenu.Trigger>
-            </NavigationMenu.Item>
-          </NavigationMenu.Link>
+              ) : (
+                ""
+              )}
+              <div className="ml-2 flex space-x-2">
+                {icon}
+                <span>{label}</span>
+              </div>
+            </NavigationMenu.Link>
+          </NavigationMenu.Item>
         ))}
       </NavigationMenu.List>
     </NavigationMenu.Root>
