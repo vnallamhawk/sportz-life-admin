@@ -17,6 +17,7 @@ import FinancialAnalyticIcon from "~/components/Icons/FinancialAnalyticIcon";
 import InventoryIcon from "~/components/Icons/InventoryIcon";
 import SettingsIcon from "~/components/Icons/SettingsIcon";
 
+// the commented items in side nav are for second phase release
 export const SIDE_NAV_ITEMS = [
   {
     label: "Dashboard",
@@ -28,11 +29,11 @@ export const SIDE_NAV_ITEMS = [
     route: "/centers",
     icon: <CentersIcon />,
   },
-  {
-    label: "Staffs",
-    route: "/staff",
-    icon: <StaffIcon />,
-  },
+  // {
+  //   label: "Staffs",
+  //   route: "/staff",
+  //   icon: <StaffIcon />,
+  // },
   {
     label: "Coach",
     route: "/coach",
@@ -53,21 +54,21 @@ export const SIDE_NAV_ITEMS = [
     route: "/assessments",
     icon: <AssessmentsIcon />,
   },
-  {
-    label: "Training Drills",
-    route: "/drills",
-    icon: <TrainingDrillsIcon />,
-  },
-  {
-    label: "Training Plan",
-    route: "/plans",
-    icon: <TrainingPlanIcon />,
-  },
-  {
-    label: "Competitions",
-    route: "/competitions",
-    icon: <CompetitionsIcon />,
-  },
+  // {
+  //   label: "Training Drills",
+  //   route: "/drills",
+  //   icon: <TrainingDrillsIcon />,
+  // },
+  // {
+  //   label: "Training Plan",
+  //   route: "/plans",
+  //   icon: <TrainingPlanIcon />,
+  // },
+  // {
+  //   label: "Competitions",
+  //   route: "/competitions",
+  //   icon: <CompetitionsIcon />,
+  // },
   {
     label: "Support",
     route: "/support",
@@ -78,21 +79,21 @@ export const SIDE_NAV_ITEMS = [
     route: "/pricing",
     icon: <PlanAndPricingIcon />,
   },
-  {
-    label: "Staff Payroll",
-    route: "/payroll",
-    icon: <StaffPayrollIcon />,
-  },
-  {
-    label: "Financial Analytic",
-    route: "/financial",
-    icon: <FinancialAnalyticIcon />,
-  },
-  {
-    label: "Inventory",
-    route: "/inventory",
-    icon: <InventoryIcon />,
-  },
+  // {
+  //   label: "Staff Payroll",
+  //   route: "/payroll",
+  //   icon: <StaffPayrollIcon />,
+  // },
+  // {
+  //   label: "Financial Analytic",
+  //   route: "/financial",
+  //   icon: <FinancialAnalyticIcon />,
+  // },
+  // {
+  //   label: "Inventory",
+  //   route: "/inventory",
+  //   icon: <InventoryIcon />,
+  // },
   {
     label: "Post",
     route: "/post",
