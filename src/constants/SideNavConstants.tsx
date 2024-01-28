@@ -1,20 +1,21 @@
+// the commented items in side nav are for second phase release
 import AssessmentsIcon from "~/components/Icons/AssessmentsIcon";
 import AtheleteIcon from "~/components/Icons/AtheleteIcon";
 import CentersIcon from "~/components/Icons/CentersIcon";
 import CoachIcon from "~/components/Icons/CoachIcon";
-import CompetitionsIcon from "~/components/Icons/CompetitionsIcon";
+// import CompetitionsIcon from "~/components/Icons/CompetitionsIcon";
 import DashboardIcon from "~/components/Icons/DashboardIcon";
 import PlanAndPricingIcon from "~/components/Icons/PlanAndPricingIcon";
 import PostIcon from "~/components/Icons/PostIcon";
 import ReportsIcon from "~/components/Icons/ReportsIcon";
-import StaffIcon from "~/components/Icons/StaffIcon";
+// import StaffIcon from "~/components/Icons/StaffIcon";
 import SupportIcon from "~/components/Icons/SupportIcon";
-import TrainingDrillsIcon from "~/components/Icons/TrainingDrillsIcon";
-import TrainingPlanIcon from "~/components/Icons/TrainingPlanIcon";
+// import TrainingDrillsIcon from "~/components/Icons/TrainingDrillsIcon";
+// import TrainingPlanIcon from "~/components/Icons/TrainingPlanIcon";
 import InjuryLogsIcon from "~/components/Icons/InjuryLogsIcon";
-import StaffPayrollIcon from "~/components/Icons/StaffPayrollIcon";
-import FinancialAnalyticIcon from "~/components/Icons/FinancialAnalyticIcon";
-import InventoryIcon from "~/components/Icons/InventoryIcon";
+// import StaffPayrollIcon from "~/components/Icons/StaffPayrollIcon";
+// import FinancialAnalyticIcon from "~/components/Icons/FinancialAnalyticIcon";
+// import InventoryIcon from "~/components/Icons/InventoryIcon";
 import SettingsIcon from "~/components/Icons/SettingsIcon";
 
 export const SIDE_NAV_ITEMS = [
@@ -28,11 +29,11 @@ export const SIDE_NAV_ITEMS = [
     route: "/centers",
     icon: <CentersIcon />,
   },
-  {
-    label: "Staffs",
-    route: "/staff",
-    icon: <StaffIcon />,
-  },
+  // {
+  //   label: "Staffs",
+  //   route: "/staff",
+  //   icon: <StaffIcon />,
+  // },
   {
     label: "Coach",
     route: "/coach",
@@ -53,21 +54,21 @@ export const SIDE_NAV_ITEMS = [
     route: "/assessments",
     icon: <AssessmentsIcon />,
   },
-  {
-    label: "Training Drills",
-    route: "/drills",
-    icon: <TrainingDrillsIcon />,
-  },
-  {
-    label: "Training Plan",
-    route: "/plans",
-    icon: <TrainingPlanIcon />,
-  },
-  {
-    label: "Competitions",
-    route: "/competitions",
-    icon: <CompetitionsIcon />,
-  },
+  // {
+  //   label: "Training Drills",
+  //   route: "/drills",
+  //   icon: <TrainingDrillsIcon />,
+  // },
+  // {
+  //   label: "Training Plan",
+  //   route: "/plans",
+  //   icon: <TrainingPlanIcon />,
+  // },
+  // {
+  //   label: "Competitions",
+  //   route: "/competitions",
+  //   icon: <CompetitionsIcon />,
+  // },
   {
     label: "Support",
     route: "/support",
@@ -78,21 +79,21 @@ export const SIDE_NAV_ITEMS = [
     route: "/pricing",
     icon: <PlanAndPricingIcon />,
   },
-  {
-    label: "Staff Payroll",
-    route: "/payroll",
-    icon: <StaffPayrollIcon />,
-  },
-  {
-    label: "Financial Analytic",
-    route: "/financial",
-    icon: <FinancialAnalyticIcon />,
-  },
-  {
-    label: "Inventory",
-    route: "/inventory",
-    icon: <InventoryIcon />,
-  },
+  // {
+  //   label: "Staff Payroll",
+  //   route: "/payroll",
+  //   icon: <StaffPayrollIcon />,
+  // },
+  // {
+  //   label: "Financial Analytic",
+  //   route: "/financial",
+  //   icon: <FinancialAnalyticIcon />,
+  // },
+  // {
+  //   label: "Inventory",
+  //   route: "/inventory",
+  //   icon: <InventoryIcon />,
+  // },
   {
     label: "Post",
     route: "/post",
