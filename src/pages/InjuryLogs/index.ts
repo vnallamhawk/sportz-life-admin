@@ -1,1 +1,1 @@
-export { default } from "./AllInjury";
+// export { default } from "./AllInjurylogs";
