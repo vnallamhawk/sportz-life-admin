@@ -1,23 +1,23 @@
+// the commented items in side nav are for second phase release
 import AssessmentsIcon from "~/components/Icons/AssessmentsIcon";
 import AtheleteIcon from "~/components/Icons/AtheleteIcon";
 import CentersIcon from "~/components/Icons/CentersIcon";
 import CoachIcon from "~/components/Icons/CoachIcon";
-import CompetitionsIcon from "~/components/Icons/CompetitionsIcon";
+// import CompetitionsIcon from "~/components/Icons/CompetitionsIcon";
 import DashboardIcon from "~/components/Icons/DashboardIcon";
 import PlanAndPricingIcon from "~/components/Icons/PlanAndPricingIcon";
 import PostIcon from "~/components/Icons/PostIcon";
 import ReportsIcon from "~/components/Icons/ReportsIcon";
-import StaffIcon from "~/components/Icons/StaffIcon";
+// import StaffIcon from "~/components/Icons/StaffIcon";
 import SupportIcon from "~/components/Icons/SupportIcon";
-import TrainingDrillsIcon from "~/components/Icons/TrainingDrillsIcon";
-import TrainingPlanIcon from "~/components/Icons/TrainingPlanIcon";
+// import TrainingDrillsIcon from "~/components/Icons/TrainingDrillsIcon";
+// import TrainingPlanIcon from "~/components/Icons/TrainingPlanIcon";
 import InjuryLogsIcon from "~/components/Icons/InjuryLogsIcon";
-import StaffPayrollIcon from "~/components/Icons/StaffPayrollIcon";
-import FinancialAnalyticIcon from "~/components/Icons/FinancialAnalyticIcon";
-import InventoryIcon from "~/components/Icons/InventoryIcon";
+// import StaffPayrollIcon from "~/components/Icons/StaffPayrollIcon";
+// import FinancialAnalyticIcon from "~/components/Icons/FinancialAnalyticIcon";
+// import InventoryIcon from "~/components/Icons/InventoryIcon";
 import SettingsIcon from "~/components/Icons/SettingsIcon";
 
-// the commented items in side nav are for second phase release
 export const SIDE_NAV_ITEMS = [
   {
     label: "Dashboard",
