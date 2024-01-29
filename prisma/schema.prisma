@@ -295,3 +295,9 @@ model BatchSchedule {
   Batches   Batches?    @relation(fields: [batchesId], references: [id])
   batchesId Int?
 }
+
+model AcadamyAdmin {
+  id Int @id @default(autoincrement())
+  name String  @db.VarChar(40)
+  code String  @db.VarChar(7)
+}
