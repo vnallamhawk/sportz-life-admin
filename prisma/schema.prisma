@@ -296,7 +296,7 @@ model BatchSchedule {
   batchesId Int?
 }
 
-model AcademyAdmin {
+model Academy {
   id Int @id @default(autoincrement())
   name String  @db.VarChar(40)
   code String  @db.VarChar(7)
