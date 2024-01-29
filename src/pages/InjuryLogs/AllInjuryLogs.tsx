@@ -8,6 +8,7 @@ import CoachTableHeader from "../../components/AllCoaches/CoachTableHeader";
 import CoachTableBody from "../../components/AllCoaches/CoachTableBody";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
+import TabsComponent from "~/components/Tabs";
 
 export default function AllInjuryLogs() {
   const router = useRouter();
@@ -38,10 +39,38 @@ export default function AllInjuryLogs() {
             </Button>
           </div>
         </header>
-        <Table
+        <TabsComponent
+          tabs={[
+            {
+              name: "ATHLETE INJURIES",
+              component: (
+                <Table
+                  tableHeader={CoachTableHeader()}
+                  tableBody={CoachTableBody(
+                    { name: filterByName },
+                    handleIsLoading
+                  )}
+                />
+              ),
+            },
+            {
+              name: "COACH INJURIES",
+              component: (
+                <Table
+                  tableHeader={CoachTableHeader()}
+                  tableBody={CoachTableBody(
+                    { name: filterByName },
+                    handleIsLoading
+                  )}
+                />
+              ),
+            },
+          ]}
+        />
+        {/* <Table
           tableHeader={CoachTableHeader()}
           tableBody={CoachTableBody({ name: filterByName }, handleIsLoading)}
-        />
+        /> */}
         {loading ? <LoadingSpinner /> : ""}
       </Card>
     </>
