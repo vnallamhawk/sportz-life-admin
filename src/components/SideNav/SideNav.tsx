@@ -1,7 +1,6 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
 import { SIDE_NAV_ITEMS } from "../../constants/SideNavConstants";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import classNames from "classnames";
 import SiteLogoIcon from "../Icons/SiteLogoIcon";
 
@@ -13,8 +12,8 @@ export default function SideNav({ className }: { className: string }) {
     return null;
   }
 
-  let currentPath = new URL(window.location.href).pathname;
-  let currentActiveNav = currentPath.split("/")[1];
+  const currentPath = new URL(window.location.href).pathname;
+  const currentActiveNav = currentPath.split("/")[1];
 
   return (
     <NavigationMenu.Root
@@ -33,10 +32,10 @@ export default function SideNav({ className }: { className: string }) {
           <NavigationMenu.Item key={label}>
             <NavigationMenu.Link
               className={`text-zinc-500 no-underline visited:text-zinc-500 hover:fill-side-nav-orange hover:text-side-nav-orange data-[active]:text-side-nav-orange`}
-              active={"/" + currentActiveNav == route}
+              active={`/${currentActiveNav as string}` == route}
               href={`${route}`}
             >
-              {"/" + currentActiveNav == route ? (
+              {`/${currentActiveNav as string}` ? (
                 <div className="absolute w-1 rounded-sm bg-side-nav-orange">
                   &nbsp;
                 </div>

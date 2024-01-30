@@ -46,7 +46,7 @@ export const SIDE_NAV_ITEMS = [
   },
   {
     label: "Injury Logs",
-    route: "/injury",
+    route: "/injurylogs",
     icon: <InjuryLogsIcon />,
   },
   {

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SVGProps } from "react";
+import type { SVGProps } from "react";
 const SVGComponent = (props: SVGProps<SVGSVGElement>) => (
   <svg
     width={24}
@@ -49,7 +49,10 @@ const SVGComponent = (props: SVGProps<SVGSVGElement>) => (
       d="M15.4514 24H5.24707V23.25H15.4514C16.3611 23.25 17.1012 22.5135 17.1012 21.6079C17.1012 20.7023 16.3611 19.9656 15.4514 19.9656H13.2754V19.2156H15.4514C16.7749 19.2156 17.8512 20.2886 17.8512 21.6079C17.8512 22.927 16.7749 24 15.4514 24Z"
       fill="currentColor"
     />
-    <path d="M8.54785 10.923H7.79785V23.625H8.54785V10.923Z" fill="currentColor" />
+    <path
+      d="M8.54785 10.923H7.79785V23.625H8.54785V10.923Z"
+      fill="currentColor"
+    />
     <path
       d="M17.5508 16.3024H16.8008V20.4487H17.5508V16.3024Z"
       fill="currentColor"
@@ -70,7 +73,10 @@ const SVGComponent = (props: SVGProps<SVGSVGElement>) => (
       d="M5.03607 10.3647L3.28223 9.3562L2.90835 10.0064L4.6622 11.0149L5.03607 10.3647Z"
       fill="currentColor"
     />
-    <path d="M4.3837 12.1934H2.35889V12.9434H4.3837V12.1934Z" fill="currentColor" />
+    <path
+      d="M4.3837 12.1934H2.35889V12.9434H4.3837V12.1934Z"
+      fill="currentColor"
+    />
     <path
       d="M20.6657 4.75769H18.6387V5.50769H20.6657V4.75769Z"
       fill="currentColor"
