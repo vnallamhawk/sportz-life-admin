@@ -10,8 +10,8 @@ const certificatesSchema = z.array(
   z.object({
     instituteName: z.string(),
     name: z.string(),
-    startDate: z.string(),
-    endDate: z.string(),
+    startDate: z.date(),
+    endDate: z.date(),
   })
 );
 

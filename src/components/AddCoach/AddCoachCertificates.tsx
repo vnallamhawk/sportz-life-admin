@@ -15,6 +15,7 @@ import {
   type FormContextTypes,
 } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import CardTitle from "../Card/CardTitle";
+import { dateFormat } from "~/helpers/date";
 
 export default function AddCoachCertificates({}) {
   const {
@@ -49,9 +50,9 @@ export default function AddCoachCertificates({}) {
     if (!data.name || !data.instituteName) {
       result = await trigger();
     }
-    if (data.startDate) data.startDate = new Date(data.startDate).toISOString();
+    if (data.startDate) data.startDate = dateFormat(new Date(data.startDate));
 
-    if (data.endDate) data.endDate = new Date(data.endDate).toISOString();
+    if (data.endDate) data.endDate = dateFormat(new Date(data.endDate));
 
     if (result) {
       if (tableData?.length) {

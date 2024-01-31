@@ -189,7 +189,11 @@ export default function AddCoachMultiFormLayout() {
         email: finalForm.email,
         designation: finalForm.designation,
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-        certificates: finalForm.certificates,
+        certificates: finalForm.certificates.map((certificate) => ({
+          ...certificate,
+          startDate: new Date(certificate.startDate),
+          endDate: new Date(certificate.endDate),
+        })),
         dateOfBirth: new Date(finalForm.dateOfBirth),
         sports: finalForm.coachingSports,
         trainingLevel: finalForm.trainingLevel
@@ -208,7 +212,11 @@ export default function AddCoachMultiFormLayout() {
         email: finalForm.email,
         designation: finalForm.designation,
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-        certificates: finalForm.certificates,
+        certificates: finalForm.certificates.map((certificate) => ({
+          ...certificate,
+          startDate: new Date(certificate.startDate),
+          endDate: new Date(certificate.endDate),
+        })),
         dateOfBirth: new Date(finalForm.dateOfBirth),
         sports: finalForm.coachingSports,
         trainingLevel: finalForm.trainingLevel
