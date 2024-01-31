@@ -183,7 +183,7 @@ CREATE TABLE `CoachesOnSports` (
 CREATE TABLE `Certificates` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `startEnd` DATETIME(3) NULL,
+    `startDate` DATETIME(3) NULL,
     `instituteName` VARCHAR(191) NOT NULL,
     `endDate` DATETIME(3) NULL,
     `coachId` INTEGER NOT NULL,

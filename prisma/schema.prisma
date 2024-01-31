@@ -174,7 +174,7 @@ model CoachesOnSports {
 model Certificates {
   id            Int       @unique @default(autoincrement())
   name          String
-  startEnd      DateTime?
+  startDate      DateTime?
   instituteName String
   endDate       DateTime?
   coachId       Int

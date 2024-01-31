@@ -116,7 +116,7 @@ export default function AddCoachMultiFormLayout() {
         },
         certificates: coach?.certificates.map((cert) => ({
           ...cert,
-          startEnd: cert.startEnd ? dateFormat(cert.startEnd) : "",
+          startDate: cert.startDate ? dateFormat(cert.startDate) : "",
           endDate: cert.endDate ? dateFormat(cert.endDate) : "",
         })),
         batchTableData:

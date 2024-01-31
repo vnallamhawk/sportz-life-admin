@@ -15,6 +15,7 @@ import {
   type FormContextTypes,
 } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import CardTitle from "../Card/CardTitle";
+import { dateFormat } from "~/helpers/date";
 
 export default function AddCoachCertificates({}) {
   const {
@@ -27,7 +28,7 @@ export default function AddCoachCertificates({}) {
     defaultValues: {
       name: "",
       instituteName: "",
-      startEnd: "",
+      startDate: "",
       endDate: "",
     },
   });
@@ -40,6 +41,8 @@ export default function AddCoachCertificates({}) {
   const [tableData, setTableData] = useState<COACH_CERTIFICATE_TABLE_TYPES[]>(
     []
   );
+  // eslint-disable-next-line no-console
+  console.log(tableData);
 
   const onAddHandler = async () => {
     const data = getValues();
@@ -47,7 +50,7 @@ export default function AddCoachCertificates({}) {
     if (!data.name || !data.instituteName) {
       result = await trigger();
     }
-    if (data.startEnd) data.startEnd = new Date(data.startEnd).toISOString();
+    if (data.startDate) data.startDate = new Date(data.startDate).toISOString();
 
     if (data.endDate) data.endDate = new Date(data.endDate).toISOString();
 
@@ -75,6 +78,8 @@ export default function AddCoachCertificates({}) {
 
   useEffect(() => {
     if (formData?.certificates) {
+      // eslint-disable-next-line no-console
+      console.log(formData?.certificates);
       setTableData(formData.certificates);
     }
   }, [formData?.certificates]);
@@ -138,7 +143,7 @@ export default function AddCoachCertificates({}) {
                 />
               );
             }}
-            name="startEnd"
+            name="startDate"
           />
           <Controller
             control={control}

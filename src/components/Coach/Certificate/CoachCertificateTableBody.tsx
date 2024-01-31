@@ -11,7 +11,7 @@ export default function CoachCertificateTableBody({
         {cert.name}
       </td>
       <td className="border-y-2 border-solid">{cert.instituteName}</td>
-      <td className="border-y-2 border-solid">{cert.startEnd?.toString()}</td>
+      <td className="border-y-2 border-solid">{cert.startDate?.toString()}</td>
       <td className="rounded-r-lg border-y-2 border-r-2 border-solid">
         {cert.endDate?.toString()}
       </td>

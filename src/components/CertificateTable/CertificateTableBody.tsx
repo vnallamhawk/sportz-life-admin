@@ -19,7 +19,7 @@ export default function CertificateTableBody({
 
   return (
     <>
-      {data.map(({ instituteName, name }, index) => (
+      {data.map(({ instituteName, name, startDate, endDate }, index) => (
         <tr
           key={`${instituteName}-${index}`}
           className="rounded-l-lg border-b border-l-2 border-solid border-gray-200 hover:bg-gray-100"
@@ -29,6 +29,12 @@ export default function CertificateTableBody({
           </td>
           <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
             {name}
+          </td>
+          <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
+            {startDate}
+          </td>
+          <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
+            {endDate}
           </td>
           <td className="rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left">
             <Button

@@ -75,7 +75,7 @@ export const getServerSideProps = async (
         })),
         certificates: coach?.certificates.map((cert) => ({
           ...cert,
-          startEnd: cert.startEnd ? dateFormat(cert.startEnd) : "",
+          startDate: cert.startDate ? dateFormat(cert.startDate) : "",
           endDate: cert.endDate ? dateFormat(cert.endDate) : "",
         })),
         batches: coach?.batches.map((coachBatch) => ({
@@ -107,7 +107,6 @@ export default function Page({
   coach: CoachWithRelations;
   sports: Sports[];
 }) {
-  // eslint-disable-next-line no-console
   const sportsDictionary = sports?.reduce(
     (accumulator: Record<number, string>, current) => {
       accumulator[current.id] = current.name;
@@ -125,8 +124,6 @@ export default function Page({
     setDisplayCertificate(!displayCertificate);
   const handleBatchClick = () => setDisplayBatch(!displayBatch);
   const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
-  // eslint-disable-next-line no-console
-  console.log(coach);
 
   return (
     <>
