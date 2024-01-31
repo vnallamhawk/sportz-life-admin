@@ -73,11 +73,11 @@ model Coach {
   experienceLevel ExperienceLevel
   centerId        Int?
   image           Bytes?
-  payroll         Payroll?
-  sports          CoachesOnSports[]
   certificates    Certificates[]
-  centers         CoachesOnCenters[]
   batches         CoachesOnBatches[]
+  centers         CoachesOnCenters[]
+  sports          CoachesOnSports[]
+  payroll         Payroll?
 
   @@index([centerId])
 }
@@ -93,9 +93,9 @@ model Staff {
   dateOfBirth   DateTime
   gender        Gender
   image         Bytes?
-  center        StaffCenter[]
   payroll       Payroll?
   shift         Shift[]
+  center        StaffCenter[]
 }
 
 model Shift {
@@ -137,8 +137,8 @@ model Sports {
 model SportsOnCenters {
   sportId  Int
   centerId Int
-  sport    Sports @relation(fields: [sportId], references: [id])
   center   Center @relation(fields: [centerId], references: [id])
+  sport    Sports @relation(fields: [sportId], references: [id])
 
   @@id([sportId, centerId])
   @@index([sportId])
@@ -150,8 +150,8 @@ model CoachesOnCenters {
   centerId   Int
   updatedAt  DateTime @default(now()) @updatedAt
   assignedAt DateTime @default(now())
-  coach      Coach    @relation(fields: [coachId], references: [id])
   center     Center   @relation(fields: [centerId], references: [id])
+  coach      Coach    @relation(fields: [coachId], references: [id])
 
   @@id([coachId, centerId])
   @@index([coachId])
@@ -174,7 +174,7 @@ model CoachesOnSports {
 model Certificates {
   id            Int       @unique @default(autoincrement())
   name          String
-  startDate      DateTime?
+  startDate     DateTime?
   instituteName String
   endDate       DateTime?
   coachId       Int
@@ -189,11 +189,11 @@ model Center {
   location      String
   contactNumber String
   image         Bytes?
-  sports        SportsOnCenters[]
-  inventory     Inventory[]
-  staff         StaffCenter[]
-  coaches       CoachesOnCenters[]
   batches       Batches[]
+  coaches       CoachesOnCenters[]
+  inventory     Inventory[]
+  sports        SportsOnCenters[]
+  staff         StaffCenter[]
 }
 
 model Batches {
@@ -202,9 +202,9 @@ model Batches {
   name             String
   createdAt        DateTime           @default(now())
   centerId         Int
+  BatchSchedule    BatchSchedule[]
   center           Center             @relation(fields: [centerId], references: [id])
   CoachesOnBatches CoachesOnBatches[]
-  BatchSchedule    BatchSchedule[]
 
   @@index([centerId])
 }
@@ -214,8 +214,8 @@ model CoachesOnBatches {
   batchId    Int
   assignedAt DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
-  coach      Coach    @relation(fields: [coachId], references: [id])
   batch      Batches  @relation(fields: [batchId], references: [id])
+  coach      Coach    @relation(fields: [coachId], references: [id])
 
   @@id([coachId, batchId])
   @@index([coachId])
@@ -225,8 +225,8 @@ model CoachesOnBatches {
 model StaffCenter {
   staffId  Int
   centerId Int
-  staff    Staff  @relation(fields: [staffId], references: [id])
   center   Center @relation(fields: [centerId], references: [id])
+  staff    Staff  @relation(fields: [staffId], references: [id])
 
   @@id([staffId, centerId])
   @@index([staffId])
@@ -258,6 +258,23 @@ model SportUser {
   otpCreatedAt DateTime? @db.Timestamp(0)
 }
 
+model BatchSchedule {
+  id        Int         @id @default(autoincrement())
+  startTime DateTime
+  endTime   DateTime
+  day       day_of_week
+  batchesId Int?
+  Batches   Batches?    @relation(fields: [batchesId], references: [id])
+
+  @@index([batchesId], map: "BatchSchedule_batchesId_fkey")
+}
+
+model Academy {
+  id   Int    @id @default(autoincrement())
+  name String @db.VarChar(40)
+  code String @db.VarChar(7)
+}
+
 enum Gender {
   MALE
   FEMALE
@@ -285,19 +302,4 @@ enum day_of_week {
   fri
   sat
   sun
-}
-
-model BatchSchedule {
-  id        Int         @id @default(autoincrement())
-  startTime DateTime
-  endTime   DateTime
-  day       day_of_week
-  Batches   Batches?    @relation(fields: [batchesId], references: [id])
-  batchesId Int?
-}
-
-model Academy {
-  id Int @id @default(autoincrement())
-  name String  @db.VarChar(40)
-  code String  @db.VarChar(7)
 }
