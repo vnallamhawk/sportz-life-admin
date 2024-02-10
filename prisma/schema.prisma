@@ -57,31 +57,6 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Coach {
-  id              Int                @unique @default(autoincrement())
-  name            String
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @default(now()) @updatedAt
-  about           String
-  dateOfBirth     DateTime
-  contactNumber   String
-  email           String             @unique
-  designation     String
-  gender          Gender
-  payrollId       Int?
-  trainingLevel   TrainingLevel
-  experienceLevel ExperienceLevel
-  centerId        Int?
-  image           Bytes?
-  certificates    Certificates[]
-  batches         CoachesOnBatches[]
-  centers         CoachesOnCenters[]
-  sports          CoachesOnSports[]
-  payroll         Payroll?
-
-  @@index([centerId])
-}
-
 model Staff {
   id            Int           @unique @default(autoincrement())
   name          String
@@ -108,11 +83,10 @@ model Shift {
 }
 
 model Inventory {
-  id       Int     @unique @default(autoincrement())
+  id       Int    @unique @default(autoincrement())
   name     String
   quantity Int
   centerId Int?
-  Center   Center? @relation(fields: [centerId], references: [id])
 
   @@index([centerId])
 }
@@ -122,14 +96,18 @@ model Payroll {
   coachId Int    @unique
   type    String
   staffId Int    @unique
-  coach   Coach  @relation(fields: [coachId], references: [id])
   staff   Staff  @relation(fields: [staffId], references: [id])
 }
 
 model Sports {
-  id        Int               @unique @default(autoincrement())
-  name      String            @unique
-  sub_title String?           @db.VarChar(255)
+  id        Int               @id @unique(map: "id") @default(autoincrement())
+  name      String            @db.VarChar(255)
+  subTitle  String            @db.VarChar(255)
+  about     String            @db.Text
+  status    Int?              @default(1) @db.TinyInt
+  createdAt DateTime          @db.DateTime(0)
+  updatedAt DateTime          @db.DateTime(0)
+  deletedAt DateTime?         @db.DateTime(0)
   coaches   CoachesOnSports[]
   Center    SportsOnCenters[]
 }
@@ -137,7 +115,6 @@ model Sports {
 model SportsOnCenters {
   sportId  Int
   centerId Int
-  center   Center @relation(fields: [centerId], references: [id])
   sport    Sports @relation(fields: [sportId], references: [id])
 
   @@id([sportId, centerId])
@@ -150,8 +127,6 @@ model CoachesOnCenters {
   centerId   Int
   updatedAt  DateTime @default(now()) @updatedAt
   assignedAt DateTime @default(now())
-  center     Center   @relation(fields: [centerId], references: [id])
-  coach      Coach    @relation(fields: [coachId], references: [id])
 
   @@id([coachId, centerId])
   @@index([coachId])
@@ -163,7 +138,6 @@ model CoachesOnSports {
   sportId    Int
   assignedAt DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
-  coach      Coach    @relation(fields: [coachId], references: [id])
   sport      Sports   @relation(fields: [sportId], references: [id])
 
   @@id([coachId, sportId])
@@ -178,35 +152,20 @@ model Certificates {
   instituteName String
   endDate       DateTime?
   coachId       Int
-  coach         Coach     @relation(fields: [coachId], references: [id])
 
   @@index([coachId])
 }
 
-model Center {
-  id            Int                @unique @default(autoincrement())
-  name          String             @unique
-  location      String
-  contactNumber String
-  image         Bytes?
-  batches       Batches[]
-  coaches       CoachesOnCenters[]
-  inventory     Inventory[]
-  sports        SportsOnCenters[]
-  staff         StaffCenter[]
-}
-
 model Batches {
-  id               Int                @unique @default(autoincrement())
-  maxCapacity      Int
-  name             String
-  createdAt        DateTime           @default(now())
-  centerId         Int
+  id               Int                @id @unique(map: "id") @default(autoincrement())
+  name             String             @db.VarChar(255)
+  capacity         Int
+  status           Int?               @default(1) @db.TinyInt
+  createdAt        DateTime           @db.DateTime(0)
+  updatedAt        DateTime           @db.DateTime(0)
+  deletedAt        DateTime?          @db.DateTime(0)
   BatchSchedule    BatchSchedule[]
-  center           Center             @relation(fields: [centerId], references: [id])
   CoachesOnBatches CoachesOnBatches[]
-
-  @@index([centerId])
 }
 
 model CoachesOnBatches {
@@ -215,7 +174,6 @@ model CoachesOnBatches {
   assignedAt DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
   batch      Batches  @relation(fields: [batchId], references: [id])
-  coach      Coach    @relation(fields: [coachId], references: [id])
 
   @@id([coachId, batchId])
   @@index([coachId])
@@ -225,8 +183,7 @@ model CoachesOnBatches {
 model StaffCenter {
   staffId  Int
   centerId Int
-  center   Center @relation(fields: [centerId], references: [id])
-  staff    Staff  @relation(fields: [staffId], references: [id])
+  staff    Staff @relation(fields: [staffId], references: [id])
 
   @@id([staffId, centerId])
   @@index([staffId])
@@ -275,23 +232,126 @@ model Academy {
   code String @db.VarChar(7)
 }
 
+model Academies {
+  id        Int        @id @unique(map: "id") @default(autoincrement())
+  name      String     @db.VarChar(255)
+  code      String     @unique(map: "code") @db.VarChar(255)
+  status    Int?       @default(1) @db.TinyInt
+  createdAt DateTime   @db.DateTime(0)
+  updatedAt DateTime   @db.DateTime(0)
+  deletedAt DateTime?  @db.DateTime(0)
+  Athletes  Athletes[]
+  Coaches   Coaches[]
+}
+
+model AthleteSportsMaps {
+  id            Int                             @id @unique(map: "id") @default(autoincrement())
+  athleteId     Int
+  sportsId      Int
+  trainingLevel AthleteSportsMaps_trainingLevel
+  centerId      Int
+  batchId       Int
+  status        Int?                            @default(1) @db.TinyInt
+  createdAt     DateTime                        @db.DateTime(0)
+  updatedAt     DateTime                        @db.DateTime(0)
+  deletedAt     DateTime?                       @db.DateTime(0)
+}
+
+model Athletes {
+  id             Int                 @id @unique(map: "id") @default(autoincrement())
+  image          String?             @db.VarChar(255)
+  name           String              @db.VarChar(255)
+  dob            DateTime            @db.DateTime(0)
+  gender         Athletes_gender
+  bloodGroup     Athletes_bloodGroup
+  height         Float               @db.Float
+  heightUnit     Athletes_heightUnit
+  weight         Float               @db.Float
+  weightUnit     Athletes_weightUnit
+  fatherName     String              @db.VarChar(255)
+  countryCode    String?             @default("+91") @db.VarChar(255)
+  phone          String?             @unique(map: "phone") @db.VarChar(255)
+  email          String?             @unique(map: "email") @db.VarChar(255)
+  address        String?             @db.VarChar(255)
+  academyCode    Int
+  medicalHistory Json?
+  status         Int?                @default(1) @db.TinyInt
+  createdAt      DateTime            @db.DateTime(0)
+  updatedAt      DateTime            @db.DateTime(0)
+  Academies      Academies           @relation(fields: [academyCode], references: [id], onDelete: NoAction, map: "Athletes_ibfk_1")
+
+  @@index([academyCode], map: "academyCode")
+}
+
+model Centers {
+  id        Int       @id @unique(map: "id") @default(autoincrement())
+  name      String    @db.VarChar(255)
+  image     Int?
+  address   String    @db.Text
+  mobile    String    @db.VarChar(255)
+  status    Int?      @default(1) @db.TinyInt
+  createdAt DateTime  @db.DateTime(0)
+  updatedAt DateTime  @db.DateTime(0)
+  deletedAt DateTime? @db.DateTime(0)
+}
+
+model CoachSportsMaps {
+  id        Int       @id @unique(map: "id") @default(autoincrement())
+  coachId   Int
+  sportsId  Int
+  status    Int?      @default(1) @db.TinyInt
+  createdAt DateTime  @db.DateTime(0)
+  updatedAt DateTime  @db.DateTime(0)
+  deletedAt DateTime? @db.DateTime(0)
+  Coaches   Coaches   @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "CoachSportsMaps_ibfk_1")
+
+  @@index([coachId], map: "coachId")
+}
+
+model Coaches {
+  id              Int                     @id @unique(map: "id") @default(autoincrement())
+  name            String                  @db.VarChar(255)
+  academyId       Int
+  image           String?                 @db.VarChar(255)
+  designation     String                  @db.VarChar(255)
+  experience      String                  @db.VarChar(255)
+  trainingLevel   Coaches_trainingLevel
+  gender          Coaches_gender
+  dateOfBirth     DateTime                @db.DateTime(0)
+  countryCode     String                  @default("+91") @db.VarChar(255)
+  phone           String?                 @unique(map: "phone") @db.VarChar(20)
+  email           String?                 @unique(map: "email") @db.VarChar(255)
+  about           String                  @db.Text
+  payrollId       Int?
+  experienceLevel Coaches_experienceLevel
+  centerId        Int?
+  status          Int?                    @default(1) @db.TinyInt
+  createdAt       DateTime                @db.DateTime(0)
+  updatedAt       DateTime                @db.DateTime(0)
+  deletedAt       DateTime?               @db.DateTime(0)
+  CoachSportsMaps CoachSportsMaps[]
+  Academies       Academies               @relation(fields: [academyId], references: [id], onDelete: NoAction, map: "Coaches_ibfk_1")
+
+  @@index([academyId], map: "academyId")
+}
+
+model Otps {
+  id          Int            @id @default(autoincrement())
+  countryCode String         @default("+91") @db.VarChar(255)
+  mobile      String         @db.VarChar(255)
+  otp         String         @db.VarChar(4)
+  expiryTime  DateTime       @db.DateTime(0)
+  verified    Int?           @default(0) @db.TinyInt
+  userType    Otps_userType?
+  status      Int?           @default(1) @db.TinyInt
+  createdAt   DateTime       @db.DateTime(0)
+  updatedAt   DateTime       @db.DateTime(0)
+  deletedAt   DateTime?      @db.DateTime(0)
+}
+
 enum Gender {
   MALE
   FEMALE
-}
-
-enum TrainingLevel {
-  BEGINNER
-  DEVELOPER
-  INTERMEDIATE_LEVEL
-  ADVANCED_LEVEL
-}
-
-enum ExperienceLevel {
-  ZERO_ONE
-  TWO_FIVE
-  SIX_TEN
-  TEN_OVER
 }
 
 enum day_of_week {
@@ -302,4 +362,61 @@ enum day_of_week {
   fri
   sat
   sun
+}
+
+enum AthleteSportsMaps_trainingLevel {
+  beginner
+  developer
+  intermediate_level
+  advanced_level
+}
+
+enum Athletes_gender {
+  male
+  female
+}
+
+enum Athletes_bloodGroup {
+  APos @map("A+")
+  ANeg @map("A-")
+  BPos @map("B+")
+  BNeg @map("B-")
+  ABPos @map("AB+")
+  ABNeg @map("AB-")
+  OPos @map("O+")
+  ONeg @map("O-")
+}
+
+enum Coaches_trainingLevel {
+  beginner
+  developer
+  intermediate_level
+  advanced_level
+}
+
+enum Otps_userType {
+  athlete
+  coach
+}
+
+enum Athletes_heightUnit {
+  cm
+  feet
+}
+
+enum Coaches_gender {
+  male
+  female
+}
+
+enum Athletes_weightUnit {
+  kg
+  pounds
+}
+
+enum Coaches_experienceLevel {
+  zero_one
+  two_five
+  six_ten
+  ten_over
 }
