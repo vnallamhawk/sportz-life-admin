@@ -49,199 +49,251 @@ model User {
   sessions      Session[]
 }
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
-model Staff {
-  id            Int           @unique @default(autoincrement())
-  name          String
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @default(now()) @updatedAt
-  contactNumber String
-  email         String        @unique
-  designation   String
-  dateOfBirth   DateTime
-  gender        Gender
-  image         Bytes?
-  payroll       Payroll?
-  shift         Shift[]
-  center        StaffCenter[]
-}
-
-model Shift {
-  id      Int    @unique @default(autoincrement())
-  shift   String
-  staffId Int?
-  Staff   Staff? @relation(fields: [staffId], references: [id])
-
-  @@index([staffId])
-}
-
-model Inventory {
-  id       Int    @unique @default(autoincrement())
-  name     String
-  quantity Int
-  centerId Int?
-
-  @@index([centerId])
-}
-
-model Payroll {
-  id      Int    @unique @default(autoincrement())
-  coachId Int    @unique
-  type    String
-  staffId Int    @unique
-  staff   Staff  @relation(fields: [staffId], references: [id])
-}
-
-model Sports {
-  id        Int               @id @unique(map: "id") @default(autoincrement())
-  name      String            @db.VarChar(255)
-  subTitle  String            @db.VarChar(255)
-  about     String            @db.Text
-  status    Int?              @default(1) @db.TinyInt
-  createdAt DateTime          @db.DateTime(0)
-  updatedAt DateTime          @db.DateTime(0)
-  deletedAt DateTime?         @db.DateTime(0)
-  coaches   CoachesOnSports[]
-  Center    SportsOnCenters[]
-}
-
-model SportsOnCenters {
-  sportId  Int
-  centerId Int
-  sport    Sports @relation(fields: [sportId], references: [id])
-
-  @@id([sportId, centerId])
-  @@index([sportId])
-  @@index([centerId])
-}
-
-model CoachesOnCenters {
-  coachId    Int
-  centerId   Int
-  updatedAt  DateTime @default(now()) @updatedAt
-  assignedAt DateTime @default(now())
-
-  @@id([coachId, centerId])
-  @@index([coachId])
-  @@index([centerId])
-}
-
-model CoachesOnSports {
-  coachId    Int
-  sportId    Int
-  assignedAt DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt
-  sport      Sports   @relation(fields: [sportId], references: [id])
-
-  @@id([coachId, sportId])
-  @@index([coachId])
-  @@index([sportId])
-}
-
-model Certificates {
-  id            Int       @unique @default(autoincrement())
-  name          String
-  startDate     DateTime?
-  instituteName String
-  endDate       DateTime?
-  coachId       Int
-
-  @@index([coachId])
-}
-
-model Batches {
-  id               Int                @id @unique(map: "id") @default(autoincrement())
-  name             String             @db.VarChar(255)
-  capacity         Int
-  status           Int?               @default(1) @db.TinyInt
-  createdAt        DateTime           @db.DateTime(0)
-  updatedAt        DateTime           @db.DateTime(0)
-  deletedAt        DateTime?          @db.DateTime(0)
-  BatchSchedule    BatchSchedule[]
-  CoachesOnBatches CoachesOnBatches[]
-}
-
-model CoachesOnBatches {
-  coachId    Int
-  batchId    Int
-  assignedAt DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt
-  batch      Batches  @relation(fields: [batchId], references: [id])
-
-  @@id([coachId, batchId])
-  @@index([coachId])
-  @@index([batchId])
-}
-
-model StaffCenter {
-  staffId  Int
-  centerId Int
-  staff    Staff @relation(fields: [staffId], references: [id])
-
-  @@id([staffId, centerId])
-  @@index([staffId])
-  @@index([centerId])
-}
-
-model BodyParts {
-  id   Int    @id @default(autoincrement())
-  name String @db.VarChar(255)
-}
-
-model InjuryLog {
-  id           Int      @id @default(autoincrement())
-  userId       Int
-  date         DateTime @db.Date
-  activityType String?  @db.VarChar(255)
-  isAidDone    Boolean?
-  recoveryTime Int?
-  bodyPart     Int?
-  description  String?  @db.Text
-  image        Bytes?
-}
-
-model SportUser {
-  id           Int       @id @default(autoincrement())
-  isdCode      Int?
-  phoneNumber  String?   @db.VarChar(20)
-  otp          String?   @db.VarChar(5)
-  otpCreatedAt DateTime? @db.Timestamp(0)
-}
-
-model BatchSchedule {
-  id        Int         @id @default(autoincrement())
-  startTime DateTime
-  endTime   DateTime
-  day       day_of_week
-  batchesId Int?
-  Batches   Batches?    @relation(fields: [batchesId], references: [id])
-
-  @@index([batchesId], map: "BatchSchedule_batchesId_fkey")
-}
-
-model Academy {
-  id   Int    @id @default(autoincrement())
-  name String @db.VarChar(40)
-  code String @db.VarChar(7)
-}
-
 model Academies {
+  id                Int                 @id @default(autoincrement())
+  name              String              @db.VarChar(255)
+  code              String              @unique(map: "code") @db.VarChar(255)
+  status            Int?                @default(1) @db.TinyInt
+  createdAt         DateTime            @db.DateTime(0)
+  updatedAt         DateTime            @db.DateTime(0)
+  deletedAt         DateTime?           @db.DateTime(0)
+  AcademySportsMaps AcademySportsMaps[]
+  Assessments       Assessments[]
+  Athletes          Athletes[]
+  Batches           Batches[]
+  Centers           Centers[]
+  Coaches           Coaches[]
+  Tests             Tests[]
+}
+
+model AcademySportsMaps {
   id        Int        @id @unique(map: "id") @default(autoincrement())
-  name      String     @db.VarChar(255)
-  code      String     @unique(map: "code") @db.VarChar(255)
+  sportId   Int?
+  academyId Int?
   status    Int?       @default(1) @db.TinyInt
   createdAt DateTime   @db.DateTime(0)
   updatedAt DateTime   @db.DateTime(0)
-  deletedAt DateTime?  @db.DateTime(0)
-  Athletes  Athletes[]
-  Coaches   Coaches[]
+  Sports    Sports?    @relation(fields: [sportId], references: [id], map: "AcademySportsMaps_ibfk_795")
+  Academies Academies? @relation(fields: [academyId], references: [id], map: "AcademySportsMaps_ibfk_796")
+
+  @@index([academyId], map: "academyId")
+  @@index([sportId], map: "sportId")
+}
+
+model AssessmentAssignedAthletes {
+  id           Int         @id @default(autoincrement())
+  athleteId    Int?
+  createdAt    DateTime    @db.DateTime(0)
+  updatedAt    DateTime    @db.DateTime(0)
+  assessmentId Int
+  Athletes     Athletes?   @relation(fields: [athleteId], references: [id], onDelete: Cascade, map: "AssessmentAssignedAthletes_ibfk_609")
+  Assessments  Assessments @relation(fields: [assessmentId], references: [id], onDelete: Cascade, map: "AssessmentAssignedAthletes_ibfk_610")
+
+  @@index([assessmentId], map: "assessmentId")
+  @@index([athleteId], map: "athleteId")
+}
+
+model AssessmentAssignedCoaches {
+  id           Int         @id @default(autoincrement())
+  coachId      Int?
+  createdAt    DateTime    @db.DateTime(0)
+  updatedAt    DateTime    @db.DateTime(0)
+  assessmentId Int
+  Coaches      Coaches?    @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "AssessmentAssignedCoaches_ibfk_607")
+  Assessments  Assessments @relation(fields: [assessmentId], references: [id], onDelete: Cascade, map: "AssessmentAssignedCoaches_ibfk_608")
+
+  @@index([assessmentId], map: "assessmentId")
+  @@index([coachId], map: "coachId")
+}
+
+model AssessmentBatches {
+  id           Int         @id @default(autoincrement())
+  assessmentId Int
+  batchId      Int
+  createdAt    DateTime    @db.DateTime(0)
+  updatedAt    DateTime    @db.DateTime(0)
+  Assessments  Assessments @relation(fields: [assessmentId], references: [id], onDelete: Cascade, map: "AssessmentBatches_ibfk_629")
+  Batches      Batches     @relation(fields: [batchId], references: [id], onDelete: Cascade, map: "AssessmentBatches_ibfk_630")
+
+  @@index([assessmentId], map: "assessmentId")
+  @@index([batchId], map: "batchId")
+}
+
+model AssessmentCenterBatches {
+  id                 Int               @id @default(autoincrement())
+  assessmentCenterId Int
+  batchId            Int
+  createdAt          DateTime          @db.DateTime(0)
+  updatedAt          DateTime          @db.DateTime(0)
+  AssessmentCenters  AssessmentCenters @relation(fields: [assessmentCenterId], references: [id], onDelete: NoAction, map: "AssessmentCenterBatches_ibfk_51")
+  Batches            Batches           @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "AssessmentCenterBatches_ibfk_52")
+
+  @@index([assessmentCenterId], map: "assessmentCenterId")
+  @@index([batchId], map: "batchId")
+}
+
+model AssessmentCenterSports {
+  id                 Int               @id @default(autoincrement())
+  assessmentCenterId Int
+  sportId            Int
+  createdAt          DateTime          @db.DateTime(0)
+  updatedAt          DateTime          @db.DateTime(0)
+  AssessmentCenters  AssessmentCenters @relation(fields: [assessmentCenterId], references: [id], onDelete: NoAction, map: "AssessmentCenterSports_ibfk_55")
+  Sports             Sports            @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "AssessmentCenterSports_ibfk_56")
+
+  @@index([assessmentCenterId], map: "assessmentCenterId")
+  @@index([sportId], map: "sportId")
+}
+
+model AssessmentCenters {
+  id                      Int                       @id @default(autoincrement())
+  assessmentId            Int
+  centerId                Int
+  createdAt               DateTime                  @db.DateTime(0)
+  updatedAt               DateTime                  @db.DateTime(0)
+  AssessmentCenterBatches AssessmentCenterBatches[]
+  AssessmentCenterSports  AssessmentCenterSports[]
+  Assessments             Assessments               @relation(fields: [assessmentId], references: [id], onDelete: Cascade, map: "AssessmentCenters_ibfk_703")
+  Centers                 Centers                   @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "AssessmentCenters_ibfk_704")
+
+  @@index([assessmentId], map: "assessmentId")
+  @@index([centerId], map: "centerId")
+}
+
+model AssessmentResults {
+  id             Int           @id @default(autoincrement())
+  athleteId      Int
+  assessmentId   Int
+  assignedTestId Int
+  score          Float?        @default(0) @db.Float
+  status         Int?          @default(1) @db.TinyInt
+  createdAt      DateTime      @db.DateTime(0)
+  updatedAt      DateTime      @db.DateTime(0)
+  date           DateTime?     @db.DateTime(0)
+  strength       String?       @db.VarChar(255)
+  weakness       String?       @db.VarChar(255)
+  comment        String?       @db.VarChar(255)
+  coachId        Int
+  isSubmitted    Boolean?      @default(false)
+  isPresent      Boolean?      @default(true)
+  Athletes       Athletes      @relation(fields: [athleteId], references: [id], onDelete: Cascade, map: "AssessmentResults_ibfk_1247")
+  Assessments    Assessments   @relation(fields: [assessmentId], references: [id], onDelete: Cascade, map: "AssessmentResults_ibfk_1248")
+  AssignedTests  AssignedTests @relation(fields: [assignedTestId], references: [id], onDelete: Cascade, map: "AssessmentResults_ibfk_1249")
+  Coaches        Coaches       @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "AssessmentResults_ibfk_1250")
+
+  @@index([assessmentId], map: "assessmentId")
+  @@index([assignedTestId], map: "assignedTestId")
+  @@index([athleteId], map: "athleteId")
+  @@index([coachId], map: "coachId")
+}
+
+model AssessmentSports {
+  id           Int         @id @default(autoincrement())
+  assessmentId Int
+  sportId      Int
+  createdAt    DateTime    @db.DateTime(0)
+  updatedAt    DateTime    @db.DateTime(0)
+  Assessments  Assessments @relation(fields: [assessmentId], references: [id], onDelete: Cascade, map: "AssessmentSports_ibfk_587")
+  Sports       Sports      @relation(fields: [sportId], references: [id], onDelete: Cascade, map: "AssessmentSports_ibfk_588")
+
+  @@index([assessmentId], map: "assessmentId")
+  @@index([sportId], map: "sportId")
+}
+
+model Assessments {
+  id                         Int                          @id @default(autoincrement())
+  name                       String                       @db.VarChar(255)
+  description                String?                      @db.VarChar(255)
+  academyId                  Int
+  sportId                    Int
+  startDate                  DateTime                     @db.Date
+  endDate                    DateTime                     @db.Date
+  level                      Assessments_level
+  mode                       Assessments_mode
+  interval                   Assessments_interval
+  isAthleteAssess            Boolean?
+  isCoachAssess              Boolean?
+  isStrengthAdded            Boolean?
+  isWeaknessAdded            Boolean?
+  isCommentsAdded            Boolean?
+  assessmentStatus           Assessments_assessmentStatus
+  status                     Boolean
+  createdAt                  DateTime                     @db.DateTime(0)
+  updatedAt                  DateTime                     @db.DateTime(0)
+  AssessmentAssignedAthletes AssessmentAssignedAthletes[]
+  AssessmentAssignedCoaches  AssessmentAssignedCoaches[]
+  AssessmentBatches          AssessmentBatches[]
+  AssessmentCenters          AssessmentCenters[]
+  AssessmentResults          AssessmentResults[]
+  AssessmentSports           AssessmentSports[]
+  Academies                  Academies                    @relation(fields: [academyId], references: [id], onDelete: Cascade, map: "Assessments_ibfk_207")
+  Sports                     Sports                       @relation(fields: [sportId], references: [id], onDelete: Cascade, map: "Assessments_ibfk_208")
+  AssignedTestBanks          AssignedTestBanks[]
+
+  @@index([academyId], map: "academyId")
+  @@index([sportId], map: "sportId")
+}
+
+model AssignedTestBanks {
+  id            Int             @id @default(autoincrement())
+  assessmentId  Int
+  testBankId    Int
+  createdAt     DateTime        @db.DateTime(0)
+  updatedAt     DateTime        @db.DateTime(0)
+  Assessments   Assessments     @relation(fields: [assessmentId], references: [id], onDelete: NoAction, map: "AssignedTestBanks_ibfk_553")
+  TestBanks     TestBanks       @relation(fields: [testBankId], references: [id], onDelete: NoAction, map: "AssignedTestBanks_ibfk_554")
+  AssignedTests AssignedTests[]
+
+  @@index([assessmentId], map: "assessmentId")
+  @@index([testBankId], map: "testBankId")
+}
+
+model AssignedTests {
+  id                 Int                 @id @default(autoincrement())
+  assignedTestBankId Int
+  testId             Int
+  createdAt          DateTime            @db.DateTime(0)
+  updatedAt          DateTime            @db.DateTime(0)
+  AssessmentResults  AssessmentResults[]
+  AssignedTestBanks  AssignedTestBanks   @relation(fields: [assignedTestBankId], references: [id], onDelete: NoAction, map: "AssignedTests_ibfk_713")
+  Tests              Tests               @relation(fields: [testId], references: [id], onDelete: NoAction, map: "AssignedTests_ibfk_714")
+
+  @@index([assignedTestBankId], map: "assignedTestBankId")
+  @@index([testId], map: "testId")
+}
+
+model AthleteAttendances {
+  id         Int                            @id @default(autoincrement())
+  athleteId  Int
+  sportId    Int
+  attendance AthleteAttendances_attendance? @default(present)
+  date       DateTime                       @db.Date
+  time       DateTime?                      @db.Time(0)
+  status     Boolean?                       @default(true)
+  createdAt  DateTime                       @db.DateTime(0)
+  updatedAt  DateTime                       @db.DateTime(0)
+  Athletes   Athletes                       @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "AthleteAttendances_ibfk_785")
+  Sports     Sports                         @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "AthleteAttendances_ibfk_786")
+
+  @@index([athleteId], map: "athleteId")
+  @@index([sportId], map: "sportId")
+}
+
+model AthleteBatchesMaps {
+  id        Int      @id @default(autoincrement())
+  athleteId Int
+  sportId   Int
+  batchId   Int
+  status    Boolean? @default(true)
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  Athletes  Athletes @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "AthleteBatchesMaps_ibfk_813")
+  Sports    Sports   @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "AthleteBatchesMaps_ibfk_814")
+  Batches   Batches  @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "AthleteBatchesMaps_ibfk_815")
+
+  @@index([athleteId], map: "athleteId")
+  @@index([batchId], map: "batchId")
+  @@index([sportId], map: "sportId")
 }
 
 model AthleteSportsMaps {
@@ -254,85 +306,240 @@ model AthleteSportsMaps {
   status        Int?                            @default(1) @db.TinyInt
   createdAt     DateTime                        @db.DateTime(0)
   updatedAt     DateTime                        @db.DateTime(0)
-  deletedAt     DateTime?                       @db.DateTime(0)
+  Athletes      Athletes                        @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "AthleteSportsMaps_ibfk_1730")
+  Sports        Sports                          @relation(fields: [sportsId], references: [id], onDelete: NoAction, map: "AthleteSportsMaps_ibfk_1731")
+  Centers       Centers                         @relation(fields: [centerId], references: [id], onDelete: NoAction, map: "AthleteSportsMaps_ibfk_1732")
+  Batches       Batches                         @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "AthleteSportsMaps_ibfk_1733")
+
+  @@index([athleteId], map: "athleteId")
+  @@index([batchId], map: "batchId")
+  @@index([centerId], map: "centerId")
+  @@index([sportsId], map: "sportsId")
 }
 
 model Athletes {
-  id             Int                 @id @unique(map: "id") @default(autoincrement())
-  image          String?             @db.VarChar(255)
-  name           String              @db.VarChar(255)
-  dob            DateTime            @db.DateTime(0)
-  gender         Athletes_gender
-  bloodGroup     Athletes_bloodGroup
-  height         Float               @db.Float
-  heightUnit     Athletes_heightUnit
-  weight         Float               @db.Float
-  weightUnit     Athletes_weightUnit
-  fatherName     String              @db.VarChar(255)
-  countryCode    String?             @default("+91") @db.VarChar(255)
-  phone          String?             @unique(map: "phone") @db.VarChar(255)
-  email          String?             @unique(map: "email") @db.VarChar(255)
-  address        String?             @db.VarChar(255)
-  academyCode    Int
-  medicalHistory Json?
-  status         Int?                @default(1) @db.TinyInt
-  createdAt      DateTime            @db.DateTime(0)
-  updatedAt      DateTime            @db.DateTime(0)
-  Academies      Academies           @relation(fields: [academyCode], references: [id], onDelete: NoAction, map: "Athletes_ibfk_1")
+  id                         Int                          @id @default(autoincrement())
+  image                      String?                      @db.VarChar(255)
+  name                       String                       @db.VarChar(255)
+  dob                        DateTime                     @db.Date
+  gender                     Athletes_gender
+  bloodGroup                 Athletes_bloodGroup
+  height                     Float                        @db.Float
+  heightUnit                 Athletes_heightUnit
+  weight                     Float                        @db.Float
+  weightUnit                 Athletes_weightUnit
+  fatherName                 String                       @db.VarChar(255)
+  countryCode                String?                      @default("+91") @db.VarChar(255)
+  phone                      String?                      @unique(map: "phone") @db.VarChar(255)
+  email                      String?                      @unique(map: "email") @db.VarChar(255)
+  address                    String?                      @db.VarChar(255)
+  academyCode                Int
+  medicalHistory             Json?
+  joiningDate                DateTime?                    @db.Date
+  status                     Int?                         @default(1) @db.TinyInt
+  createdAt                  DateTime                     @db.DateTime(0)
+  updatedAt                  DateTime                     @db.DateTime(0)
+  AssessmentAssignedAthletes AssessmentAssignedAthletes[]
+  AssessmentResults          AssessmentResults[]
+  AthleteAttendances         AthleteAttendances[]
+  AthleteBatchesMaps         AthleteBatchesMaps[]
+  AthleteSportsMaps          AthleteSportsMaps[]
+  Academies                  Academies                    @relation(fields: [academyCode], references: [id], onDelete: Cascade, map: "Athletes_ibfk_1")
+  HideFeeds                  HideFeeds[]
+  Payments                   Payments[]
+  Ratings                    Ratings[]
+  TicketMessages             TicketMessages[]
+  Tickets                    Tickets[]
 
   @@index([academyCode], map: "academyCode")
 }
 
-model Centers {
-  id        Int       @id @unique(map: "id") @default(autoincrement())
-  name      String    @db.VarChar(255)
-  image     Int?
-  address   String    @db.Text
-  mobile    String    @db.VarChar(255)
+model BatchSchedules {
+  id        Int                @id @unique(map: "id") @default(autoincrement())
+  batchId   Int
+  day       BatchSchedules_day
+  startTime DateTime           @db.Time(0)
+  endTime   DateTime           @db.Time(0)
+  status    Boolean?           @default(true)
+  createdAt DateTime           @db.DateTime(0)
+  updatedAt DateTime           @db.DateTime(0)
+  Batches   Batches            @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "BatchSchedules_ibfk_1")
+
+  @@index([batchId], map: "batchId")
+}
+
+model Batches {
+  id                      Int                       @id @unique(map: "id") @default(autoincrement())
+  name                    String                    @db.VarChar(255)
+  capacity                Int
+  remainingSeat           Int
+  occupiedSeat            Int
+  price                   Int
+  academyId               Int
+  sportId                 Int
+  coachId                 Int
+  status                  Int?                      @default(1) @db.TinyInt
+  createdAt               DateTime                  @db.DateTime(0)
+  updatedAt               DateTime                  @db.DateTime(0)
+  AssessmentBatches       AssessmentBatches[]
+  AssessmentCenterBatches AssessmentCenterBatches[]
+  AthleteBatchesMaps      AthleteBatchesMaps[]
+  AthleteSportsMaps       AthleteSportsMaps[]
+  BatchSchedules          BatchSchedules[]
+  Academies               Academies                 @relation(fields: [academyId], references: [id], onDelete: NoAction, map: "Batches_ibfk_1341")
+  Sports                  Sports                    @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "Batches_ibfk_1342")
+  Coaches                 Coaches                   @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "Batches_ibfk_1343")
+  Payments                Payments[]
+  ScheduledCenterBatches  ScheduledCenterBatches[]
+
+  @@index([academyId], map: "academyId")
+  @@index([coachId], map: "coachId")
+  @@index([sportId], map: "sportId")
+}
+
+model Categories {
+  id        Int       @id @default(autoincrement())
+  title     String?   @db.VarChar(255)
   status    Int?      @default(1) @db.TinyInt
   createdAt DateTime  @db.DateTime(0)
   updatedAt DateTime  @db.DateTime(0)
-  deletedAt DateTime? @db.DateTime(0)
+  Tickets   Tickets[]
+}
+
+model Centers {
+  id                Int                 @id @unique(map: "id") @default(autoincrement())
+  name              String              @db.VarChar(255)
+  image             Int?
+  address           String              @db.Text
+  mobile            String              @db.VarChar(255)
+  academyId         Int?
+  status            Int?                @default(1) @db.TinyInt
+  createdAt         DateTime            @db.DateTime(0)
+  updatedAt         DateTime            @db.DateTime(0)
+  AssessmentCenters AssessmentCenters[]
+  AthleteSportsMaps AthleteSportsMaps[]
+  Academies         Academies?          @relation(fields: [academyId], references: [id], map: "Centers_ibfk_1")
+  Coaches           Coaches[]
+
+  @@index([academyId], map: "academyId")
 }
 
 model CoachSportsMaps {
-  id        Int       @id @unique(map: "id") @default(autoincrement())
+  id        Int      @id @unique(map: "id") @default(autoincrement())
   coachId   Int
-  sportsId  Int
-  status    Int?      @default(1) @db.TinyInt
-  createdAt DateTime  @db.DateTime(0)
-  updatedAt DateTime  @db.DateTime(0)
-  deletedAt DateTime? @db.DateTime(0)
-  Coaches   Coaches   @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "CoachSportsMaps_ibfk_1")
+  sportId   Int
+  status    Int?     @default(1) @db.TinyInt
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  Coaches   Coaches  @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "CoachSportsMaps_ibfk_777")
+  Sports    Sports   @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "CoachSportsMaps_ibfk_778")
 
   @@index([coachId], map: "coachId")
+  @@index([sportId], map: "sportId")
 }
 
 model Coaches {
-  id              Int                     @id @unique(map: "id") @default(autoincrement())
-  name            String                  @db.VarChar(255)
-  academyId       Int
-  image           String?                 @db.VarChar(255)
-  designation     String                  @db.VarChar(255)
-  experience      String                  @db.VarChar(255)
-  trainingLevel   Coaches_trainingLevel
-  gender          Coaches_gender
-  dateOfBirth     DateTime                @db.DateTime(0)
-  countryCode     String                  @default("+91") @db.VarChar(255)
-  phone           String?                 @unique(map: "phone") @db.VarChar(20)
-  email           String?                 @unique(map: "email") @db.VarChar(255)
-  about           String                  @db.Text
-  payrollId       Int?
-  experienceLevel Coaches_experienceLevel
-  centerId        Int?
-  status          Int?                    @default(1) @db.TinyInt
-  createdAt       DateTime                @db.DateTime(0)
-  updatedAt       DateTime                @db.DateTime(0)
-  deletedAt       DateTime?               @db.DateTime(0)
-  CoachSportsMaps CoachSportsMaps[]
-  Academies       Academies               @relation(fields: [academyId], references: [id], onDelete: NoAction, map: "Coaches_ibfk_1")
+  id                        Int                         @id @unique(map: "id") @default(autoincrement())
+  name                      String                      @db.VarChar(255)
+  academyId                 Int
+  image                     String?                     @db.VarChar(255)
+  designation               String                      @db.VarChar(255)
+  experience                String                      @db.VarChar(255)
+  trainingLevel             Coaches_trainingLevel
+  gender                    Coaches_gender
+  dateOfBirth               DateTime                    @db.Date
+  countryCode               String                      @default("+91") @db.VarChar(255)
+  phone                     String?                     @unique(map: "phone") @db.VarChar(255)
+  email                     String?                     @unique(map: "email") @db.VarChar(255)
+  about                     String                      @db.Text
+  payrollId                 Int?
+  experienceLevel           Coaches_experienceLevel
+  centerId                  Int?
+  status                    Int?                        @default(1) @db.TinyInt
+  createdAt                 DateTime                    @db.DateTime(0)
+  updatedAt                 DateTime                    @db.DateTime(0)
+  deletedAt                 DateTime?                   @db.DateTime(0)
+  AssessmentAssignedCoaches AssessmentAssignedCoaches[]
+  AssessmentResults         AssessmentResults[]
+  Batches                   Batches[]
+  CoachSportsMaps           CoachSportsMaps[]
+  Academies                 Academies                   @relation(fields: [academyId], references: [id], onDelete: NoAction, map: "Coaches_ibfk_641")
+  Centers                   Centers?                    @relation(fields: [centerId], references: [id], onDelete: NoAction, map: "Coaches_ibfk_642")
+  Ratings                   Ratings[]
+  ScheduledCenterBatches    ScheduledCenterBatches[]
+  ScheduledPlans            ScheduledPlans[]
+  TrainingDrills            TrainingDrills[]
+  TrainingPlans             TrainingPlans[]
 
   @@index([academyId], map: "academyId")
+  @@index([centerId], map: "centerId")
+}
+
+model Colors {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique(map: "name") @db.VarChar(255)
+  code            String            @unique(map: "code") @db.VarChar(255)
+  status          Boolean?          @default(true)
+  createdAt       DateTime          @db.DateTime(0)
+  updatedAt       DateTime          @db.DateTime(0)
+  SportsColorMaps SportsColorMaps[]
+}
+
+model Feeds {
+  id          Int      @id @default(autoincrement())
+  image       String   @db.VarChar(255)
+  title       String   @db.VarChar(255)
+  description String   @db.VarChar(255)
+  staffId     Int?
+  status      Int?     @default(1) @db.TinyInt
+  createdAt   DateTime @db.DateTime(0)
+  updatedAt   DateTime @db.DateTime(0)
+  Staffs      Staffs?  @relation(fields: [staffId], references: [id], onDelete: Cascade, map: "Feeds_ibfk_1")
+
+  @@index([staffId], map: "staffId")
+}
+
+model HideFeeds {
+  id        Int                @id @default(autoincrement())
+  feedId    Int
+  userId    Int
+  userType  HideFeeds_userType
+  status    Int?               @default(1) @db.TinyInt
+  createdAt DateTime           @db.DateTime(0)
+  updatedAt DateTime           @db.DateTime(0)
+  Athletes  Athletes           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "HideFeeds_ibfk_1")
+
+  @@index([userId], map: "userId")
+}
+
+model InjuryImages {
+  id         Int        @id @default(autoincrement())
+  injuryId   Int
+  image      String     @db.VarChar(255)
+  createdAt  DateTime   @db.DateTime(0)
+  updatedAt  DateTime   @db.DateTime(0)
+  InjuryLogs InjuryLogs @relation(fields: [injuryId], references: [id], onDelete: NoAction, map: "InjuryImages_ibfk_1")
+
+  @@index([injuryId], map: "injuryId")
+}
+
+model InjuryLogs {
+  id            Int                     @id @default(autoincrement())
+  athleteId     Int
+  description   String?                 @db.VarChar(255)
+  bodyPart      InjuryLogs_bodyPart
+  bodyPartName  InjuryLogs_bodyPartName
+  injuryDate    DateTime                @db.Date
+  injuryTime    DateTime                @db.Time(0)
+  activityType  InjuryLogs_activityType
+  injuryType    InjuryLogs_injuryType
+  recoveryTime  InjuryLogs_recoveryTime
+  isAidDone     Boolean                 @default(true)
+  medicalReport String?                 @db.VarChar(255)
+  status        Boolean                 @default(true)
+  createdAt     DateTime                @db.DateTime(0)
+  updatedAt     DateTime                @db.DateTime(0)
+  InjuryImages  InjuryImages[]
 }
 
 model Otps {
@@ -340,21 +547,331 @@ model Otps {
   countryCode String         @default("+91") @db.VarChar(255)
   mobile      String         @db.VarChar(255)
   otp         String         @db.VarChar(4)
-  expiryTime  DateTime       @db.DateTime(0)
+  expiryTime  DateTime       @default(now()) @db.DateTime(0)
   verified    Int?           @default(0) @db.TinyInt
   userType    Otps_userType?
   status      Int?           @default(1) @db.TinyInt
   createdAt   DateTime       @db.DateTime(0)
   updatedAt   DateTime       @db.DateTime(0)
-  deletedAt   DateTime?      @db.DateTime(0)
 }
 
-enum Gender {
-  MALE
-  FEMALE
+model Payments {
+  id             Int                     @id @default(autoincrement())
+  athleteId      Int
+  sportId        Int
+  batchId        Int
+  price          Float                   @db.Float
+  amountToBePaid Float                   @db.Float
+  paidAmount     Float?                  @default(0) @db.Float
+  planType       Payments_planType
+  paymentType    Payments_paymentType
+  paymentStatus  Payments_paymentStatus? @default(pending)
+  status         Boolean?                @default(true)
+  createdAt      DateTime                @db.DateTime(0)
+  updatedAt      DateTime                @db.DateTime(0)
+  Athletes       Athletes                @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "Payments_ibfk_808")
+  Sports         Sports                  @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "Payments_ibfk_809")
+  Batches        Batches                 @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "Payments_ibfk_810")
+
+  @@index([athleteId], map: "athleteId")
+  @@index([batchId], map: "batchId")
+  @@index([sportId], map: "sportId")
 }
 
-enum day_of_week {
+model Ratings {
+  id        Int      @id @default(autoincrement())
+  athleteId Int
+  coachId   Int
+  sportId   Int
+  rating    Int      @db.TinyInt
+  comment   String?  @db.VarChar(255)
+  status    Int?     @default(1) @db.TinyInt
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  Athletes  Athletes @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "Ratings_ibfk_953")
+  Coaches   Coaches  @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "Ratings_ibfk_954")
+  Sports    Sports   @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "Ratings_ibfk_955")
+
+  @@index([athleteId], map: "athleteId")
+  @@index([coachId], map: "coachId")
+  @@index([sportId], map: "sportId")
+}
+
+model Resources {
+  id             Int             @id @default(autoincrement())
+  drillId        Int?
+  planId         Int?
+  url            String          @db.VarChar(255)
+  type           Resources_type
+  createdAt      DateTime        @db.DateTime(0)
+  updatedAt      DateTime        @db.DateTime(0)
+  deletedAt      DateTime?       @db.DateTime(0)
+  TrainingDrills TrainingDrills? @relation(fields: [drillId], references: [id], map: "Resources_ibfk_565")
+  TrainingPlans  TrainingPlans?  @relation(fields: [planId], references: [id], map: "Resources_ibfk_566")
+
+  @@index([drillId], map: "drillId")
+  @@index([planId], map: "planId")
+}
+
+model ScheduledCenterBatches {
+  id             Int            @id @default(autoincrement())
+  schedulePlanId Int
+  createdAt      DateTime       @db.DateTime(0)
+  updatedAt      DateTime       @db.DateTime(0)
+  deletedAt      DateTime?      @db.DateTime(0)
+  centerId       Int?
+  batchId        Int?
+  allCenters     Boolean        @default(false)
+  allBatches     Boolean        @default(false)
+  ScheduledPlans ScheduledPlans @relation(fields: [schedulePlanId], references: [id], onDelete: NoAction, map: "ScheduledCenterBatches_ibfk_318")
+  Coaches        Coaches?       @relation(fields: [centerId], references: [id], map: "ScheduledCenterBatches_ibfk_319")
+  Batches        Batches?       @relation(fields: [batchId], references: [id], map: "ScheduledCenterBatches_ibfk_320")
+
+  @@index([batchId], map: "batchId")
+  @@index([centerId], map: "centerId")
+  @@index([schedulePlanId], map: "schedulePlanId")
+}
+
+model ScheduledPlans {
+  id                     Int                      @id @default(autoincrement())
+  planId                 Int
+  fromDate               DateTime                 @db.Date
+  toDate                 DateTime                 @db.Date
+  coachId                Int
+  createdAt              DateTime                 @db.DateTime(0)
+  updatedAt              DateTime                 @db.DateTime(0)
+  deletedAt              DateTime?                @db.DateTime(0)
+  ScheduledCenterBatches ScheduledCenterBatches[]
+  TrainingPlans          TrainingPlans            @relation(fields: [planId], references: [id], onDelete: NoAction, map: "ScheduledPlans_ibfk_557")
+  Coaches                Coaches                  @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "ScheduledPlans_ibfk_558")
+
+  @@index([coachId], map: "coachId")
+  @@index([planId], map: "planId")
+}
+
+model Sports {
+  id                     Int                      @id @unique(map: "id") @default(autoincrement())
+  name                   String                   @db.VarChar(255)
+  subTitle               String                   @db.VarChar(255)
+  about                  String                   @db.Text
+  icon                   String?                  @db.VarChar(255)
+  image                  String?                  @db.VarChar(255)
+  status                 Int?                     @default(1) @db.TinyInt
+  createdAt              DateTime                 @db.DateTime(0)
+  updatedAt              DateTime                 @db.DateTime(0)
+  deletedAt              DateTime?                @db.DateTime(0)
+  AcademySportsMaps      AcademySportsMaps[]
+  AssessmentCenterSports AssessmentCenterSports[]
+  AssessmentSports       AssessmentSports[]
+  Assessments            Assessments[]
+  AthleteAttendances     AthleteAttendances[]
+  AthleteBatchesMaps     AthleteBatchesMaps[]
+  AthleteSportsMaps      AthleteSportsMaps[]
+  Batches                Batches[]
+  CoachSportsMaps        CoachSportsMaps[]
+  Payments               Payments[]
+  Ratings                Ratings[]
+  SportsColorMaps        SportsColorMaps[]
+  Tests                  Tests[]
+  TrainingDrills         TrainingDrills[]
+  TrainingPlans          TrainingPlans[]
+}
+
+model SportsColorMaps {
+  id        Int      @id @default(autoincrement())
+  sportId   Int
+  colorId   Int
+  status    Boolean? @default(true)
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  Sports    Sports   @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "SportsColorMaps_ibfk_517")
+  Colors    Colors   @relation(fields: [colorId], references: [id], onDelete: NoAction, map: "SportsColorMaps_ibfk_518")
+
+  @@index([colorId], map: "colorId")
+  @@index([sportId], map: "sportId")
+}
+
+model Staffs {
+  id        Int      @id @default(autoincrement())
+  image     String?  @db.VarChar(255)
+  name      String   @db.VarChar(255)
+  phone     String?  @unique(map: "phone") @db.VarChar(255)
+  email     String?  @unique(map: "email") @db.VarChar(255)
+  status    Int?     @default(1) @db.TinyInt
+  createdAt DateTime @db.DateTime(0)
+  updatedAt DateTime @db.DateTime(0)
+  Feeds     Feeds[]
+}
+
+model TestBanks {
+  id                Int                 @id @default(autoincrement())
+  title             String?             @db.VarChar(255)
+  status            Int?                @default(1) @db.TinyInt
+  createdAt         DateTime            @db.DateTime(0)
+  updatedAt         DateTime            @db.DateTime(0)
+  AssignedTestBanks AssignedTestBanks[]
+  Tests             Tests[]
+}
+
+model Tests {
+  id               Int                     @id @default(autoincrement())
+  name             String                  @db.VarChar(255)
+  testBankId       Int
+  trainingLevel    Tests_trainingLevel
+  objective        String                  @db.VarChar(255)
+  description      String                  @db.VarChar(255)
+  fitnessType      Tests_fitnessType?
+  fitnessComponent Tests_fitnessComponent?
+  sportId          Int?
+  academyId        Int
+  measureType      Tests_measureType
+  unitType         Tests_unitType?
+  units            Tests_units?
+  minValue         Int?
+  maxValue         Int?
+  testGoal         Tests_testGoal?
+  status           Int?                    @default(1) @db.TinyInt
+  createdAt        DateTime                @db.DateTime(0)
+  updatedAt        DateTime                @db.DateTime(0)
+  AssignedTests    AssignedTests[]
+  TestBanks        TestBanks               @relation(fields: [testBankId], references: [id], onDelete: NoAction, map: "Tests_ibfk_1146")
+  Sports           Sports?                 @relation(fields: [sportId], references: [id], map: "Tests_ibfk_1147")
+  Academies        Academies               @relation(fields: [academyId], references: [id], onDelete: NoAction, map: "Tests_ibfk_1148")
+
+  @@index([academyId], map: "academyId")
+  @@index([sportId], map: "sportId")
+  @@index([testBankId], map: "testBankId")
+}
+
+model TicketMessages {
+  id        Int                     @id @default(autoincrement())
+  ticketId  Int
+  message   String?                 @db.VarChar(255)
+  staffId   Int?
+  createdAt DateTime                @db.DateTime(0)
+  updatedAt DateTime                @db.DateTime(0)
+  userId    Int
+  userType  TicketMessages_userType
+  Tickets   Tickets                 @relation(fields: [ticketId], references: [id], onDelete: Cascade, map: "TicketMessages_ibfk_371")
+  Athletes  Athletes                @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "TicketMessages_ibfk_372")
+
+  @@index([ticketId], map: "ticketId")
+  @@index([userId], map: "userId")
+}
+
+model Tickets {
+  id             Int                   @id @default(autoincrement())
+  title          String                @db.VarChar(255)
+  categoryId     Int
+  description    String?               @db.VarChar(255)
+  ticketStatus   Tickets_ticketStatus? @default(open)
+  status         Int?                  @default(1) @db.TinyInt
+  createdAt      DateTime              @db.DateTime(0)
+  updatedAt      DateTime              @db.DateTime(0)
+  userId         Int
+  userType       Tickets_userType
+  TicketMessages TicketMessages[]
+  Categories     Categories            @relation(fields: [categoryId], references: [id], onDelete: Cascade, map: "Tickets_ibfk_387")
+  Athletes       Athletes              @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "Tickets_ibfk_388")
+
+  @@index([categoryId], map: "categoryId")
+  @@index([userId], map: "userId")
+}
+
+model Tokens {
+  id          Int             @id @default(autoincrement())
+  userId      Int?
+  countryCode String          @db.VarChar(255)
+  phone       String          @unique(map: "phone") @db.VarChar(255)
+  expiryDate  DateTime?       @db.DateTime(0)
+  token       String?         @db.VarChar(255)
+  userType    Tokens_userType
+  status      Boolean?        @default(true)
+  createdAt   DateTime        @db.DateTime(0)
+  updatedAt   DateTime        @db.DateTime(0)
+  deletedAt   DateTime?       @db.DateTime(0)
+}
+
+model TrainingDrills {
+  id                 Int                              @id @default(autoincrement())
+  name               String                           @db.VarChar(255)
+  objective          String                           @db.VarChar(255)
+  description        String                           @db.VarChar(255)
+  coachingPoint      String                           @db.VarChar(255)
+  level              TrainingDrills_level
+  fitnessComponent   TrainingDrills_fitnessComponent?
+  sportId            Int?
+  coachId            Int
+  isScheduled        Boolean?                         @default(false)
+  status             Boolean                          @default(true)
+  createdAt          DateTime                         @db.DateTime(0)
+  updatedAt          DateTime                         @db.DateTime(0)
+  deletedAt          DateTime?                        @db.DateTime(0)
+  Resources          Resources[]
+  Sports             Sports?                          @relation(fields: [sportId], references: [id], map: "TrainingDrills_ibfk_597")
+  Coaches            Coaches                          @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "TrainingDrills_ibfk_598")
+  assignedDrills     assignedDrills[]
+  assignedEquipments assignedEquipments[]
+
+  @@index([coachId], map: "coachId")
+  @@index([sportId], map: "sportId")
+}
+
+model TrainingPlans {
+  id               Int                             @id @default(autoincrement())
+  name             String                          @db.VarChar(255)
+  objective        String?                         @db.VarChar(255)
+  description      String?                         @db.VarChar(255)
+  coachingPoint    String?                         @db.VarChar(255)
+  duration         TrainingPlans_duration
+  level            TrainingPlans_level
+  fitnessComponent TrainingPlans_fitnessComponent?
+  sportId          Int?
+  coachId          Int
+  files            Json?
+  isScheduled      Boolean?
+  status           Boolean?
+  createdAt        DateTime                        @db.DateTime(0)
+  updatedAt        DateTime                        @db.DateTime(0)
+  deletedAt        DateTime?                       @db.DateTime(0)
+  Resources        Resources[]
+  ScheduledPlans   ScheduledPlans[]
+  Sports           Sports?                         @relation(fields: [sportId], references: [id], map: "TrainingPlans_ibfk_581")
+  Coaches          Coaches                         @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "TrainingPlans_ibfk_582")
+  assignedDrills   assignedDrills[]
+
+  @@index([coachId], map: "coachId")
+  @@index([sportId], map: "sportId")
+}
+
+model assignedDrills {
+  id             Int            @id @default(autoincrement())
+  drillId        Int
+  planId         Int
+  createdAt      DateTime       @db.DateTime(0)
+  updatedAt      DateTime       @db.DateTime(0)
+  deletedAt      DateTime?      @db.DateTime(0)
+  TrainingDrills TrainingDrills @relation(fields: [drillId], references: [id], onDelete: NoAction, map: "assignedDrills_ibfk_569")
+  TrainingPlans  TrainingPlans  @relation(fields: [planId], references: [id], onDelete: NoAction, map: "assignedDrills_ibfk_570")
+
+  @@index([drillId], map: "drillId")
+  @@index([planId], map: "planId")
+}
+
+model assignedEquipments {
+  id             Int                          @id @default(autoincrement())
+  drillId        Int
+  equipment      assignedEquipments_equipment
+  quantity       Int
+  createdAt      DateTime                     @db.DateTime(0)
+  updatedAt      DateTime                     @db.DateTime(0)
+  deletedAt      DateTime?                    @db.DateTime(0)
+  TrainingDrills TrainingDrills               @relation(fields: [drillId], references: [id], onDelete: NoAction, map: "assignedEquipments_ibfk_1")
+
+  @@index([drillId], map: "drillId")
+}
+
+enum BatchSchedules_day {
   mon
   tue
   wed
@@ -364,11 +881,55 @@ enum day_of_week {
   sun
 }
 
+enum assignedEquipments_equipment {
+  dumbells
+  barbells
+  resistance_band      @map("resistance band")
+  jump_rope            @map("jump rope")
+  agility_ladder       @map("agility ladder")
+  hurdles
+  medicine_kettle_ball @map("medicine kettle ball")
+  cones
+  markers
+  balls
+  racket_or_bat        @map("racket or bat")
+  net
+  whistle
+  stop_watch           @map("stop watch")
+}
+
+enum AthleteAttendances_attendance {
+  present
+  absent
+  rest_day   @map("rest day")
+  cancelled
+  not_marked @map("not marked")
+}
+
 enum AthleteSportsMaps_trainingLevel {
   beginner
+  intermediate
+  advanced
   developer
-  intermediate_level
-  advanced_level
+}
+
+enum HideFeeds_userType {
+  athlete
+  coach
+  both_exist
+}
+
+enum InjuryLogs_bodyPart {
+  upper_body  @map("upper body")
+  middle_body @map("middle body")
+  lower_body  @map("lower body")
+}
+
+enum Tests_trainingLevel {
+  beginner
+  intermediate
+  advanced
+  developer
 }
 
 enum Athletes_gender {
@@ -376,27 +937,129 @@ enum Athletes_gender {
   female
 }
 
+enum InjuryLogs_bodyPartName {
+  head
+  neck
+  left_shoulder     @map("left shoulder")
+  right_shoulder    @map("right shoulder")
+  chest
+  upper_back        @map("upper back")
+  left_elbow        @map("left elbow")
+  right_elbow       @map("right elbow")
+  left_wrist        @map("left wrist")
+  right_wrist       @map("right wrist")
+  left_hand         @map("left hand")
+  right_hand        @map("right hand")
+  left_finger       @map("left finger")
+  right_finger      @map("right finger")
+  groin
+  glutes
+  left_thigh        @map("left thigh")
+  right_thigh       @map("right thigh")
+  left_hamstring    @map("left hamstring")
+  right_hamstring   @map("right hamstring")
+  left_knee         @map("left knee")
+  right_knee        @map("right knee")
+  left_calf_muscle  @map("left calf muscle")
+  right_calf_muscle @map("right calf muscle")
+  left_ankle        @map("left ankle")
+  right_ankle       @map("right ankle")
+  left_achillis     @map("left achillis")
+  right_achillis    @map("right achillis")
+  left_heel         @map("left heel")
+  right_heel        @map("right heel")
+  left_toe_finger   @map("left toe finger")
+  right_toe_finger  @map("right toe finger")
+  abdomen
+  lower_back        @map("lower back")
+}
+
+enum Resources_type {
+  link
+  image
+  pdf
+  video
+}
+
+enum Tickets_ticketStatus {
+  open
+  closed
+}
+
 enum Athletes_bloodGroup {
-  APos @map("A+")
-  ANeg @map("A-")
-  BPos @map("B+")
-  BNeg @map("B-")
+  APos  @map("A+")
+  ANeg  @map("A-")
+  BPos  @map("B+")
+  BNeg  @map("B-")
   ABPos @map("AB+")
   ABNeg @map("AB-")
   OPos @map("O+")
-  ONeg @map("O-")
+  ONeg  @map("O-")
+}
+
+enum TrainingDrills_level {
+  beginner
+  intermediate
+  advanced
+  developer
+}
+
+enum TrainingPlans_duration {
+  daily
+  weekly
+  monthly
+  quarterly
+  half_yearly @map("half yearly")
+  annual
 }
 
 enum Coaches_trainingLevel {
   beginner
+  intermediate
+  advanced
   developer
-  intermediate_level
-  advanced_level
 }
 
 enum Otps_userType {
   athlete
   coach
+  both_exist
+}
+
+enum Tests_fitnessType {
+  general_fitness @map("general fitness")
+  sport_specific  @map("sport specific")
+}
+
+enum Tokens_userType {
+  athlete
+  coach
+  both_exist
+}
+
+enum TrainingDrills_fitnessComponent {
+  endurance
+  speed
+  strength
+  agility
+  movement_coordination @map("movement coordination")
+  balance
+  flexibility
+  reaction_time         @map("reaction time")
+}
+
+enum TrainingPlans_level {
+  beginner
+  intermediate
+  advanced
+  developer
+}
+
+enum Assessments_level {
+  beginner
+  intermediate
+  advanced
+  developer
 }
 
 enum Athletes_heightUnit {
@@ -409,9 +1072,109 @@ enum Coaches_gender {
   female
 }
 
+enum InjuryLogs_activityType {
+  training
+  competition
+  other
+}
+
+enum Payments_planType {
+  one_time
+}
+
+enum Tests_fitnessComponent {
+  endurance
+  speed
+  strength
+  agility
+  movement_coordination @map("movement coordination")
+  balance
+  flexibility
+  reaction_time         @map("reaction time")
+}
+
+enum TicketMessages_userType {
+  athlete
+  coach
+  both_exist
+}
+
+enum TrainingPlans_fitnessComponent {
+  endurance
+  speed
+  strength
+  agility
+  movement_coordination @map("movement coordination")
+  balance
+  flexibility
+  reaction_time         @map("reaction time")
+}
+
+enum Assessments_mode {
+  recurring
+  one_time  @map("one time")
+}
+
+enum InjuryLogs_injuryType {
+  severe
+  moderate
+  mild
+}
+
+enum Payments_paymentType {
+  monthly
+}
+
+enum Assessments_interval {
+  weekly
+  monthly
+}
+
 enum Athletes_weightUnit {
   kg
   pounds
+}
+
+enum InjuryLogs_recoveryTime {
+  Days               @map("3 - 5 Days")
+  weeks              @map("1 - 2 weeks")
+  Less_than_a_month  @map("Less than a month")
+  Months             @map("1 - 3 Months")
+  More_than_3_months @map("More than 3 months")
+}
+
+enum Payments_paymentStatus {
+  failed
+  paid
+  pending
+}
+
+enum Tickets_userType {
+  athlete
+  coach
+  both_exist
+}
+
+enum Tests_measureType {
+  numeric_value     @map("numeric value")
+  star_rating_index @map("star rating index")
+}
+
+enum Tests_unitType {
+  metric_units @map("metric units")
+  time_units   @map("time units")
+  heart_rate   @map("heart rate")
+  reps
+}
+
+enum Tests_units {
+  mm
+  cm
+  m
+  km
+  sec
+  min
+  hour
 }
 
 enum Coaches_experienceLevel {
@@ -419,4 +1182,15 @@ enum Coaches_experienceLevel {
   two_five
   six_ten
   ten_over
+}
+
+enum Assessments_assessmentStatus {
+  ongoing
+  completed
+  upcoming
+}
+
+enum Tests_testGoal {
+  lowest_value_is_high  @map("lowest value is high")
+  highest_value_is_high @map("highest value is high")
 }

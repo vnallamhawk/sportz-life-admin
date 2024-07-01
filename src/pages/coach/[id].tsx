@@ -5,7 +5,13 @@ import CardTitle from "~/components/Card/CardTitle";
 import Image from "next/image";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import { type Sports } from "@prisma/client";
+import {
+  Batches,
+  Centers,
+  CoachSportsMaps,
+  Coaches,
+  type Sports,
+} from "@prisma/client";
 import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
 import {
   type CoachWithRelations,
@@ -20,37 +26,47 @@ import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
 import router from "next/router";
 
+type Coach = Coaches & {
+  CoachSportsMaps: CoachSportsMaps[];
+  Centers: Centers;
+  Batches: Batches;
+};
+
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const id = context?.params?.id;
   const sports = await prisma.sports.findMany();
-  const coach = await prisma.coach.findUnique({
+  const coach = await prisma.coaches.findUnique({
     where: {
       id: id ? Number(id) : undefined,
     },
     include: {
-      sports: true,
-      certificates: true,
-      batches: true,
-      centers: true,
+      CoachSportsMaps: true,
+      Centers: true,
+      Batches: true,
+      // Batches: true,
     },
   });
+  // console.log(coach);
 
-  const batches = await prisma.batches.findMany({
-    where: {
-      id: {
-        in: coach?.batches.map((batch) => batch.batchId),
-      },
-    },
-  });
-  const centers = await prisma.center.findMany({
-    where: {
-      id: {
-        in: batches.map((batch) => batch.centerId),
-      },
-    },
-  });
+  // const batches = await prisma.batches.findMany({
+  //   where: {
+  //     id: {
+  //       in: coach?.batches.map((batch) => batch.batchId),
+  //     },
+  //   },
+  // });
+  // const centers = await prisma.center.findMany({
+  //   where: {
+  //     id: {
+  //       in: batches.map((batch) => batch.centerId),
+  //     },
+  //   },
+  // });
+  const coachSportsMaps = coach?.CoachSportsMaps as CoachSportsMaps[];
+  const centers = coach?.Centers as Centers | undefined | null;
+  const batches = coach?.Batches as Batches[];
 
   return {
     props: {
@@ -61,41 +77,53 @@ export const getServerSideProps = async (
         dateOfBirth: coach?.dateOfBirth
           ? coach?.dateOfBirth?.toISOString()
           : "",
-        centers: coach?.centers.map((center) => ({
-          ...center,
-          assignedAt: center?.assignedAt
-            ? center?.assignedAt.toISOString()
-            : "",
-          updatedAt: center?.updatedAt ? center?.updatedAt.toISOString() : "",
-        })),
-        sports: coach?.sports.map((sport) => ({
+        CoachSportsMaps: coachSportsMaps?.map((sport) => ({
           ...sport,
-          assignedAt: sport?.assignedAt ? sport?.assignedAt?.toISOString() : "",
+          createdAt: sport?.createdAt ? sport?.createdAt?.toISOString() : "",
           updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
         })),
-        certificates: coach?.certificates.map((cert) => ({
-          ...cert,
-          startDate: cert.startDate ? dateFormat(cert.startDate) : "",
-          endDate: cert.endDate ? dateFormat(cert.endDate) : "",
-        })),
-        batches: coach?.batches.map((coachBatch) => ({
+        Centers: {
+          ...centers,
+          createdAt: centers?.createdAt
+            ? centers?.createdAt?.toISOString()
+            : "",
+          updatedAt: centers?.updatedAt
+            ? centers?.updatedAt?.toISOString()
+            : "",
+        },
+        // Centers: centers?.map((center) => ({
+        //   ...center,
+        //   createdAt: center?.createdAt ? center?.createdAt.toISOString() : "",
+        //   updatedAt: center?.updatedAt ? center?.updatedAt.toISOString() : "",
+        // })),
+
+        // certificates: coach?.certificates.map((cert) => ({
+        //   ...cert,
+        //   startDate: cert.startDate ? dateFormat(cert.startDate) : "",
+        //   endDate: cert.endDate ? dateFormat(cert.endDate) : "",
+        // })),
+        Batches: batches.map((coachBatch) => ({
           ...coachBatch,
-          assignedAt: coachBatch?.assignedAt
-            ? dateFormat(coachBatch?.assignedAt)
+          createdAt: coachBatch?.createdAt
+            ? coachBatch?.createdAt.toISOString()
             : "",
           updatedAt: coachBatch?.updatedAt
-            ? dateFormat(coachBatch?.updatedAt)
+            ? coachBatch?.updatedAt.toISOString()
             : "",
-          batch: batches.find((batch) => batch.id == coachBatch.batchId),
-          center: centers.find(
-            (center) =>
-              center.id ==
-              batches.find((batch) => batch.id == coachBatch.batchId)?.centerId
-          ),
+          // batch: batches.find((batch) => batch.id == coachBatch.id),
+          // center: centers.find(
+          //   (center) =>
+          //     center.id ==
+          //     batches.find((batch) => batch.id == coachBatch.batchId)?.centerId
+          // ),
         })),
       },
-      sports: sports,
-      batches: batches,
+      sports: sports.map((sport) => ({
+        ...sport,
+        createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
+        updatedAt: sport?.updatedAt ? sport?.updatedAt.toISOString() : "",
+      })),
+      // batches: batches,
     },
   };
 };
@@ -104,7 +132,7 @@ export default function Page({
   coach,
   sports,
 }: {
-  coach: CoachWithRelations;
+  coach: Coach;
   sports: Sports[];
 }) {
   const sportsDictionary = sports?.reduce(
@@ -148,9 +176,9 @@ export default function Page({
               <span> ({coach.designation})</span>
             </div>
             <div className="text-orange-400">
-              {coach.sports
-                .map(({ sportId }) => sportsDictionary[sportId])
-                .join(",")}
+              {coach.CoachSportsMaps.map(
+                ({ sportId }) => sportsDictionary?.[sportId as number]
+              ).join(" ,")}
             </div>
             <div className="mt-5 flex">
               <div className="about">
@@ -162,7 +190,7 @@ export default function Page({
               <div className="training-level">
                 <div className="text-gray-400"> Training level Expertise </div>
                 <div className="font-bold text-gray-600">
-                  {TrainingLevelEnum[coach.trainingLevel]}
+                  {coach.trainingLevel}
                 </div>
               </div>
               <div className="experience-level">
@@ -171,16 +199,14 @@ export default function Page({
                   Years of Coaching Experience{" "}
                 </div>
                 <div className="font-bold text-gray-600">
-                  {ExperienceLevelEnum[coach.experienceLevel]}
+                  {coach.experienceLevel}
                 </div>
               </div>
             </div>
             <div className="mt-2 flex justify-between">
               <div>
                 <div className="text-gray-400"> Contact Number </div>
-                <div className="font-bold text-gray-600">
-                  {coach.contactNumber}
-                </div>
+                <div className="font-bold text-gray-600">{coach.phone}</div>
               </div>
               <div>
                 <div className="text-gray-400">Email</div>
@@ -189,9 +215,9 @@ export default function Page({
               <div>
                 <div className="text-gray-400">DOB</div>
                 <div className="font-bold text-gray-600">
-                  {coach.dateOfBirth
+                  {/* {coach.dateOfBirth
                     ? DATE_TIME_FORMAT.format(new Date(coach.dateOfBirth))
-                    : ""}
+                    : ""} */}
                 </div>
               </div>
               <div>
@@ -219,7 +245,7 @@ export default function Page({
           >
             <div className="font-bold"> Batches</div>
             <div className="text-4xl font-bold">
-              {coach?.batches?.length ?? NO_DATA}
+              {coach?.Batches?.length ?? NO_DATA}
             </div>
           </div>
           <div

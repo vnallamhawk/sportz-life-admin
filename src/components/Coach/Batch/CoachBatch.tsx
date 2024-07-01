@@ -54,7 +54,7 @@ export default function CoachCertificate({
       </header>
       <table className="mt-1 w-full table-auto border-separate border-spacing-y-3 place-self-center">
         <CoachBatchTableHeader />
-        <CoachBatchTableBody coach={tableCoach} />
+        {/* <CoachBatchTableBody coach={tableCoach} /> */}
       </table>
     </Card>
   );

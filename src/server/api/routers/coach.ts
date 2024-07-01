@@ -26,11 +26,9 @@ const coachingSportsSchema = z.array(
 
 export const coachRouter = createTRPCRouter({
   getAllCoaches: publicProcedure.query(({ ctx }) => {
-    const allCoaches = ctx?.prisma?.coach?.findMany({
+    const allCoaches = ctx?.prisma.coaches?.findMany({
       include: {
-        sports: true,
-        batches: true,
-        centers: true,
+        CoachSportsMaps: true,
       },
     });
     return allCoaches;
@@ -42,12 +40,12 @@ export const coachRouter = createTRPCRouter({
       })
     )
     .query(async (opts) => {
-      const coaches = await opts.ctx?.prisma?.coach?.findUnique({
+      const coaches = await opts.ctx?.prisma?.coaches?.findUnique({
         where: {
           id: opts.input.id,
         },
         include: {
-          sports: true,
+          CoachSportsMaps: true,
           batches: true,
           centers: true,
           certificates: true,
@@ -63,16 +61,19 @@ export const coachRouter = createTRPCRouter({
       })
     )
     .query(async (opts) => {
-      const coaches = await opts.ctx?.prisma?.coach?.findMany({
+      const coaches = await opts.ctx?.prisma?.coaches?.findMany({
         where: {
           name: {
             contains: opts.input.name,
           },
         },
         include: {
-          sports: true,
-          batches: true,
-          centers: true,
+          CoachSportsMaps:true,
+          Centers: true,
+          Batches: true,
+          // sports: true,
+          // batches: true,
+          // centers: true,
         },
       });
 
@@ -115,8 +116,9 @@ export const coachRouter = createTRPCRouter({
         },
         ctx,
       }) => {
+ 
         const sportsId = sports.map(({ value }) => value);
-        const response = await ctx.prisma.coach.create({
+        const response = await ctx.prisma.coaches.create({
           data: {
             name: name,
             about: about,
@@ -202,7 +204,9 @@ export const coachRouter = createTRPCRouter({
         ctx,
       }) => {
         // const sportsId = sports.map(({ value }) => value);
-        const response = await ctx.prisma.coach.update({
+        // eslint-disable-next-line no-console
+        console.log(certificates)
+        const response = await ctx.prisma.coaches.update({
           where: {
             id: coachId,
           },
@@ -248,6 +252,8 @@ export const coachRouter = createTRPCRouter({
             experienceLevel: experienceLevel,
           },
         });
+
+        
         return response;
       }
     ),

@@ -8,5 +8,5 @@ export function dateFormat(date: Date | undefined): string {
   dd.length == 1 ? (dd = "0" + dd) : dd;
   mm.length == 1 ? (mm = "0" + mm) : mm;
 
-  return dd + "/" + mm + "/" + yyyy;
+  return mm + "/" + dd + "/" + yyyy;
 }

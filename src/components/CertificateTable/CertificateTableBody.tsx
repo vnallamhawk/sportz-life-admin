@@ -41,7 +41,6 @@ export default function CertificateTableBody({
               onClick={() => onDeleteHandler(index)}
               className=" border-none"
             >
-              {" "}
               Remove{" "}
             </Button>
           </td>

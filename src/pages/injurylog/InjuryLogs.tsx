@@ -9,6 +9,7 @@ import CoachTableBody from "../../components/AllCoaches/CoachTableBody";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
 import TabsComponent from "~/components/Tabs";
+import AthleteInjuriesTableHeader from "~/components/InjuryLogs/AthleteInjuries/AthleteInjuriesTableHeader";
 
 export default function AllInjuryLogs() {
   const router = useRouter();
@@ -45,7 +46,7 @@ export default function AllInjuryLogs() {
               name: "ATHLETE INJURIES",
               component: (
                 <Table
-                  tableHeader={CoachTableHeader()}
+                  tableHeader={AthleteInjuriesTableHeader()}
                   tableBody={CoachTableBody(
                     { name: filterByName },
                     handleIsLoading
@@ -67,10 +68,6 @@ export default function AllInjuryLogs() {
             },
           ]}
         />
-        {/* <Table
-          tableHeader={CoachTableHeader()}
-          tableBody={CoachTableBody({ name: filterByName }, handleIsLoading)}
-        /> */}
         {loading ? <LoadingSpinner /> : ""}
       </Card>
     </>

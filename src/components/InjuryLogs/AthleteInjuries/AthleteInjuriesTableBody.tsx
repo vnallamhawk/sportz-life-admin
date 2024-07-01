@@ -6,19 +6,9 @@ import { differenceInYears } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { NO_DATA } from "~/globals/globals";
-import type { Coaches } from "@prisma/client";
-import type { CoachSportsMaps } from "@prisma/client";
 
-interface coachTableFilter {
-  name: string;
-}
-
-type Coach = Coaches & {
-  CoachSportsMaps: CoachSportsMaps[];
-};
-
-export default function CoachTableBody(
-  filter: coachTableFilter,
+export default function AthleteInjuriesTableBody(
+  //   filter: coachTableFilter,
   handleIsLoading: (isLoading: boolean) => void
 ) {
   let tableData;

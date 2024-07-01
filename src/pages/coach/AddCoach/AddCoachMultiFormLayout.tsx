@@ -205,6 +205,30 @@ export default function AddCoachMultiFormLayout() {
         coachId: finalForm.coachId,
       });
     } else {
+      // eslint-disable-next-line no-console
+      console.log(finalForm);
+      // eslint-disable-next-line no-console
+      console.log({
+        name: finalForm.name,
+        about: finalForm.about,
+        contactNumber: finalForm.contactNumber,
+        email: finalForm.email,
+        designation: finalForm.designation,
+        gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+        certificates: finalForm.certificates.map((certificate) => ({
+          ...certificate,
+          startDate: new Date(certificate.startDate),
+          endDate: new Date(certificate.endDate),
+        })),
+        dateOfBirth: new Date(finalForm.dateOfBirth),
+        sports: finalForm.coachingSports,
+        trainingLevel: finalForm.trainingLevel
+          .value as (typeof TRAINING_LEVEL)[number],
+        experienceLevel: finalForm.experienceLevel
+          .value as (typeof EXPERIENCE_LEVEL)[number],
+        batchIds: finalForm.batchIds,
+        centerIds: finalForm.centerIds,
+      });
       createMutate({
         name: finalForm.name,
         about: finalForm.about,
