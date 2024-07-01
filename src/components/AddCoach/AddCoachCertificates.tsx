@@ -41,7 +41,7 @@ export default function AddCoachCertificates({}) {
   const [tableData, setTableData] = useState<COACH_CERTIFICATE_TABLE_TYPES[]>(
     []
   );
-  const [deletedCertificateIds, setDeletedCertificatedIds] = useState([]);
+  // const [deletedCertificateIds, setDeletedCertificatedIds] = useState([]);
   // eslint-disable-next-line no-console
   console.log(tableData);
 

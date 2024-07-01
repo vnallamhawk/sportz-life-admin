@@ -5,25 +5,27 @@ import CardTitle from "~/components/Card/CardTitle";
 import Image from "next/image";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import {
+import type {
   Batches,
   Centers,
   CoachSportsMaps,
   Coaches,
-  type Sports,
 } from "@prisma/client";
-import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
-import {
-  type CoachWithRelations,
-  ExperienceLevelEnum,
-  TrainingLevelEnum,
-} from "~/types/coach";
+import { type Sports } from "@prisma/client";
+import // DATE_TIME_FORMAT,
+// NO_DATA,
+"~/globals/globals";
+// import {
+//   type CoachWithRelations,
+//   ExperienceLevelEnum,
+//   TrainingLevelEnum,
+// } from "~/types/coach";
 import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
 import { ToastContext } from "~/contexts/Contexts";
-import CoachCertificate from "~/components/Coach/Certificate/CoachCertificates";
-import { dateFormat } from "~/helpers/date";
-import CoachBatch from "~/components/Coach/Batch/CoachBatch";
-import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
+// import CoachCertificate from "~/components/Coach/Certificate/CoachCertificates";
+// import { dateFormat } from "~/helpers/date";
+// import CoachBatch from "~/components/Coach/Batch/CoachBatch";
+// import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
 import router from "next/router";
 
 type Coach = Coaches & {
@@ -65,7 +67,7 @@ export const getServerSideProps = async (
   //   },
   // });
   const coachSportsMaps = coach?.CoachSportsMaps as CoachSportsMaps[];
-  const centers = coach?.Centers as Centers | undefined | null;
+  const centers = coach?.Centers;
   const batches = coach?.Batches as Batches[];
 
   return {
@@ -177,7 +179,7 @@ export default function Page({
             </div>
             <div className="text-orange-400">
               {coach.CoachSportsMaps.map(
-                ({ sportId }) => sportsDictionary?.[sportId as number]
+                ({ sportId }) => sportsDictionary?.[sportId]
               ).join(" ,")}
             </div>
             <div className="mt-5 flex">
@@ -245,7 +247,7 @@ export default function Page({
           >
             <div className="font-bold"> Batches</div>
             <div className="text-4xl font-bold">
-              {coach?.Batches?.length ?? NO_DATA}
+              {/* {coach?.Batches?.length ?? NO_DATA} */}
             </div>
           </div>
           <div
@@ -256,7 +258,7 @@ export default function Page({
           >
             <div className="font-bold"> Certificates</div>
             <div className="text-4xl font-bold">
-              {coach?.certificates?.length ?? NO_DATA}
+              {/* {coach?.certificates?.length ?? NO_DATA} */}
             </div>
           </div>
         </div>
@@ -265,9 +267,9 @@ export default function Page({
           setOpen={setOpenToast}
         ></AddCoachSuccessToast>
       </Card>
-      <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
+      {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
       <CoachBatch coach={coach} displayBatch={displayBatch} />
-      <CoachAttendance coach={coach} displayAttendance={displayAttendance} />
+      <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
     </>
   );
 }

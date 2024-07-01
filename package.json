@@ -7,8 +7,7 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start",
-    "prepare": "husky install"
+    "start": "next start"
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -57,7 +56,6 @@
     "autoprefixer": "10.4.14",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
-    "husky": "8.0.0",
     "postcss": "8.4.21",
     "prettier": "2.8.8",
     "prettier-plugin-tailwindcss": "0.2.8",
