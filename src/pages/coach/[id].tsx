@@ -120,6 +120,8 @@ export const getServerSideProps = async (
           // ),
         })),
       },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       sports: sports.map((sport) => ({
         ...sport,
         createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
