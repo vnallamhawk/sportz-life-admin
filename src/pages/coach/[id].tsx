@@ -38,7 +38,7 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const id = context?.params?.id;
-  const sports = await prisma.sports.findMany();
+  // const sports = await prisma.sports.findMany();
   const coach = await prisma.coaches.findUnique({
     where: {
       id: id ? Number(id) : undefined,
@@ -120,13 +120,11 @@ export const getServerSideProps = async (
           // ),
         })),
       },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      sports: sports.map((sport) => ({
-        ...sport,
-        createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
-        updatedAt: sport?.updatedAt ? sport?.updatedAt.toISOString() : "",
-      })),
+      // sports: sports.map((sport) => ({
+      //   ...sport,
+      //   createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
+      //   updatedAt: sport?.updatedAt ? sport?.updatedAt.toISOString() : "",
+      // })),
       // batches: batches,
     },
   };

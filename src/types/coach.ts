@@ -3,7 +3,7 @@ import type {
 import {
   type Coaches,
   type Batches,
-  type Centers,
+  // type Centers,
   // type CoachesOnBatches,
   // type Certificates,
   // type CoachesOnSports
@@ -91,10 +91,10 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   coachId?: number;
 }
 
-export interface batchWithCenter extends CoachesOnBatches {
-  batch: Batches;
-  center: Centers;
-}
+// export interface batchWithCenter extends CoachesOnBatches {
+//   batch: Batches;
+//   center: Centers;
+// }
 
 export enum TrainingLevelEnum {
   BEGINNER = "Beginner",
@@ -117,8 +117,8 @@ export type CoachWithRelations = Coaches & {
 };
 
 export type CoachWithRelationsEditForm = Coaches & {
-  certificates: Certificates[];
-  sports: CoachesOnSports[];
-  batches: CoachesOnBatches[];
+  // certificates: Certificates[];
+  // sports: CoachesOnSports[];
+  // batches: CoachesOnBatches[];
   batchTableData?: BatchTableData[];
 };

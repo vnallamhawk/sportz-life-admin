@@ -2,27 +2,27 @@ import CardTitle from "~/components/Card/CardTitle";
 import Card from "../../Card";
 import Textbox from "~/components/Textbox";
 import CoachCertificateTableHeader from "./CoachCertificateTableHeader";
-import CoachCertificateTableBody from "./CoachCertificateTableBody";
-import { useState } from "react";
-import { type CoachWithRelations } from "~/types/coach";
+// import CoachCertificateTableBody from "./CoachCertificateTableBody";
+// import { useState } from "react";
+// import { type CoachWithRelations } from "~/types/coach";
 
 export default function CoachCertificate({
-  coach,
+  // coach,
   displayCertificate,
 }: {
-  coach: CoachWithRelations;
+  // coach: CoachWithRelations;
   displayCertificate: boolean;
 }) {
-  const [certificates, setCertificates] = useState(coach.certificates);
-  const [filterByCertificate, setFilterByCertificate] = useState("");
-  const handleFilterByCertificateChange = (filter: string) => {
-    setCertificates(
-      coach.certificates.filter((cert) => {
-        return cert.name.toLowerCase().includes(filter);
-      })
-    );
-    setFilterByCertificate(filter);
-  };
+  // const [certificates, setCertificates] = useState(coach.certificates);
+  // const [filterByCertificate, setFilterByCertificate] = useState("");
+  // const handleFilterByCertificateChange = (filter: string) => {
+  //   setCertificates(
+  //     coach.certificates.filter((cert) => {
+  //       return cert.name.toLowerCase().includes(filter);
+  //     })
+  //   );
+  //   setFilterByCertificate(filter);
+  // };
 
   return (
     <Card className={`${displayCertificate ? "" : "hidden"} h-100`}>
@@ -31,8 +31,8 @@ export default function CoachCertificate({
         <div className="relative mb-3 w-1/3">
           <Textbox
             className={`w-full`}
-            value={filterByCertificate}
-            setValue={handleFilterByCertificateChange}
+            // value={filterByCertificate}
+            // setValue={handleFilterByCertificateChange}
             placeHolder="Search by certificate name"
           />
           <svg
@@ -53,7 +53,7 @@ export default function CoachCertificate({
       </header>
       <table className="mt-1 w-full table-auto border-separate border-spacing-y-3 place-self-center">
         <CoachCertificateTableHeader />
-        <CoachCertificateTableBody certificates={certificates} />
+        {/* <CoachCertificateTableBody certificates={certificates} /> */}
       </table>
     </Card>
   );
