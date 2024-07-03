@@ -136,17 +136,17 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   //   ],
   //   placeHolder: "Select Payroll",
   // },
-  {
-    label: "Coaching Sports",
-    id: "coachingSports",
-    type: "select",
-    options: [],
-    placeHolder: "Coaching Sports",
-    rules: {
-      required: true,
-    },
-    isMulti: true,
-  },
+  // {
+  //   label: "Coaching Sports",
+  //   id: "coachingSports",
+  //   type: "select",
+  //   options: [],
+  //   placeHolder: "Coaching Sports",
+  //   rules: {
+  //     required: true,
+  //   },
+  //   isMulti: true,
+  // },
   {
     label: "Training level expertise",
     id: "trainingLevel",
