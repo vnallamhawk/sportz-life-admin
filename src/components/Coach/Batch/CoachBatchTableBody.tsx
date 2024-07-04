@@ -1,4 +1,4 @@
-import { NO_DATA } from "~/globals/globals";
+import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
 import { Coach } from "~/pages/coach/[id]";
 
 export default function CoachCertificateTableBody({ coach }: { coach: Coach }) {
@@ -9,7 +9,9 @@ export default function CoachCertificateTableBody({ coach }: { coach: Coach }) {
       </td>
       <td className="border-y-2 border-solid">{batch.sportId}</td>
       <td className="border-y-2 border-solid">{batch.capacity}</td>
-      <td className="border-y-2 border-solid">{batch.createdAt.toString()}</td>
+      <td className="border-y-2 border-solid">
+        {DATE_TIME_FORMAT.format(new Date(batch.createdAt.toString()))}
+      </td>
       <td className="rounded-r-lg border-y-2 border-r-2 border-solid">...</td>
     </tr>
   ));
