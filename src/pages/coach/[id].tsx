@@ -27,6 +27,7 @@ import { ToastContext } from "~/contexts/Contexts";
 // import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 // import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
 import router from "next/router";
+import { DATE_TIME_FORMAT } from "~/globals/globals";
 
 type Coach = Coaches & {
   CoachSportsMaps: CoachSportsMaps[];
@@ -202,11 +203,10 @@ export default function Page({
               </div>
               <div className="experience-level">
                 <div className="text-gray-400">
-                  {" "}
                   Years of Coaching Experience{" "}
                 </div>
                 <div className="font-bold text-gray-600">
-                  {coach.experienceLevel}
+                  {coach.experience}
                 </div>
               </div>
             </div>
@@ -222,9 +222,9 @@ export default function Page({
               <div>
                 <div className="text-gray-400">DOB</div>
                 <div className="font-bold text-gray-600">
-                  {/* {coach.dateOfBirth
+                  {coach.dateOfBirth
                     ? DATE_TIME_FORMAT.format(new Date(coach.dateOfBirth))
-                    : ""} */}
+                    : ""}
                 </div>
               </div>
               <div>
