@@ -186,22 +186,22 @@ export const coachRouter = createTRPCRouter({
     .mutation(
       async ({
         input: {
-          name,
-          about,
-          contactNumber,
-          email,
-          designation,
-          gender,
-          certificates,
-          dateOfBirth,
+          // name,
+          // about,
+          // contactNumber,
+          // email,
+          // designation,
+          // gender,
+          // certificates,
+          // dateOfBirth,
           // sports,
-          trainingLevel,
-          experienceLevel,
+          // trainingLevel,
+          // experienceLevel,
           // batchIds,
           // centerIds,
-          coachId,
+          // coachId,
         },
-        ctx,
+        // ctx,
       }) => {
         // const sportsId = sports.map(({ value }) => value);
         // eslint-disable-next-line no-console

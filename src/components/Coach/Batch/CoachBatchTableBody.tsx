@@ -1,5 +1,5 @@
 import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
-import { Coach } from "~/pages/coach/[id]";
+import type { Coach } from "~/pages/coach/[id]";
 
 export default function CoachCertificateTableBody({ coach }: { coach: Coach }) {
   const tableItems = coach.Batches?.map((batch) => (

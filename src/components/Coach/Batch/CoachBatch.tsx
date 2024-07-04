@@ -4,8 +4,7 @@ import Textbox from "~/components/Textbox";
 import { useState } from "react";
 import CoachBatchTableHeader from "./CoachBatchTableHeader";
 // import CoachBatchTableBody from "./CoachBatchTableBody";
-import { type CoachWithRelations } from "~/types/coach";
-import { Coach } from "~/pages/coach/[id]";
+import type { Coach } from "~/pages/coach/[id]";
 import CoachBatchTableBody from "./CoachBatchTableBody";
 
 export default function CoachBatch({

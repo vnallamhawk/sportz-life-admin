@@ -157,7 +157,6 @@ export default function Page({
     setDisplayCertificate(!displayCertificate);
   const handleBatchClick = () => setDisplayBatch(!displayBatch);
   const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
-  console.log(coach);
 
   return (
     <>
