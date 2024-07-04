@@ -4,6 +4,8 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import Layout from "./Layout";
+import ThemeContextProvider from "~/contexts/useThemeContext";
+import ThemeButton from "~/components/ThemeButton";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -13,9 +15,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
   const AnyComponent = Component as any;
   return (
     <SessionProvider session={session}>
-      <Layout>
-        <AnyComponent {...pageProps} />
-      </Layout>
+      <ThemeContextProvider>
+        <ThemeButton />
+        <Layout>
+          <AnyComponent {...pageProps} />
+        </Layout>
+      </ThemeContextProvider>
     </SessionProvider>
   );
 };

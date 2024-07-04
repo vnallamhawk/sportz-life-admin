@@ -1,8 +1,12 @@
+import dynamic from "next/dynamic";
 import CardList from "~/components/Card/CardList";
 import Card from "../../components/Card/Card";
 import CardStats from "../../components/Card/CardStats";
-import BarChart from "~/components/BarChart";
-import LineChart from "~/components/LineChart";
+// import BarChart from "~/components/BarChart";
+// import LineChart from "~/components/LineChart";
+const BarChart = dynamic(import("~/components/BarChart"), { ssr: false });
+const LineChart = dynamic(import("~/components/LineChart"), { ssr: false });
+
 import {
   ageWiseCountData,
   centerWiseCountData,
