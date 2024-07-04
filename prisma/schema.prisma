@@ -56,7 +56,7 @@ model Academies {
   status            Int?                @default(1) @db.TinyInt
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @default(now())
-  deletedAt         DateTime?           @default(now())
+  deletedAt         DateTime?           @db.DateTime(0)
   AcademySportsMaps AcademySportsMaps[]
   Assessments       Assessments[]
   Athletes          Athletes[]
@@ -417,7 +417,7 @@ model Centers {
   status                 Int?                     @default(1) @db.TinyInt
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @default(now())
-  deletedAt              DateTime?                @default(now())
+  deletedAt              DateTime?                @db.DateTime(0)
   AssessmentCenters      AssessmentCenters[]
   AthleteSportsMaps      AthleteSportsMaps[]
   Academies              Academies?               @relation(fields: [academyId], references: [id], map: "Centers_ibfk_1")
@@ -437,7 +437,7 @@ model CoachSportsMaps {
   status    Int?      @default(1) @db.TinyInt
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
-  deletedAt DateTime? @default(now())
+  deletedAt DateTime? @db.DateTime(0)
   Coaches   Coaches   @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "CoachSportsMaps_ibfk_777")
   Sports    Sports    @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "CoachSportsMaps_ibfk_778")
 
@@ -465,7 +465,7 @@ model Coaches {
   status                    Int?                        @default(1) @db.TinyInt
   createdAt                 DateTime                    @default(now())
   updatedAt                 DateTime                    @default(now())
-  deletedAt                 DateTime?                   @default(now())
+  deletedAt                 DateTime?                   @db.DateTime(0)
   AssessmentAssignedCoaches AssessmentAssignedCoaches[]
   AssessmentResults         AssessmentResults[]
   Batches                   Batches[]
@@ -623,7 +623,7 @@ model Resources {
   type           Resources_type
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @default(now())
-  deletedAt      DateTime?       @default(now())
+  deletedAt      DateTime?       @db.DateTime(0)
   TrainingDrills TrainingDrills? @relation(fields: [drillId], references: [id], map: "Resources_ibfk_565")
   TrainingPlans  TrainingPlans?  @relation(fields: [planId], references: [id], map: "Resources_ibfk_566")
 
@@ -636,7 +636,7 @@ model ScheduledCenterBatches {
   schedulePlanId Int
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @default(now())
-  deletedAt      DateTime?      @default(now())
+  deletedAt      DateTime?      @db.DateTime(0)
   centerId       Int?
   batchId        Int?
   allCenters     Boolean        @default(false)
@@ -659,7 +659,7 @@ model ScheduledPlans {
   coachId                Int
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @default(now())
-  deletedAt              DateTime?                @default(now())
+  deletedAt              DateTime?                @db.DateTime(0)
   ScheduledCenterBatches ScheduledCenterBatches[]
   TrainingPlans          TrainingPlans            @relation(fields: [planId], references: [id], onDelete: NoAction, map: "ScheduledPlans_ibfk_557")
   Coaches                Coaches                  @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "ScheduledPlans_ibfk_558")
@@ -678,7 +678,7 @@ model Sports {
   status                 Int?                     @default(1) @db.TinyInt
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @default(now())
-  deletedAt              DateTime?                @default(now())
+  deletedAt              DateTime?                @db.DateTime(0)
   AcademySportsMaps      AcademySportsMaps[]
   AssessmentCenterSports AssessmentCenterSports[]
   AssessmentSports       AssessmentSports[]
@@ -808,7 +808,7 @@ model Tokens {
   status      Boolean?        @default(true)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @default(now())
-  deletedAt   DateTime?       @default(now())
+  deletedAt   DateTime?       @db.DateTime(0)
 }
 
 model TrainingDrills {
@@ -824,7 +824,7 @@ model TrainingDrills {
   status             Boolean                          @default(true)
   createdAt          DateTime                         @default(now())
   updatedAt          DateTime                         @default(now())
-  deletedAt          DateTime?                        @default(now())
+  deletedAt          DateTime?                        @db.DateTime(0)
   AssignedDrills     AssignedDrills[]
   AssignedEquipments AssignedEquipments[]
   Resources          Resources[]
@@ -850,7 +850,7 @@ model TrainingPlans {
   status           Boolean?
   createdAt        DateTime               @default(now())
   updatedAt        DateTime               @default(now())
-  deletedAt        DateTime?              @default(now())
+  deletedAt        DateTime?              @db.DateTime(0)
   Resources        Resources[]
   ScheduledPlans   ScheduledPlans[]
   Sports           Sports?                @relation(fields: [sportId], references: [id], map: "TrainingPlans_ibfk_581")
@@ -866,7 +866,7 @@ model AssignedDrillFitnessComponents {
   planId           Int
   createdAt        DateTime                                         @default(now())
   updatedAt        DateTime                                         @default(now())
-  deletedAt        DateTime?                                        @default(now())
+  deletedAt        DateTime?                                        @db.DateTime(0)
   AssignedDrills   AssignedDrills[]
 }
 
@@ -876,7 +876,7 @@ model AssignedDrills {
   drillId                        Int
   createdAt                      DateTime                       @default(now())
   updatedAt                      DateTime                       @default(now())
-  deletedAt                      DateTime?                      @default(now())
+  deletedAt                      DateTime?                      @db.DateTime(0)
   AssignedDrillFitnessComponents AssignedDrillFitnessComponents @relation(fields: [drillFitnessComponentId], references: [id], onDelete: NoAction, map: "AssignedDrills_ibfk_319")
   TrainingDrills                 TrainingDrills                 @relation(fields: [drillId], references: [id], onDelete: NoAction, map: "AssignedDrills_ibfk_320")
 
@@ -891,7 +891,7 @@ model AssignedEquipments {
   quantity       Int
   createdAt      DateTime                     @default(now())
   updatedAt      DateTime                     @default(now())
-  deletedAt      DateTime?                    @default(now())
+  deletedAt      DateTime?                    @db.DateTime(0)
   TrainingDrills TrainingDrills               @relation(fields: [drillId], references: [id], onDelete: NoAction, map: "AssignedEquipments_ibfk_1")
 
   @@index([drillId], map: "drillId")
@@ -905,7 +905,7 @@ model CoachCentersBatches {
   status    Int?      @default(1) @db.TinyInt
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
-  deletedAt DateTime? @default(now())
+  deletedAt DateTime? @db.DateTime(0)
   Centers   Centers   @relation(fields: [centerId], references: [id], onDelete: NoAction, map: "CoachCentersBatches_ibfk_253")
   Coaches   Coaches   @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "CoachCentersBatches_ibfk_254")
 
@@ -920,7 +920,7 @@ model CoachOnCenters {
   status                                                       Int?             @default(1) @db.TinyInt
   createdAt                                                    DateTime         @default(now())
   updatedAt                                                    DateTime         @default(now())
-  deletedAt                                                    DateTime?        @default(now())
+  deletedAt                                                    DateTime?        @db.DateTime(0)
   Coaches                                                      Coaches          @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "CoachOnCenters_ibfk_21")
   Centers                                                      Centers          @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "CoachOnCenters_ibfk_22")
   CoachOnCenters_CoachOnCenters_coachIdToCoachOnCenters        CoachOnCenters   @relation("CoachOnCenters_coachIdToCoachOnCenters", fields: [coachId], references: [id], onDelete: Cascade, map: "CoachOnCenters_ibfk_3")
@@ -939,7 +939,7 @@ model CoachOnCentersBatches {
   status    Int?      @default(1) @db.TinyInt
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now())
-  deletedAt DateTime? @default(now())
+  deletedAt DateTime? @db.DateTime(0)
   Coaches   Coaches   @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "CoachOnCentersBatches_ibfk_1")
   Centers   Centers   @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "CoachOnCentersBatches_ibfk_2")
 

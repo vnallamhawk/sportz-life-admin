@@ -44,7 +44,7 @@ export const getServerSideProps = async (
       id: id ? Number(id) : undefined,
     },
     include: {
-      CoachSportsMaps: true,
+      // CoachSportsMaps: true,
       Centers: true,
       Batches: true,
       // Batches: true,
@@ -66,68 +66,72 @@ export const getServerSideProps = async (
   //     },
   //   },
   // });
-  const coachSportsMaps = coach?.CoachSportsMaps as CoachSportsMaps[];
+  // const coachSportsMaps = coach?.CoachSportsMaps as CoachSportsMaps[];
   const centers = coach?.Centers;
   const batches = coach?.Batches as Batches[];
-
   return {
     props: {
-      coach: {
-        ...coach,
-        createdAt: coach?.createdAt?.toISOString(),
-        updatedAt: coach?.updatedAt?.toISOString(),
-        dateOfBirth: coach?.dateOfBirth
-          ? coach?.dateOfBirth?.toISOString()
-          : "",
-        CoachSportsMaps: coachSportsMaps?.map((sport) => ({
-          ...sport,
-          createdAt: sport?.createdAt ? sport?.createdAt?.toISOString() : "",
-          updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
-        })),
-        Centers: {
-          ...centers,
-          createdAt: centers?.createdAt
-            ? centers?.createdAt?.toISOString()
-            : "",
-          updatedAt: centers?.updatedAt
-            ? centers?.updatedAt?.toISOString()
-            : "",
-        },
-        // Centers: centers?.map((center) => ({
-        //   ...center,
-        //   createdAt: center?.createdAt ? center?.createdAt.toISOString() : "",
-        //   updatedAt: center?.updatedAt ? center?.updatedAt.toISOString() : "",
-        // })),
-
-        // certificates: coach?.certificates.map((cert) => ({
-        //   ...cert,
-        //   startDate: cert.startDate ? dateFormat(cert.startDate) : "",
-        //   endDate: cert.endDate ? dateFormat(cert.endDate) : "",
-        // })),
-        Batches: batches.map((coachBatch) => ({
-          ...coachBatch,
-          createdAt: coachBatch?.createdAt
-            ? coachBatch?.createdAt.toISOString()
-            : "",
-          updatedAt: coachBatch?.updatedAt
-            ? coachBatch?.updatedAt.toISOString()
-            : "",
-          // batch: batches.find((batch) => batch.id == coachBatch.id),
-          // center: centers.find(
-          //   (center) =>
-          //     center.id ==
-          //     batches.find((batch) => batch.id == coachBatch.batchId)?.centerId
-          // ),
-        })),
-      },
-      // sports: sports.map((sport) => ({
-      //   ...sport,
-      //   createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
-      //   updatedAt: sport?.updatedAt ? sport?.updatedAt.toISOString() : "",
-      // })),
-      // batches: batches,
+      coach: JSON.parse(JSON.stringify(coach)), // <== here is a solution
     },
   };
+  // return {
+  //   props: {
+  //     coach: {
+  //       ...coach,
+  //       createdAt: coach?.createdAt?.toISOString(),
+  //       updatedAt: coach?.updatedAt?.toISOString(),
+  //       dateOfBirth: coach?.dateOfBirth
+  //         ? coach?.dateOfBirth?.toISOString()
+  //         : "",
+  //       // CoachSportsMaps: coachSportsMaps?.map((sport) => ({
+  //       //   ...sport,
+  //       //   createdAt: sport?.createdAt ? sport?.createdAt?.toISOString() : "",
+  //       //   updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
+  //       // })),
+  //       Centers: {
+  //         ...centers,
+  //         createdAt: centers?.createdAt
+  //           ? centers?.createdAt?.toISOString()
+  //           : "",
+  //         updatedAt: centers?.updatedAt
+  //           ? centers?.updatedAt?.toISOString()
+  //           : "",
+  //       },
+  //       // Centers: centers?.map((center) => ({
+  //       //   ...center,
+  //       //   createdAt: center?.createdAt ? center?.createdAt.toISOString() : "",
+  //       //   updatedAt: center?.updatedAt ? center?.updatedAt.toISOString() : "",
+  //       // })),
+
+  //       // certificates: coach?.certificates.map((cert) => ({
+  //       //   ...cert,
+  //       //   startDate: cert.startDate ? dateFormat(cert.startDate) : "",
+  //       //   endDate: cert.endDate ? dateFormat(cert.endDate) : "",
+  //       // })),
+  //       Batches: batches.map((coachBatch) => ({
+  //         ...coachBatch,
+  //         createdAt: coachBatch?.createdAt
+  //           ? coachBatch?.createdAt.toISOString()
+  //           : "",
+  //         updatedAt: coachBatch?.updatedAt
+  //           ? coachBatch?.updatedAt.toISOString()
+  //           : "",
+  //         // batch: batches.find((batch) => batch.id == coachBatch.id),
+  //         // center: centers.find(
+  //         //   (center) =>
+  //         //     center.id ==
+  //         //     batches.find((batch) => batch.id == coachBatch.batchId)?.centerId
+  //         // ),
+  //       })),
+  //     },
+  //     // sports: sports.map((sport) => ({
+  //     //   ...sport,
+  //     //   createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
+  //     //   updatedAt: sport?.updatedAt ? sport?.updatedAt.toISOString() : "",
+  //     // })),
+  //     // batches: batches,
+  //   },
+  // };
 };
 
 export default function Page({
@@ -178,7 +182,7 @@ export default function Page({
               <span> ({coach.designation})</span>
             </div>
             <div className="text-orange-400">
-              {coach.CoachSportsMaps.map(
+              {coach?.CoachSportsMaps?.map(
                 ({ sportId }) => sportsDictionary?.[sportId]
               ).join(" ,")}
             </div>
