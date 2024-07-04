@@ -206,57 +206,57 @@ export const coachRouter = createTRPCRouter({
         },
         ctx,
       }) => {
-        // const sportsId = sports.map(({ value }) => value);
-        // eslint-disable-next-line no-console
-        // const response = await ctx.prisma.coaches.update({
-        //   where: {
-        //     id: coachId,
-        //   },
-        //   data: {
-        //     name: name,
-        //     about: about,
-        //     contactNumber: contactNumber,
-        //     email: email,
-        //     designation: designation,
-        //     gender: gender,
-        //     certificates: {
-        //       create: certificates,
-        //     },
-        //     // sports: {
-        //     //   create: sportsId.map((id) => ({
-        //     //     sport: {
-        //     //       connect: {
-        //     //         id: Number(id),
-        //     //       },
-        //     //     },
-        //     //   })),
-        //     // },
-        //     // centers: {
-        //     //   create: centerIds.map((id) => ({
-        //     //     center: {
-        //     //       connect: {
-        //     //         id: Number(id),
-        //     //       },
-        //     //     },
-        //     //   })),
-        //     // },
-        //     // batches: {
-        //     //   create: batchIds.map((id) => ({
-        //     //     batch: {
-        //     //       connect: {
-        //     //         id: Number(id),
-        //     //       },
-        //     //     },
-        //     //   })),
-        //     // },
-        //     dateOfBirth: dateOfBirth,
-        //     trainingLevel: trainingLevel,
-        //     experienceLevel: experienceLevel,
-        //   },
-        // });
+        const sportsId = sports.map(({ value }) => value);
+        //eslint-disable-next-line no-console
+        const response = await ctx.prisma.coaches.update({
+          where: {
+            id: coachId,
+          },
+          data: {
+            name: name,
+            about: about,
+            contactNumber: contactNumber,
+            email: email,
+            designation: designation,
+            gender: gender.toLowerCase(),
+            // certificates: {
+            //   create: certificates,
+            // },
+            // sports: {
+            //   create: sportsId.map((id) => ({
+            //     sport: {
+            //       connect: {
+            //         id: Number(id),
+            //       },
+            //     },
+            //   })),
+            // },
+            // centers: {
+            //   create: centerIds.map((id) => ({
+            //     center: {
+            //       connect: {
+            //         id: Number(id),
+            //       },
+            //     },
+            //   })),
+            // },
+            // batches: {
+            //   create: batchIds.map((id) => ({
+            //     batch: {
+            //       connect: {
+            //         id: Number(id),
+            //       },
+            //     },
+            //   })),
+            // },
+            dateOfBirth: dateOfBirth,
+            trainingLevel: "advanced",
+            experienceLevel: "two_five",
+          },
+        });
 
         
-        // return response;
+        return response;
       }
     ),
 
