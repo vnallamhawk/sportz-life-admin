@@ -27,12 +27,13 @@ import { ToastContext } from "~/contexts/Contexts";
 // import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 // import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
 import router from "next/router";
-import { DATE_TIME_FORMAT } from "~/globals/globals";
+import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
+import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 
-type Coach = Coaches & {
+export type Coach = Coaches & {
   CoachSportsMaps: CoachSportsMaps[];
   Centers: Centers;
-  Batches: Batches;
+  Batches: Batches[];
 };
 
 export const getServerSideProps = async (
@@ -40,7 +41,6 @@ export const getServerSideProps = async (
 ) => {
   const id = context?.params?.id;
   const sports = await prisma.sports.findMany();
-  console.log(sports);
   const coach = await prisma.coaches.findUnique({
     where: {
       id: id ? Number(id) : undefined,
@@ -140,7 +140,6 @@ export default function Page({
   coach: Coach;
   sports: Sports[];
 }) {
-  console.log(sports);
   const sportsDictionary = sports?.reduce(
     (accumulator: Record<number, string>, current) => {
       accumulator[current.id] = current.name;
@@ -158,7 +157,6 @@ export default function Page({
     setDisplayCertificate(!displayCertificate);
   const handleBatchClick = () => setDisplayBatch(!displayBatch);
   const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
-  console.log(sportsDictionary);
   console.log(coach);
 
   return (
@@ -252,7 +250,7 @@ export default function Page({
           >
             <div className="font-bold"> Batches</div>
             <div className="text-4xl font-bold">
-              {/* {coach?.Batches?.length ?? NO_DATA} */}
+              {coach?.Batches?.length ?? NO_DATA}
             </div>
           </div>
           <div
@@ -272,9 +270,9 @@ export default function Page({
           setOpen={setOpenToast}
         ></AddCoachSuccessToast>
       </Card>
-      {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
+      {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} /> */}
       <CoachBatch coach={coach} displayBatch={displayBatch} />
-      <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
+      {/* <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
     </>
   );
 }
