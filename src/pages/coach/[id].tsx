@@ -38,7 +38,8 @@ export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const id = context?.params?.id;
-  // const sports = await prisma.sports.findMany();
+  const sports = await prisma.sports.findMany();
+  console.log(sports);
   const coach = await prisma.coaches.findUnique({
     where: {
       id: id ? Number(id) : undefined,
@@ -83,6 +84,7 @@ export const getServerSideProps = async (
           ...sport,
           createdAt: sport?.createdAt ? sport?.createdAt?.toISOString() : "",
           updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
+          deletedAt: sport?.deletedAt ? sport?.deletedAt?.toISOString() : "",
         })),
         Centers: {
           ...centers,
@@ -120,11 +122,11 @@ export const getServerSideProps = async (
           // ),
         })),
       },
-      // sports: sports.map((sport) => ({
-      //   ...sport,
-      //   createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
-      //   updatedAt: sport?.updatedAt ? sport?.updatedAt.toISOString() : "",
-      // })),
+      sports: sports.map((sport) => ({
+        ...sport,
+        createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
+        updatedAt: sport?.updatedAt ? sport?.updatedAt.toISOString() : "",
+      })),
       // batches: batches,
     },
   };
@@ -137,6 +139,7 @@ export default function Page({
   coach: Coach;
   sports: Sports[];
 }) {
+  console.log(sports);
   const sportsDictionary = sports?.reduce(
     (accumulator: Record<number, string>, current) => {
       accumulator[current.id] = current.name;
@@ -154,6 +157,8 @@ export default function Page({
     setDisplayCertificate(!displayCertificate);
   const handleBatchClick = () => setDisplayBatch(!displayBatch);
   const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
+  console.log(sportsDictionary);
+  console.log(coach);
 
   return (
     <>
