@@ -5,72 +5,52 @@ import CardTitle from "~/components/Card/CardTitle";
 import Image from "next/image";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import type {
-  Batches,
-  Centers,
-  CoachSportsMaps,
-  Coaches,
-} from "@prisma/client";
 import { type Sports } from "@prisma/client";
-import // DATE_TIME_FORMAT,
-// NO_DATA,
-"~/globals/globals";
-// import {
-//   type CoachWithRelations,
-//   ExperienceLevelEnum,
-//   TrainingLevelEnum,
-// } from "~/types/coach";
+import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
+import {
+  type CoachWithRelations,
+  ExperienceLevelEnum,
+  TrainingLevelEnum,
+} from "~/types/coach";
 import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
 import { ToastContext } from "~/contexts/Contexts";
-// import CoachCertificate from "~/components/Coach/Certificate/CoachCertificates";
-// import { dateFormat } from "~/helpers/date";
-// import CoachBatch from "~/components/Coach/Batch/CoachBatch";
-// import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
-import router from "next/router";
-import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
+import CoachCertificate from "~/components/Coach/Certificate/CoachCertificates";
+import { dateFormat } from "~/helpers/date";
 import CoachBatch from "~/components/Coach/Batch/CoachBatch";
-
-export type Coach = Coaches & {
-  CoachSportsMaps: CoachSportsMaps[];
-  Centers: Centers;
-  Batches: Batches[];
-};
+import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
+import router from "next/router";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const id = context?.params?.id;
   const sports = await prisma.sports.findMany();
-  const coach = await prisma.coaches.findUnique({
+  const coach = await prisma.coach.findUnique({
     where: {
       id: id ? Number(id) : undefined,
     },
     include: {
-      CoachSportsMaps: true,
-      Centers: true,
-      Batches: true,
-      // Batches: true,
+      sports: true,
+      certificates: true,
+      batches: true,
+      centers: true,
     },
   });
-  // console.log(coach);
 
-  // const batches = await prisma.batches.findMany({
-  //   where: {
-  //     id: {
-  //       in: coach?.batches.map((batch) => batch.batchId),
-  //     },
-  //   },
-  // });
-  // const centers = await prisma.center.findMany({
-  //   where: {
-  //     id: {
-  //       in: batches.map((batch) => batch.centerId),
-  //     },
-  //   },
-  // });
-  const coachSportsMaps = coach?.CoachSportsMaps as CoachSportsMaps[];
-  const centers = coach?.Centers;
-  const batches = coach?.Batches as Batches[];
+  const batches = await prisma.batches.findMany({
+    where: {
+      id: {
+        in: coach?.batches.map((batch) => batch.batchId),
+      },
+    },
+  });
+  const centers = await prisma.center.findMany({
+    where: {
+      id: {
+        in: batches.map((batch) => batch.centerId),
+      },
+    },
+  });
 
   return {
     props: {
@@ -81,54 +61,41 @@ export const getServerSideProps = async (
         dateOfBirth: coach?.dateOfBirth
           ? coach?.dateOfBirth?.toISOString()
           : "",
-        CoachSportsMaps: coachSportsMaps?.map((sport) => ({
-          ...sport,
-          createdAt: sport?.createdAt ? sport?.createdAt?.toISOString() : "",
-          updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
-          deletedAt: sport?.deletedAt ? sport?.deletedAt?.toISOString() : "",
+        centers: coach?.centers.map((center) => ({
+          ...center,
+          assignedAt: center?.assignedAt
+            ? center?.assignedAt.toISOString()
+            : "",
+          updatedAt: center?.updatedAt ? center?.updatedAt.toISOString() : "",
         })),
-        Centers: {
-          ...centers,
-          createdAt: centers?.createdAt
-            ? centers?.createdAt?.toISOString()
-            : "",
-          updatedAt: centers?.updatedAt
-            ? centers?.updatedAt?.toISOString()
-            : "",
-        },
-        // Centers: centers?.map((center) => ({
-        //   ...center,
-        //   createdAt: center?.createdAt ? center?.createdAt.toISOString() : "",
-        //   updatedAt: center?.updatedAt ? center?.updatedAt.toISOString() : "",
-        // })),
-
-        // certificates: coach?.certificates.map((cert) => ({
-        //   ...cert,
-        //   startDate: cert.startDate ? dateFormat(cert.startDate) : "",
-        //   endDate: cert.endDate ? dateFormat(cert.endDate) : "",
-        // })),
-        Batches: batches.map((coachBatch) => ({
+        sports: coach?.sports.map((sport) => ({
+          ...sport,
+          assignedAt: sport?.assignedAt ? sport?.assignedAt?.toISOString() : "",
+          updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
+        })),
+        certificates: coach?.certificates.map((cert) => ({
+          ...cert,
+          startDate: cert.startDate ? dateFormat(cert.startDate) : "",
+          endDate: cert.endDate ? dateFormat(cert.endDate) : "",
+        })),
+        batches: coach?.batches.map((coachBatch) => ({
           ...coachBatch,
-          createdAt: coachBatch?.createdAt
-            ? coachBatch?.createdAt.toISOString()
+          assignedAt: coachBatch?.assignedAt
+            ? dateFormat(coachBatch?.assignedAt)
             : "",
           updatedAt: coachBatch?.updatedAt
-            ? coachBatch?.updatedAt.toISOString()
+            ? dateFormat(coachBatch?.updatedAt)
             : "",
-          // batch: batches.find((batch) => batch.id == coachBatch.id),
-          // center: centers.find(
-          //   (center) =>
-          //     center.id ==
-          //     batches.find((batch) => batch.id == coachBatch.batchId)?.centerId
-          // ),
+          batch: batches.find((batch) => batch.id == coachBatch.batchId),
+          center: centers.find(
+            (center) =>
+              center.id ==
+              batches.find((batch) => batch.id == coachBatch.batchId)?.centerId
+          ),
         })),
       },
-      sports: sports.map((sport) => ({
-        ...sport,
-        createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
-        updatedAt: sport?.updatedAt ? sport?.updatedAt.toISOString() : "",
-      })),
-      // batches: batches,
+      sports: sports,
+      batches: batches,
     },
   };
 };
@@ -137,7 +104,7 @@ export default function Page({
   coach,
   sports,
 }: {
-  coach: Coach;
+  coach: CoachWithRelations;
   sports: Sports[];
 }) {
   const sportsDictionary = sports?.reduce(
@@ -181,9 +148,9 @@ export default function Page({
               <span> ({coach.designation})</span>
             </div>
             <div className="text-orange-400">
-              {coach.CoachSportsMaps.map(
-                ({ sportId }) => sportsDictionary?.[sportId]
-              ).join(" ,")}
+              {coach.sports
+                .map(({ sportId }) => sportsDictionary[sportId])
+                .join(",")}
             </div>
             <div className="mt-5 flex">
               <div className="about">
@@ -195,22 +162,25 @@ export default function Page({
               <div className="training-level">
                 <div className="text-gray-400"> Training level Expertise </div>
                 <div className="font-bold text-gray-600">
-                  {coach.trainingLevel}
+                  {TrainingLevelEnum[coach.trainingLevel]}
                 </div>
               </div>
               <div className="experience-level">
                 <div className="text-gray-400">
+                  {" "}
                   Years of Coaching Experience{" "}
                 </div>
                 <div className="font-bold text-gray-600">
-                  {coach.experience}
+                  {ExperienceLevelEnum[coach.experienceLevel]}
                 </div>
               </div>
             </div>
             <div className="mt-2 flex justify-between">
               <div>
                 <div className="text-gray-400"> Contact Number </div>
-                <div className="font-bold text-gray-600">{coach.phone}</div>
+                <div className="font-bold text-gray-600">
+                  {coach.contactNumber}
+                </div>
               </div>
               <div>
                 <div className="text-gray-400">Email</div>
@@ -249,7 +219,7 @@ export default function Page({
           >
             <div className="font-bold"> Batches</div>
             <div className="text-4xl font-bold">
-              {coach?.Batches?.length ?? NO_DATA}
+              {coach?.batches?.length ?? NO_DATA}
             </div>
           </div>
           <div
@@ -260,7 +230,7 @@ export default function Page({
           >
             <div className="font-bold"> Certificates</div>
             <div className="text-4xl font-bold">
-              {/* {coach?.certificates?.length ?? NO_DATA} */}
+              {coach?.certificates?.length ?? NO_DATA}
             </div>
           </div>
         </div>
@@ -269,9 +239,9 @@ export default function Page({
           setOpen={setOpenToast}
         ></AddCoachSuccessToast>
       </Card>
-      {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} /> */}
+      <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
       <CoachBatch coach={coach} displayBatch={displayBatch} />
-      {/* <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
+      <CoachAttendance coach={coach} displayAttendance={displayAttendance} />
     </>
   );
 }

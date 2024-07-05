@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useContext, useEffect, useState } from "react";
-import {
-  //  Controller,
-  useForm,
-} from "react-hook-form";
-// import Select from "react-select";
+import { Controller, useForm } from "react-hook-form";
+import Select from "react-select";
 import { type MULTI_FORM_TYPES } from "~/types/coach";
 import Table from "../Table";
 import CenterBatchTableHeader from "../CenterBatchTable/CenterBatchTableHeader";
@@ -12,14 +9,14 @@ import CenterBatchTableBody from "../CenterBatchTable/CenterBatchTableBody";
 import Button from "../Button/Button";
 import CardTitle from "../Card/CardTitle";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
-// import { api } from "~/utils/api";
+import { api } from "~/utils/api";
 import { formatBatchesTableData } from "~/helpers/batches";
 import { type BatchTableData } from "~/types/batch";
 
-// interface ApiData {
-//   name: string;
-//   id: number;
-// }
+interface ApiData {
+  name: string;
+  id: number;
+}
 
 export default function AssignBatches({
   finalFormSubmissionHandler,
@@ -27,7 +24,7 @@ export default function AssignBatches({
   finalFormSubmissionHandler: (data: MULTI_FORM_TYPES) => void;
 }) {
   const {
-    // control,
+    control,
     formState: { errors },
     getValues,
     reset,
@@ -45,44 +42,42 @@ export default function AssignBatches({
     multiFormData: { formData },
   } = useContext(FormContext);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  // const { data: centers } = api.center.getAllCenters.useQuery();
-  // const { data: batches } = api.batches.getAllBatches.useQuery();
+  const { data: centers } = api.center.getAllCenters.useQuery();
+  const { data: batches } = api.batches.getAllBatches.useQuery();
 
-  // const dropDownFormatter = <T extends ApiData>(options: T[]) => {
-  //   return (
-  //     options?.map(({ id, name }) => ({
-  //       label: name,
-  //       value: id,
-  //     })) ?? []
-  //   );
-  // };
+  const dropDownFormatter = <T extends ApiData>(options: T[]) => {
+    return (
+      options?.map(({ id, name }) => ({
+        label: name,
+        value: id,
+      })) ?? []
+    );
+  };
 
-  // const [centersOptions, setCentersOptions] = useState(
-  //   centers?.map(({ id, name }) => ({
-  //     label: name,
-  //     value: id,
-  //   })) ?? []
-  // );
+  const [centersOptions, setCentersOptions] = useState(
+    centers?.map(({ id, name }) => ({
+      label: name,
+      value: id,
+    })) ?? []
+  );
+  const [batchesOptions, setBatchesOptions] = useState(
+    batches?.map(({ id, name }) => ({
+      label: name,
+      value: id,
+    })) ?? []
+  );
 
-  // const [batchesOptions, setBatchesOptions] = useState(
-  //   batches?.map(({ id, name }) => ({
-  //     label: name,
-  //     value: id,
-  //   })) ?? []
-  // );
+  useEffect(() => {
+    if (centers) {
+      setCentersOptions(dropDownFormatter(centers));
+    }
+  }, [centers]);
 
-  // useEffect(() => {
-  //   if (centers) {
-  //     setCentersOptions(dropDownFormatter(centers));
-  //   }
-  // }, [centers]);
-
-  // useEffect(() => {
-  //   if (batches) {
-  //     setBatchesOptions(dropDownFormatter(batches));
-  //   }
-  // }, [batches]);
+  useEffect(() => {
+    if (batches) {
+      setBatchesOptions(dropDownFormatter(batches));
+    }
+  }, [batches]);
 
   useEffect(() => {
     if (formData?.batchTableData?.length) {
@@ -139,7 +134,7 @@ export default function AssignBatches({
       <div className="mb-3 text-lg font-bold">ASSIGN BATCHES</div>
 
       <div className="mb-3 flex justify-between gap-2">
-        {/* <Controller
+        <Controller
           control={control}
           rules={{
             required: true,
@@ -174,12 +169,12 @@ export default function AssignBatches({
             );
           }}
           name="centerName"
-        /> */}
+        />
         <div className="text-red-800">
           {errors.centerName && <span>This field is required</span>}
         </div>
 
-        {/* <Controller
+        <Controller
           control={control}
           render={({ field: { onChange, value } }) => (
             <Select
@@ -200,7 +195,7 @@ export default function AssignBatches({
             required: true,
           }}
           name="batchName"
-        /> */}
+        />
         {errors.batchName && (
           <div className="text-red-800">This field is required</div>
         )}

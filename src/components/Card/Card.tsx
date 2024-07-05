@@ -9,7 +9,7 @@ interface Props {
 
 const Card: React.FC<Props> = ({ children, title, className }) => {
   return (
-    <div className={`p-10 shadow-lg ${className ?? ""}`}>
+    <div className={`p-6 shadow-sm rounded-2xl ${className ?? ""}`}>
       {isNotNullOrUndefinedOrEmptyString(title) && <CardTitle title={title} />}
       {children}
     </div>

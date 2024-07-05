@@ -6,10 +6,12 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer
 } from "recharts";
 
 export default function LineChartComponent({ data }: { data: unknown[] }) {
   return (
+    <ResponsiveContainer width="95%" height={300}>
     <LineChart
       width={1100}
       height={300}
@@ -34,5 +36,6 @@ export default function LineChartComponent({ data }: { data: unknown[] }) {
       />
       <Line type="monotone" dataKey="centerA" stroke="#82ca9d" />
     </LineChart>
+    </ResponsiveContainer>
   );
 }

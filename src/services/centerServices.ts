@@ -1,11 +1,10 @@
-// import { type Center } from "@prisma/client";
+import { type Center } from "@prisma/client";
 
-export const centerDictionaryServices = () => {
-  return undefined
-  // return center?.length
-  //   ? center.reduce((accumulator: Record<Center["id"], Center>, current) => {
-  //       accumulator[current.id] = current;
-  //       return accumulator;
-  //     }, {})
-  //   : undefined;
+export const centerDictionaryServices = (center?: Center[]) => {
+  return center?.length
+    ? center.reduce((accumulator: Record<Center["id"], Center>, current) => {
+        accumulator[current.id] = current;
+        return accumulator;
+      }, {})
+    : undefined;
 };

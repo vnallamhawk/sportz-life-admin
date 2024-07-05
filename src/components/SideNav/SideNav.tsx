@@ -3,31 +3,41 @@ import { SIDE_NAV_ITEMS } from "../../constants/SideNavConstants";
 import { useSession } from "next-auth/react";
 import classNames from "classnames";
 import SiteLogoIcon from "../Icons/SiteLogoIcon";
+import Image from "next/image";
+import LogoWhite from "../../images/logo-white.svg";
+
+
 
 export default function SideNav({ className }: { className: string }) {
   // const { pathname } = useRouter();
   const { data: sessionData } = useSession();
 
-  if (!sessionData) {
-    return null;
-  }
+  // if (!sessionData) {
+  //   return null;
+  // }
 
-  const currentPath = new URL(window.location.href).pathname;
+  // const currentPath = new URL(window.location.href).pathname;
+  const currentPath = "https";
   const currentActiveNav = currentPath.split("/")[1];
 
   return (
+    <>
+  
+    <div className="min-w-[256px] lg:relative lg:z-0 z-10 fixed lg:left-0 -left-[256px] top-0 transition-all ease-in duration-300">
+      <div className="overlay hidden fixed left-0 right-0 top-0 bottom-0 bg-black bg-opacity-30"></div>
     <NavigationMenu.Root
-      className={classNames("bg-gray-950 pl-2 pr-5", {
+      className={classNames("bg-gray-950 pr-5 lg:z-0 z-10 relative -top-[20px] h-full", {
         [`${className}`]: className !== "",
       })}
       orientation="horizontal"
     >
       <div className="mb-7 mt-5 flex items-center justify-center space-x-1">
-        <SiteLogoIcon />
-        <span className="font-heading text-white">SPORTZ TRACK</span>
+        <Image src={LogoWhite} alt="logo"/> 
+        {/* <SiteLogoIcon /> */}
+        {/* <span className="font-heading text-white">SPORTZ TRACK</span> */}
       </div>
 
-      <NavigationMenu.List className="mb-4 ml-1 space-y-4">
+      <NavigationMenu.List className="mb-4 space-y-5">
         {SIDE_NAV_ITEMS.map(({ label, route, icon }) => (
           <NavigationMenu.Item key={label}>
             <NavigationMenu.Link
@@ -36,13 +46,13 @@ export default function SideNav({ className }: { className: string }) {
               href={`${route}`}
             >
               {`/${currentActiveNav as string}` ? (
-                <div className="absolute w-1 rounded-sm bg-side-nav-orange">
+                <div className="absolute w-1 rounded-r-md bg-side-nav-orange">
                   &nbsp;
                 </div>
               ) : (
                 ""
               )}
-              <div className="ml-2 flex space-x-2">
+              <div className="ml-6 flex space-x-2">
                 {icon}
                 <span>{label}</span>
               </div>
@@ -51,5 +61,7 @@ export default function SideNav({ className }: { className: string }) {
         ))}
       </NavigationMenu.List>
     </NavigationMenu.Root>
+    </div>
+    </>
   );
 }

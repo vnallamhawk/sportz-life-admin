@@ -18,14 +18,14 @@ export default function CardList({
   navRoute: string;
 }) {
   return (
-    <Card className={className ?? ""}>
-      <header className="flex justify-between">
-        <div className="mb-3 text-lg font-bold">{title}</div>
-        <Link href={navRoute} className="text-blue-500">
-          VIEW ALL
+    <Card className={`bg-white ${className ?? ""}`}> 
+      <header className="flex justify-between items-center mb-3 ">
+        <div className="text-2xl font-heading font-medium">{title}</div>
+        <Link href={navRoute} className="text-sm text-mandy-light hover:text-mandy-dark font-bold no-underline ">
+          View All
         </Link>
       </header>
-      <div className="flex h-full flex-col overflow-scroll">
+      <div className="flex h-full max-h-[calc(100%-40px)] flex-col overflow-auto scroll">
         {peoples.map(({ name, subtitle, src }, index) => (
           <div className="flex" key={`${name}-${index}`}>
             <Image
@@ -36,7 +36,7 @@ export default function CardList({
               height="15"
             />
             <div className="ml-2">
-              <div className="font-bold"> {name}</div>
+              <div className="font-bold "> {name}</div>
               <div> {subtitle} </div>
             </div>
           </div>

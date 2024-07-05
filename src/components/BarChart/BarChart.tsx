@@ -6,6 +6,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ResponsiveContainer
 } from "recharts";
 
 export default function BarChartComponent({
@@ -16,6 +17,7 @@ export default function BarChartComponent({
   data: unknown[];
 }) {
   return (
+    <ResponsiveContainer width="95%" height={250}>
     <BarChart
       width={width}
       height={300}
@@ -35,5 +37,6 @@ export default function BarChartComponent({
       <CartesianGrid strokeDasharray="3 3" />
       <Bar dataKey="count" fill="#8884d8" background={{ fill: "#eee" }} />
     </BarChart>
+    </ResponsiveContainer>
   );
 }
