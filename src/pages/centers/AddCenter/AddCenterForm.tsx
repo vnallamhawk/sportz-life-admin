@@ -9,16 +9,16 @@ import React, {
 import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { useForm } from "react-hook-form";
-import AddCoach from "../../../components/AddCoach/AddCoach";
-import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
-import AssignBatches from "~/components/AddCoach/AssignBatches";
+import Addcenter from "../../../components/Addcenter/Addcenter";
+import AddcenterCertificates from "~/components/Addcenter/AddcenterCertificates";
+import AssignBatches from "~/components/Addcenter/AssignBatches";
 // import {
 //   type TRAINING_LEVEL,
 //   type GENDER_VALUES,
 //   type MULTI_FORM_TYPES,
 //   type EXPERIENCE_LEVEL,
-//   type CoachWithRelationsEditForm,
-// } from "~/types/coach";
+//   type centerWithRelationsEditForm,
+// } from "~/types/center";
 import { type MULTI_FORM_TYPES } from "~/types/center";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
@@ -35,8 +35,8 @@ const multiFormData: MULTI_FORM_TYPES = {
   email: "",
   location: "",
   selectSports: [],
-  selectCoaches: [],
-  //   coachingSports: [],
+  selectcenteres: [],
+  //   centeringSports: [],
   //   certificates: [],
   batchIds: [],
   //   centerIds: [],
@@ -75,101 +75,39 @@ export default function AddCenterForm() {
   );
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
-  //   const { data: sports } = api.sports.getAllSports.useQuery();
-  //   const { data: coach } = api.coach.getCoachById.useQuery({ id });
+    const { data: sports } = api.sports.getAllSports.useQuery();
+  const { data: center } = api.center.getCenterById.useQuery({ id });
 
   // const sportsDictionary = getSportsDictionaryServices(sports);
   //   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCenterUseEffectRun = useRef(false);
 
-  //   useEffect(() => {
-  //     if (coach && !hasCoachUseEffectRun.current) {
-  //       setFormData({
-  //         ...coach,
-  //         dateOfBirth: coach?.dateOfBirth
-  //           ? coach?.dateOfBirth?.toISOString()
-  //           : "",
-  //         gender: { label: coach.gender, value: coach.gender },
-  //         coachingSports: coach?.sports?.reduce(
-  //           (accumulator: MultiSelectOption[], sport) => {
-  //             const label = sportsDictionary?.[sport.sportId]?.name;
-  //             const value = sportsDictionary?.[sport.sportId]?.id;
-  //             if (label && value) {
-  //               accumulator.push({
-  //                 label: label,
-  //                 value: value,
-  //               });
-  //             }
-  //             return accumulator;
-  //           },
-  //           []
-  //         ),
-  //         trainingLevel: {
-  //           label: coach.trainingLevel,
-  //           value: coach.trainingLevel,
-  //         },
-  //         experienceLevel: {
-  //           label: coach.experienceLevel,
-  //           value: coach.experienceLevel,
-  //         },
-  //         certificates: coach?.certificates?.map((cert) => ({
-  //           ...cert,
-  //           startDate: cert.startDate ? dateFormat(cert.startDate) : "",
-  //           endDate: cert.endDate ? dateFormat(cert.endDate) : "",
-  //         })),
-  //         batchTableData:
-  //           coach?.batches?.reduce(
-  //             (accumulator: BatchTableData[], coachBatch) => {
-  //               const batch = batches?.find(
-  //                 (batch: { id: number }) => batch.id == coachBatch.batchId
-  //               );
-  //               const center = centers?.find(
-  //                 (center) =>
-  //                   center.id ==
-  //                   batches?.find((batch) => batch.id == coachBatch.batchId)
-  //                     ?.centerId
-  //               );
-  //               if (batch && center) {
-  //                 accumulator.push({
-  //                   centerId: center?.id,
-  //                   batchIds: [batch?.id],
-  //                   centerName: center?.name,
-  //                   batchName: batch?.name,
-  //                 });
-  //               }
-  //               return accumulator;
-  //             },
-  //             []
-  //           ) ?? undefined,
-  //         batchIds: [],
-  //         centerIds: [],
-  //         isEditMode: true,
-  //         coachId: coach.id,
-  //       });
-  //       hasCoachUseEffectRun.current = true;
-  //     }
-  //   }, [id, sportsDictionary, batches]);
+  useEffect(() => {
+    if (center && !hasCenterUseEffectRun.current) {
+      setFormData(center);
+      hasCenterUseEffectRun.current = true;
+    }
+  }, [id]);
 
   const formProviderData = {
     ...methods,
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   };
-  console.log("form data is", formProviderData.stepData);
-  //   const { mutate: createMutate } = api.coach.createCoach.useMutation({
-  //     onSuccess: (response) => {
-  //       console.log("response data is ", response);
-  //       setOpenToast(true);
-  //       void router.push(`/coach/${response?.id ?? ""}`);
-  //     },
-  //   });
+  const { mutate: createMutate } = api.center.createCenter.useMutation({
+    onSuccess: (response) => {
+      console.log("response data is ", response);
+      setOpenToast(true);
+      void router.push(`/center/${response?.id ?? ""}`);
+    },
+  });
 
-  //   const { mutate: editMutate } = api.coach.editCoach.useMutation({
-  //     onSuccess: (response) => {
-  //       setOpenToast(true);
-  //       void router.push(`/coach/${response?.id ?? ""}`);
-  //     },
-  //   });
+  const { mutate: editMutate } = api.center.editCenter.useMutation({
+    onSuccess: (response) => {
+      setOpenToast(true);
+      void router.push(`/center/${response?.id ?? ""}`);
+    },
+  });
 
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
     setPreview(
@@ -181,76 +119,25 @@ export default function AddCenterForm() {
     );
   }, []);
 
-  //   const finalFormSubmissionHandler = (
-  //     finalForm: Required<MULTI_FORM_TYPES>
-  //   ) => {
-  //     if (formData.isEditMode) {
-  //       editMutate({
-  //         name: finalForm.name,
-  //         about: finalForm.about,
-  //         contactNumber: finalForm.contactNumber,
-  //         email: finalForm.email,
-  //         designation: finalForm.designation,
-  //         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-  //         certificates: finalForm.certificates.map((certificate) => ({
-  //           ...certificate,
-  //           startDate: new Date(certificate.startDate),
-  //           endDate: new Date(certificate.endDate),
-  //         })),
-  //         dateOfBirth: new Date(finalForm.dateOfBirth),
-  //         sports: finalForm.coachingSports,
-  //         trainingLevel: finalForm.trainingLevel
-  //           .value as (typeof TRAINING_LEVEL)[number],
-  //         experienceLevel: finalForm.experienceLevel
-  //           .value as (typeof EXPERIENCE_LEVEL)[number],
-  //         batchIds: finalForm.batchIds,
-  //         centerIds: finalForm.centerIds,
-  //         coachId: finalForm.coachId,
-  //       });
-  //     } else {
-  //       // eslint-disable-next-line no-console
-  //       console.log(finalForm);
-  //       // eslint-disable-next-line no-console
-  //       console.log(finalForm, "djbsdbfn");
-  //       createMutate({
-  //         name: finalForm.name,
-  //         about: finalForm.about,
-  //         contactNumber: finalForm.contactNumber,
-  //         email: finalForm.email,
-  //         designation: finalForm.designation,
-  //         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-  //         certificates: finalForm.certificates.map((certificate) => ({
-  //           ...certificate,
-  //           startDate: new Date(certificate.startDate),
-  //           endDate: new Date(certificate.endDate),
-  //         })),
-  //         dateOfBirth: new Date(finalForm.dateOfBirth),
-  //         sports: finalForm.coachingSports,
-  //         trainingLevel: finalForm.trainingLevel
-  //           .value as (typeof TRAINING_LEVEL)[number],
-  //         experienceLevel: finalForm.experienceLevel
-  //           .value as (typeof EXPERIENCE_LEVEL)[number],
-  //         batchIds: finalForm.batchIds,
-  //         centerIds: finalForm.centerIds,
-  //       });
-  //     }
-  //   };
-
+  const finalFormSubmissionHandler = (
+    finalForm: Required<MULTI_FORM_TYPES>
+  ) => {
+    if (formData.isEditMode) {
+      editMutate({...finalForm,mobile:finalForm?.phoneNumber,address:finalForm?.location});
+    } else {
+      // eslint-disable-next-line no-console
+      console.log(finalForm);
+      // eslint-disable-next-line no-console
+      console.log(finalForm, "djbsdbfn");
+      createMutate({...finalForm,mobile:finalForm?.phoneNumber,address:finalForm?.location});
+    }
+  };
   return (
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {/* {JSON.stringify(currentStep)} */}
-          {currentStep === 2 && <AddCenter />}
-          {currentStep === 1 && <AddInventory />}
-          {/* {currentStep === 3 && (
-            <AssignBatches
-              // TODO: fix this TS error
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore: Unreachable code error
-              finalFormSubmissionHandler={finalFormSubmissionHandler}
-            />
-          )} */}
+          {currentStep === 1 && <AddCenter />}
+          {currentStep === 2 && <AddInventory />}
           {currentStep === 3 && <AddStaff />}
         </Card>
         <Card className="col-span-2 bg-gray-100">

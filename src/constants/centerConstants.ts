@@ -80,7 +80,7 @@ export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
     ],
     placeHolder: "Select Coaches",
     rules: {
-      required: true,
+      required: false,
     },
   },
 ];

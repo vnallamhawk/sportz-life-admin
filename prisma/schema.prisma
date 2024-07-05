@@ -426,9 +426,29 @@ model Centers {
   CoachOnCentersBatches  CoachOnCentersBatches[]
   Coaches                Coaches[]
   ScheduledCenterBatches ScheduledCenterBatches[]
+  Inventories           Inventories[]
 
   @@index([academyId], map: "academyId")
 }
+
+model Inventories {
+  id                     Int                      @id @unique(map: "id") @default(autoincrement())
+  name                   String                   @db.VarChar(255)
+  quantity               Int
+  address                String                   @db.Text
+  mobile                 String                   @db.VarChar(255)
+  centerId               Int
+  status                 Int?                     @default(1) @db.TinyInt
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @default(now())
+  deletedAt              DateTime?                @db.DateTime(0)
+  Centers              Centers?               @relation(fields: [centerId], references: [id], map: "Inventories_ibfk_1")
+
+  @@index([centerId], map: "centerId")
+}
+
+
+
 
 model CoachSportsMaps {
   id        Int       @id @unique(map: "id") @default(autoincrement())
