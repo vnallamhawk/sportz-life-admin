@@ -30,7 +30,7 @@ const AllCenter = () => {
             />
             <Button
               className="ml-3 bg-pink-700 p-2"
-              onClick={() => router.push("/center/AddCenter")}
+              onClick={() => router.push("/centers/AddCenter")}
             >
               ADD NEW CENTER
             </Button>

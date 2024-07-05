@@ -57,7 +57,7 @@ const AddInventory = () => {
 
           <Button
             className="border-1  ml-3 rounded-lg border-pink-700 p-2 text-pink-700"
-            onClick={() => router.push("/center/AddCenter")}
+            onClick={() => router.push("/centers/AddCenter")}
           >
             Add
           </Button>
