@@ -1,10 +1,11 @@
+import type { Sports } from "@prisma/client";
 import {
-  type Coach,
+  type Coaches,
   type Batches,
-  type Center,
-  type CoachesOnBatches,
-  type Certificates,
-  type CoachesOnSports,
+  // type Centers,
+  // type CoachesOnBatches,
+  // type Certificates,
+  // type CoachesOnSports
 } from "@prisma/client";
 import { type Pattern, type Rules } from "./rules";
 import { type MultiSelectOption } from "./select";
@@ -74,6 +75,15 @@ export interface COACH_TYPES {
   trainingLevel?: MultiSelectOption;
   experienceLevel?: MultiSelectOption;
 }
+export interface CENTER_TYPES {
+  centerName: string;
+  phoneNumber: string;
+  email: string;
+  location: string;
+  // selectSports: MultiSelectOption[];
+  selectCoaches: MultiSelectOption;
+  selectSports: MultiSelectOption;
+}
 
 export interface BatchData {
   centerName: string;
@@ -89,10 +99,10 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   coachId?: number;
 }
 
-export interface batchWithCenter extends CoachesOnBatches {
-  batch: Batches;
-  center: Center;
-}
+// export interface batchWithCenter extends CoachesOnBatches {
+//   batch: Batches;
+//   center: Centers;
+// }
 
 export enum TrainingLevelEnum {
   BEGINNER = "Beginner",
@@ -108,15 +118,15 @@ export enum ExperienceLevelEnum {
   TEN_OVER = "10+ years",
 }
 
-export type CoachWithRelations = Coach & {
-  certificates: Certificates[];
-  sports: CoachesOnSports[];
-  batches: batchWithCenter[];
+export type CoachWithRelations = Coaches & {
+  // certificates: Certificates[];
+  sports: Sports[];
+  Batches: Batches[];
 };
 
-export type CoachWithRelationsEditForm = Coach & {
-  certificates: Certificates[];
-  sports: CoachesOnSports[];
-  batches: CoachesOnBatches[];
+export type CoachWithRelationsEditForm = Coaches & {
+  // certificates: Certificates[];
+  // sports: CoachesOnSports[];
+  // batches: CoachesOnBatches[];
   batchTableData?: BatchTableData[];
 };

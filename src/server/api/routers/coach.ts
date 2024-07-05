@@ -40,19 +40,24 @@ export const coachRouter = createTRPCRouter({
       })
     )
     .query(async (opts) => {
-      const coaches = await opts.ctx?.prisma?.coaches?.findUnique({
-        where: {
-          id: opts.input.id,
-        },
-        include: {
-          // CoachSportsMaps: true,
-          // batches: true,
-          // centers: true,
-          // certificates: true,
-        },
-      });
+      try {
+        console.log("opts are", opts);
+        const coaches = await opts.ctx?.prisma?.coaches?.findUnique({
+          where: {
+            id: opts.input.id,
+          },
+          include: {
+            // CoachSportsMaps: true,
+            // batches: true,
+            // centers: true,
+            // certificates: true,
+          },
+        });
 
-      return coaches;
+        return coaches;
+      } catch (error) {
+        console.log("error are ", error);
+      }
     }),
   getCoachesByName: publicProcedure
     .input(
@@ -68,7 +73,7 @@ export const coachRouter = createTRPCRouter({
           },
         },
         include: {
-          CoachSportsMaps:true,
+          CoachSportsMaps: true,
           Centers: true,
           Batches: true,
           // sports: true,
@@ -116,7 +121,6 @@ export const coachRouter = createTRPCRouter({
         },
         ctx,
       }) => {
- 
         const sportsId = sports.map(({ value }) => value);
         const response = await ctx.prisma.coaches.create({
           data: {
@@ -138,7 +142,7 @@ export const coachRouter = createTRPCRouter({
             //     },
             //   })),
             // },
-            centerId:1,
+            centerId: 1,
             // centers: {
             //   create: centerIds.map((id) => ({
             //     center: {
@@ -157,11 +161,11 @@ export const coachRouter = createTRPCRouter({
             //     },
             //   })),
             // },
-            experience:"",
-            academyId:1,
+            experience: "",
+            academyId: 1,
             dateOfBirth: dateOfBirth,
             trainingLevel: "advanced",
-             experienceLevel: "two_five",
+            experienceLevel: "two_five",
           },
         });
         return response;
@@ -255,7 +259,6 @@ export const coachRouter = createTRPCRouter({
           },
         });
 
-        
         return response;
       }
     ),

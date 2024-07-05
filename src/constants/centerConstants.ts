@@ -1,0 +1,86 @@
+import { type CENTER_DETAILS_CONSTANTS_TYPES } from "~/types/center";
+export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
+  {
+    label: "Center Name",
+    id: "centerName",
+    type: "textbox",
+    rules: {
+      required: true,
+      maxLength: {
+        value: 35,
+        message: "Too Many Characters",
+      },
+    },
+  },
+  {
+    label: "Phone Number",
+    id: "phoneNumber",
+    type: "textbox",
+    rules: {
+      required: true,
+      maxLength: {
+        value: 25,
+        message: "Too Many Characters",
+      },
+    },
+  },
+  {
+    label: "Email Address",
+    id: "email",
+    type: "textbox",
+    rules: {
+      required: true,
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+        message: "Please enter a valid email !",
+      },
+      maxLength: {
+        value: 25,
+        message: "Too Many Characters",
+      },
+    },
+  },
+  {
+    label: "Select Sports",
+    id: "selectSports",
+    type: "select",
+    options: [
+      { label: "Basketball", value: "BASKETBALL" },
+      { label: "Volleyball", value: "VOLLEYBALL" },
+      { label: "Football", value: "FOOTBALL" },
+      { label: "Cricket", value: "CRICKET" },
+    ],
+    placeHolder: "Select Sports",
+    rules: {
+      required: true,
+    },
+  },
+  {
+    label: "Location",
+    id: "location",
+    type: "textbox",
+    rules: {
+      required: true,
+      maxLength: {
+        value: 15,
+        message: "Too Many Characters",
+      },
+    },
+  },
+
+  {
+    label: "Select Coaches",
+    id: "selectCoaches",
+    type: "select",
+    options: [
+      { label: "Coach1", value: "COACH!" },
+      { label: "Coach2", value: "COACH2" },
+      { label: "Coach3", value: "COACH3" },
+      { label: "Coach4", value: "COACH4" },
+    ],
+    placeHolder: "Select Coaches",
+    rules: {
+      required: true,
+    },
+  },
+];

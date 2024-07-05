@@ -50,7 +50,7 @@ export const getServerSideProps = async (
       // Batches: true,
     },
   });
-  // console.log(coach);
+  console.log(coach, "coach details");
 
   // const batches = await prisma.batches.findMany({
   //   where: {
@@ -141,6 +141,7 @@ export default function Page({
   coach: Coach;
   sports: Sports[];
 }) {
+  console.log("coach data", coach);
   const sportsDictionary = sports?.reduce(
     (accumulator: Record<number, string>, current) => {
       accumulator[current.id] = current.name;
