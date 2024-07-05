@@ -1,6 +1,6 @@
-import LoginImage from "../../images/login.svg";
-import Logo from "../../images/logo.svg";
-import LoginMobileImage from "../../images/pngwing.svg";
+import LoginImage from "../images/login.svg";
+import Logo from "../images/logo.svg";
+import LoginMobileImage from "../images/pngwing.svg";
 import Link from 'next/link';
 import Image from "next/image";
 

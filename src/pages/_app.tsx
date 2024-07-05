@@ -4,6 +4,8 @@ import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import Layout from "./Layout";
+import Login from "./Login";
+import { usePathname } from "next/navigation";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -11,11 +13,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
   const AnyComponent = Component as any;
+  const pathname=usePathname()
   return (
     <SessionProvider session={session}>
-      <Layout>
+     {pathname!=="/"? <Layout>
         <AnyComponent {...pageProps} />
-      </Layout>
+      </Layout>:<Login/>}
     </SessionProvider>
   );
 };
