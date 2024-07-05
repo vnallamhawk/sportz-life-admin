@@ -5,10 +5,17 @@ import { api } from "~/utils/api";
 import { differenceInYears } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { NO_DATA } from "~/globals/globals";
+import type { Coaches } from "@prisma/client";
+import type { CoachSportsMaps } from "@prisma/client";
 
 interface coachTableFilter {
   name: string;
 }
+
+type Coach = Coaches & {
+  CoachSportsMaps: CoachSportsMaps[];
+};
 
 export default function CoachTableBody(
   filter: coachTableFilter,
@@ -24,14 +31,18 @@ export default function CoachTableBody(
   const { data: sports, isLoading } = api.sports.getAllSports.useQuery();
 
   if (coaches && sports) {
-    tableData = coaches.map((coach) => ({
-      ...coach,
-      sports: coach?.sports
-        ? coach?.sports
-            ?.map((sport) => sports.find((s) => s.id === sport.sportId)?.name)
-            ?.join(",")
-        : "",
-    }));
+    tableData =
+      coaches &&
+      coaches.map((coach: Coach) => {
+        return {
+          ...coach,
+          sports: coach?.CoachSportsMaps?.length
+            ? coach?.CoachSportsMaps?.map(
+                (sport) => sports.find((s) => s.id === sport.sportId)?.name
+              )?.join(",")
+            : "",
+        };
+      });
   }
 
   useEffect(() => {
@@ -46,7 +57,16 @@ export default function CoachTableBody(
     <>
       {tableData?.map(
         (
-          { name, dateOfBirth, designation, sports, gender, contactNumber, id },
+          {
+            countryCode,
+            name,
+            dateOfBirth,
+            designation,
+            sports,
+            gender,
+            phone,
+            id,
+          },
           index
         ) => (
           <tr
@@ -71,14 +91,14 @@ export default function CoachTableBody(
               {designation}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {sports}
+              {sports ? sports : NO_DATA}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
               {gender}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">{`batch`}</td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {contactNumber}
+              {`${countryCode}${phone as string}`}
             </td>
             <td className="rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left">
               <DropdownMenu.Root>

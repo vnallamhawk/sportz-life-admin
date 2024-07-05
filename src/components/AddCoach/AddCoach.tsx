@@ -67,7 +67,7 @@ export default function AddCoach() {
     // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
-
+  //test commit
   const getInputElement = (props: COACH_DETAILS_CONSTANTS_TYPES) => {
     const { type, rules, id, pattern, placeHolder } = props;
     switch (type) {

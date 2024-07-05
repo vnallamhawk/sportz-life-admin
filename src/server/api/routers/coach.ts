@@ -26,12 +26,10 @@ const coachingSportsSchema = z.array(
 
 export const coachRouter = createTRPCRouter({
   getAllCoaches: publicProcedure.query(({ ctx }) => {
-    const allCoaches = ctx?.prisma?.coach?.findMany({
-      include: {
-        sports: true,
-        batches: true,
-        centers: true,
-      },
+    const allCoaches = ctx?.prisma.coaches?.findMany({
+      // include: {
+      //   CoachSportsMaps: true,
+      // },
     });
     return allCoaches;
   }),
@@ -42,15 +40,15 @@ export const coachRouter = createTRPCRouter({
       })
     )
     .query(async (opts) => {
-      const coaches = await opts.ctx?.prisma?.coach?.findUnique({
+      const coaches = await opts.ctx?.prisma?.coaches?.findUnique({
         where: {
           id: opts.input.id,
         },
         include: {
-          sports: true,
-          batches: true,
-          centers: true,
-          certificates: true,
+          // CoachSportsMaps: true,
+          // batches: true,
+          // centers: true,
+          // certificates: true,
         },
       });
 
@@ -63,16 +61,19 @@ export const coachRouter = createTRPCRouter({
       })
     )
     .query(async (opts) => {
-      const coaches = await opts.ctx?.prisma?.coach?.findMany({
+      const coaches = await opts.ctx?.prisma?.coaches?.findMany({
         where: {
           name: {
             contains: opts.input.name,
           },
         },
         include: {
-          sports: true,
-          batches: true,
-          centers: true,
+          CoachSportsMaps:true,
+          Centers: true,
+          Batches: true,
+          // sports: true,
+          // batches: true,
+          // centers: true,
         },
       });
 
@@ -115,48 +116,52 @@ export const coachRouter = createTRPCRouter({
         },
         ctx,
       }) => {
+ 
         const sportsId = sports.map(({ value }) => value);
-        const response = await ctx.prisma.coach.create({
+        const response = await ctx.prisma.coaches.create({
           data: {
             name: name,
             about: about,
-            contactNumber: contactNumber,
+            // contactNumber: contactNumber,
             email: email,
             designation: designation,
-            gender: gender,
-            certificates: {
-              create: certificates,
-            },
-            sports: {
-              create: sportsId.map((id) => ({
-                sport: {
-                  connect: {
-                    id: Number(id),
-                  },
-                },
-              })),
-            },
-            centers: {
-              create: centerIds.map((id) => ({
-                center: {
-                  connect: {
-                    id: Number(id),
-                  },
-                },
-              })),
-            },
-            batches: {
-              create: batchIds.map((id) => ({
-                batch: {
-                  connect: {
-                    id: Number(id),
-                  },
-                },
-              })),
-            },
+            gender: gender.toLowerCase(),
+            // certificates: {
+            //   create: certificates,
+            // },
+            // sports: {
+            //   create: sportsId.map((id) => ({
+            //     sport: {
+            //       connect: {
+            //         id: Number(id),
+            //       },
+            //     },
+            //   })),
+            // },
+            centerId:1,
+            // centers: {
+            //   create: centerIds.map((id) => ({
+            //     center: {
+            //       connect: {
+            //         id: Number(id),
+            //       },
+            //     },
+            //   })),
+            // },
+            // batches: {
+            //   create: batchIds.map((id) => ({
+            //     batch: {
+            //       connect: {
+            //         id: Number(id),
+            //       },
+            //     },
+            //   })),
+            // },
+            experience:"",
+            academyId:1,
             dateOfBirth: dateOfBirth,
-            trainingLevel: trainingLevel,
-            experienceLevel: experienceLevel,
+            trainingLevel: "advanced",
+             experienceLevel: "two_five",
           },
         });
         return response;
@@ -201,8 +206,9 @@ export const coachRouter = createTRPCRouter({
         },
         ctx,
       }) => {
-        // const sportsId = sports.map(({ value }) => value);
-        const response = await ctx.prisma.coach.update({
+        const sportsId = sports.map(({ value }) => value);
+        //eslint-disable-next-line no-console
+        const response = await ctx.prisma.coaches.update({
           where: {
             id: coachId,
           },
@@ -212,10 +218,10 @@ export const coachRouter = createTRPCRouter({
             contactNumber: contactNumber,
             email: email,
             designation: designation,
-            gender: gender,
-            certificates: {
-              create: certificates,
-            },
+            gender: gender.toLowerCase(),
+            // certificates: {
+            //   create: certificates,
+            // },
             // sports: {
             //   create: sportsId.map((id) => ({
             //     sport: {
@@ -244,10 +250,12 @@ export const coachRouter = createTRPCRouter({
             //   })),
             // },
             dateOfBirth: dateOfBirth,
-            trainingLevel: trainingLevel,
-            experienceLevel: experienceLevel,
+            trainingLevel: "advanced",
+            experienceLevel: "two_five",
           },
         });
+
+        
         return response;
       }
     ),
