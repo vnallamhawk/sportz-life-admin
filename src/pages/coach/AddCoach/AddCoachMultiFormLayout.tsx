@@ -67,7 +67,6 @@ export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 export default function AddCoachMultiFormLayout() {
   const router = useRouter();
   const id = Number(router?.query?.id);
- 
 
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -77,50 +76,51 @@ export default function AddCoachMultiFormLayout() {
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
   const { data: sports } = api.sports.getAllSports.useQuery();
-  const { data: coach } = api.coach.getCoachById.useQuery({id});
+  const { data: coach } = api.coach.getCoachById.useQuery({ id });
 
   const sportsDictionary = getSportsDictionaryServices(sports);
   // const { data: centers } = api.center.getAllCenters.useQuery();
   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCoachUseEffectRun = useRef(false);
 
-  useEffect(()=>{
-      if (coach && !hasCoachUseEffectRun.current) {
-        setFormData({
-          ...coach,
-          dateOfBirth: coach?.dateOfBirth
-            ? coach?.dateOfBirth?.toISOString()
-            : "",
-          gender: { label: coach.gender, value: coach.gender },
-          coachingSports: coach?.sports?.reduce(
-            (accumulator: MultiSelectOption[], sport) => {
-              const label = sportsDictionary?.[sport.sportId]?.name;
-              const value = sportsDictionary?.[sport.sportId]?.id;
-              if (label && value) {
-                accumulator.push({
-                  label: label,
-                  value: value,
-                });
-              }
-              return accumulator;
-            },
-            []
-          ),
-          trainingLevel: {
-            label: coach.trainingLevel,
-            value: coach.trainingLevel,
+  useEffect(() => {
+    if (coach && !hasCoachUseEffectRun.current) {
+      setFormData({
+        ...coach,
+        dateOfBirth: coach?.dateOfBirth
+          ? coach?.dateOfBirth?.toISOString()
+          : "",
+        gender: { label: coach.gender, value: coach.gender },
+        coachingSports: coach?.sports?.reduce(
+          (accumulator: MultiSelectOption[], sport) => {
+            const label = sportsDictionary?.[sport.sportId]?.name;
+            const value = sportsDictionary?.[sport.sportId]?.id;
+            if (label && value) {
+              accumulator.push({
+                label: label,
+                value: value,
+              });
+            }
+            return accumulator;
           },
-          experienceLevel: {
-            label: coach.experienceLevel,
-            value: coach.experienceLevel,
-          },
-          certificates: coach?.certificates?.map((cert) => ({
-            ...cert,
-            startDate: cert.startDate ? dateFormat(cert.startDate) : "",
-            endDate: cert.endDate ? dateFormat(cert.endDate) : "",
-          })),
-          batchTableData:
-            coach?.batches?.reduce((accumulator: BatchTableData[], coachBatch) => {
+          []
+        ),
+        trainingLevel: {
+          label: coach.trainingLevel,
+          value: coach.trainingLevel,
+        },
+        experienceLevel: {
+          label: coach.experienceLevel,
+          value: coach.experienceLevel,
+        },
+        certificates: coach?.certificates?.map((cert) => ({
+          ...cert,
+          startDate: cert.startDate ? dateFormat(cert.startDate) : "",
+          endDate: cert.endDate ? dateFormat(cert.endDate) : "",
+        })),
+        batchTableData:
+          coach?.batches?.reduce(
+            (accumulator: BatchTableData[], coachBatch) => {
               const batch = batches?.find(
                 (batch: { id: number }) => batch.id == coachBatch.batchId
               );
@@ -139,17 +139,17 @@ export default function AddCoachMultiFormLayout() {
                 });
               }
               return accumulator;
-            }, []) ?? undefined,
-          batchIds: [],
-          centerIds: [],
-          isEditMode: true,
-          coachId: coach.id,
-        });
-        hasCoachUseEffectRun.current = true;
-      }
-  },[id,sportsDictionary,batches])
-
-
+            },
+            []
+          ) ?? undefined,
+        batchIds: [],
+        centerIds: [],
+        isEditMode: true,
+        coachId: coach.id,
+      });
+      hasCoachUseEffectRun.current = true;
+    }
+  }, [id, sportsDictionary, batches]);
 
   const formProviderData = {
     ...methods,
@@ -158,6 +158,7 @@ export default function AddCoachMultiFormLayout() {
   };
   const { mutate: createMutate } = api.coach.createCoach.useMutation({
     onSuccess: (response) => {
+      console.log("response data is ", response);
       setOpenToast(true);
       void router.push(`/coach/${response?.id ?? ""}`);
     },
@@ -210,7 +211,7 @@ export default function AddCoachMultiFormLayout() {
       // eslint-disable-next-line no-console
       console.log(finalForm);
       // eslint-disable-next-line no-console
-      console.log(finalForm,"djbsdbfn");
+      console.log(finalForm, "djbsdbfn");
       createMutate({
         name: finalForm.name,
         about: finalForm.about,

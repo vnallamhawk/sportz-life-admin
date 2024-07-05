@@ -1,5 +1,4 @@
-import type {
-  Sports} from "@prisma/client";
+import type { Sports } from "@prisma/client";
 import {
   type Coaches,
   type Batches,
@@ -75,6 +74,15 @@ export interface COACH_TYPES {
   coachingSports: MultiSelectOption[];
   trainingLevel?: MultiSelectOption;
   experienceLevel?: MultiSelectOption;
+}
+export interface CENTER_TYPES {
+  centerName: string;
+  phoneNumber: string;
+  email: string;
+  location: string;
+  // selectSports: MultiSelectOption[];
+  selectCoaches: MultiSelectOption;
+  selectSports: MultiSelectOption;
 }
 
 export interface BatchData {
