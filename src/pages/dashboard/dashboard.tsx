@@ -55,24 +55,36 @@ export default function dashboard() {
           >
             <div className="flex items-center"> Gender Ratio Content to be added</div>
           </Card> */}
-          <div className="p-6 mt-5 relative shadow-sm rounded-2xl lg:col-start-1 lg:col-end-7 lg:row-start-2 lg:row-end-3 col-start-1 col-end-7  row-start-3 row-end-4 text-white bg-gray-950">
+          <div className="lg:p-6 py-4 lg:hidden block relative lg:col-start-1 lg:col-end-7 lg:row-start-2 lg:row-end-3 col-start-1 col-end-7  row-start-3 row-end-4 ">
+          <div className="flex items-center justify-between">
+          <div className="text-2xl font-medium font-heading lg:hidden block">GENDER RATIO</div>
+          <button
+                  className="border-1 mx-3 bg-pink-600 hover:bg-pink-800 p-4 rounded-full"
+                  type="button"
+                >
+                  <Image src={ArrowRight} className="" alt="" />
+                </button>
+          </div>
+
+          </div>
+          <div className="lg:mt-0 mt-20 lg:mt-8 lg:p-6 px-2 py-4  mt-5 relative shadow-sm rounded-2xl lg:col-start-1 lg:col-end-7 lg:row-start-2 lg:row-end-3 col-start-1 col-end-7  row-start-3 row-end-4 text-white bg-gray-950">
             <div className="flex items-center ">
-              <div className="text-2xl font-medium font-heading">GENDER RATIO</div>
-              <div className="flex relative grow ml-10">
-                <Image src={LittleBoy} className="absolute -bottom-[24px] left-0 " alt="" />
-                <div className="pl-36">
-                  <div className="text-3xl font-normal font-heading text-white" >70%</div>
-                  <div className="text-base text-blush">125 - Male</div>
+              <div className="text-2xl font-medium font-heading lg:block hidden">GENDER RATIO</div>
+              <div className="flex relative grow lg:ml-10 ml-0">
+                <Image src={LittleBoy} className="absolute -bottom-[16px] lg:-bottom-[24px] left-0 lg:w-auto lg:max-w-none max-w-[85px]" alt="" />
+                <div className="lg:pl-36 pl-24 lg:text-left text-center">
+                  <div className="text-lg lg:text-3xl font-normal font-heading text-white" >70%</div>
+                  <div className="text-xs lg:text-base text-blush">125 - Male</div>
                 </div>
               </div>
-              <div className="flex relative grow ml-2">
-                <Image src={ShortGirl} className="absolute -bottom-[24px] left-0 " alt="" />
-                <div className="pl-36">
-                  <div className="text-3xl font-normal font-heading text-white" >30%</div>
-                  <div className="text-base text-blush">97-Female</div>
+              <div className="flex relative grow lg:ml-2">
+                <Image src={ShortGirl} className="absolute -bottom-[16px] lg:-bottom-[24px] left-0 transform lg:scale-x-[1] scale-x-[-1] lg:w-auto lg:max-w-none max-w-[85px]" alt="" />
+                <div className="lg:pl-36 pl-24 lg:text-left text-center">
+                  <div className="text-lg lg:text-3xl font-normal font-heading text-white" >30%</div>
+                  <div className="text-xs lg:text-base text-pink-600">97-Female</div>
                 </div>
               </div>
-              <div className="">
+              <div className="lg:block hidden">
                 <button
                   className="border-1 mx-3 bg-pink-600 hover:bg-pink-800 p-4 rounded-full"
                   type="button"

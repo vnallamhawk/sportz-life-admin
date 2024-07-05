@@ -23,6 +23,9 @@ export default {
         "blush" : "#FFBEAB",
       
       },
+      maxWidth: {
+        "70" : "70px"
+      },
       maxHeight: {
         '98vh': '98vh',
       },
@@ -34,7 +37,8 @@ export default {
         "256" : "-256px"
       },
       bottom: {
-        "24" : "-24px"
+        "24" : "-24px",
+        "16px" : "-16px"
       },
     
     },
