@@ -25,19 +25,19 @@ export default function CardList({
           View All
         </Link>
       </header>
-      <div className="flex h-full max-h-[calc(100%-40px)] flex-col overflow-auto scroll">
+      <div className="flex items-start h-full max-h-[calc(100%-40px)] gap-4 flex-col overflow-auto scroll">
         {peoples.map(({ name, subtitle, src }, index) => (
-          <div className="flex" key={`${name}-${index}`}>
+          <div className="flex items-center" key={`${name}-${index}`}>
             <Image
-              className="h-6 rounded-full"
+              className="rounded-full w-[40px] h-[40px]"
               src={src}
               alt=""
-              width="20"
-              height="15"
+              width="30"
+              height="30"
             />
             <div className="ml-2">
-              <div className="font-bold "> {name}</div>
-              <div> {subtitle} </div>
+              <div className="font-bold text-base"> {name}</div>
+              <div className="text-sm text-gray-500"> {subtitle} </div>
             </div>
           </div>
         ))}

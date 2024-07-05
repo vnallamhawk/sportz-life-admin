@@ -5,6 +5,9 @@
 @import "@radix-ui/colors/violet.css";
 @import "react-datepicker/dist/react-datepicker.css";
 @import "react-tabs/style/react-tabs.css";
+@import 'react-calendar/dist/Calendar.css';
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
 
 @tailwind base;
 @tailwind components;
@@ -55,6 +58,7 @@ a {
 button[role="combobox"] {
   width: 100%;
 }
+
 
 /*******************************************************************************************************/
 /*                              Coach attendance calendar view                                         */
@@ -118,4 +122,8 @@ button[role="combobox"] {
   margin-top: -30px;
   position: relative;
   z-index: 2;
+}
+
+.react-calendar{
+  border: 0!important;
 }

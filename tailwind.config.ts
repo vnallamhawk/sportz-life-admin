@@ -40,6 +40,15 @@ export default {
         "24" : "-24px",
         "16px" : "-16px"
       },
+      height: {
+        "40px" : "40px",
+        "185px" : "185px"
+      },
+      width: {
+        "40px" : "40px",
+        "95px" : "95px",
+        "223px" : "223px"
+      }
     
     },
     
