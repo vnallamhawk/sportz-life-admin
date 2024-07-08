@@ -1,7 +1,10 @@
 import { type Config } from "tailwindcss";
 
 export default {
-  content: ["./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/flowbite-react/lib/**/*.js"
+  ],
   theme: {
     extend: {
       colors: {
@@ -31,7 +34,8 @@ export default {
       },
       minWidth: {
         '370': '370px',
-        '256' : '256px'
+        '256' : '256px',
+        '450' : '450px'
       },
       left: {
         "256" : "-256px"
@@ -72,5 +76,7 @@ export default {
       // => @media (min-width: 1536px) { ... }
     }
   },
-  plugins: [],
+  plugins: [
+    require("flowbite/plugin")
+  ],
 } satisfies Config;
