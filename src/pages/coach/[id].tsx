@@ -50,23 +50,7 @@ export const getServerSideProps = async (
       // Batches: true,
     },
   });
-  console.log(coach, "coach details");
-
-  // const batches = await prisma.batches.findMany({
-  //   where: {
-  //     id: {
-  //       in: coach?.batches.map((batch) => batch.batchId),
-  //     },
-  //   },
-  // });
-  // const centers = await prisma.center.findMany({
-  //   where: {
-  //     id: {
-  //       in: batches.map((batch) => batch.centerId),
-  //     },
-  //   },
-  // });
-  // const coachSportsMaps = coach?.CoachSportsMaps as CoachSportsMaps[];
+  
   const centers = coach?.Centers;
   const batches = coach?.Batches as Batches[];
   return {

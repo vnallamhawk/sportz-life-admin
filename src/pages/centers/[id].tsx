@@ -88,44 +88,46 @@ export default function Page({ center }: { center: Centers }) {
     setLoading(isLoading);
   };
   const [selectedTab, setSelectedTab] = useState(tabs[1]);
+const [selectedHeader,setSelectedHeader]=useState(CenterDashBatchTableHeader())
+const [selectedBody,setSelectedBody]=useState( CenterDashBatchTableBody(
+  { name: filterByName },
+  handleIsLoading
+))
 
-  let selectedHeader=  CenterDashBatchTableHeader()
-
-  let selectedBody=  CenterDashBatchTableBody(
-    { name: filterByName },
-    handleIsLoading
-  )
+ 
 
   const handleClick = (tab:string) => {
-    debugger
+    let header,body
     setSelectedTab(tab)
     if(tab?.name==="coaches"){
-      selectedHeader=CenterDashCoachTableHeader()
-      selectedBody=CenterDashCoachTableBody(
+      header=CenterDashCoachTableHeader()
+      body=CenterDashCoachTableBody(
         { name: filterByName },
         handleIsLoading
       )
     } else if(tab?.name==="batches"){
-      selectedHeader=  CenterDashBatchTableHeader()
+      header=  CenterDashBatchTableHeader()
 
-       selectedBody=  CenterDashBatchTableBody(
+       body=  CenterDashBatchTableBody(
         { name: filterByName },
         handleIsLoading
       )
     }
     else if(tab?.name==="athletes"){
-      selectedHeader=  CenterDashAthleteTableHeader()
-      selectedBody=CenterDashAthleteTableBody(
+      header=  CenterDashAthleteTableHeader()
+      body=CenterDashAthleteTableBody(
         { name: filterByName },
         handleIsLoading
       )
     }else{
-      selectedHeader=  CenterDashInventoryTableHeader()
-      selectedBody=CenterDashInventoryTableBody(
+      header=  CenterDashInventoryTableHeader()
+      body=CenterDashInventoryTableBody(
         { name: filterByName },
         handleIsLoading
       )
     }
+    setSelectedHeader(header)
+    setSelectedBody(body)
   };
 
 
@@ -136,7 +138,7 @@ console.log(selectedTab,"sdghdsgfhh")
         <header className="flex justify-between">
           <CardTitle title="CENTER DETAILS" />
           <Button
-            onClick={() => void router.push(`/edit-center-${center?.id}`)}
+            onClick={() => router.push(`/edit-center-${center?.id}`)}
           >
             Edit Center
           </Button>
@@ -157,8 +159,8 @@ console.log(selectedTab,"sdghdsgfhh")
               {/* {coach?.CoachSportsMaps?.map(
                 ({ sportId }) => sportsDictionary?.[sportId]
               ).join(" ,")} */}
-              {center?.CenterSports.map((ele) => (
-                <div className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm">
+              {center?.CenterSports.map((ele,index) => (
+                <div className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm" key={index}>
                   <p className="text-pink-500">{ele?.Sports?.name}</p>
                 </div>
               ))}
@@ -187,7 +189,6 @@ console.log(selectedTab,"sdghdsgfhh")
               <div
               className="flex gap-3 rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px] hover:border-pink-500"
               onClick={()=>{
-                debugger
                 handleClick(tab)
               }}
               key={index}
@@ -230,7 +231,7 @@ console.log(selectedTab,"sdghdsgfhh")
             <Search pos="right" />
 
             {/* filter ka div */}
-            <Filter />
+            {/* <Filter /> */}
 
             {/* Button */}
             {selectedTab?.name==="batches" && (
@@ -244,8 +245,6 @@ console.log(selectedTab,"sdghdsgfhh")
           </div>
         </header>
 
-        {/* Coach Table */}
-       
           <Table
             tableHeader={selectedHeader}
             tableBody={selectedBody}
