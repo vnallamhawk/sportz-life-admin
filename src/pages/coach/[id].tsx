@@ -141,7 +141,6 @@ export default function Page({
   coach: Coach;
   sports: Sports[];
 }) {
-  console.log("coach data", coach);
   const sportsDictionary = sports?.reduce(
     (accumulator: Record<number, string>, current) => {
       accumulator[current.id] = current.name;
@@ -165,7 +164,7 @@ export default function Page({
       <Card className="h-100 mx-5">
         <header className="flex justify-between">
           <CardTitle title="COACH DETAILS" />
-          <Button onClick={() => void router.push(`/edit-coach-${coach.id}`)}>
+          <Button onClick={() =>  router.push(`/edit-coach-${coach.id}`)}>
             Edit Coach
           </Button>
         </header>

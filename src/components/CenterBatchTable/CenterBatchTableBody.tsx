@@ -39,14 +39,10 @@ export default function CenterBatchTableBody(
     })):[];
   }
 
-  const onClickHandler = (id: number) => {
-    void router.push(`/centers/${id ?? ""}`);
-  };
-
   return (
     <>
       {tableData && tableData.length>0 && tableData?.map(
-        ({ name, address, batches, mobile }, index) => (
+        ({ name, address, batches, mobile ,id}, index) => (
           <tr
             key={`${name}-${index}`}
             className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
@@ -75,8 +71,8 @@ export default function CenterBatchTableBody(
                   <Tooltip.Portal>
                     <Tooltip.Content className="TooltipContent" sideOffset={5}>
                       <div className="flex justify-evenly gap-3 rounded-lg bg-black p-2 text-[12px] text-white">
-                        <p>Edit</p>
-                        <p onClick={()=>onClickHandler(id)} >View</p>
+                        <p onClick={()=>router.push(`/edit-center-${id}`)}>Edit</p>
+                        <p onClick={()=>router.push(`/centers/${id ?? ""}`)} >View</p>
                         <p>Delete</p>
                       </div>
                       <Tooltip.Arrow className="TooltipArrow" />
