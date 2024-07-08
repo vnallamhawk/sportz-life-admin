@@ -17,20 +17,20 @@ export default function CoachTableBody(
   let tableData;
   const router = useRouter();
 
-  const { data: coaches } =
+  const { data: centers } =
     filter.name == ""
-      ? api.coach.getAllCoaches.useQuery()
-      : api.coach.getCoachesByName.useQuery(filter);
+      ? api.center.getAllCenters.useQuery()
+      : api.center.getCentersByName.useQuery(filter);
   const { data: sports, isLoading } = api.sports.getAllSports.useQuery();
 
-  if (coaches && sports) {
-    tableData = coaches.map((coach) => ({
-      ...coach,
-      sports: coach?.sports
-        ? coach?.sports
-            ?.map((sport) => sports.find((s) => s.id === sport.sportId)?.name)
-            ?.join(",")
-        : "",
+  if (centers && sports) {
+    tableData = centers.map((center) => ({
+      ...center,
+      // sports: coach?.sports
+      //   ? coach?.sports
+      //       ?.map((sport) => sports.find((s) => s.id === sport.sportId)?.name)
+      //       ?.join(",")
+      //   : "",
     }));
   }
 
@@ -39,14 +39,14 @@ export default function CoachTableBody(
   }, [handleIsLoading, isLoading]);
 
   const onClickHandler = (id: number) => {
-    void router.push(`/coach/${id ?? ""}`);
+    void router.push(`/centers/${id ?? ""}`);
   };
 
   return (
     <>
       {tableData?.map(
         (
-          { name, dateOfBirth, designation, sports, gender, contactNumber, id },
+          { name, location, email, phoneNumber, id },
           index
         ) => (
           <tr
@@ -64,21 +64,21 @@ export default function CoachTableBody(
             <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
               {name}
             </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
+            {/* <td className="border-y-2 border-solid px-6 py-3 text-left">
               {differenceInYears(new Date(), new Date(dateOfBirth))}
-            </td>
+            </td> */}
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {designation}
+              {location}
             </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
+            {/* <td className="border-y-2 border-solid px-6 py-3 text-left">
               {sports}
-            </td>
+            </td> */}
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {gender}
+              {email}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">{`batch`}</td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {contactNumber}
+              {phoneNumber}
             </td>
             <td className="rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left">
               <DropdownMenu.Root>

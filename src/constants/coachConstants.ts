@@ -226,12 +226,20 @@ export const COACH_CERTIFICATE_TABLE_HEADERS = [
 
 export const CENTER_BATCH_TABLE_HEADERS = [
   {
-    label: "Center",
+    label: "Center Name",
     id: "center",
   },
   {
-    label: "Batch",
+    label: "Location",
+    id: "location",
+  },
+  {
+    label: "Batches",
     id: "batch",
+  },
+  {
+    label: "Contact Number",
+    id: "mobile",
   },
   {
     label: "Action",

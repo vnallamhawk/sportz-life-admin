@@ -76,7 +76,10 @@ export default function AddCoachMultiFormLayout() {
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
   const { data: sports } = api.sports.getAllSports.useQuery();
-  const { data: coach } = api.coach.getCoachById.useQuery({ id });
+  if(id){
+    const { data: coach } = api.coach.getCoachById.useQuery({ id });
+
+  }
 
   const sportsDictionary = getSportsDictionaryServices(sports);
   // const { data: centers } = api.center.getAllCenters.useQuery();

@@ -76,17 +76,21 @@ export default function AddCenterForm() {
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
     const { data: sports } = api.sports.getAllSports.useQuery();
-  const { data: center } = api.center.getCenterById.useQuery({ id });
+ 
 
   // const sportsDictionary = getSportsDictionaryServices(sports);
   //   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCenterUseEffectRun = useRef(false);
 
   useEffect(() => {
-    if (center && !hasCenterUseEffectRun.current) {
-      setFormData(center);
-      hasCenterUseEffectRun.current = true;
+    if(id){
+      const { data: center } = api.center.getCenterById.useQuery({ id });
+      if (center && !hasCenterUseEffectRun.current) {
+        setFormData(center);
+        hasCenterUseEffectRun.current = true;
+      }
     }
+    
   }, [id]);
 
   const formProviderData = {

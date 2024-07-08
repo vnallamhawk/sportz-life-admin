@@ -38,7 +38,7 @@ const AllCenter = () => {
         </header>
         <Table
           tableHeader={CenterBatchTableHeader()}
-          tableBody={CenterBatchTableBody([], handleIsLoading)}
+          tableBody={CenterBatchTableBody({ name: filterByName }, handleIsLoading)}
         />
         {loading ? <LoadingSpinner /> : ""}
       </Card>

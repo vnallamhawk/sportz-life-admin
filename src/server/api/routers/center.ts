@@ -59,7 +59,7 @@ export const centerRouter = createTRPCRouter({
         console.log("error are ", error);
       }
     }),
-  getcentersByName: publicProcedure
+  getCentersByName: publicProcedure
     .input(
       z.object({
         name: z.string(),
@@ -73,8 +73,8 @@ export const centerRouter = createTRPCRouter({
           },
         },
         include: {
-          Centers: true,
-          Batches: true,
+          // Centers: true,
+          // Batches: true,
           // sports: true,
           // batches: true,
           // centers: true,
@@ -169,12 +169,9 @@ export const centerRouter = createTRPCRouter({
         contactNumber: z.string(),
         email: z.string(),
         designation: z.string(),
-        gender: z.enum(GENDER_VALUES),
-        certificates: certificatesSchema,
+       
         dateOfBirth: z.date(),
-        sports: coachingSportsSchema,
-        trainingLevel: z.enum(TRAINING_LEVEL),
-        experienceLevel: z.enum(EXPERIENCE_LEVEL),
+    
         batchIds: z.array(z.number()),
         centerIds: z.array(z.number()),
         coachId: z.number(),
