@@ -73,6 +73,7 @@ export default function AddCenterForm() {
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
+
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
     const { data: sports } = api.sports.getAllSports.useQuery();
@@ -102,10 +103,15 @@ export default function AddCenterForm() {
     onSuccess: (response) => {
       console.log("response data is ", response);
       setOpenToast(true);
-      void router.push(`/center/${response?.id ?? ""}`);
+      return response?.id
     },
   });
-
+  const { mutate: createMutateInventories } = api.center.createInventory.useMutation({
+    onSuccess: (response) => {
+      console.log("response data is ", response);
+      setInventories(response);
+    },
+  });
   const { mutate: editMutate } = api.center.editCenter.useMutation({
     onSuccess: (response) => {
       setOpenToast(true);
@@ -133,7 +139,12 @@ export default function AddCenterForm() {
       console.log(finalForm);
       // eslint-disable-next-line no-console
       console.log(finalForm, "djbsdbfn");
-      createMutate({...finalForm,mobile:finalForm?.phoneNumber,address:finalForm?.location});
+     const centerId= createMutate({...finalForm,mobile:finalForm?.phoneNumber,address:finalForm?.location});
+     const finalInventories=finalForm?.inventories.map(v => ({...v, centerId}))
+      createMutateInventories(finalForm?.inventories)
+      void router.push(`/center/${centerId?? ""}`);
+
+
     }
   };
   return (
@@ -141,8 +152,7 @@ export default function AddCenterForm() {
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
           {currentStep === 1 && <AddCenter />}
-          {currentStep === 2 && <AddInventory />}
-          {currentStep === 3 && <AddStaff />}
+          {currentStep === 2 && <AddInventory finalFormSubmissionHandler={finalFormSubmissionHandler}/>}
         </Card>
         <Card className="col-span-2 bg-gray-100">
           <div className="mb-10 font-bold">Center Image</div>

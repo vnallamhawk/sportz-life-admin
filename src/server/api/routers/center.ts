@@ -87,75 +87,29 @@ export const centerRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
+        email:z.string(),
         image: z.string(),
         mobile: z.string(),
-        address: z.string(),
+        location: z.string(),
       })
     )
     .mutation(
       async ({
         input: {
           name,
-          about,
-          contactNumber,
+          mobile,
+          image,
           email,
-          designation,
-          gender,
-          certificates,
-          dateOfBirth,
-          sports,
-          trainingLevel,
-          experienceLevel,
-          batchIds,
-          centerIds,
+          location
         },
         ctx,
       }) => {
-        const sportsId = sports.map(({ value }) => value);
         const response = await ctx.prisma.centers.create({
           data: {
             name: name,
-            about: about,
-            // contactNumber: contactNumber,
             email: email,
-            designation: designation,
-            gender: gender.toLowerCase(),
-            // certificates: {
-            //   create: certificates,
-            // },
-            // sports: {
-            //   create: sportsId.map((id) => ({
-            //     sport: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            centerId: 1,
-            // centers: {
-            //   create: centerIds.map((id) => ({
-            //     center: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            // batches: {
-            //   create: batchIds.map((id) => ({
-            //     batch: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            experience: "",
-            academyId: 1,
-            dateOfBirth: dateOfBirth,
-            trainingLevel: "advanced",
-            experienceLevel: "two_five",
+            mobile: mobile,
+            location: location
           },
         });
         return response;

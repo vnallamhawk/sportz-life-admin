@@ -7,7 +7,7 @@ import {
   type COACH_DETAILS_CONSTANTS_TYPES,
   CENTER_TYPES,
 } from "~/types/coach";
-import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
+import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
 import Button from "../Button";
 import { Controller, useForm } from "react-hook-form";
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";

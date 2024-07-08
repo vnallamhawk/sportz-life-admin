@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Card from "../Card";
 import CardTitle from "../Card/CardTitle";
 import Textbox from "../Textbox";
@@ -10,6 +10,8 @@ import Select from "../Select";
 import { MultiSelectOption } from "~/types/select";
 import InventoryTableHeader from "../Inventory/InventoryTableHeader";
 import InventoryTableBody from "../Inventory/InventoryTableBody";
+import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
+
 const options: MultiSelectOption[] = [
   {
     label: "Invent1",
@@ -21,13 +23,33 @@ const options: MultiSelectOption[] = [
   },
   { label: "Invent3", value: "Inventory13" },
 ];
-const AddInventory = () => {
+const AddInventory = (  finalFormSubmissionHandler
+) => {
   const router = useRouter();
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(false);
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
+
+
+  const {
+    stepData: { currentStep, setCurrentStep },
+    multiFormData: { formData },
+  } = useContext(FormContext);
+
+
+  const prevClickHandler = () => {
+    setCurrentStep && setCurrentStep(currentStep - 1);
+  };
+
+  const submitCallback = () => {
+    const finalFormData = {
+      ...formData,
+    };
+    finalFormSubmissionHandler(finalFormData);
+  };
+
   return (
     <>
       <Card className="h-full">
@@ -68,6 +90,22 @@ const AddInventory = () => {
         />
         {loading ? <LoadingSpinner /> : ""}
       </Card>
+      <div className="flex justify-end">
+        <Button
+          type="button"
+          className="mx-3 bg-pink-600 hover:bg-pink-800"
+          onClick={prevClickHandler}
+        >
+          Prev
+        </Button>
+        <Button
+          type="button"
+          className="mx-3 bg-pink-600 hover:bg-pink-800"
+          onClick={submitCallback}
+        >
+          Finish
+        </Button>
+      </div>
     </>
   );
 };

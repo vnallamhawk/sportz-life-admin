@@ -412,6 +412,7 @@ model Centers {
   name                   String                   @db.VarChar(255)
   image                  Int?
   address                String                   @db.Text
+  email                     String?                     @unique(map: "email") @db.VarChar(255)
   mobile                 String                   @db.VarChar(255)
   academyId              Int?
   status                 Int?                     @default(1) @db.TinyInt
@@ -435,8 +436,6 @@ model Inventories {
   id                     Int                      @id @unique(map: "id") @default(autoincrement())
   name                   String                   @db.VarChar(255)
   quantity               Int
-  address                String                   @db.Text
-  mobile                 String                   @db.VarChar(255)
   centerId               Int
   status                 Int?                     @default(1) @db.TinyInt
   createdAt              DateTime                 @default(now())
