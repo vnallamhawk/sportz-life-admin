@@ -2,7 +2,7 @@ import { type CENTER_DETAILS_CONSTANTS_TYPES } from "~/types/center";
 export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
   {
     label: "Center Name",
-    id: "centerName",
+    id: "name",
     type: "textbox",
     rules: {
       required: true,
@@ -44,12 +44,8 @@ export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
     label: "Select Sports",
     id: "selectSports",
     type: "select",
-    options: [
-      { label: "Basketball", value: "BASKETBALL" },
-      { label: "Volleyball", value: "VOLLEYBALL" },
-      { label: "Football", value: "FOOTBALL" },
-      { label: "Cricket", value: "CRICKET" },
-    ],
+    options: [],
+    isMulti:true,
     placeHolder: "Select Sports",
     rules: {
       required: true,
@@ -57,7 +53,7 @@ export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
   },
   {
     label: "Location",
-    id: "location",
+    id: "address",
     type: "textbox",
     rules: {
       required: true,
@@ -72,12 +68,8 @@ export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
     label: "Select Coaches",
     id: "selectCoaches",
     type: "select",
-    options: [
-      { label: "Coach1", value: "COACH!" },
-      { label: "Coach2", value: "COACH2" },
-      { label: "Coach3", value: "COACH3" },
-      { label: "Coach4", value: "COACH4" },
-    ],
+    options: [],
+    isMulti:true,
     placeHolder: "Select Coaches",
     rules: {
       required: false,

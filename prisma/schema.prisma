@@ -49,34 +49,18 @@ model User {
   sessions      Session[]
 }
 
-model Academies {
-  id                Int                 @id @default(autoincrement())
-  name              String              @db.VarChar(255)
-  code              String              @unique(map: "code") @db.VarChar(255)
-  status            Int?                @default(1) @db.TinyInt
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @default(now())
-  deletedAt         DateTime?           @db.DateTime(0)
-  AcademySportsMaps AcademySportsMaps[]
-  Assessments       Assessments[]
-  Athletes          Athletes[]
-  Batches           Batches[]
-  Centers           Centers[]
-  Coaches           Coaches[]
-  Tests             Tests[]
-}
 
-model AcademySportsMaps {
+model CenterSports {
   id        Int        @id @unique(map: "id") @default(autoincrement())
   sportId   Int?
-  academyId Int?
+  centerId Int?
   status    Int?       @default(1) @db.TinyInt
   createdAt DateTime   @default(now())
   updatedAt DateTime   @default(now())
-  Sports    Sports?    @relation(fields: [sportId], references: [id], map: "AcademySportsMaps_ibfk_795")
-  Academies Academies? @relation(fields: [academyId], references: [id], map: "AcademySportsMaps_ibfk_796")
+  Sports    Sports?    @relation(fields: [sportId], references: [id], map: "CenterSportsMaps_ibfk_795")
+  Centers Centers? @relation(fields: [centerId], references: [id], map: "CenterSportsMaps_ibfk_796")
 
-  @@index([academyId], map: "academyId")
+@@index([centerId], map: "centerId")
   @@index([sportId], map: "sportId")
 }
 
@@ -204,7 +188,7 @@ model Assessments {
   id                         Int                          @id @default(autoincrement())
   name                       String                       @db.VarChar(255)
   description                String?                      @db.VarChar(255)
-  academyId                  Int
+  centerId                  Int
   sportId                    Int
   startDate                  DateTime                     @db.Date
   endDate                    DateTime                     @db.Date
@@ -226,11 +210,11 @@ model Assessments {
   AssessmentCenters          AssessmentCenters[]
   AssessmentResults          AssessmentResults[]
   AssessmentSports           AssessmentSports[]
-  Academies                  Academies                    @relation(fields: [academyId], references: [id], onDelete: Cascade, map: "Assessments_ibfk_207")
+  Centers                  Centers                    @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "Assessments_ibfk_207")
   Sports                     Sports                       @relation(fields: [sportId], references: [id], onDelete: Cascade, map: "Assessments_ibfk_208")
   AssignedTestBanks          AssignedTestBanks[]
 
-  @@index([academyId], map: "academyId")
+  @@index([centerId], map: "centerId")
   @@index([sportId], map: "sportId")
 }
 
@@ -333,7 +317,7 @@ model Athletes {
   phone                      String?                      @unique(map: "phone") @db.VarChar(255)
   email                      String?                      @unique(map: "email") @db.VarChar(255)
   address                    String?                      @db.VarChar(255)
-  academyCode                Int
+  centerId                Int
   medicalHistory             Json?
   joiningDate                DateTime?                    @db.Date
   status                     Int?                         @default(1) @db.TinyInt
@@ -344,7 +328,7 @@ model Athletes {
   AthleteAttendances         AthleteAttendances[]
   AthleteBatchesMaps         AthleteBatchesMaps[]
   AthleteSportsMaps          AthleteSportsMaps[]
-  Academies                  Academies                    @relation(fields: [academyCode], references: [id], onDelete: Cascade, map: "Athletes_ibfk_1")
+  Centers                    Centers                    @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "Athletes_ibfk_1")
   HideFeeds                  HideFeeds[]
   InjuryLogs                 InjuryLogs[]
   Payments                   Payments[]
@@ -352,12 +336,13 @@ model Athletes {
   TicketMessages             TicketMessages[]
   Tickets                    Tickets[]
 
-  @@index([academyCode], map: "academyCode")
+  @@index([centerId], map: "centerId")
 }
 
 model BatchSchedules {
   id        Int                @id @unique(map: "id") @default(autoincrement())
   batchId   Int
+  centerId  Int
   day       BatchSchedules_day
   startTime DateTime           @db.Time(0)
   endTime   DateTime           @db.Time(0)
@@ -376,9 +361,9 @@ model Batches {
   remainingSeat           Int
   occupiedSeat            Int
   price                   Int
-  academyId               Int
   sportId                 Int
   coachId                 Int
+  centerId                Int
   status                  Int?                      @default(1) @db.TinyInt
   createdAt               DateTime                  @default(now())
   updatedAt               DateTime                  @default(now())
@@ -387,15 +372,15 @@ model Batches {
   AthleteBatchesMaps      AthleteBatchesMaps[]
   AthleteSportsMaps       AthleteSportsMaps[]
   BatchSchedules          BatchSchedules[]
-  Academies               Academies                 @relation(fields: [academyId], references: [id], onDelete: NoAction, map: "Batches_ibfk_1341")
   Sports                  Sports                    @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "Batches_ibfk_1342")
   Coaches                 Coaches                   @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "Batches_ibfk_1343")
   Payments                Payments[]
   ScheduledCenterBatches  ScheduledCenterBatches[]
+  Centers                  Centers                    @relation(fields: [centerId], references: [id], onDelete: NoAction, map: "Batches_ibfk_1344")
 
-  @@index([academyId], map: "academyId")
   @@index([coachId], map: "coachId")
   @@index([sportId], map: "sportId")
+  @@index([centerId], map: "centerId")
 }
 
 model Categories {
@@ -421,15 +406,17 @@ model Centers {
   deletedAt              DateTime?                @db.DateTime(0)
   AssessmentCenters      AssessmentCenters[]
   AthleteSportsMaps      AthleteSportsMaps[]
-  Academies              Academies?               @relation(fields: [academyId], references: [id], map: "Centers_ibfk_1")
   CoachCentersBatches    CoachCentersBatches[]
   CoachOnCenters         CoachOnCenters[]
   CoachOnCentersBatches  CoachOnCentersBatches[]
   Coaches                Coaches[]
   ScheduledCenterBatches ScheduledCenterBatches[]
   Inventories           Inventories[]
-
-  @@index([academyId], map: "academyId")
+  CenterSports      CenterSports[]
+  Assessments       Assessments[]
+  Athletes          Athletes[]
+  Batches    Batches[]
+  Tests             Tests[]
 }
 
 model Inventories {
@@ -493,7 +480,6 @@ model Coaches {
   CoachOnCentersBatches     CoachOnCentersBatches[]
   CoachQualifications       CoachQualifications[]
   CoachSportsMaps           CoachSportsMaps[]
-  Academies                 Academies                   @relation(fields: [academyId], references: [id], onDelete: NoAction, map: "Coaches_ibfk_641")
   Centers                   Centers?                    @relation(fields: [centerId], references: [id], onDelete: NoAction, map: "Coaches_ibfk_642")
   InjuryLogs                InjuryLogs[]
   Ratings                   Ratings[]
@@ -502,7 +488,6 @@ model Coaches {
   TrainingDrills            TrainingDrills[]
   TrainingPlans             TrainingPlans[]
 
-  @@index([academyId], map: "academyId")
   @@index([centerId], map: "centerId")
 }
 
@@ -698,7 +683,7 @@ model Sports {
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @default(now())
   deletedAt              DateTime?                @db.DateTime(0)
-  AcademySportsMaps      AcademySportsMaps[]
+  CenterSports      CenterSports[]
   AssessmentCenterSports AssessmentCenterSports[]
   AssessmentSports       AssessmentSports[]
   Assessments            Assessments[]
@@ -761,7 +746,7 @@ model Tests {
   fitnessType      Tests_fitnessType?
   fitnessComponent Tests_fitnessComponent?
   sportId          Int?
-  academyId        Int
+  centerId        Int
   measureType      Tests_measureType
   unitType         Tests_unitType?
   units            Tests_units?
@@ -774,9 +759,9 @@ model Tests {
   AssignedTests    AssignedTests[]
   TestBanks        TestBanks               @relation(fields: [testBankId], references: [id], onDelete: NoAction, map: "Tests_ibfk_1146")
   Sports           Sports?                 @relation(fields: [sportId], references: [id], map: "Tests_ibfk_1147")
-  Academies        Academies               @relation(fields: [academyId], references: [id], onDelete: NoAction, map: "Tests_ibfk_1148")
+  Centers        Centers               @relation(fields: [centerId], references: [id], onDelete: NoAction, map: "Tests_ibfk_1148")
 
-  @@index([academyId], map: "academyId")
+  @@index([centerId], map: "centerId")
   @@index([sportId], map: "sportId")
   @@index([testBankId], map: "testBankId")
 }

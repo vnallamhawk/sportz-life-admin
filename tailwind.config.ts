@@ -1,9 +1,12 @@
 import { type Config } from "tailwindcss";
+const withMT = require("@material-tailwind/react/utils/withMT");
 
 export default {
   content: [
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/flowbite-react/lib/**/*.js"
+    "./node_modules/flowbite-react/lib/**/*.js",
+    "./node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -24,7 +27,10 @@ export default {
           "dark" : "#f8436b"
         },
         "blush" : "#FFBEAB",
-      
+        "tertiary" : {
+          "200" : "#E5FFF2",
+          "700" : "#00B65A"
+        },
       },
       maxWidth: {
         "70" : "70px"
@@ -34,6 +40,7 @@ export default {
       },
       minWidth: {
         '370': '370px',
+        '355': '355px',
         '256' : '256px',
         '450' : '450px'
       },

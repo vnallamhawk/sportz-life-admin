@@ -20,34 +20,80 @@
   font-family: "Teko";
   src: url("../../public/fonts/Teko-VariableFont_wght.ttf");
 }
+
 @layer utilities {
-    .visible{
-      left: 0 !important;
-      display: block;
-      @media (min-width: 992px) {
-        display: none;
-      }
+  .visible {
+    left: 0 !important;
+    display: block;
+
+    @media (min-width: 992px) {
+      display: none;
     }
-    .visible .overlay{
-      display: block!important;
-    }
+  }
+
+  .visible .overlay {
+    display: block !important;
+  }
+
+  .common-table tr td:first-child {
+    border-left: 2px solid #f3f4f6;
+    border-radius: 8px 0 0 8px;
+  }
+
+  .common-table tr td:last-child {
+    border-right: 2px solid #f3f4f6;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .common-table tr.active {
+    box-shadow: 0 9px 32px 0 rgba(0, 0, 0, 0.1)
+  }
+
+  .common-table tr.disabled {
+    opacity: 0.5;
+  }
+
+  .common-table tr:nth-child(2) {
+    box-shadow: 0 9px 32px 0 rgba(0, 0, 0, 0.1)
+  }
+
+  .common-table tr:nth-child(3) {
+    opacity: 0.5;
+  }
+
+  .common-table tr:nth-child(4) {
+    opacity: 0.2;
+  }
+  .filter-visible .f-screen{
+      right: 0;
+  }
+  .filter-visible .f-overlay{
+    display: block;
+  }
+
 }
 
 @layer base {
   html {
     font-family: "DM Sans", sans-serif;
   }
+
   .scroll::-webkit-scrollbar {
-    width: 6px;               /* width of the entire scrollbar */
+    width: 6px;
+    /* width of the entire scrollbar */
   }
-  
+
   .scroll::-webkit-scrollbar-track {
-    background: #ffe6de;        /* color of the tracking area */
+    background: #ffe6de;
+    /* color of the tracking area */
   }
-  
+
   .scroll::-webkit-scrollbar-thumb {
-    background-color: #ff9678;    /* color of the scroll thumb */
-    border-radius: 10px;       /* roundness of the scroll thumb */ /* creates padding around scroll thumb */
+    background-color: #ff9678;
+    /* color of the scroll thumb */
+    border-radius: 10px;
+    /* roundness of the scroll thumb */
+    /* creates padding around scroll thumb */
   }
 }
 
@@ -99,14 +145,8 @@ button[role="combobox"] {
 }
 
 .coachAttendanceCalendarView,
-.coachAttendanceCalendarView > div.react-datepicker-wrapper,
-.coachAttendanceCalendarView
-  > div
-  > div.react-datepicker__input-container
-  .coachAttendanceCalendarView
-  > div
-  > div.react-datepicker__input-container
-  input {
+.coachAttendanceCalendarView>div.react-datepicker-wrapper,
+.coachAttendanceCalendarView>div>div.react-datepicker__input-container .coachAttendanceCalendarView>div>div.react-datepicker__input-container input {
   width: 100%;
   height: 100%;
 }
@@ -116,6 +156,7 @@ button[role="combobox"] {
   top: 0;
   left: 0;
 }
+
 .date-picker-icon {
   float: right;
   margin-right: 20px;
@@ -124,6 +165,6 @@ button[role="combobox"] {
   z-index: 2;
 }
 
-.react-calendar{
-  border: 0!important;
+.react-calendar {
+  border: 0 !important;
 }

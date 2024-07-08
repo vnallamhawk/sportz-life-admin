@@ -37,9 +37,9 @@ export default function dashboard() {
       <div className="mb-5 grow flex justify-between"> 
         <div className="text-2xl font-medium font-heading ">STATISTICS</div>
         <div className="flex items-center">
-            <div className="h-2 ml-2 rounded-lg bg-theme-light w-4"></div>
-            <div className="h-2 ml-2 bg-gray-300 rounded w-2"></div>
-            <div className="h-2 ml-2 bg-gray-300 rounded w-2"></div>
+            <button className="h-2 ml-2 rounded-lg bg-theme-light w-4"></button>
+            <button className="h-2 ml-2 bg-gray-300 rounded w-2"></button>
+            <button className="h-2 ml-2 bg-gray-300 rounded w-2"></button>
         </div>
        </div>
       {/* w-9/12 */}
