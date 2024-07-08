@@ -30,18 +30,13 @@ import AddCenter from "~/components/AddCenter/AddCenter";
 import AddInventory from "~/components/AddInventory/AddInventory";
 import AddStaff from "~/components/AddStaff/AddStaff";
 const multiFormData: MULTI_FORM_TYPES = {
-  centerName: "",
+  name: "",
+  image:"",
   phoneNumber: "",
   email: "",
-  location: "",
+  address: "",
   selectSports: [],
-  selectcenteres: [],
-  //   centeringSports: [],
-  //   certificates: [],
-  batchIds: [],
-  //   centerIds: [],
   isEditMode: false,
-  centerId: undefined,
 };
 
 const defaultValues = {
@@ -73,6 +68,7 @@ export default function AddCenterForm() {
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
+  const [centerId, setCenterId] = useState<number>();
 
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
@@ -100,18 +96,29 @@ export default function AddCenterForm() {
     onSuccess: (response) => {
       console.log("response data is ", response);
       setOpenToast(true);
+      setCenterId(response?.id)
       return response?.id
     },
   });
   const { mutate: createMutateInventories } = api.inventory.createInventory.useMutation({
     onSuccess: (response) => {
       console.log("response data is ", response);
+    router.push(`/centers/${centerId?? ""}`);
+
+      return response
     },
   });
+  const { mutate: createMutateCenterSports } = api.centerSports.createCenterSports.useMutation({
+    onSuccess: (response) => {
+      console.log("response data is ", response);
+      return response
+    },
+  });
+
   const { mutate: editMutate } = api.center.editCenter.useMutation({
     onSuccess: (response) => {
       setOpenToast(true);
-      void router.push(`/center/${response?.id ?? ""}`);
+      void router.push(`/centers/${response?.id ?? ""}`);
     },
   });
 
@@ -125,7 +132,19 @@ export default function AddCenterForm() {
     );
   }, []);
 
-  const finalFormSubmissionHandler = (
+  useEffect(()=>{
+    if(formData && Object.keys(formData)?.length>0 && formData?.sportsId && formData?.inventories && centerId){
+      const finalCenterSports=formData?.sportsId?.map(v => ({sportId:v, centerId}))
+
+       createMutateCenterSports(finalCenterSports);
+ 
+      const finalInventories=formData?.inventories?.map(v => ({...v, centerId}))
+      createMutateInventories(finalInventories)
+    }
+
+  },[centerId,formData])
+
+  const finalFormSubmissionHandler = async(
     finalForm: Required<MULTI_FORM_TYPES>
   ) => {
     if (formData.isEditMode) {
@@ -135,12 +154,11 @@ export default function AddCenterForm() {
       console.log(finalForm);
       // eslint-disable-next-line no-console
       console.log(finalForm, "djbsdbfn");
-     const centerId= createMutate({...finalForm,mobile:finalForm?.phoneNumber,address:finalForm?.location});
-     const finalInventories=finalForm?.inventories.map(v => ({...v, centerId}))
-      createMutateInventories(finalForm?.inventories)
-      void router.push(`/center/${centerId?? ""}`);
-
-
+      const sportsId = finalForm?.selectSports.map(function (obj) {
+        return Number(obj.value);
+      });
+     setFormData({...finalForm,mobile:finalForm?.phoneNumber,address:finalForm?.address,image:"",sportsId})
+     createMutate({...finalForm,mobile:finalForm?.phoneNumber,address:finalForm?.address,image:""});
     }
   };
   return (

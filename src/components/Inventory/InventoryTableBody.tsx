@@ -1,5 +1,6 @@
 import React from "react";
 import type { InventoryData } from "~/types/center";
+import {options} from "../../constants/inventoryConstant"
 
 
 export default function InventoryTableBody(
@@ -8,13 +9,15 @@ export default function InventoryTableBody(
 ) {
   return (
     <>
-      {data?.map(({ name, quantity }, index) => (
+      {data?.map(({ name, quantity }, index) => {
+        const label=options?.find((op)=>op?.value===name)?.label
+        return(
         <tr
           key={`${name}-${index}`}
           className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
         >
           <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
-            {name}
+            {label}
           </td>
           <td className="border-y-2 border-solid px-6 py-3 text-left">
             {quantity}
@@ -23,7 +26,7 @@ export default function InventoryTableBody(
             Remove
           </td>
         </tr>
-      ))}
+      )})}
     </>
   );
 }

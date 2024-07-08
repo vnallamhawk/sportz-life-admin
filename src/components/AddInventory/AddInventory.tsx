@@ -51,7 +51,6 @@ const AddInventory = (props) => {
   };
 
   const submitCallback = () => {
-    debugger
     const finalFormData = {
       ...formData,
       inventories

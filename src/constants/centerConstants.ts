@@ -2,7 +2,7 @@ import { type CENTER_DETAILS_CONSTANTS_TYPES } from "~/types/center";
 export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
   {
     label: "Center Name",
-    id: "centerName",
+    id: "name",
     type: "textbox",
     rules: {
       required: true,
@@ -53,7 +53,7 @@ export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
   },
   {
     label: "Location",
-    id: "location",
+    id: "address",
     type: "textbox",
     rules: {
       required: true,

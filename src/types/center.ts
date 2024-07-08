@@ -17,7 +17,7 @@ type Type = (typeof InputType)[number];
 export interface CENTER_DETAILS_CONSTANTS_TYPES {
   label?: string;
   id:
-    | "centerName"
+    | "name"
     | "phoneNumber"
     | "email"
     | "location"
