@@ -44,12 +44,7 @@ export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
     label: "Select Sports",
     id: "selectSports",
     type: "select",
-    options: [
-      { label: "Basketball", value: "BASKETBALL" },
-      { label: "Volleyball", value: "VOLLEYBALL" },
-      { label: "Football", value: "FOOTBALL" },
-      { label: "Cricket", value: "CRICKET" },
-    ],
+    options: [],
     placeHolder: "Select Sports",
     rules: {
       required: true,
@@ -72,12 +67,7 @@ export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
     label: "Select Coaches",
     id: "selectCoaches",
     type: "select",
-    options: [
-      { label: "Coach1", value: "COACH!" },
-      { label: "Coach2", value: "COACH2" },
-      { label: "Coach3", value: "COACH3" },
-      { label: "Coach4", value: "COACH4" },
-    ],
+    options: [],
     placeHolder: "Select Coaches",
     rules: {
       required: false,

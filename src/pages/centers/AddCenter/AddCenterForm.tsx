@@ -76,10 +76,7 @@ export default function AddCenterForm() {
 
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
-    const { data: sports } = api.sports.getAllSports.useQuery();
- 
-
-  // const sportsDictionary = getSportsDictionaryServices(sports);
+  
   //   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCenterUseEffectRun = useRef(false);
 
@@ -106,10 +103,9 @@ export default function AddCenterForm() {
       return response?.id
     },
   });
-  const { mutate: createMutateInventories } = api.center.createInventory.useMutation({
+  const { mutate: createMutateInventories } = api.inventory.createInventory.useMutation({
     onSuccess: (response) => {
       console.log("response data is ", response);
-      setInventories(response);
     },
   });
   const { mutate: editMutate } = api.center.editCenter.useMutation({

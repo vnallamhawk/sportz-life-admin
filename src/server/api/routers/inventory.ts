@@ -4,7 +4,6 @@ import {
   publicProcedure,
   // protectedProcedure,
 } from "~/server/api/trpc";
-import { EXPERIENCE_LEVEL, GENDER_VALUES, TRAINING_LEVEL } from "~/types/coach";
 
 const certificatesSchema = z.array(
   z.object({
