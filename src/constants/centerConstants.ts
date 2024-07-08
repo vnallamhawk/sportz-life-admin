@@ -45,6 +45,7 @@ export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
     id: "selectSports",
     type: "select",
     options: [],
+    isMulti:true,
     placeHolder: "Select Sports",
     rules: {
       required: true,
@@ -68,6 +69,7 @@ export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
     id: "selectCoaches",
     type: "select",
     options: [],
+    isMulti:true,
     placeHolder: "Select Coaches",
     rules: {
       required: false,

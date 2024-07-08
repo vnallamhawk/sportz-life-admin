@@ -82,9 +82,9 @@ export interface MULTI_FORM_TYPES extends CENTER_TYPES {
   centerId?: number;
 }
 
-export interface BatchData {
-  centerName: string;
-  batchName: string;
+export interface InventoryData {
+  name: string;
+  quantity: number;
 }
 
 // export interface MULTI_FORM_TYPES extends COACH_TYPES {
