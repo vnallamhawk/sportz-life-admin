@@ -136,17 +136,17 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   //   ],
   //   placeHolder: "Select Payroll",
   // },
-  {
-    label: "Coaching Sports",
-    id: "coachingSports",
-    type: "select",
-    options: [],
-    placeHolder: "Coaching Sports",
-    rules: {
-      required: true,
-    },
-    isMulti: true,
-  },
+  // {
+  //   label: "Coaching Sports",
+  //   id: "coachingSports",
+  //   type: "select",
+  //   options: [],
+  //   placeHolder: "Coaching Sports",
+  //   rules: {
+  //     required: true,
+  //   },
+  //   isMulti: true,
+  // },
   {
     label: "Training level expertise",
     id: "trainingLevel",
@@ -226,12 +226,20 @@ export const COACH_CERTIFICATE_TABLE_HEADERS = [
 
 export const CENTER_BATCH_TABLE_HEADERS = [
   {
-    label: "Center",
+    label: "Center Name",
     id: "center",
   },
   {
-    label: "Batch",
+    label: "Location",
+    id: "location",
+  },
+  {
+    label: "Batches",
     id: "batch",
+  },
+  {
+    label: "Contact Number",
+    id: "mobile",
   },
   {
     label: "Action",

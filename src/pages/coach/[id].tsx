@@ -27,32 +27,30 @@ import { ToastContext } from "~/contexts/Contexts";
 // import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 // import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
 import router from "next/router";
-import { DATE_TIME_FORMAT, NO_DATA } from "~/globals/globals";
-import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 
-export type Coach = Coaches & {
+type Coach = Coaches & {
   CoachSportsMaps: CoachSportsMaps[];
   Centers: Centers;
-  Batches: Batches[];
+  Batches: Batches;
 };
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const id = context?.params?.id;
-  const sports = await prisma.sports.findMany();
+  // const sports = await prisma.sports.findMany();
   const coach = await prisma.coaches.findUnique({
     where: {
       id: id ? Number(id) : undefined,
     },
     include: {
-      CoachSportsMaps: true,
+      // CoachSportsMaps: true,
       Centers: true,
       Batches: true,
       // Batches: true,
     },
   });
-  // console.log(coach);
+  console.log(coach, "coach details");
 
   // const batches = await prisma.batches.findMany({
   //   where: {
@@ -68,69 +66,72 @@ export const getServerSideProps = async (
   //     },
   //   },
   // });
-  const coachSportsMaps = coach?.CoachSportsMaps as CoachSportsMaps[];
+  // const coachSportsMaps = coach?.CoachSportsMaps as CoachSportsMaps[];
   const centers = coach?.Centers;
   const batches = coach?.Batches as Batches[];
-
   return {
     props: {
-      coach: {
-        ...coach,
-        createdAt: coach?.createdAt?.toISOString(),
-        updatedAt: coach?.updatedAt?.toISOString(),
-        dateOfBirth: coach?.dateOfBirth
-          ? coach?.dateOfBirth?.toISOString()
-          : "",
-        CoachSportsMaps: coachSportsMaps?.map((sport) => ({
-          ...sport,
-          createdAt: sport?.createdAt ? sport?.createdAt?.toISOString() : "",
-          updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
-          deletedAt: sport?.deletedAt ? sport?.deletedAt?.toISOString() : "",
-        })),
-        Centers: {
-          ...centers,
-          createdAt: centers?.createdAt
-            ? centers?.createdAt?.toISOString()
-            : "",
-          updatedAt: centers?.updatedAt
-            ? centers?.updatedAt?.toISOString()
-            : "",
-        },
-        // Centers: centers?.map((center) => ({
-        //   ...center,
-        //   createdAt: center?.createdAt ? center?.createdAt.toISOString() : "",
-        //   updatedAt: center?.updatedAt ? center?.updatedAt.toISOString() : "",
-        // })),
-
-        // certificates: coach?.certificates.map((cert) => ({
-        //   ...cert,
-        //   startDate: cert.startDate ? dateFormat(cert.startDate) : "",
-        //   endDate: cert.endDate ? dateFormat(cert.endDate) : "",
-        // })),
-        Batches: batches.map((coachBatch) => ({
-          ...coachBatch,
-          createdAt: coachBatch?.createdAt
-            ? coachBatch?.createdAt.toISOString()
-            : "",
-          updatedAt: coachBatch?.updatedAt
-            ? coachBatch?.updatedAt.toISOString()
-            : "",
-          // batch: batches.find((batch) => batch.id == coachBatch.id),
-          // center: centers.find(
-          //   (center) =>
-          //     center.id ==
-          //     batches.find((batch) => batch.id == coachBatch.batchId)?.centerId
-          // ),
-        })),
-      },
-      sports: sports.map((sport) => ({
-        ...sport,
-        createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
-        updatedAt: sport?.updatedAt ? sport?.updatedAt.toISOString() : "",
-      })),
-      // batches: batches,
+      coach: JSON.parse(JSON.stringify(coach)), // <== here is a solution
     },
   };
+  // return {
+  //   props: {
+  //     coach: {
+  //       ...coach,
+  //       createdAt: coach?.createdAt?.toISOString(),
+  //       updatedAt: coach?.updatedAt?.toISOString(),
+  //       dateOfBirth: coach?.dateOfBirth
+  //         ? coach?.dateOfBirth?.toISOString()
+  //         : "",
+  //       // CoachSportsMaps: coachSportsMaps?.map((sport) => ({
+  //       //   ...sport,
+  //       //   createdAt: sport?.createdAt ? sport?.createdAt?.toISOString() : "",
+  //       //   updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
+  //       // })),
+  //       Centers: {
+  //         ...centers,
+  //         createdAt: centers?.createdAt
+  //           ? centers?.createdAt?.toISOString()
+  //           : "",
+  //         updatedAt: centers?.updatedAt
+  //           ? centers?.updatedAt?.toISOString()
+  //           : "",
+  //       },
+  //       // Centers: centers?.map((center) => ({
+  //       //   ...center,
+  //       //   createdAt: center?.createdAt ? center?.createdAt.toISOString() : "",
+  //       //   updatedAt: center?.updatedAt ? center?.updatedAt.toISOString() : "",
+  //       // })),
+
+  //       // certificates: coach?.certificates.map((cert) => ({
+  //       //   ...cert,
+  //       //   startDate: cert.startDate ? dateFormat(cert.startDate) : "",
+  //       //   endDate: cert.endDate ? dateFormat(cert.endDate) : "",
+  //       // })),
+  //       Batches: batches.map((coachBatch) => ({
+  //         ...coachBatch,
+  //         createdAt: coachBatch?.createdAt
+  //           ? coachBatch?.createdAt.toISOString()
+  //           : "",
+  //         updatedAt: coachBatch?.updatedAt
+  //           ? coachBatch?.updatedAt.toISOString()
+  //           : "",
+  //         // batch: batches.find((batch) => batch.id == coachBatch.id),
+  //         // center: centers.find(
+  //         //   (center) =>
+  //         //     center.id ==
+  //         //     batches.find((batch) => batch.id == coachBatch.batchId)?.centerId
+  //         // ),
+  //       })),
+  //     },
+  //     // sports: sports.map((sport) => ({
+  //     //   ...sport,
+  //     //   createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
+  //     //   updatedAt: sport?.updatedAt ? sport?.updatedAt.toISOString() : "",
+  //     // })),
+  //     // batches: batches,
+  //   },
+  // };
 };
 
 export default function Page({
@@ -140,6 +141,7 @@ export default function Page({
   coach: Coach;
   sports: Sports[];
 }) {
+  console.log("coach data", coach);
   const sportsDictionary = sports?.reduce(
     (accumulator: Record<number, string>, current) => {
       accumulator[current.id] = current.name;
@@ -181,7 +183,7 @@ export default function Page({
               <span> ({coach.designation})</span>
             </div>
             <div className="text-orange-400">
-              {coach.CoachSportsMaps.map(
+              {coach?.CoachSportsMaps?.map(
                 ({ sportId }) => sportsDictionary?.[sportId]
               ).join(" ,")}
             </div>
@@ -200,10 +202,11 @@ export default function Page({
               </div>
               <div className="experience-level">
                 <div className="text-gray-400">
+                  {" "}
                   Years of Coaching Experience{" "}
                 </div>
                 <div className="font-bold text-gray-600">
-                  {coach.experience}
+                  {coach.experienceLevel}
                 </div>
               </div>
             </div>
@@ -219,9 +222,9 @@ export default function Page({
               <div>
                 <div className="text-gray-400">DOB</div>
                 <div className="font-bold text-gray-600">
-                  {coach.dateOfBirth
+                  {/* {coach.dateOfBirth
                     ? DATE_TIME_FORMAT.format(new Date(coach.dateOfBirth))
-                    : ""}
+                    : ""} */}
                 </div>
               </div>
               <div>
@@ -249,7 +252,7 @@ export default function Page({
           >
             <div className="font-bold"> Batches</div>
             <div className="text-4xl font-bold">
-              {coach?.Batches?.length ?? NO_DATA}
+              {/* {coach?.Batches?.length ?? NO_DATA} */}
             </div>
           </div>
           <div
@@ -269,9 +272,9 @@ export default function Page({
           setOpen={setOpenToast}
         ></AddCoachSuccessToast>
       </Card>
-      {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} /> */}
+      {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
       <CoachBatch coach={coach} displayBatch={displayBatch} />
-      {/* <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
+      <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
     </>
   );
 }

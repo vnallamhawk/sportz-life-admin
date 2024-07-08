@@ -41,7 +41,6 @@ export default function AddCoachCertificates({}) {
   const [tableData, setTableData] = useState<COACH_CERTIFICATE_TABLE_TYPES[]>(
     []
   );
-  // const [deletedCertificateIds, setDeletedCertificatedIds] = useState([]);
   // eslint-disable-next-line no-console
   console.log(tableData);
 
@@ -79,6 +78,8 @@ export default function AddCoachCertificates({}) {
 
   useEffect(() => {
     if (formData?.certificates) {
+      // eslint-disable-next-line no-console
+      console.log(formData?.certificates);
       setTableData(formData.certificates);
     }
   }, [formData?.certificates]);

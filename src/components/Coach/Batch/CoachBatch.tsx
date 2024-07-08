@@ -3,25 +3,24 @@ import Card from "../../Card";
 import Textbox from "~/components/Textbox";
 import { useState } from "react";
 import CoachBatchTableHeader from "./CoachBatchTableHeader";
-// import CoachBatchTableBody from "./CoachBatchTableBody";
-import type { Coach } from "~/pages/coach/[id]";
 import CoachBatchTableBody from "./CoachBatchTableBody";
+import { type CoachWithRelations } from "~/types/coach";
 
-export default function CoachBatch({
+export default function CoachCertificate({
   coach,
   displayBatch,
 }: {
-  coach: Coach;
+  coach: CoachWithRelations;
   displayBatch: boolean;
 }) {
   const [tableCoach, setTableCoach] = useState(coach);
   const [filterByBatch, setFilterByBatch] = useState("");
   const handleFilterByBatchChange = (filter: string) => {
-    // const newBatch = coach.batches.filter((batch) => {
-    //   return batch.batch.name.toLowerCase().includes(filter);
-    // });
+    const newBatch = coach.batches.filter((batch) => {
+      return batch.batch.name.toLowerCase().includes(filter);
+    });
     const newTableCoach = { ...tableCoach };
-    // newTableCoach.batches = [...newBatch];
+    newTableCoach.batches = [...newBatch];
     setTableCoach(newTableCoach);
     setFilterByBatch(filter);
   };

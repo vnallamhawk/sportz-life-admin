@@ -36,7 +36,7 @@ export default function CoachTableBody(
       coaches.map((coach: Coach) => {
         return {
           ...coach,
-          sports: coach.CoachSportsMaps.length
+          sports: coach?.CoachSportsMaps?.length
             ? coach?.CoachSportsMaps?.map(
                 (sport) => sports.find((s) => s.id === sport.sportId)?.name
               )?.join(",")
