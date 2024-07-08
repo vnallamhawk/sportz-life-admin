@@ -4,7 +4,6 @@ import {
   publicProcedure,
   // protectedProcedure,
 } from "~/server/api/trpc";
-import { EXPERIENCE_LEVEL, GENDER_VALUES, TRAINING_LEVEL } from "~/types/coach";
 
 const certificatesSchema = z.array(
   z.object({
@@ -31,7 +30,7 @@ const coachingSportsSchema = z.array(
 
 // Now add this object into an array
 
-export const coachRouter = createTRPCRouter({
+export const inventoryRouter = createTRPCRouter({
   createInventory: publicProcedure
     .input(inventoryInfoSchema)
     .mutation(
@@ -39,7 +38,7 @@ export const coachRouter = createTRPCRouter({
         input: data,
         ctx,
       }) => {
-        const response = await ctx.prisma.coaches.createMany({
+        const response = await ctx.prisma.inventories.createMany({
           data,
         });
         return response;

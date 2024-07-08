@@ -15,6 +15,7 @@ import { api } from "~/utils/api";
 import Select from "react-select";
 import { CENTER_DETAILS_CONSTANTS } from "~/constants/centerConstants";
 import { CENTER_DETAILS_CONSTANTS_TYPES } from "~/types/center";
+import { getSportsDictionaryServices } from "~/services/sportServices";
 
 export default function AddCenter() {
   let inputElement;
@@ -32,33 +33,57 @@ export default function AddCenter() {
   } = useForm<CENTER_TYPES>({ mode: "onSubmit" });
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
-  //   const { data: sports } = api.sports.getAllSports.useQuery();
+  const { data: sports } = api.sports.getAllSports.useQuery();
+ 
+  const { data: coaches } = api.coach.getAllCoaches.useQuery()
 
   const [formConstantValues, setFormConstantValues] = useState(
     CENTER_DETAILS_CONSTANTS
   );
 
-  //   useEffect(() => {
-  //     if (sports?.length && hasExecuted.current) {
-  //       const updatedFormConstantValues = formConstantValues.map(
-  //         (formConstant) => {
-  //           if (formConstant.id === "coachingSports") {
-  //             return {
-  //               ...formConstant,
-  //               options: sports.map((sport: { name: string; id: number }) => ({
-  //                 label: sport.name,
-  //                 value: sport.id.toString(),
-  //               })),
-  //             };
-  //           } else {
-  //             return formConstant;
-  //           }
-  //         }
-  //       );
-  //       hasExecuted.current = false;
-  //       setFormConstantValues(updatedFormConstantValues);
-  //     }
-  //   }, [formConstantValues, sports, sports?.length]);
+    useEffect(() => {
+      if (sports?.length && hasExecuted.current) {
+        const updatedFormConstantValues = formConstantValues.map(
+          (formConstant) => {
+            if (formConstant.id === "selectSports") {
+              return {
+                ...formConstant,
+                options: sports.map((sport: { name: string; id: number }) => ({
+                  label: sport.name,
+                  value: sport.id.toString(),
+                })),
+              };
+            } else {
+              return formConstant;
+            }
+          }
+        );
+        hasExecuted.current = false;
+        setFormConstantValues(updatedFormConstantValues);
+      }
+    }, [formConstantValues, sports, sports?.length]);
+
+    useEffect(() => {
+      if (coaches?.length && hasExecuted.current) {
+        const updatedFormConstantValues = formConstantValues.map(
+          (formConstant) => {
+            if (formConstant.id === "selectCoaches") {
+              return {
+                ...formConstant,
+                options: coaches.map((coach: { name: string; id: number }) => ({
+                  label: coach.name,
+                  value: coach.id.toString(),
+                })),
+              };
+            } else {
+              return formConstant;
+            }
+          }
+        );
+        hasExecuted.current = false;
+        setFormConstantValues(updatedFormConstantValues);
+      }
+    }, [formConstantValues, coaches, coaches?.length]);
 
   //   useEffect(() => {
   //     // if (!isEditMode) {
