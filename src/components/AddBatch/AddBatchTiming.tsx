@@ -12,9 +12,12 @@ import { Controller, useForm } from "react-hook-form";
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import { api } from "~/utils/api";
 import Select from "react-select";
-import { BATCH_DETAILS_CONSTANTS } from "~/constants/batchConstant";
+import {
+  BATCH_DETAILS_CONSTANTS,
+  BATCH_DETAILS_TIMING,
+} from "~/constants/batchConstant";
 
-export default function AddBatch() {
+export default function AddBatchTiming() {
   let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
@@ -32,9 +35,8 @@ export default function AddBatch() {
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
 
-  const [formConstantValues, setFormConstantValues] = useState(
-    BATCH_DETAILS_CONSTANTS
-  );
+  const [formConstantValues, setFormConstantValues] =
+    useState(BATCH_DETAILS_TIMING);
 
   // useEffect(() => {
   //   if (sports?.length && hasExecuted.current) {
@@ -150,8 +152,8 @@ export default function AddBatch() {
   return (
     <>
       <CardTitle title="ADD BATCH" />
-      <div className="text-lg font-bold">BATCH DETAILS</div>
-      <div className="mt-10 grid grid-cols-2 gap-x-10 gap-y-12">
+      <div className="text-lg font-bold">BATCH TIMINGS</div>
+      <div className="mt-10 grid grid-cols-3 gap-x-10 gap-y-12">
         {formConstantValues.map((props) => (
           <div key={props.id}>
             {getInputElement(props)}
@@ -170,6 +172,19 @@ export default function AddBatch() {
           </div>
         ))}
       </div>
+      <div className="mr-10 mt-10 flex justify-start">
+        <Button
+          className="border-1 mx-3 border-pink-600"
+          type="button"
+          onClick={() => {}}
+        >
+          ADD
+        </Button>
+      </div>
+      {/* <Table
+          
+          /> */}
+
       <div className="mr-10 mt-10 flex justify-end">
         <Button
           className="border-1 mx-3 bg-pink-600 hover:bg-pink-800"
