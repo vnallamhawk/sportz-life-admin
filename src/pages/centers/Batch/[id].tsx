@@ -33,6 +33,8 @@ import NetajiIndoorImg from "../../../images/NetajiIndoor.png";
 import CoachImg from "../../../images/CoachesImg.png";
 import AtheleteImg from "../../../images/AthelteImg.png";
 import InventoryImg from "../../../images/InventoryImg.png";
+import AddBatch from "~/components/AddBatch/AddBatch";
+import AddBatchTiming from "~/components/AddBatch/AddBatchTiming";
 
 const multiFormData: MULTI_FORM_BATCH_TYPES = {
   batchName: "",
@@ -241,8 +243,8 @@ export default function AddCoachMultiFormLayout() {
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 1 && <AddCoach />}
-          {currentStep === 2 && <AddCoachCertificates />}
+          {currentStep === 1 && <AddBatch />}
+          {currentStep === 2 && <AddBatchTiming />}
           {currentStep === 3 && (
             <AssignBatches
               // TODO: fix this TS error

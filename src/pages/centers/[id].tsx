@@ -2,7 +2,7 @@ import { useContext, useRef, useState } from "react";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import CoachImg from "../../images/CoachesImg.png";
 import BatchImg from "../../images/BatchesImg.png";
 import AtheleteImg from "../../images/AthelteImg.png";
@@ -64,11 +64,43 @@ export const getServerSideProps = async (
 };
 
 const tabs = [
-  { label: "Coaches", name: "coaches", value: "05", image: CoachImg,allLabel:"All Coaches" },
-  { label: "Batches", name: "batches", value: "04", image: BatchImg,allLabel:"All Batches"  },
-  { label: "Atheletes", name: "athletes", value: "66", image: AtheleteImg,allLabel:"All Athelte"  },
-  { label: "Inventories", name: "inventories", value: "15", image: InventoryImg,allLabel:"All Inventory"  },
+  {
+    label: "Coaches",
+    name: "coaches",
+    value: "05",
+    image: CoachImg,
+    allLabel: "All Coaches",
+  },
+  {
+    label: "Batches",
+    name: "batches",
+    value: "04",
+    image: BatchImg,
+    allLabel: "All Batches",
+  },
+  {
+    label: "Atheletes",
+    name: "athletes",
+    value: "66",
+    image: AtheleteImg,
+    allLabel: "All Athelte",
+  },
+  {
+    label: "Inventories",
+    name: "inventories",
+    value: "15",
+    image: InventoryImg,
+    allLabel: "All Inventory",
+  },
 ];
+
+type TabsType = {
+  label: string;
+  name: string;
+  value: string;
+  image: StaticImageData;
+  allLabel: string;
+};
 
 export default function Page({ center }: { center: Centers }) {
   const [displayCertificate, setDisplayCertificate] = useState(false);
@@ -88,58 +120,43 @@ export default function Page({ center }: { center: Centers }) {
     setLoading(isLoading);
   };
   const [selectedTab, setSelectedTab] = useState(tabs[1]);
-const [selectedHeader,setSelectedHeader]=useState(CenterDashBatchTableHeader())
-const [selectedBody,setSelectedBody]=useState( CenterDashBatchTableBody(
-  { name: filterByName },
-  handleIsLoading
-))
+  const [selectedHeader, setSelectedHeader] = useState(
+    CenterDashBatchTableHeader()
+  );
+  const [selectedBody, setSelectedBody] = useState(
+    CenterDashBatchTableBody()
+    // { name: filterByName },
+    // handleIsLoading
+  );
 
- 
+  const handleClick = (tab: TabsType) => {
+    let header, body;
+    setSelectedTab(tab);
+    if (tab?.name === "coaches") {
+      header = CenterDashCoachTableHeader();
+      body = CenterDashCoachTableBody();
+    } else if (tab?.name === "batches") {
+      header = CenterDashBatchTableHeader();
 
-  const handleClick = (tab:string) => {
-    let header,body
-    setSelectedTab(tab)
-    if(tab?.name==="coaches"){
-      header=CenterDashCoachTableHeader()
-      body=CenterDashCoachTableBody(
-        { name: filterByName },
-        handleIsLoading
-      )
-    } else if(tab?.name==="batches"){
-      header=  CenterDashBatchTableHeader()
-
-       body=  CenterDashBatchTableBody(
-        { name: filterByName },
-        handleIsLoading
-      )
+      body = CenterDashBatchTableBody();
+    } else if (tab?.name === "athletes") {
+      header = CenterDashAthleteTableHeader();
+      body = CenterDashAthleteTableBody();
+    } else {
+      header = CenterDashInventoryTableHeader();
+      body = CenterDashInventoryTableBody();
     }
-    else if(tab?.name==="athletes"){
-      header=  CenterDashAthleteTableHeader()
-      body=CenterDashAthleteTableBody(
-        { name: filterByName },
-        handleIsLoading
-      )
-    }else{
-      header=  CenterDashInventoryTableHeader()
-      body=CenterDashInventoryTableBody(
-        { name: filterByName },
-        handleIsLoading
-      )
-    }
-    setSelectedHeader(header)
-    setSelectedBody(body)
+    setSelectedHeader(header);
+    setSelectedBody(body);
   };
 
-
-console.log(selectedTab,"sdghdsgfhh")
+  console.log(selectedTab, "sdghdsgfhh");
   return (
     <>
       <Card className="h-100 mx-5">
         <header className="flex justify-between">
           <CardTitle title="CENTER DETAILS" />
-          <Button
-            onClick={() => router.push(`/edit-center-${center?.id}`)}
-          >
+          <Button onClick={() => router.push(`/edit-center-${center?.id}`)}>
             Edit Center
           </Button>
         </header>
@@ -159,8 +176,11 @@ console.log(selectedTab,"sdghdsgfhh")
               {/* {coach?.CoachSportsMaps?.map(
                 ({ sportId }) => sportsDictionary?.[sportId]
               ).join(" ,")} */}
-              {center?.CenterSports.map((ele,index) => (
-                <div className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm" key={index}>
+              {center?.CenterSports.map((ele, index) => (
+                <div
+                  className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm"
+                  key={index}
+                >
                   <p className="text-pink-500">{ele?.Sports?.name}</p>
                 </div>
               ))}
@@ -184,32 +204,31 @@ console.log(selectedTab,"sdghdsgfhh")
           </div>
         </div>
         <div className="mt-8 flex w-10/12 justify-between">
-          {tabs?.map((tab,index)=>{
-            return(
+          {tabs?.map((tab, index) => {
+            return (
               <div
-              className="flex gap-3 rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px] hover:border-pink-500"
-              onClick={()=>{
-                handleClick(tab)
-              }}
-              key={index}
-            >
-              <div>
-                <Image
-                  className="h-[56px] w-[56px] rounded-lg"
-                  src={tab?.image}
-                  alt={`${tab?.name}_img`}
-                  width={56}
-                  height={56}
-                />
+                className="flex gap-3 rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px] hover:border-pink-500"
+                onClick={() => {
+                  handleClick(tab);
+                }}
+                key={index}
+              >
+                <div>
+                  <Image
+                    className="h-[56px] w-[56px] rounded-lg"
+                    src={tab?.image}
+                    alt={`${tab?.name}_img`}
+                    width={56}
+                    height={56}
+                  />
+                </div>
+                <div>
+                  <p className="text-[#CF8DA7]">{tab?.label}</p>
+                  <h1>{tab?.value}</h1>
+                </div>
               </div>
-              <div>
-                <p className="text-[#CF8DA7]">{tab?.label}</p>
-                <h1>{tab?.value}</h1>
-              </div>
-            </div>
-            )
-          })
-          }
+            );
+          })}
         </div>
         <AddCenterSuccessToast
           open={openToast}
@@ -224,9 +243,7 @@ console.log(selectedTab,"sdghdsgfhh")
       <Card className="h-100 mx-5 mt-5">
         {/* Header */}
         <header className="flex justify-between">
-          <CardTitle
-            title={selectedTab?.allLabel}
-          />
+          <CardTitle title={selectedTab?.allLabel!} />
           <div className="flex justify-center align-middle">
             <Search pos="right" />
 
@@ -234,7 +251,7 @@ console.log(selectedTab,"sdghdsgfhh")
             {/* <Filter /> */}
 
             {/* Button */}
-            {selectedTab?.name==="batches" && (
+            {selectedTab?.name === "batches" && (
               <Button
                 className="ml-3 bg-[#F3476D] p-2 text-white"
                 onClick={() => {}}
@@ -245,12 +262,7 @@ console.log(selectedTab,"sdghdsgfhh")
           </div>
         </header>
 
-          <Table
-            tableHeader={selectedHeader}
-            tableBody={selectedBody}
-          />
-
-       
+        <Table tableHeader={selectedHeader} tableBody={selectedBody} />
       </Card>
     </>
   );
