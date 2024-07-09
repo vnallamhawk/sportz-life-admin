@@ -70,6 +70,18 @@
   .filter-visible .f-overlay{
     display: block;
   }
+  .accordion span.ml-4{
+    display: none;
+  }
+  .dropdown button{
+    width: 100%;
+  }
+  .dropdown button span{
+    color: black;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
 
 }
 

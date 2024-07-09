@@ -21,7 +21,11 @@ export default {
           "dark"  : "#f66238",
         },
         "s-gray" : "#F9F9F9",
-        "burgundy" : "#CF8DA7",
+        "burgundy" : {
+          "light" : "#CF8DA7",
+          "dark" : "#974062",
+        },
+
         "mandy" : {
           "light" : "#F78AA2",
           "dark" : "#f8436b"
