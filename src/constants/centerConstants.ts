@@ -40,17 +40,17 @@ export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
       },
     },
   },
-  {
-    label: "Select Sports",
-    id: "selectSports",
-    type: "select",
-    options: [],
-    isMulti:true,
-    placeHolder: "Select Sports",
-    rules: {
-      required: true,
-    },
-  },
+  // {
+  //   label: "Select Sports",
+  //   id: "selectSports",
+  //   type: "select",
+  //   options: [],
+  //   isMulti:true,
+  //   placeHolder: "Select Sports",
+  //   rules: {
+  //     required: true,
+  //   },
+  // },
   {
     label: "Location",
     id: "address",
@@ -63,16 +63,15 @@ export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
       },
     },
   },
-
-  {
-    label: "Select Coaches",
-    id: "selectCoaches",
-    type: "select",
-    options: [],
-    isMulti:true,
-    placeHolder: "Select Coaches",
-    rules: {
-      required: false,
-    },
-  },
+  // {
+  //   label: "Select Coaches",
+  //   id: "selectCoaches",
+  //   type: "select",
+  //   options: [],
+  //   isMulti:true,
+  //   placeHolder: "Select Coaches",
+  //   rules: {
+  //     required: false,
+  //   },
+  // },
 ];

@@ -75,10 +75,10 @@ const AddInventory = (props) => {
     const arr=[...inventories]
     arr.push(selectedInventory)
     setInventories(arr)
-
+    setSelectedInventory({})
   }
 
-  const removeInventory=(index,number)=>{
+  const removeInventory=(index:number)=>{
     const arr=[...inventories]
     arr.splice(index,1)
     setInventories(arr)

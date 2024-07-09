@@ -87,6 +87,10 @@ export interface InventoryData {
   quantity: number;
 }
 
+export interface SportsData {
+  name: string;
+}
+
 // export interface MULTI_FORM_TYPES extends COACH_TYPES {
 //   certificates: COACH_CERTIFICATE_TABLE_TYPES[];
 //   batchTableData?: BatchTableData[];

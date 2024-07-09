@@ -41,16 +41,17 @@ export const centerRouter = createTRPCRouter({
     )
     .query(async (opts) => {
       try {
-        console.log("opts are", opts);
         const centers = await opts.ctx?.prisma?.centers?.findUnique({
           where: {
             id: opts.input.id,
           },
           include: {
-            // CoachSportsMaps: true,
-            // batches: true,
-            // centers: true,
-            // certificates: true,
+            CenterSports:{
+              include:{
+                Sports:true
+              }
+            }
+         
           },
         });
 

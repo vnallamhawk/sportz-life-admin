@@ -29,6 +29,7 @@ import { dateFormat } from "~/helpers/date";
 import AddCenter from "~/components/AddCenter/AddCenter";
 import AddInventory from "~/components/AddInventory/AddInventory";
 import AddStaff from "~/components/AddStaff/AddStaff";
+import AddSports from "~/components/AddSports/AddSports";
 const multiFormData: MULTI_FORM_TYPES = {
   name: "",
   image:"",
@@ -75,10 +76,10 @@ export default function AddCenterForm() {
   
   //   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCenterUseEffectRun = useRef(false);
+  const { data: center } = id && api.center.getCenterById.useQuery({ id });
 
   useEffect(() => {
     if(id){
-      const { data: center } = api.center.getCenterById.useQuery({ id });
       if (center && !hasCenterUseEffectRun.current) {
         setFormData(center);
         hasCenterUseEffectRun.current = true;
@@ -166,7 +167,8 @@ export default function AddCenterForm() {
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
           {currentStep === 1 && <AddCenter />}
-          {currentStep === 2 && <AddInventory finalFormSubmissionHandler={finalFormSubmissionHandler}/>}
+          {currentStep === 2 && <AddSports />}
+          {currentStep === 3 && <AddInventory finalFormSubmissionHandler={finalFormSubmissionHandler}/>}
         </Card>
         <Card className="col-span-2 bg-gray-100">
           <div className="mb-10 font-bold">Center Image</div>
