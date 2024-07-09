@@ -28,6 +28,7 @@
     "@trpc/server": "10.26.0",
     "@types/react-datepicker": "^4.15.0",
     "@types/react-tabs": "^5.0.5",
+    "bcrypt": "^5.1.1",
     "classnames": "2.3.2",
     "date-fns": "2.30.0",
     "dayzed": "3.2.3",
