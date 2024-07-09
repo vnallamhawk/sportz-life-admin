@@ -4,7 +4,6 @@ import CardTitle from "../Card/CardTitle";
 import Button from "../Button";
 import Table from "../Table";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import { useRouter } from "next/navigation";
 import Select from "../Select";
 import SportsTableHeader from "../Sports/SportsTableHeader";
 import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
@@ -12,8 +11,7 @@ import { api } from "~/utils/api";
 import SportsTableBody from "../Sports/SportsTableBody";
 
 
-const AddSports = (props) => {
-  const router = useRouter();
+const AddSports = () => {
   const [loading, setLoading] = useState(false);
   const [sports,setSports]=useState([])
   const [selectedSport,setSelectedSport]=useState({})
@@ -25,7 +23,6 @@ const AddSports = (props) => {
     setLoading(isLoading);
   };
 
-  console.log(allSports,"allSportsallSports")
 
   useEffect(()=>{
     if(allSports && allSports?.length>0){
@@ -41,7 +38,7 @@ const AddSports = (props) => {
     }
   
 
-  },[JSON.stringify(sports),finalOptions,allSports])
+  },[sports,allSports])
 
 
   const {
@@ -96,6 +93,7 @@ const AddSports = (props) => {
           <Select
             // isMulti={props?.isMulti ?? false}
             options={finalOptions}
+            searchable={true}
             value={selectedSport?.value}
             placeholder={"Select Sport"}
             className="w-full"
