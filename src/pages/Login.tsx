@@ -17,12 +17,12 @@ export default function Login() {
   const createAdmin = api.useMutation('createAdmin');
 
 
-//   const { mutate: createMutate } = api.adminUser.createAdminUser.useMutation({
-    onSuccess: (response) => {
+  // const { mutate: createMutate } = api.adminUser.createAdminUser.useMutation({
+  //   onSuccess: (response) => {
      
-      return response?.id
-    },
-  });
+  //     return response?.id
+  //   },
+  // });
 
   const handleSubmit = async (e) => {
     debugger
