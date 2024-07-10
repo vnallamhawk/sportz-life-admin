@@ -6,6 +6,7 @@ import "~/styles/globals.css";
 import Layout from "./Layout";
 import Login from "./Login";
 import { usePathname } from "next/navigation";
+import ThemeContextProvider from "~/contexts/useThemeContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -13,12 +14,18 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
   const AnyComponent = Component as any;
-  const pathname=usePathname()
+  const pathname = usePathname();
   return (
     <SessionProvider session={session}>
-     {pathname!=="/" ? <Layout>
-        <AnyComponent {...pageProps} />
-      </Layout>:<Login/>}
+      <ThemeContextProvider>
+        {pathname !== "/" ? (
+          <Layout>
+            <AnyComponent {...pageProps} />
+          </Layout>
+        ) : (
+          <Login />
+        )}
+      </ThemeContextProvider>
     </SessionProvider>
   );
 };

@@ -8,7 +8,7 @@ import DashboardIcon from "~/components/Icons/DashboardIcon";
 import PlanAndPricingIcon from "~/components/Icons/PlanAndPricingIcon";
 import PostIcon from "~/components/Icons/PostIcon";
 import ReportsIcon from "~/components/Icons/ReportsIcon";
-// import StaffIcon from "~/components/Icons/StaffIcon";
+import StaffIcon from "~/components/Icons/StaffIcon";
 import SupportIcon from "~/components/Icons/SupportIcon";
 // import TrainingDrillsIcon from "~/components/Icons/TrainingDrillsIcon";
 // import TrainingPlanIcon from "~/components/Icons/TrainingPlanIcon";
@@ -29,11 +29,11 @@ export const SIDE_NAV_ITEMS = [
     route: "/centers",
     icon: <CentersIcon />,
   },
-  // {
-  //   label: "Staffs",
-  //   route: "/staff",
-  //   icon: <StaffIcon />,
-  // },
+  {
+    label: "Staffs",
+    route: "/staff",
+    icon: <StaffIcon />,
+  },
   {
     label: "Coach",
     route: "/coach",
