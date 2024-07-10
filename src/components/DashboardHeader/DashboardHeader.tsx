@@ -6,6 +6,7 @@ import User from "../../images/user.png";
 import { Dropdown } from "flowbite-react";
 import Search from "../../components/Search";
 import ThemeButton from "../ThemeButton";
+import { signOut } from "next-auth/react";
 
 export default function DashboardHeader() {
   return (
@@ -71,7 +72,7 @@ export default function DashboardHeader() {
               </button>
             )}
           >
-            <Dropdown.Item className="rounded-lg py-3 shadow-xl shadow-slate-100">
+            <Dropdown.Item className="rounded-lg py-3 shadow-xl shadow-slate-100" onClick={()=>signOut({ callbackUrl: '/' })}>
               Logout
             </Dropdown.Item>
           </Dropdown>

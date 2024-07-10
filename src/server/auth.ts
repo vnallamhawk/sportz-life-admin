@@ -29,7 +29,7 @@ export const authOptions: AuthOptions = {
     }),
   ],
   session: {
-    jwt: true,
+    strategy: "jwt",
   },
   jwt: {
     secret: process.env.JWT_SECRET,
