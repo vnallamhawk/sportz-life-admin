@@ -16,7 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   const pathname=usePathname()
   return (
     <SessionProvider session={session}>
-     {pathname!=="/" && session? <Layout>
+     {pathname!=="/" ? <Layout>
         <AnyComponent {...pageProps} />
       </Layout>:<Login/>}
     </SessionProvider>
