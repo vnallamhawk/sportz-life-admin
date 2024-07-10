@@ -23,7 +23,7 @@ export const adminUserRouter = createTRPCRouter({
         },
         ctx,
       }) => {
-        const hashedPassword = await bcrypt.hash(input.password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         const response = await ctx.prisma.admin.create({
           data: {
@@ -31,7 +31,6 @@ export const adminUserRouter = createTRPCRouter({
             password: hashedPassword,
           },
         });
-        debugger
         return response;
       }
     ),

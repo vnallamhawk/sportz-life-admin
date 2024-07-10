@@ -7,14 +7,13 @@ import { protectedProcedure } from '~/server/api/trpc';
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/client";
+import { signIn } from "next-auth/react";
 import { api } from "~/utils/api";
 
 
 export default function Login() {
-    const router=useRouter()
+  const router=useRouter()
   const [loginDetails, setLoginDetails] = useState({});
-  const createAdmin = api.useMutation('createAdmin');
 
 
   // const { mutate: createMutate } = api.adminUser.createAdminUser.useMutation({
@@ -25,21 +24,21 @@ export default function Login() {
   // });
 
   const handleSubmit = async (e) => {
-    debugger
-    createAdmin.mutateAsync({email:"gamuaggarwal@gmail.com",password:"Gamini@123"})
+       e.preventDefault();
 
-    // e.preventDefault();
-    // const res = await signIn("credentials", {
-    //   redirect: false,
-    //   email,
-    //   password,
-    // });
+    // createMutate({email:"gamuaggarwal@gmail.com",password:"Gamini@123"})
 
-    // if (res?.error) {
-    //   alert("Login failed");
-    // } else {
-    //   router.push("/dashboard")
-    // }
+    const res = await signIn("credentials", {
+      redirect: false,
+      email:loginDetails?.email,
+      password:loginDetails?.password,
+    });
+
+    if (res?.error) {
+      alert("Login failed");
+    } else {
+      router.push("/dashboard")
+    }
   };
 
   const handleChange = async (e) => {
