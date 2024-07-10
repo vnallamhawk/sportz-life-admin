@@ -3,26 +3,43 @@ import Logo from "../images/logo.svg";
 import LoginMobileImage from "../images/pngwing.svg";
 import Link from "next/link";
 import Image from "next/image";
+import { protectedProcedure } from '~/server/api/trpc';
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/client";
+import { api } from "~/utils/api";
+
 
 export default function Login() {
     const router=useRouter()
   const [loginDetails, setLoginDetails] = useState({});
+  const createAdmin = api.useMutation('createAdmin');
+
+
+//   const { mutate: createMutate } = api.adminUser.createAdminUser.useMutation({
+    onSuccess: (response) => {
+     
+      return response?.id
+    },
+  });
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const res = await signIn("credentials", {
-      redirect: false,
-      email,
-      password,
-    });
+    debugger
+    createAdmin.mutateAsync({email:"gamuaggarwal@gmail.com",password:"Gamini@123"})
 
-    if (res?.error) {
-      alert("Login failed");
-    } else {
-      router.push("/dashboard")
-    }
+    // e.preventDefault();
+    // const res = await signIn("credentials", {
+    //   redirect: false,
+    //   email,
+    //   password,
+    // });
+
+    // if (res?.error) {
+    //   alert("Login failed");
+    // } else {
+    //   router.push("/dashboard")
+    // }
   };
 
   const handleChange = async (e) => {
