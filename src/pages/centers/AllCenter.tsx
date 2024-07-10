@@ -29,7 +29,7 @@ const AllCenter = () => {
               className="w-80 p-1.5"
             />
             <Button
-              className="ml-3 bg-pink-700 p-2"
+              className="ml-3 bg-pink-700 p-2 text-white"
               onClick={() => router.push("/centers/AddCenter")}
             >
               ADD NEW CENTER
@@ -38,7 +38,10 @@ const AllCenter = () => {
         </header>
         <Table
           tableHeader={CenterBatchTableHeader()}
-          tableBody={CenterBatchTableBody({ name: filterByName }, handleIsLoading)}
+          tableBody={CenterBatchTableBody(
+            { name: filterByName },
+            handleIsLoading
+          )}
         />
         {loading ? <LoadingSpinner /> : ""}
       </Card>
