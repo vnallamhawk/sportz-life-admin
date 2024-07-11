@@ -1,50 +1,24 @@
 import React from "react";
 
-
-export default function CenterDashInventoryTableBody() {
-
-  //hardcoded table data
-const  tableData = [
-    {
-      name: "whistle",
-      quantity: 6,
-      action: "Add More Quantity",
-    },
-    {
-      name: "whistle",
-      quantity: 6,
-      action: "Add More Quantity",
-    },
-    {
-      name: "whistle",
-      quantity: 6,
-      action: "Add More Quantity",
-    },
-    {
-      name: "whistle",
-      quantity: 6,
-      action: "Add More Quantity",
-    },
-  ];
-
+export default function CenterDashInventoryTableBody(data) {
   return (
     <>
-      {tableData &&
-        tableData.length > 0 &&
+      {data &&
+        data.length > 0 &&
         // tableData?.map(({ name, address, batches, mobile }, index) => (
-        tableData?.map(({ name, quantity, action }, index) => (
+        data?.map((inventory, index) => (
           <tr
-            key={`${name}-${index}`}
+            key={`${inventory?.id}-${index}`}
             className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
           >
             <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
-              {name}
+              {inventory?.Inventories?.name}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {quantity}
+              {inventory?.quantity}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {action}
+              Remove
             </td>
           </tr>
         ))}

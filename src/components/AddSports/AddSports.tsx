@@ -4,7 +4,7 @@ import CardTitle from "../Card/CardTitle";
 import Button from "../Button";
 import Table from "../Table";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import Select from "react-select";
+import Select from "../Select";
 import SportsTableHeader from "../Sports/SportsTableHeader";
 import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
 import { api } from "~/utils/api";
@@ -16,16 +16,21 @@ const AddSports = () => {
   const [selectedSport, setSelectedSport] = useState({});
   const [finalOptions, setFinalOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [newSport, setNewSport] = useState(null);
-  const [about, setAbout] = useState(null);
-  const [sportImage, setSportImage] = useState(null);
+  const [sportDetails,setSportDetails]=useState({})
+  
 
   const { data: allSports } = api.sports.getAllSports.useQuery();
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
-
+  const { mutate: createMutate } = api.sports.createSports.useMutation({
+    onSuccess: (response) => {
+      let arr:any=[...finalOptions]
+      arr.push({label: response?.name, value: response?.id })
+      setFinalOptions(arr)
+    },
+  });
   useEffect(() => {
     if (allSports && allSports?.length > 0) {
       let arr = [];
@@ -60,16 +65,15 @@ const AddSports = () => {
     setCurrentStep && setCurrentStep(currentStep + 1);
   };
 
-  const handleChangeInventory = (value: string) => {
-    const option = finalOptions?.find((item) => item?.value == value);
-    let obj: any = { ...selectedSport, name: option.label, value };
+  const handleChangeSports = (value: string) => {
+    let obj: any = { ...selectedSport,value };
 
     setSelectedSport(obj);
   };
 
   const onSaveSports = () => {
     const arr = [...sports];
-    arr.push(selectedSport);
+    arr.push({...selectedSport,sportId:parseInt(selectedSport?.value)});
     setSports(arr);
     setSelectedSport({});
   };
@@ -82,16 +86,8 @@ const AddSports = () => {
 
   const addNewSport = (e) => {
     e.preventDefault();
+    createMutate({...sportDetails,image:""});
     setShowModal(false);
-
-    console.log(
-      "sport is ",
-      newSport,
-      "about is ",
-      about,
-      "image is ",
-      sportImage
-    );
 
     // api for create sport
   };
@@ -103,9 +99,8 @@ const AddSports = () => {
         <AddSportModal
           show={showModal}
           setShow={setShowModal}
-          addSport={setNewSport}
-          addAbout={setAbout}
-          addImage={setSportImage}
+          sportDetails={sportDetails}
+          setSportDetails={setSportDetails}
           handleSport={addNewSport}
         />
       )}
@@ -127,17 +122,16 @@ const AddSports = () => {
             Add New Sport
           </div>
         </div>
-
         <div className="flex justify-evenly">
-          <Select
+        <Select
             // isMulti={props?.isMulti ?? false}
             options={finalOptions}
-            // searchable={true}
-            value={selectedSport?.value}
-            placeholder={"Select Sport"}
+            value={selectedSport?.name}
+            placeholder={"select sports"}
             className="w-full"
-            onChange={(value) => handleChangeInventory(value)}
+            onChangeHandler={(value) => handleChangeSports(value)}
           />
+
           {selectedSport && Object.keys(selectedSport).length > 0 && (
             <Button
               className="border-1  ml-3 rounded-lg border-pink-700 p-2 text-pink-700"
@@ -150,7 +144,7 @@ const AddSports = () => {
 
         <Table
           tableHeader={SportsTableHeader()}
-          tableBody={SportsTableBody(sports, removeSports)}
+          tableBody={SportsTableBody(sports, removeSports,finalOptions)}
         />
         {loading ? <LoadingSpinner /> : ""}
       </Card>

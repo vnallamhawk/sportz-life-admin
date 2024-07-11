@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
@@ -10,6 +10,8 @@ import InventoryImg from "../../images/InventoryImg.png";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
 import type { Centers } from "@prisma/client";
+import { api } from "~/utils/api";
+
 // import { type Sports } from "@prisma/client";
 
 // import {
@@ -38,23 +40,28 @@ import CenterDashCoachTableBody from "~/components/CenterDashboardTables/Coach/C
 import CenterDashAthleteTableBody from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableBody";
 import CenterDashInventoryTableBody from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableBody";
 
-// export const getServerSideProps = async (
-//   context: GetServerSidePropsContext
-// ) => {
-//   const id = context?.params?.id;
-//   // const sports = await prisma.sports.findMany();
-//   const center = await prisma.centers.findUnique({
-//     where: {
-//       id: id ? Number(id) : undefined,
-//     },
-//     include: {
-//       CenterSports: {
-//         include: {
-//           Sports: true,
-//         },
-//       },
-//     },
-//   });
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const id = context?.params?.id;
+  // const sports = await prisma.sports.findMany();
+  const center = await prisma.centers.findUnique({
+    where: {
+      id: id ? Number(id) : undefined,
+    },
+    include: {
+      CenterSports: {
+        include: {
+          Sports: true,
+        },
+      },
+      CenterInventories: {
+        include: {
+          Inventories: true,
+        },
+      },
+    },
+  });
 
 //   return {
 //     props: {
@@ -115,6 +122,22 @@ export default function Page({ center }: { center: Centers }) {
   const sportsArr: string[] = ["Rugby", "Baseball", "Tennis", "BasketBall"];
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [finalTabs, setFinalTabs] = useState(tabs);
+
+console.log(center,"dbjsjsdfj")
+
+  useEffect(()=>{
+    if(finalTabs && finalTabs.length>0 && Object.keys(center).length>0 ){
+      const arr=[...finalTabs]
+      const index=arr?.findIndex((item)=>item?.name==="inventories")
+      if(index>-1 && center?.CenterInventories){
+        arr[index].value=center?.CenterInventories?.length
+      }
+      setFinalTabs(arr)
+    }
+
+  },[center,finalTabs])
+
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
@@ -144,7 +167,7 @@ export default function Page({ center }: { center: Centers }) {
       body = CenterDashAthleteTableBody();
     } else {
       header = CenterDashInventoryTableHeader();
-      body = CenterDashInventoryTableBody();
+      body = CenterDashInventoryTableBody(center?.CenterInventories);
     }
     setSelectedHeader(header);
     setSelectedBody(body);

@@ -101,7 +101,7 @@ export default function AddCenterForm() {
     },
   });
   const { mutate: createMutateInventories } =
-    api.inventory.createInventory.useMutation({
+    api.centerInventory.createCenterInventory.useMutation({
       onSuccess: (response) => {
         console.log("response data is ", response);
         router.push(`/centers/${centerId ?? ""}`);
@@ -138,12 +138,12 @@ export default function AddCenterForm() {
     if (
       formData &&
       Object.keys(formData)?.length > 0 &&
-      formData?.sportsId &&
+      formData?.sports &&
       formData?.inventories &&
       centerId
     ) {
-      const finalCenterSports = formData?.sportsId?.map((v) => ({
-        sportId: v,
+      const finalCenterSports = formData?.sports?.map((v) => ({
+        ... v,
         centerId,
       }));
 
