@@ -55,6 +55,11 @@ export const getServerSideProps = async (
           Sports: true,
         },
       },
+      CenterInventories: {
+        include: {
+          Inventories: true,
+        },
+      },
     },
   });
 
@@ -119,20 +124,19 @@ export default function Page({ center }: { center: Centers }) {
   const [loading, setLoading] = useState(true);
   const [finalTabs, setFinalTabs] = useState(tabs);
 
-  const { data: allCenterInventories } = api.centerInventory.getAllCenterInventory.useQuery();
-
+console.log(center,"dbjsjsdfj")
 
   useEffect(()=>{
-    if(finalTabs && finalTabs.length>0){
+    if(finalTabs && finalTabs.length>0 && Object.keys(center).length>0 ){
       const arr=[...finalTabs]
       const index=arr?.findIndex((item)=>item?.name==="inventories")
-      if(index>-1){
-        arr[index].value=allCenterInventories?.length
+      if(index>-1 && center?.CenterInventories){
+        arr[index].value=center?.CenterInventories?.length
       }
       setFinalTabs(arr)
     }
 
-  },[allCenterInventories,finalTabs])
+  },[center,finalTabs])
 
 
   const handleIsLoading = (isLoading: boolean) => {
@@ -163,7 +167,7 @@ export default function Page({ center }: { center: Centers }) {
       body = CenterDashAthleteTableBody();
     } else {
       header = CenterDashInventoryTableHeader();
-      body = CenterDashInventoryTableBody(allCenterInventories);
+      body = CenterDashInventoryTableBody(center?.CenterInventories);
     }
     setSelectedHeader(header);
     setSelectedBody(body);
