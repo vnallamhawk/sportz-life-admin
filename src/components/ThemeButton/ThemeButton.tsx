@@ -4,7 +4,7 @@ import { useTheme } from "~/contexts/useThemeContext";
 const ThemeButton = () => {
   const { theme, toggleTheme } = useTheme();
   return (
-    <nav className="flex h-20  items-center justify-end">
+    // <nav className="flex h-20  items-center justify-end">
       <div
         onClick={toggleTheme}
         className=" flex h-[40px] w-[40px] items-center justify-center rounded-md border-2 "
@@ -16,7 +16,7 @@ const ThemeButton = () => {
           // <p>Light</p>
         )}
       </div>
-    </nav>
+    // </nav>
   );
 };
 

@@ -94,12 +94,11 @@
   }
 
   .scroll::-webkit-scrollbar-track {
-    background: #ffe6de;
-    /* color of the tracking area */
+    background: #f1f1f1;
   }
 
   .scroll::-webkit-scrollbar-thumb {
-    background-color: #ff9678;
+    background-color: #a09f9f;
     /* color of the scroll thumb */
     border-radius: 10px;
     /* roundness of the scroll thumb */
@@ -118,6 +117,22 @@ button[role="combobox"] {
 body.dark {
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
+}
+.react-datepicker-wrapper{
+  width: 100%;
+}
+.c-date{
+  background: url(../images/calender.svg);
+  background-repeat: no-repeat;
+  background-position: center right 10px;
+}
+.c-select .react-select__control{
+  border-radius: 0.5rem;
+}
+.c-select .react-select__value-container{
+  /* padding-left: 20px; */
+  padding: 8px 8px 8px 20px;
+
 }
 
 /*******************************************************************************************************/

@@ -7,6 +7,7 @@ import {
     DialogBody,
 
 } from "@material-tailwind/react";
+import DatePicker from "react-datepicker";
 import Cross from "../../images/cross.svg";
 import Calendar from 'react-calendar';
 import { Dropdown } from "flowbite-react";
@@ -16,6 +17,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 export default function () {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(!open);
+    const [startDate, setStartDate] = useState(new Date());
 
     const [value, onChange] = useState<Value>(new Date());
     const customTheme = {
@@ -149,10 +151,12 @@ export default function () {
                     <div>
 
                         <div className="my-3">
-                            <input type="date" value="Freeze From" placeholder="Freeze From" className="w-full rounded-lg focus:ring-0 text-lg border-gray-400" />
+                            {/* <input type="date" value="Freeze From" placeholder="Freeze From" className="w-full rounded-lg focus:ring-0 text-lg border-gray-400" /> */}
+                            <DatePicker showIcon  selected={startDate} onChange={(date) => setStartDate(date)}  className="w-full rounded-lg focus:ring-0 text-lg border-gray-400 c-date"/>
                         </div>
                         <div className="my-3">
-                            <input type="date" value="Freeze From" placeholder="Freeze To" className="w-full rounded-lg focus:ring-0 text-lg border-gray-400" />
+                            <DatePicker showIcon selected={startDate} onChange={(date) => setStartDate(date)}  className="w-full rounded-lg focus:ring-0 text-lg border-gray-400 c-date" placeholderText="date"/>
+                            {/* <input type="date" value="Freeze From" placeholder="Freeze To" className="w-full rounded-lg focus:ring-0 text-lg border-gray-400" /> */}
                         </div>
                         <div className="my-3">
 

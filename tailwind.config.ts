@@ -30,7 +30,10 @@ export default {
           "light" : "#F78AA2",
           "dark" : "#f8436b"
         },
-        "blush" : "#FFBEAB",
+        "blush" :{
+          "light" : "#FFBEAB",
+          "dark" : "#f98664"
+        },
         "tertiary" : {
           "200" : "#E5FFF2",
           "700" : "#00B65A"

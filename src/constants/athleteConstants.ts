@@ -40,7 +40,7 @@ export const ATHLETE_TABLE_HEADERS = [
 
 export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   {
-    label: "Coach Name",
+    label: "Athlete Name",
     id: "name",
     type: "textbox",
     rules: {
@@ -52,9 +52,9 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     },
   },
   {
-    label: "Designation",
-    id: "designation",
-    type: "textbox",
+    label: "Date of Birth",
+    id: "dateOfBirth",
+    type: "calendar",
     rules: {
       required: true,
       maxLength: {
@@ -64,9 +64,9 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     },
   },
   {
-    label: "About",
-    id: "about",
-    type: "textbox",
+    label: "Gender",
+    id: "gender",
+    type: "select",
     rules: {
       required: true,
       maxLength: {
@@ -76,9 +76,9 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     },
   },
   {
-    label: "Phone Number",
-    id: "contactNumber",
-    type: "textbox",
+    label: "Height",
+    id: "name",
+    type: "select",
     rules: {
       required: true,
       maxLength: {
@@ -88,39 +88,27 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     },
   },
   {
-    label: "Email Address",
-    id: "email",
-    type: "textbox",
-    rules: {
-      required: true,
-      pattern: {
-        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        message: "Please enter a valid email !",
-      },
-      maxLength: {
-        value: 25,
-        message: "Too Many Characters",
-      },
-    },
-  },
-  {
-    label: "Date of Birth",
-    id: "dateOfBirth",
-    type: "calendar",
-    placeHolder: "Date of Birth",
-    rules: {
-      required: true,
-    },
-  },
-  {
-    label: "Gender",
+    label: "Weight",
     id: "gender",
     type: "select",
     options: [
-      { label: "Male", value: "MALE" },
-      { label: "Female", value: "FEMALE" },
+      { label: "50", value: "50" },
+      { label: "60", value: "60" },
     ],
-    placeHolder: "Select Gender",
+    placeHolder: "Select Weight",
+    rules: {
+      required: true,
+    },
+  },
+  {
+    label: "Blood Group",
+    id: "gender",
+    type: "select",
+    options: [
+      { label: "A+", value: "A+" },
+      { label: "B+", value: "B+" },
+    ],
+    placeHolder: "Select Blood Group",
     rules: {
       required: true,
     },

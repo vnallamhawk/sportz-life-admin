@@ -20,11 +20,11 @@ export default function SideNav({ className }: { className: string }) {
 
   return (
     <>
-      <div className="fixed -left-[256px] top-0 z-10 min-w-[256px] transition-all duration-300 ease-in lg:relative lg:left-0 lg:z-0">
+      <div className="fixed -left-[256px] top-0 bottom-0 z-10 min-w-[256px] transition-all duration-300 ease-in lg:relative lg:left-0 lg:z-0">
         <div className="overlay fixed bottom-0 left-0 right-0 top-0 hidden bg-black bg-opacity-30"></div>
         <NavigationMenu.Root
           className={classNames(
-            "relative -top-[20px] z-10 h-full bg-gray-950 pr-5 lg:z-0",
+            "relative -top-[20px] z-10 bg-gray-950 pr-5 lg:z-0",
             {
               [`${className}`]: className !== "",
             }

@@ -85,7 +85,8 @@ export default function AddCoach() {
                   options={options}
                   value={value}
                   placeholder={placeHolder}
-                  className="w-full"
+                  className="w-full border-1 border-gray-300 c-select"
+                  classNamePrefix="react-select"
                   onChange={(element) => {
                     onChange(element);
                   }}
@@ -148,9 +149,10 @@ export default function AddCoach() {
 
   return (
     <>
-      <CardTitle title="ADD COACH" />
-      <div className="text-lg font-bold">COACH DETAILS</div>
-      <div className="mt-10 grid grid-cols-2 gap-x-10 gap-y-12">
+
+      <CardTitle title="ADD ATHLETE" />
+      <div className=" font-medium uppercase text-3xl font-heading" >Athlete Personal Details</div>
+      <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-8">
         {formConstantValues.map((props) => (
           <div key={props.id}>
             {getInputElement(props)}
@@ -169,15 +171,76 @@ export default function AddCoach() {
           </div>
         ))}
       </div>
-      <div className="mr-10 mt-10 flex justify-end">
-        <Button
-          className="border-1 mx-3 bg-pink-600 hover:bg-pink-800"
-          type="button"
-          onClick={() => void nextClickHandler()}
-        >
-          Next
-        </Button>
-      </div>
-    </>
-  );
+      <div className="mt-10">
+        <div className="text-2xl mb-2 font-medium font-heading uppercase">Medical History</div>
+        <div className="text-gray-400">Kindly list down if your child has any allergies, major injuries, chronic diseases, physical disabilities &
+          Children with special needs (CWSN)</div>
+        <div className="flex mt-4 items-start">
+          <input type="text" className="grow h-20 rounded-lg border-1 border-gray-300 pl-5 focus:outline-none focus:ring-0 focus:border-gray-600" />
+          <Button
+            className="border-1 mx-3 px-8 py-3 font-medium border-blush-light hover:border-blush-dark rounded-md text-blush-light hover:text-blush-dark"
+            type="button"
+          >
+            Add
+          </Button>
+        </div>
+        <div className="mt-5 max-h-[370px] overflow-auto px-0 scroll">
+          <table className="table-fixed common-table w-full min-w-max  text-left border-separate border-spacing-y-3">
+            <thead>
+              <tr>
+                <th className="pl-7 w-20 text-gray-400 font-medium" >#</th>
+                <th className="text-justify text-gray-400 font-medium">Medical History </th>
+                <th className="w-32 text-gray-400 font-medium">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="p-4 border-y-2 border-gray-100 w-20" >01</td>
+                <td className="p-4 border-y-2 border-gray-100  text-justify">
+                  <div>
+                    Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et blanditiis sunt qui asperiores tempore eos similique veniam aut maxime veniam aut possimus possimus qui voluptatem maiores.AAA
+                  </div>
+                </td>
+                <td className="p-4 border-y-2 border-gray-100 w-32 text-gray-400 font-medium">
+                Remove
+                </td>
+              </tr>
+              <tr>
+                <td className="p-4 border-y-2 border-gray-100 w-20" >01</td>
+                <td className="p-4 border-y-2 border-gray-100  text-justify">
+                  <div>
+                    Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et blanditiis sunt qui asperiores tempore eos similique veniam aut maxime veniam aut possimus possimus qui voluptatem maiores.AAA
+                  </div>
+                </td>
+                <td className="p-4 border-y-2 border-gray-100 w-32 text-gray-400 font-medium">
+                Remove
+                </td>
+              </tr>
+              <tr>
+                <td className="p-4 border-y-2 border-gray-100 w-20" >01</td>
+                <td className="p-4 border-y-2 border-gray-100  text-justify">
+                  <div>
+                    Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et blanditiis sunt qui asperiores tempore eos similique veniam aut maxime veniam aut possimus possimus qui voluptatem maiores.AAA
+                  </div>
+                </td>
+                <td className="p-4 border-y-2 border-gray-100 w-32 text-gray-400 font-medium">
+                Remove
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+        <div className="mr-10 mt-10 flex justify-end absolute bottom-8 right-0">
+          <Button
+            className="!border-0 px-5 focus:ring-0 outline-0 bg-mandy-dark hover:bg-mandy-dark focus:outline-none focus:ring text-white"
+            type="button"
+            onClick={() => void nextClickHandler()}
+          >
+            Next
+          </Button>
+        </div>
+
+      </>
+      );
 }

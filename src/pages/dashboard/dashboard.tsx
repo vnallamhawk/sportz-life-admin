@@ -91,7 +91,7 @@ export default function dashboard() {
                 <Image src={LittleBoy} className="absolute -bottom-[16px] lg:-bottom-[24px] left-0 lg:w-auto lg:max-w-none max-w-[85px]" alt="" />
                 <div className="lg:pl-36 pl-24 lg:text-left text-center">
                   <div className="text-lg lg:text-3xl font-normal font-heading text-white" >70%</div>
-                  <div className="text-xs lg:text-base text-blush">125 - Male</div>
+                  <div className="text-xs lg:text-base text-blush-light">125 - Male</div>
                 </div>
               </div>
               <div className="flex relative grow lg:ml-2">

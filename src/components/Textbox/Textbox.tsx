@@ -22,7 +22,7 @@ export default function Textbox({
   return (
     <input
       {...rest}
-      className={classNames("rounded-lg border-2 border-solid pl-3", {
+      className={classNames("rounded-lg border-1 border-gray-300 pl-5 focus:outline-none focus:ring-0 focus:border-gray-600", {
         [`${className}`]: className !== "",
       })}
       placeholder={placeHolder}

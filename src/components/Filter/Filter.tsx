@@ -1,5 +1,4 @@
 import Image from "next/image";
-import SearchIcon from "../../images/search.png";
 import FilterIcon from "../../images/filter-icon.svg";
 import Cross from "../../images/cross.svg";
 import React from "react";
@@ -27,16 +26,7 @@ export default function Filter() {
     const handleOpenAcc6 = () => setOpenAcc6((cur) => !cur);
     return (
         <>
-            <div className="flex items-center mb-6 justify-between ">
-                <div className="text-2xl font-medium font-heading uppercase">
-                    All Athletes
-                </div>
-                <div className="flex items-center">
-                    <div className="relative">
-                        <Image src={SearchIcon} className="absolute right-3 top-2 z-10" alt="" />
-                        <input type="search" className="2xl:min-w-[450px] border-gray-200 focus:border-gray-400 focus:ring-0 relative w-full text-gray-700 bg-transparent pl-4 pr-12 py-2 border-2 placeholder-gray-300 focus:outline-none rounded-lg text-base" placeholder="Search by name" />
-                    </div>
-                    <div className="">
+              <div className="">
                         <button className="ml-3 border-gray-200 focus:ring-0 relative text-gray-700 bg-white pl-4 pr-20 py-2.5 border-2  focus:outline-none rounded-lg text-sm">Filter <Image src={FilterIcon} alt="" className="absolute right-2 top-1.5" /></button>
                         <div className="fixed left-0 right-0 top-0 bottom-0 h-screen w-full z-20 transition-all ease-in duration-300 hidden">
                             <div className="f-overlay bg-black bg-opacity-30 w-full h-full hidden"></div>
@@ -232,11 +222,6 @@ export default function Filter() {
                             </div>
                         </div>
                     </div>
-                    <button className="bg-mandy-dark text-white py-2.5 px-6 rounded-lg ml-3">Add New Athlete</button>
-                </div>
-            </div>
-
-          
 
         </>
     )

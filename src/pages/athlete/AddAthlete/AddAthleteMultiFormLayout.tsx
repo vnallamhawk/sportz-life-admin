@@ -22,6 +22,7 @@ import FileUpload from "~/components/FileUpload";
 import { getSportsDictionaryServices } from "~/services/sportServices";
 
 import AddAthlete from "../../../components/AddAthlete/AddAthlete";
+import DashboardHeader from "~/components/DashboardHeader";
 
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: "",
@@ -171,9 +172,11 @@ export default function AddAthleteMultiFormLayout() {
   };
 
   return (
+    <div className="px-6 bg-s-gray pb-7">
+        <DashboardHeader />
     <FormContext.Provider value={formProviderData}>
-      <div className="grid grid-cols-6 grid-rows-1">
-        <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
+      <div className="grid grid-cols-6 grid-rows-1 relative">
+        <Card className="col-span-4 h-full p-0 pt-10 bg-white rounded-l-xl relative">
           {currentStep === 1 && <AddAthlete />}
           {/* {currentStep === 2 && <AddCoachCertificates />}
           {currentStep === 3 && (
@@ -185,8 +188,8 @@ export default function AddAthleteMultiFormLayout() {
             />
           )} */}
         </Card>
-        <Card className="col-span-2 bg-gray-100">
-          <div className="mb-10 font-bold">Coach Image</div>
+        <Card className="col-span-2 bg-stone-100 rounded-r-xl px-7">
+          <div className="font-medium uppercase text-2xl font-heading mb-10">Athlete Image</div>
 
           <div>
             {preview.length ? (
@@ -197,12 +200,12 @@ export default function AddAthleteMultiFormLayout() {
                     key={index}
                   >
                     <ImageWithFallback
-                      className="rounded-2xl"
+                      className="rounded-full mx-auto mb-6"
                       src={upFile.preview}
                       alt="preview"
                       height={205}
                       width={205}
-                      fallbackSrc="/images/fallback.png"
+                      fallbackSrc="/images/fallback-1.png"
                     />
                   </div>
                 );
@@ -212,19 +215,20 @@ export default function AddAthleteMultiFormLayout() {
                 <ImageWithFallback
                   src={""}
                   alt="preview"
-                  height={500}
-                  width={500}
-                  fallbackSrc="/images/fallback.png"
+                  height={205}
+                  width={205}
+                  className="rounded-full mx-auto mb-6"
+                  fallbackSrc="/images/fallback-1.png"
                 />
               </div>
             )}
-            <div className="mb-5 flex justify-center">
+            <div className="mb-14 flex justify-center">
               <FileUpload onDropCallback={onDropCallback} />{" "}
             </div>
           </div>
           <div>
-            <span className="mb-5 font-bold">Note</span>
-            <ul className="list-disc">
+            <div className="mb-5 font-bold">Note</div>
+            <ul className="list-disc pl-5 text-gray-500">
               <li>Please upload jpg, png, .tiff file formats only</li>
               <li>Maximum Size 100 MB</li>
               <li>Minimum dimension 500px width by 500px height</li>
@@ -233,5 +237,6 @@ export default function AddAthleteMultiFormLayout() {
         </Card>
       </div>
     </FormContext.Provider>
+    </div>
   );
 }
