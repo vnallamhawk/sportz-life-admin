@@ -8,6 +8,13 @@ import {
     AccordionBody,
     Slider,
 } from "@material-tailwind/react";
+import {
+    Tabs,
+    TabsHeader,
+    TabsBody,
+    Tab,
+    TabPanel,
+} from "@material-tailwind/react";
 
 export default function Filter() {
 
@@ -26,11 +33,11 @@ export default function Filter() {
     const handleOpenAcc6 = () => setOpenAcc6((cur) => !cur);
     return (
         <>
-              <div className="">
-                        <button className="ml-3 border-gray-200 focus:ring-0 relative text-gray-700 bg-white pl-4 pr-20 py-2.5 border-2  focus:outline-none rounded-lg text-sm">Filter <Image src={FilterIcon} alt="" className="absolute right-2 top-1.5" /></button>
-                        <div className="fixed left-0 right-0 top-0 bottom-0 h-screen w-full z-20 transition-all ease-in duration-300 hidden">
+            <div >
+                <button className="lg:block hidden ml-3 border-gray-200 focus:ring-0 relative text-gray-700 bg-white pl-4 pr-20 py-2.5 border-2  focus:outline-none rounded-lg text-sm">Filter <Image src={FilterIcon} alt="" className="absolute right-2 top-1.5" /></button>
+                <div className="relative lg:fixed left-0 right-0 top-0 bottom-0 min-h-screen w-full z-20 transition-all ease-in duration-300 hidden">
                             <div className="f-overlay bg-black bg-opacity-30 w-full h-full hidden"></div>
-                            <div className="bg-white min-w-[355px] max-w-[355px] h-screen overflow-auto scroll fixed top-0 bottom-0 f-screen -right-[355px] p-6 pr-7 transition-all ease-in duration-300">
+                            <div className="bg-white min-w-[355px] max-w-[355px] min-h-screen overflow-auto scroll fixed top-0 bottom-0 f-screen -right-[355px] p-6 pr-7 transition-all ease-in duration-300">
                                 <div className="flex justify-between items-center mb-5">
                                     <div className="font-heading font-medium text-2xl">Filter</div>
                                     <button><Image src={Cross} alt="" /></button>
@@ -221,7 +228,135 @@ export default function Filter() {
                              </div>
                             </div>
                         </div>
+
+
+                {/* mobile responsive */}
+                {/* <div className="relative lg:fixed left-0 right-0 top-0 bottom-0 min-h-screen w-full z-20 transition-all ease-in duration-300  filter-visible">
+                    <div className="f-overlay bg-black bg-opacity-30 w-full h-full hidden"></div>
+                    <div className="bg-white w-full min-h-screen overflow-auto scroll fixed top-0 bottom-0 f-screen -right-[355px] p-6 pe-7 ps-0 transition-all ease-in duration-300">
+                        <div className="flex flex-col h-full">
+                            <div className="flex justify-between items-center mb-5 ps-6">
+                                <div className="font-heading font-medium text-2xl">Filter</div>
+                                <button><Image src={Cross} alt="" /></button>
+                            </div>
+                            <div className="flex justify-between items-center mb-5 ps-6">
+                                <div className="font-heading font-medium text-2xl">Filter</div>
+                                <div className="text-gray-600 font-medium text-base">Clear Filters</div>
+                            </div>
+                            <div className="min-h grow filters-mobile">
+                                <Tabs value="html" orientation="vertical" className="h-full">
+                                    <TabsHeader className="w-44 text-left px-0">
+                                        <Tab value="Sports">Sports</Tab>
+                                        <Tab value="centers">Centers</Tab>
+                                        <Tab value="Batches">Batches</Tab>
+                                        <Tab value="Age"> Age</Tab>
+                                        <Tab value="Payment Status">Payment Status</Tab>
+                                        <Tab value="Gender">Gender</Tab>
+
+                                    </TabsHeader>
+                                    <TabsBody className="pl-4">
+                                        <TabPanel value="Sports" className="py-0 pl-4">
+                                            <div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Tennis</span>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Rugby</span>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Rugby</span>
+                                                </div>
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel value="centers" className="py-0 pl-4">
+                                            <div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Netaji Indoor Stadium</span>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Netaji Indoor Stadium</span>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Netaji Indoor Stadium</span>
+                                                </div>
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel value="Batches" className="py-0 pl-4">
+                                            <div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Volley Ball champions Team</span>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Rocket Shot Tennis Team</span>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Top Class Basketball Batch</span>
+                                                </div>
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel value="Age" className="py-0 pl-4">
+                                            <div className="w-96">
+                                                <Slider
+                                                    defaultValue={50}
+                                                    className="text-none bg-red-700"
+                                                    barClassName="rounded-none bg-[#F3476D]"
+                                                    thumbClassName=" -mt-1 [&::-webkit-slider-thumb]:appearance-none"
+                                                    // thumbClassName="[&::-moz-range-thumb]:rounded-none [&::-webkit-slider-thumb]:rounded-none [&::-moz-range-thumb]:-mt-[4px] [&::-webkit-slider-thumb]:-mt-[4px]"
+                                                    trackClassName="[&::-webkit-slider-runnable-track]:bg-transparent [&::-moz-range-track]:bg-transparent rounded-none !bg-[#FEEFF2]"
+                                                />
+
+                                            </div>
+                                        </TabPanel>
+
+                                        <TabPanel value="Payment Status" className="py-0 pl-4">
+                                            <div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Payment Dues</span>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Paid</span>
+                                                </div>
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel value="Gender" className="py-0 pl-4">
+                                            <div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Male</span>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <input type="checkbox" className="w-5 h-5 rounded border-orange-light border-opacity-30 border-2 text-orange-light focus:ring-0 " />
+                                                    <span className="ml-2">Female</span>
+                                                </div>
+                                            </div>
+                                        </TabPanel>
+
+                                    </TabsBody>
+                                </Tabs>
+                            </div>
+                            <div className="flex justify-center grid grid-cols-2 py-2 ps-6">
+                                <div className="col-span-1">
+                                    <div className="font-heading font-medium text-2xl">146</div>
+                                    <div className="text-gray-500">Athletes found</div>
+                                </div>
+                                <button className="col-span-1 bg-mandy-dark rounded-full px-5 py-2 text-white mx-2">Apply Filter</button>
+
+                            </div>
+                        </div>
                     </div>
+                </div> */}
+            </div>
 
         </>
     )

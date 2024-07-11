@@ -104,6 +104,27 @@
     /* roundness of the scroll thumb */
     /* creates padding around scroll thumb */
   }
+  .filter-icon{
+    filter: brightness(100);
+    width: 30px;
+  }
+  .filters-mobile nav{
+      background: #EAEAEA;
+  }
+  .filters-mobile nav ul .shadow{
+    border-radius: 0!important;
+    box-shadow: none!important;
+    padding: 10px 0px;
+  }
+  .filters-mobile nav ul li .text-inherit{
+    text-align: left;
+    padding-left: 25px;
+  }
+  .filters-mobile nav ul li{
+    padding: 10px 0;
+    margin-bottom: 15px;
+    justify-content: flex-start;
+  }
 }
 
 a {

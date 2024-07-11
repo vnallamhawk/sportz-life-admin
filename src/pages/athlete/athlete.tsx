@@ -6,6 +6,7 @@ import React from "react";
 import Image from "next/image";
 import SearchIcon from "../../images/search.png";
 import Plus from "../../images/plus.svg";
+import FilterIcon from "../../images/filter-icon.svg";
 import Dots from "../../images/dots.svg";
 import List from "~/components/CommonList/list";
 import { Dropdown } from "flowbite-react";
@@ -53,6 +54,9 @@ export default function athlete() {
                                     <Dropdown.Item className="text-white hover:bg-black focus:bg-black">Delete</Dropdown.Item>
                                 </Dropdown>
                             </div>
+                            <button className="lg:hidden bg-black fixed bottom-24 right-10 rounded-full p-3 w-20 h-20 inline-flex justify-center items-center">
+                                <Image src={FilterIcon} className="filter-icon  " alt="" />
+                            </button>
                         </div>
                     </div>
 
@@ -72,7 +76,7 @@ export default function athlete() {
                         <List />
                         <List />
                     </div>
-
+                    
                 </div>
             </div>
             <Modal />
