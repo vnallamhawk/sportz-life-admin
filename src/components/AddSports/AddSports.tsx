@@ -4,7 +4,7 @@ import CardTitle from "../Card/CardTitle";
 import Button from "../Button";
 import Table from "../Table";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import Select from "react-select";
+import Select from "../Select";
 import SportsTableHeader from "../Sports/SportsTableHeader";
 import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
 import { api } from "~/utils/api";
@@ -65,15 +65,15 @@ const AddSports = () => {
     setCurrentStep && setCurrentStep(currentStep + 1);
   };
 
-  const handleChangeInventory = (option: string) => {
-    let obj: any = { ...selectedSport, name: option?.label, value:option?.value };
+  const handleChangeSports = (value: string) => {
+    let obj: any = { ...selectedSport,value };
 
     setSelectedSport(obj);
   };
 
   const onSaveSports = () => {
     const arr = [...sports];
-    arr.push({sportsId:selectedSport?.value});
+    arr.push({...selectedSport,sportsId:selectedSport?.value});
     setSports(arr);
     setSelectedSport({});
   };
@@ -123,15 +123,15 @@ const AddSports = () => {
           </div>
         </div>
         <div className="flex justify-evenly">
-          <Select
+        <Select
             // isMulti={props?.isMulti ?? false}
             options={finalOptions}
-            // searchable={true}
             value={selectedSport?.name}
-            placeholder={"Select Sport"}
+            placeholder={"select sports"}
             className="w-full"
-            onChange={(value) => handleChangeInventory(value)}
+            onChangeHandler={(value) => handleChangeSports(value)}
           />
+
           {selectedSport && Object.keys(selectedSport).length > 0 && (
             <Button
               className="border-1  ml-3 rounded-lg border-pink-700 p-2 text-pink-700"
@@ -144,7 +144,7 @@ const AddSports = () => {
 
         <Table
           tableHeader={SportsTableHeader()}
-          tableBody={SportsTableBody(sports, removeSports)}
+          tableBody={SportsTableBody(sports, removeSports,finalOptions)}
         />
         {loading ? <LoadingSpinner /> : ""}
       </Card>

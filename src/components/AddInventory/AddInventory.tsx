@@ -69,7 +69,6 @@ const AddInventory = (props) => {
   };
 
   const handleChangeInventory = (value: string) => {
-    debugger
     let obj: any = { ...selectedInventory,value };
     if (!obj.quantity) {
       obj.quantity = 1;
@@ -97,7 +96,7 @@ const AddInventory = (props) => {
 
   const addNewInventory = (e) => {
     e.preventDefault();
-    createMutate({...inventoryDetails,image:""});
+    createMutate(inventoryDetails);
 
     setShowModal(false);
 
@@ -170,7 +169,7 @@ const AddInventory = (props) => {
         </div>
         <Table
           tableHeader={InventoryTableHeader()}
-          tableBody={InventoryTableBody(inventories, removeInventory)}
+          tableBody={InventoryTableBody(inventories, removeInventory,finalOptions)}
         />
         {loading ? <LoadingSpinner /> : ""}
       </Card>
