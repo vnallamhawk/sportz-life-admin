@@ -23,6 +23,8 @@ import { getSportsDictionaryServices } from "~/services/sportServices";
 
 import AddAthlete from "../../../components/AddAthlete/AddAthlete";
 import DashboardHeader from "~/components/DashboardHeader";
+import AddGeneralDetails from "~/components/AddAthlete/AddGeneralDetails";
+
 
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: "",
@@ -176,19 +178,19 @@ export default function AddAthleteMultiFormLayout() {
         <DashboardHeader />
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1 relative">
-        <Card className="col-span-4 h-full p-0 pt-10 bg-white rounded-l-xl relative">
+        <Card className="col-span-12 lg:col-span-4 h-full p-0 pt-10 bg-white rounded-l-xl relative">
           {currentStep === 1 && <AddAthlete />}
-          {/* {currentStep === 2 && <AddCoachCertificates />}
-          {currentStep === 3 && (
+           {/* {currentStep === 1 && <AddGeneralDetails />} */}
+          {/* {currentStep === 3 && (
             <AssignBatches
               // TODO: fix this TS error
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore: Unreachable code error
               finalFormSubmissionHandler={finalFormSubmissionHandler}
             />
-          )} */}
+          )}  */}
         </Card>
-        <Card className="col-span-2 bg-stone-100 rounded-r-xl px-7">
+        <Card className="col-span-2 bg-stone-100 rounded-r-xl px-7 lg:block hidden">
           <div className="font-medium uppercase text-2xl font-heading mb-10">Athlete Image</div>
 
           <div>

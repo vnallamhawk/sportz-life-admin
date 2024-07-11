@@ -21,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <SideNav className="min-h-screen flex-none bg-gray-950 h-full" />
       {/* )} */}
       {/* bg-s-gray */}
-      <main className="w-full flex-auto min-h-screen h-full">
+      <main className="w-full flex-auto min-h-screen ">
         <ToastContext.Provider value={toastValue}>
           {children}
         </ToastContext.Provider>

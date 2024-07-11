@@ -55,6 +55,7 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     label: "Date of Birth",
     id: "dateOfBirth",
     type: "calendar",
+    placeHolder: "Date of Birth",
     rules: {
       required: true,
       maxLength: {
@@ -67,35 +68,37 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     label: "Gender",
     id: "gender",
     type: "select",
+    placeHolder: "Gender",
+    options: [
+      { label: "Female", value: "Female" },
+      { label: "Male", value: "Male" },
+    ],
     rules: {
       required: true,
-      maxLength: {
-        value: 80,
-        message: "Too Many Characters",
-      },
     },
   },
   {
     label: "Height",
     id: "name",
     type: "select",
+    placeHolder: "Height",
+    options: [
+      { label: "5.6", value: "5.6" },
+      { label: "6.2", value: "6.2" },
+    ],
     rules: {
       required: true,
-      maxLength: {
-        value: 15,
-        message: "Too Many Characters",
-      },
     },
   },
   {
     label: "Weight",
     id: "gender",
     type: "select",
+    placeHolder: "Weight",
     options: [
       { label: "50", value: "50" },
       { label: "60", value: "60" },
     ],
-    placeHolder: "Select Weight",
     rules: {
       required: true,
     },
@@ -108,86 +111,81 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
       { label: "A+", value: "A+" },
       { label: "B+", value: "B+" },
     ],
-    placeHolder: "Select Blood Group",
+    placeHolder: "Blood Group",
     rules: {
       required: true,
     },
   },
-  // TODO: add this functionality for second phase
-  // {
-  //   label: "Select Payroll",
-  //   id: "payroll",
-  //   type: "select",
-  //   options: [
-  //     { label: "Junior Coach", value: "junior", id: "junior" },
-  //     { label: "Senior Coach", value: "senior", id: "senior" },
-  //   ],
-  //   placeHolder: "Select Payroll",
-  // },
-  // {
-  //   label: "Coaching Sports",
-  //   id: "coachingSports",
-  //   type: "select",
-  //   options: [],
-  //   placeHolder: "Coaching Sports",
-  //   rules: {
-  //     required: true,
-  //   },
-  //   isMulti: true,
-  // },
-  {
-    label: "Training level expertise",
-    id: "trainingLevel",
-    type: "select",
-    options: [
-      { label: "Beginner", value: "BEGINNER" },
-      { label: "Developer", value: "DEVELOPER" },
-      { label: "Intermediate Level", value: "INTERMEDIATE_LEVEL" },
-      { label: "Advanced Level", value: "ADVANCED_LEVEL" },
-    ],
-    placeHolder: "Training level expertise",
-    rules: {
-      required: true,
-    },
-  },
-  {
-    label: "Years of Coaching Experience",
-    id: "experienceLevel",
-    type: "select",
-    options: [
-      { label: "0-1 year", value: "ZERO_ONE" },
-      { label: "2-5 years", value: "TWO_FIVE" },
-      { label: "6-10 years", value: "SIX_TEN" },
-      { label: "10+ years", value: "TEN_OVER" },
-    ],
-    placeHolder: "Experience Level",
-    rules: {
-      required: true,
-    },
-  },
+ 
 ];
 
-export const COACH_CERTIFICATES_CONSTANTS = {
-  placeholder: "Select Coach Certificates",
-  id: "certificates",
-  options: [
-    {
-      label: "Bachelor Certificate in Sports",
-      id: "bachelorCertificate",
-      value: "bachelorCertificate",
+export const ATHLETE_GENRAL_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
+  {
+    label: "Sport",
+    id: "gender",
+    type: "select",
+    options: [
+      { label: "A+", value: "A+" },
+      { label: "B+", value: "B+" },
+    ],
+    placeHolder: "Sport",
+    rules: {
+      required: true,
     },
-    {
-      label: "Masters Certificate in Sports",
-      id: "mastersCertificate",
-      value: "mastersCertificate",
+  },
+  {
+    label: "Training Level",
+    id: "gender",
+    type: "select",
+    options: [
+      { label: "A+", value: "A+" },
+      { label: "B+", value: "B+" },
+    ],
+    placeHolder: "Training Level",
+    rules: {
+      required: true,
     },
-    {
-      label: "Diploma in Sports Coaching",
-      id: "diplomaSports",
-      value: "diplomaSports",
+  },
+  {
+    label: "Father's Name",
+    id: "name",
+    type: "textbox",
+    rules: {
+      required: true,
+      maxLength: {
+        value: 35,
+        message: "Too Many Characters",
+      },
     },
-  ],
-};
+  },
+  {
+    label: "Center",
+    id: "gender",
+    type: "select",
+    options: [
+      { label: "A+", value: "A+" },
+      { label: "B+", value: "B+" },
+    ],
+    placeHolder: "Center",
+    rules: {
+      required: true,
+    },
+  },
+  {
+    label: "Batch",
+    id: "gender",
+    type: "select",
+    options: [
+      { label: "A+", value: "A+" },
+      { label: "B+", value: "B+" },
+    ],
+    placeHolder: "Batch",
+    rules: {
+      required: true,
+    },
+  },
+  
+]
 
 export const COACH_CERTIFICATE_TABLE_HEADERS = [
   {

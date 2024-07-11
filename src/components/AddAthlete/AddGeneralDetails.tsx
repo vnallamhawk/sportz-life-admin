@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import CardTitle from "~/components/Card/CardTitle";
-import { ATHLETE_DETAILS_CONSTANTS } from "~/constants/athleteConstants";
+import { ATHLETE_DETAILS_CONSTANTS, ATHLETE_GENRAL_CONSTANTS } from "~/constants/athleteConstants";
 import Textbox from "~/components/Textbox";
 import {
   type COACH_TYPES,
@@ -12,12 +12,8 @@ import { Controller, useForm } from "react-hook-form";
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import { api } from "~/utils/api";
 import Select from "react-select";
-import Card from "../Card";
-import { DividerHorizontalIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
-import SearchIcon from "../../images/search.png";
 
-export default function AddCoach() {
+export default function AddGeneralDetails() {
   let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
@@ -36,7 +32,7 @@ export default function AddCoach() {
   const { data: sports } = api.sports.getAllSports.useQuery();
 
   const [formConstantValues, setFormConstantValues] = useState(
-    ATHLETE_DETAILS_CONSTANTS
+    ATHLETE_GENRAL_CONSTANTS
   );
 
   useEffect(() => {
@@ -155,7 +151,7 @@ export default function AddCoach() {
     <>
 
       <CardTitle title="ADD ATHLETE" />
-      <div className=" font-medium uppercase text-3xl font-heading" >Athlete Personal Details</div>
+      <div className=" font-medium uppercase text-3xl font-heading" >Athlete General Details</div>
       <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-8">
         {formConstantValues.map((props) => (
           <div key={props.id}>
@@ -175,87 +171,17 @@ export default function AddCoach() {
           </div>
         ))}
       </div>
-      <label className="col-span-2 bg-stone-100 rounded-r-xl p-7 border-dashed border-gray-500 mt-5 text-center h-48 flex justify-center flex-col">
-        <div className="flex justify-center items-center mb-3">
-          <input type="file" className="hidden"/>
-          
-          <div className="font-medium text-base text-gray-400">Attach Athlete Image</div>
-        </div>
-          <div className="text-gray-300 text-sm">The file size not more than 10 MB.</div>
-          <div className="text-gray-300 text-sm">JPEG, PNG, Video</div>
-      </label>
-     
-      
-      <div className="mt-10">
-        <div className="text-2xl mb-2 font-medium font-heading uppercase">Medical History</div>
-        <div className="text-gray-400">Kindly list down if your child has any allergies, major injuries, chronic diseases, physical disabilities &
-          Children with special needs (CWSN)</div>
-        <div className="flex mt-4 items-start">
-          <input type="text" className="grow h-20 rounded-lg border-1 border-gray-300 pl-5 focus:outline-none focus:ring-0 focus:border-gray-600" />
+    
+        <div className="mr-10 mt-10 flex justify-end absolute bottom-8 right-0">
           <Button
-            className="border-1 mx-3 px-8 py-3 font-medium border-blush-light hover:border-blush-dark rounded-md text-blush-light hover:text-blush-dark"
+            className="!border-0 px-5 focus:ring-0 outline-0 bg-mandy-dark hover:bg-mandy-dark focus:outline-none focus:ring text-white"
             type="button"
+            onClick={() => void nextClickHandler()}
           >
-            Add
+            Next
           </Button>
         </div>
-        <div className="mt-5 max-h-[370px] overflow-auto px-0 scroll">
-          <table className="table-fixed common-table w-full min-w-max  text-left border-separate border-spacing-y-3">
-            <thead>
-              <tr>
-                <th className="pl-7 w-20 text-gray-400 font-medium" >#</th>
-                <th className="text-justify text-gray-400 font-medium">Medical History </th>
-                <th className="w-32 text-gray-400 font-medium">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="p-4 border-y-2 border-gray-100 w-20" >01</td>
-                <td className="p-4 border-y-2 border-gray-100  text-justify">
-                  <div>
-                    Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et blanditiis sunt qui asperiores tempore eos similique veniam aut maxime veniam aut possimus possimus qui voluptatem maiores.AAA
-                  </div>
-                </td>
-                <td className="p-4 border-y-2 border-gray-100 w-32 text-gray-400 font-medium">
-                  Remove
-                </td>
-              </tr>
-              <tr>
-                <td className="p-4 border-y-2 border-gray-100 w-20" >01</td>
-                <td className="p-4 border-y-2 border-gray-100  text-justify">
-                  <div>
-                    Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et blanditiis sunt qui asperiores tempore eos similique veniam aut maxime veniam aut possimus possimus qui voluptatem maiores.AAA
-                  </div>
-                </td>
-                <td className="p-4 border-y-2 border-gray-100 w-32 text-gray-400 font-medium">
-                  Remove
-                </td>
-              </tr>
-              <tr>
-                <td className="p-4 border-y-2 border-gray-100 w-20" >01</td>
-                <td className="p-4 border-y-2 border-gray-100  text-justify">
-                  <div>
-                    Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et blanditiis sunt qui asperiores tempore eos similique veniam aut maxime veniam aut possimus possimus qui voluptatem maiores.AAA
-                  </div>
-                </td>
-                <td className="p-4 border-y-2 border-gray-100 w-32 text-gray-400 font-medium">
-                  Remove
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className="mr-10 mt-10 flex justify-end absolute bottom-8 right-0">
-        <Button
-          className="!border-0 px-5 focus:ring-0 outline-0 bg-mandy-dark hover:bg-mandy-dark focus:outline-none focus:ring text-white"
-          type="button"
-          onClick={() => void nextClickHandler()}
-        >
-          Next
-        </Button>
-      </div>
 
-    </>
-  )
+      </>
+      );
 }

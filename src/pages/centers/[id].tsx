@@ -38,30 +38,30 @@ import CenterDashCoachTableBody from "~/components/CenterDashboardTables/Coach/C
 import CenterDashAthleteTableBody from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableBody";
 import CenterDashInventoryTableBody from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableBody";
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const id = context?.params?.id;
-  // const sports = await prisma.sports.findMany();
-  const center = await prisma.centers.findUnique({
-    where: {
-      id: id ? Number(id) : undefined,
-    },
-    include: {
-      CenterSports: {
-        include: {
-          Sports: true,
-        },
-      },
-    },
-  });
+// export const getServerSideProps = async (
+//   context: GetServerSidePropsContext
+// ) => {
+//   const id = context?.params?.id;
+//   // const sports = await prisma.sports.findMany();
+//   const center = await prisma.centers.findUnique({
+//     where: {
+//       id: id ? Number(id) : undefined,
+//     },
+//     include: {
+//       CenterSports: {
+//         include: {
+//           Sports: true,
+//         },
+//       },
+//     },
+//   });
 
-  return {
-    props: {
-      center: JSON.parse(JSON.stringify(center)), // <== here is a solution
-    },
-  };
-};
+//   return {
+//     props: {
+//       center: JSON.parse(JSON.stringify(center)), // <== here is a solution
+//     },
+//   };
+// };
 
 const tabs = [
   {
