@@ -76,14 +76,14 @@ const AddInventory = (props) => {
     setSelectedInventory(obj);
   };
   const handleChangeQuantity = (e) => {
-    let obj: any = { ...selectedInventory, quantity: e.target.value };
+    let obj: any = { ...selectedInventory, quantity: parseInt(e.target.value) };
 
     setSelectedInventory(obj);
   };
 
   const onSaveInventories = () => {
     const arr = [...inventories];
-    arr.push({...selectedInventory,inventoryId:selectedInventory?.value});
+    arr.push({...selectedInventory,inventoryId:parseInt(selectedInventory?.value)});
     setInventories(arr);
     setSelectedInventory({});
   };

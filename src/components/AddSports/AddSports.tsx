@@ -73,7 +73,7 @@ const AddSports = () => {
 
   const onSaveSports = () => {
     const arr = [...sports];
-    arr.push({...selectedSport,sportsId:selectedSport?.value});
+    arr.push({...selectedSport,sportsId:parseInt(selectedSport?.value)});
     setSports(arr);
     setSelectedSport({});
   };

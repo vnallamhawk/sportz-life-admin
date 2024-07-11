@@ -19,6 +19,12 @@ const inventorySchema = z.object({
 // Now add this object into an array
 
 export const centerInventoryRouter = createTRPCRouter({
+  getAllCenterInventory: publicProcedure.query(({ ctx }) => {
+    const getAllCenterInventories = ctx?.prisma?.centerInventories?.findMany({include:{
+      Inventories:true
+    }});
+    return getAllCenterInventories;
+  }),
   createCenterInventory: publicProcedure
     .input(inventoryInfoSchema)
     .mutation(
@@ -26,7 +32,7 @@ export const centerInventoryRouter = createTRPCRouter({
         input: data,
         ctx,
       }) => {
-        const response = await ctx.prisma.inventories.createMany({
+        const response = await ctx.prisma.centerInventories.createMany({
           data,
         });
         return response;

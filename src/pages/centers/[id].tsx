@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
@@ -10,6 +10,8 @@ import InventoryImg from "../../images/InventoryImg.png";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
 import type { Centers } from "@prisma/client";
+import { api } from "~/utils/api";
+
 // import { type Sports } from "@prisma/client";
 
 // import {
@@ -115,6 +117,23 @@ export default function Page({ center }: { center: Centers }) {
   const sportsArr: string[] = ["Rugby", "Baseball", "Tennis", "BasketBall"];
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [finalTabs, setFinalTabs] = useState(tabs);
+
+  const { data: allCenterInventories } = api.centerInventory.getAllCenterInventory.useQuery();
+
+
+  useEffect(()=>{
+    if(finalTabs && finalTabs.length>0){
+      const arr=[...finalTabs]
+      const index=arr?.findIndex((item)=>item?.name==="inventories")
+      if(index>-1){
+        arr[index].value=allCenterInventories?.length
+      }
+      setFinalTabs(arr)
+    }
+
+  },[allCenterInventories,finalTabs])
+
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
@@ -144,7 +163,7 @@ export default function Page({ center }: { center: Centers }) {
       body = CenterDashAthleteTableBody();
     } else {
       header = CenterDashInventoryTableHeader();
-      body = CenterDashInventoryTableBody();
+      body = CenterDashInventoryTableBody(allCenterInventories);
     }
     setSelectedHeader(header);
     setSelectedBody(body);
