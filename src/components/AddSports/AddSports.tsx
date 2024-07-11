@@ -73,7 +73,7 @@ const AddSports = () => {
 
   const onSaveSports = () => {
     const arr = [...sports];
-    arr.push(selectedSport);
+    arr.push({sportsId:selectedSport?.value});
     setSports(arr);
     setSelectedSport({});
   };
@@ -122,13 +122,12 @@ const AddSports = () => {
             Add New Sport
           </div>
         </div>
-
         <div className="flex justify-evenly">
           <Select
             // isMulti={props?.isMulti ?? false}
             options={finalOptions}
             // searchable={true}
-            value={selectedSport}
+            value={selectedSport?.name}
             placeholder={"Select Sport"}
             className="w-full"
             onChange={(value) => handleChangeInventory(value)}

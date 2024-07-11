@@ -3,16 +3,18 @@ import React from "react";
 function AddInventoryModal({
   show,
   setShow,
-  inventoryName,
-  inventoryCategory,
-  handleSport,
-  // }: {
-  //   show: boolean;
-  //   setShow: (arg: boolean) => void;
-  //   addSport: (arg: string) => void;
-  //   addAbout: (arg: string) => void;
-  //   handleSport: () => void;
+  inventoryDetails,
+  setInventoryDetails,
+  handleInventory
 }) {
+
+  const handleInventoryChange = (name:string, value:string) => {
+    let obj :any= { ...inventoryDetails };
+    obj[name] = value;
+    setInventoryDetails(obj);
+  };
+
+
   return (
     <>
       <div
@@ -27,7 +29,7 @@ function AddInventoryModal({
           <div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
             <div className="flex items-center justify-between rounded-t border-b p-4 dark:border-gray-600 md:p-5">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Create New Sport
+                Create New Inventory
               </h3>
               <button
                 type="button"
@@ -62,8 +64,8 @@ function AddInventoryModal({
                   </label>
                   <input
                     type="text"
-                    name="SportName"
-                    id="Sport Name"
+                    name="inventoryName"
+                    id="Inventory Name"
                     className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500
                          dark:focus:border-primary-500 w-50 block rounded-lg
                          border border-gray-300 bg-gray-50 p-2.5 text-sm
@@ -71,8 +73,9 @@ function AddInventoryModal({
                          dark:text-white dark:placeholder-gray-400"
                     placeholder="Type Inventory name"
                     required
-                    onChange={(e) => inventoryName(e.target.value)}
-                  />
+                    onChange={(e) =>
+                      handleInventoryChange("name", e.target.value)
+                    }                  />
                 </div>
 
                 <div className="col-span-2">
@@ -85,9 +88,9 @@ function AddInventoryModal({
                   <select
                     id="countries"
                     className="block w-[12rem] rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                    onChange={(e) => {
-                      inventoryCategory(e.target.value);
-                    }}
+                    onChange={(e) =>
+                      handleInventoryChange("category", e.target.value)
+                    }  
                   >
                     <option selected>Choose a Inventory</option>
                     <option value="Fitness">Fitness</option>
@@ -102,7 +105,7 @@ function AddInventoryModal({
                   <button
                     type="submit"
                     className=" w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    onClick={(e) => handleSport(e)}
+                    onClick={(e) => handleInventory(e)}
                   >
                     Finish
                   </button>

@@ -101,7 +101,7 @@ export default function AddCenterForm() {
     },
   });
   const { mutate: createMutateInventories } =
-    api.inventory.createInventory.useMutation({
+    api.centerInventory.createCenterInventory.useMutation({
       onSuccess: (response) => {
         console.log("response data is ", response);
         router.push(`/centers/${centerId ?? ""}`);
@@ -138,12 +138,12 @@ export default function AddCenterForm() {
     if (
       formData &&
       Object.keys(formData)?.length > 0 &&
-      formData?.sportsId &&
+      formData?.sports &&
       formData?.inventories &&
       centerId
     ) {
-      const finalCenterSports = formData?.sportsId?.map((v) => ({
-        sportId: v,
+      const finalCenterSports = formData?.sports?.map((v) => ({
+        ... v,
         centerId,
       }));
 
@@ -193,9 +193,9 @@ export default function AddCenterForm() {
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 1 && <AddCenter />}
+          {currentStep === 3 && <AddCenter />}
           {currentStep === 2 && <AddSports />}
-          {currentStep === 3 && (
+          {currentStep === 1 && (
             <AddInventory
               finalFormSubmissionHandler={finalFormSubmissionHandler}
             />

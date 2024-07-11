@@ -439,7 +439,6 @@ model Admin {
 
 model CenterInventories {
   id                     Int                      @id @unique(map: "id") @default(autoincrement())
-  name                   String                   @db.VarChar(255)
   quantity               Int
   centerId               Int
   inventoryId            Int

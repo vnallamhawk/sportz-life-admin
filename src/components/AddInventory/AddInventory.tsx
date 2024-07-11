@@ -7,39 +7,49 @@ import Table from "../Table";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { useRouter } from "next/navigation";
 import Select from "../Select";
-import { options } from "../../constants/inventoryConstant";
+// import { options } from "../../constants/inventoryConstant";
 import InventoryTableHeader from "../Inventory/InventoryTableHeader";
 import InventoryTableBody from "../Inventory/InventoryTableBody";
 import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
 import AddInventoryModal from "./AddInventoryModal";
+import { api } from "~/utils/api";
 
 const AddInventory = (props) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [inventories, setInventories] = useState([]);
   const [selectedInventory, setSelectedInventory] = useState({});
-  const [finalOptions, setFinalOptions] = useState(options);
+  const [finalOptions, setFinalOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [inventName, setInventName] = useState(null);
-  const [inventCategory, setInventCategory] = useState(null);
+  const [inventoryDetails,setInventoryDetails]=useState({})
+  const { data: allInventories } = api.inventory.getAllInventories.useQuery();
+
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
-
+  const { mutate: createMutate } = api.inventory.createInventory.useMutation({
+    onSuccess: (response) => {
+      let arr:any=[...finalOptions]
+      arr.push({label: response?.name, value: response?.id })
+      setFinalOptions(arr)
+    },
+  });
   useEffect(() => {
-    if (inventories && inventories.length > 0 && finalOptions.length > 0) {
+    if (allInventories && allInventories?.length > 0) {
       let arr = [];
-      for (let i = 0; i < finalOptions.length; i++) {
-        const index = inventories?.findIndex(
-          (item) => item?.name === finalOptions[i]?.value
-        );
+      for (let i = 0; i < allInventories.length; i++) {
+        const index =
+        inventories && inventories.length > 0
+            ? inventories?.findIndex((item) => item?.name === finalOptions[i]?.value)
+            : -1;
         if (index === -1) {
-          arr.push(finalOptions[i]);
+          arr.push({ label: allInventories[i]?.name, value: allInventories[i]?.id });
         }
       }
+
       setFinalOptions(arr);
     }
-  }, [JSON.stringify(inventories), finalOptions]);
+  }, [inventories, allInventories]);
 
   const {
     stepData: { currentStep, setCurrentStep },
@@ -59,7 +69,8 @@ const AddInventory = (props) => {
   };
 
   const handleChangeInventory = (value: string) => {
-    let obj: any = { ...selectedInventory, name: value };
+    debugger
+    let obj: any = { ...selectedInventory,value };
     if (!obj.quantity) {
       obj.quantity = 1;
     }
@@ -73,7 +84,7 @@ const AddInventory = (props) => {
 
   const onSaveInventories = () => {
     const arr = [...inventories];
-    arr.push(selectedInventory);
+    arr.push({...selectedInventory,inventoryId:selectedInventory?.value});
     setInventories(arr);
     setSelectedInventory({});
   };
@@ -84,11 +95,12 @@ const AddInventory = (props) => {
     setInventories(arr);
   };
 
-  const addNewSport = (e) => {
+  const addNewInventory = (e) => {
     e.preventDefault();
+    createMutate({...inventoryDetails,image:""});
+
     setShowModal(false);
 
-    console.log("inventoryName ", inventName, "inventCategory", inventCategory);
 
     // api for create inventory
   };
@@ -99,9 +111,9 @@ const AddInventory = (props) => {
         <AddInventoryModal
           show={showModal}
           setShow={setShowModal}
-          inventoryName={setInventName}
-          inventoryCategory={setInventCategory}
-          handleSport={addNewSport}
+          setInventoryDetails={setInventoryDetails}
+          inventoryDetails={inventoryDetails}
+          handleInventory={addNewInventory}
         />
       )}
       <Card className="h-full">

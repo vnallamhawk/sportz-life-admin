@@ -5,43 +5,32 @@ import {
   // protectedProcedure,
 } from "~/server/api/trpc";
 
-const certificatesSchema = z.array(
-  z.object({
-    instituteName: z.string(),
-    name: z.string(),
-    startDate: z.date(),
-    endDate: z.date(),
-  })
-);
-const inventorySchema = z.object({
-    name: z.string(),
-    quantity: z.number(),
-    centerId: z.number()
-  })
-  
-  // Now add this object into an array
-  const inventoryInfoSchema = z.array(inventorySchema)
-const coachingSportsSchema = z.array(
-  z.object({
-    label: z.string(),
-    value: z.union([z.string(), z.number()]),
-  })
-);
-
-// Now add this object into an array
-
 export const inventoryRouter = createTRPCRouter({
+  getAllInventories: publicProcedure.query(({ ctx }) => {
+    const allInventories = ctx?.prisma?.inventories?.findMany();
+    return allInventories;
+  }),
   createInventory: publicProcedure
-    .input(inventoryInfoSchema)
-    .mutation(
-      async ({
-        input: data,
-        ctx,
-      }) => {
-        const response = await ctx.prisma.inventories.createMany({
-          data,
-        });
-        return response;
-      }
-    )
-});
+  .input(
+    z.object({
+      name: z.string(),
+      category:z.string(),
+    })
+  )
+  .mutation(
+    async ({
+      input: {
+        name,
+        category
+      },
+      ctx,
+    }) => {
+      const response = await ctx.prisma.inventories.create({
+        data: {
+          name,
+          category
+        },
+      });
+      return response;
+    }
+  ),});
