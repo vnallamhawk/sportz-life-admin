@@ -16,6 +16,7 @@ import Card from "../Card";
 import { DividerHorizontalIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import SearchIcon from "../../images/search.png";
+import Plus from "../../images/plus.svg";
 
 export default function AddCoach() {
   let inputElement;
@@ -155,8 +156,8 @@ export default function AddCoach() {
     <>
 
       <CardTitle title="ADD ATHLETE" />
-      <div className=" font-medium uppercase text-3xl font-heading" >Athlete Personal Details</div>
-      <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-8">
+      <div className=" font-medium uppercase text-3xl font-heading text-center lg:text-left" >Athlete Personal Details</div>
+      <div className="mt-8 grid lg:grid-cols-2 grid-col-1 gap-x-8 lg:gap-y-8 gap-y-4 ">
         {formConstantValues.map((props) => (
           <div key={props.id}>
             {getInputElement(props)}
@@ -175,31 +176,38 @@ export default function AddCoach() {
           </div>
         ))}
       </div>
-      <label className="col-span-2 bg-stone-100 rounded-r-xl p-7 border-dashed border-gray-500 mt-5 text-center h-48 flex justify-center flex-col">
+      <label className="lg:hidden col-span-2 bg-stone-100 rounded-lg border-2 border-dashed border-gray-300 mt-5 text-center h-48 flex justify-center flex-col">
         <div className="flex justify-center items-center mb-3">
-          <input type="file" className="hidden"/>
-          
-          <div className="font-medium text-base text-gray-400">Attach Athlete Image</div>
+          <input type="file" className="hidden" />
+          <div className="font-medium text-base text-gray-500">Attach Athlete Image</div>
         </div>
-          <div className="text-gray-300 text-sm">The file size not more than 10 MB.</div>
-          <div className="text-gray-300 text-sm">JPEG, PNG, Video</div>
+        <div className="text-gray-300 text-sm">The file size not more than 10 MB.</div>
+        <div className="text-gray-300 text-sm">JPEG, PNG, Video</div>
       </label>
-     
-      
+
+
       <div className="mt-10">
-        <div className="text-2xl mb-2 font-medium font-heading uppercase">Medical History</div>
-        <div className="text-gray-400">Kindly list down if your child has any allergies, major injuries, chronic diseases, physical disabilities &
+        <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Medical History</div>
+        <div className="text-gray-400 text-center lg:text-left">Kindly list down if your child has any allergies, major injuries, chronic diseases, physical disabilities &
           Children with special needs (CWSN)</div>
-        <div className="flex mt-4 items-start">
-          <input type="text" className="grow h-20 rounded-lg border-1 border-gray-300 pl-5 focus:outline-none focus:ring-0 focus:border-gray-600" />
+        <div className="flex mt-4 items-start lg:flex-row flex-col">
+          <textarea placeholder="Medical Pre-History 1" className="w-full grow lg:h-20 h-40 rounded-lg border-1 border-gray-300 pl-5 focus:outline-none focus:ring-0 focus:border-gray-600" />
           <Button
-            className="border-1 mx-3 px-8 py-3 font-medium border-blush-light hover:border-blush-dark rounded-md text-blush-light hover:text-blush-dark"
+            className="lg:block hidden border-1 mx-3 px-8 py-3 font-medium border-blush-light hover:border-blush-dark rounded-md text-blush-light hover:text-blush-dark"
             type="button"
           >
             Add
           </Button>
+          <button className="mt-5 lg:hidden flex items-center">
+            <div className="bg-black rounded-full p-3 w-10 h-10 inline-flex justify-center items-center">
+              <Image src={Plus} className="" alt="" />
+            </div>
+            <div className="ml-3">Add another medical history</div>
+          </button>
+
+
         </div>
-        <div className="mt-5 max-h-[370px] overflow-auto px-0 scroll">
+        <div className="mt-5 max-h-[370px] overflow-auto px-0 scroll lg:block hidden">
           <table className="table-fixed common-table w-full min-w-max  text-left border-separate border-spacing-y-3">
             <thead>
               <tr>
@@ -246,14 +254,14 @@ export default function AddCoach() {
           </table>
         </div>
       </div>
-      <div className="mr-10 mt-10 flex justify-end absolute bottom-8 right-0">
-        <Button
-          className="!border-0 px-5 focus:ring-0 outline-0 bg-mandy-dark hover:bg-mandy-dark focus:outline-none focus:ring text-white"
+      <div className="mr-10 mt-10 flex justify-end lg:absolute bottom-8 right-0">
+        <button
+          className="!border-0 px-5 py-3 lg:py-1.5 lg:rounded rounded-full   focus:ring-0 outline-0 bg-mandy-dark hover:bg-mandy-dark focus:outline-none focus:ring text-white w-full lg:w-auto"
           type="button"
           onClick={() => void nextClickHandler()}
         >
           Next
-        </Button>
+        </button>
       </div>
 
     </>
