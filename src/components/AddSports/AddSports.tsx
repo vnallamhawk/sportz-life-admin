@@ -16,16 +16,21 @@ const AddSports = () => {
   const [selectedSport, setSelectedSport] = useState({});
   const [finalOptions, setFinalOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [newSport, setNewSport] = useState(null);
-  const [about, setAbout] = useState(null);
-  const [sportImage, setSportImage] = useState(null);
+  const [sportDetails,setSportDetails]=useState({})
+  
 
   const { data: allSports } = api.sports.getAllSports.useQuery();
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
-
+  const { mutate: createMutate } = api.sports.createSports.useMutation({
+    onSuccess: (response) => {
+      let arr:any=[...finalOptions]
+      arr.push({label: response?.name, value: response?.id })
+      setFinalOptions(arr)
+    },
+  });
   useEffect(() => {
     if (allSports && allSports?.length > 0) {
       let arr = [];
@@ -60,9 +65,8 @@ const AddSports = () => {
     setCurrentStep && setCurrentStep(currentStep + 1);
   };
 
-  const handleChangeInventory = (value: string) => {
-    const option = finalOptions?.find((item) => item?.value == value);
-    let obj: any = { ...selectedSport, name: option.label, value };
+  const handleChangeInventory = (option: string) => {
+    let obj: any = { ...selectedSport, name: option?.label, value:option?.value };
 
     setSelectedSport(obj);
   };
@@ -82,16 +86,8 @@ const AddSports = () => {
 
   const addNewSport = (e) => {
     e.preventDefault();
+    createMutate({...sportDetails,image:""});
     setShowModal(false);
-
-    console.log(
-      "sport is ",
-      newSport,
-      "about is ",
-      about,
-      "image is ",
-      sportImage
-    );
 
     // api for create sport
   };
@@ -103,9 +99,8 @@ const AddSports = () => {
         <AddSportModal
           show={showModal}
           setShow={setShowModal}
-          addSport={setNewSport}
-          addAbout={setAbout}
-          addImage={setSportImage}
+          sportDetails={sportDetails}
+          setSportDetails={setSportDetails}
           handleSport={addNewSport}
         />
       )}
@@ -133,7 +128,7 @@ const AddSports = () => {
             // isMulti={props?.isMulti ?? false}
             options={finalOptions}
             // searchable={true}
-            value={selectedSport?.value}
+            value={selectedSport}
             placeholder={"Select Sport"}
             className="w-full"
             onChange={(value) => handleChangeInventory(value)}

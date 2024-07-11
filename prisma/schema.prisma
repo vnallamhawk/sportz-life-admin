@@ -420,6 +420,7 @@ model Centers {
 model Inventories {
   id                     Int                      @id @unique(map: "id") @default(autoincrement())
   name                   String                   @db.VarChar(255)
+  category               String                   @db.VarChar(255)
   status                 Int?                     @default(1) @db.TinyInt
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @default(now())

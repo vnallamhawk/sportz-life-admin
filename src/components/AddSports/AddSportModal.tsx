@@ -2,18 +2,17 @@ import React from "react";
 
 function AddSportModal({
   show,
-  setShow,
-  addSport,
-  addAbout,
-  addImage,
+  sportDetails,
+  setSportDetails,
   handleSport,
-  // }: {
-  //   show: boolean;
-  //   setShow: (arg: boolean) => void;
-  //   addSport: (arg: string) => void;
-  //   addAbout: (arg: string) => void;
-  //   handleSport: () => void;
-}) {
+}: any) {
+
+  const handleSportChange = (name:string, value:string) => {
+    let obj :any= { ...sportDetails };
+    obj[name] = value;
+    setSportDetails(obj);
+  };
+
   return (
     <>
       <div
@@ -72,7 +71,7 @@ function AddSportModal({
                          dark:text-white dark:placeholder-gray-400"
                     placeholder="Type sport name"
                     required
-                    onChange={(e) => addSport(e.target.value)}
+                    onChange={(e) => handleSportChange("name", e.target.value)}
                   />
                 </div>
 
@@ -94,7 +93,30 @@ function AddSportModal({
                          dark:text-white dark:placeholder-gray-400"
                     placeholder="About"
                     required
-                    onChange={(e) => addAbout(e.target.value)}
+                    onChange={(e) => handleSportChange("about", e.target.value)}
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label
+                    for="subtitle"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    SubTitle
+                  </label>
+                  <input
+                    type="text"
+                    name="subTitle"
+                    id="subTitle"
+                    className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500
+                         dark:focus:border-primary-500 w-50 block rounded-lg
+                         border border-gray-300 bg-gray-50 p-2.5 text-sm
+                         text-gray-900 dark:border-gray-500 dark:bg-gray-600
+                         dark:text-white dark:placeholder-gray-400"
+                    placeholder="Type subtitle"
+                    required
+                    onChange={(e) =>
+                      handleSportChange("subTitle", e.target.value)
+                    }
                   />
                 </div>
                 <div className="col-span-2">
@@ -111,7 +133,7 @@ function AddSportModal({
                     aria-describedby="file_input_help"
                     id="file_input"
                     type="file"
-                    onChange={(e) => addImage(e.target.files)}
+                    onChange={(e) => handleSportChange("image", e.target.files)}
                   />
                   <p
                     className="mt-1 text-sm text-gray-500 dark:text-gray-300"
