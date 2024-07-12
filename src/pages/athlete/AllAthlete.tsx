@@ -11,7 +11,7 @@ import Dots from "../../images/dots.svg";
 import List from "~/components/CommonList/list";
 import { Dropdown } from "flowbite-react";
 
-export default function athlete() {
+export default function Athlete() {
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => setOpen(!open);

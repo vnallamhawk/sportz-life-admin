@@ -5,6 +5,7 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
+import { Dropdown, DropdownHeader } from "flowbite-react";
 
 interface centerTableFilter {
   str: string;
@@ -61,25 +62,19 @@ export default function CenterBatchTableBody(
             </td>
 
             <td className="rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left">
-              <Tooltip.Provider>
-                <Tooltip.Root>
-                  <Tooltip.Trigger asChild>
-                    <button className="IconButton">
-                      <DotsHorizontalIcon />
-                    </button>
-                  </Tooltip.Trigger>
-                  <Tooltip.Portal>
-                    <Tooltip.Content className="TooltipContent" sideOffset={5}>
-                      <div className="flex justify-evenly gap-3 rounded-lg bg-black p-2 text-[12px] text-white">
-                        <p onClick={()=>router.push(`/edit-center-${id}`)}>Edit</p>
-                        <p onClick={()=>router.push(`/centers/${id ?? ""}`)} >View</p>
-                        <p>Delete</p>
-                      </div>
-                      <Tooltip.Arrow className="TooltipArrow" />
-                    </Tooltip.Content>
-                  </Tooltip.Portal>
-                </Tooltip.Root>
-              </Tooltip.Provider>
+             
+              <Dropdown label="" dismissOnClick={false} placement="top" className="view-drop bg-black rounded-lg" renderTrigger={() =>     
+                        <button className="py-2">
+                       <DotsHorizontalIcon />
+                      </button>}>
+                      <DropdownHeader>
+                          <div className="flex items-center">
+                              <button className="mx-1 text-white" onClick={()=>router.push(`/edit-center-${id}`)}>Edit</button>
+                              <button className="mx-1 text-white" onClick={()=>router.push(`/centers/${id ?? ""}`)}>View</button>
+                              <button className="mx-1 text-white">Delete</button>
+                          </div>
+                      </DropdownHeader>                    
+                      </Dropdown>  
             </td>
           </tr>
         )
