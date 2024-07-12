@@ -63,12 +63,12 @@ export const getServerSideProps = async (
     },
   });
 
-//   return {
-//     props: {
-//       center: JSON.parse(JSON.stringify(center)), // <== here is a solution
-//     },
-//   };
-// };
+  return {
+    props: {
+      center: JSON.parse(JSON.stringify(center)), // <== here is a solution
+    },
+  };
+};
 
 const tabs = [
   {
