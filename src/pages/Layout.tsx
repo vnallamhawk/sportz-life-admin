@@ -20,7 +20,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   //     router.push("/")
   //   }
   // },[sessionData,router])
-console.log(sessionData,"sanjdsdjas")
   return (
     <>
     {/* <Header /> */}
