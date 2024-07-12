@@ -342,7 +342,6 @@ model Athletes {
 model BatchSchedules {
   id        Int                @id @unique(map: "id") @default(autoincrement())
   batchId   Int
-  centerId  Int
   day       BatchSchedules_day
   startTime DateTime           @db.Time(0)
   endTime   DateTime           @db.Time(0)
@@ -358,11 +357,10 @@ model Batches {
   id                      Int                       @id @unique(map: "id") @default(autoincrement())
   name                    String                    @db.VarChar(255)
   capacity                Int
-  remainingSeat           Int
-  occupiedSeat            Int
+  occupiedSeat            Int?                      @default(0) @db.TinyInt
   price                   Int
   sportId                 Int
-  coachId                 Int
+  coachId                 Int?
   centerId                Int
   status                  Int?                      @default(1) @db.TinyInt
   createdAt               DateTime                  @default(now())
@@ -373,7 +371,7 @@ model Batches {
   AthleteSportsMaps       AthleteSportsMaps[]
   BatchSchedules          BatchSchedules[]
   Sports                  Sports                    @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "Batches_ibfk_1342")
-  Coaches                 Coaches                   @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "Batches_ibfk_1343")
+  Coaches                 Coaches?                   @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "Batches_ibfk_1343")
   Payments                Payments[]
   ScheduledCenterBatches  ScheduledCenterBatches[]
   Centers                  Centers                    @relation(fields: [centerId], references: [id], onDelete: NoAction, map: "Batches_ibfk_1344")

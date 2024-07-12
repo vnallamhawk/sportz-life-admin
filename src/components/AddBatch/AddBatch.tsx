@@ -36,39 +36,29 @@ export default function AddBatch() {
     BATCH_DETAILS_CONSTANTS
   );
 
-  // useEffect(() => {
-  //   if (sports?.length && hasExecuted.current) {
-  //     const updatedFormConstantValues = formConstantValues.map(
-  //       (formConstant) => {
-  //         if (formConstant.id === "coachingSports") {
-  //           return {
-  //             ...formConstant,
-  //             options: sports.map((sport: { name: string; id: number }) => ({
-  //               label: sport.name,
-  //               value: sport.id.toString(),
-  //             })),
-  //           };
-  //         } else {
-  //           return formConstant;
-  //         }
-  //       }
-  //     );
-  //     hasExecuted.current = false;
-  //     setFormConstantValues(updatedFormConstantValues);
-  //   }
-  // }, [formConstantValues, sports, sports?.length]);
+  useEffect(() => {
+    if (sports?.length ) {
+      const updatedFormConstantValues = formConstantValues.map(
+        (formConstant) => {
+          if (formConstant.id === "selectSports") {
+            return {
+              ...formConstant,
+              options: sports.map((sport: { name: string; id: number }) => ({
+                label: sport.name,
+                value: sport.id.toString(),
+              })),
+            };
+          } else {
+            return formConstant;
+          }
+        }
+      );
+      hasExecuted.current = false;
+      setFormConstantValues(updatedFormConstantValues);
+    }
+  }, [formConstantValues, sports, sports?.length]);
 
-  // useEffect(() => {
-  //   // if (!isEditMode) {
-  //   // eslint-disable-next-line no-console
-  //   reset({
-  //     ...currentFormValues,
-  //     ...formData,
-  //   });
-  //   // }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [formData]);
-  //test commit
+
   const getInputElement = (props: BATCH_DETAILS_CONSTANTS_TYPES) => {
     const { type, rules, id, pattern, placeHolder } = props;
     switch (type) {

@@ -17,7 +17,7 @@ import {
   BATCH_DETAILS_TIMING,
 } from "~/constants/batchConstant";
 
-export default function AddBatchTiming() {
+export default function AddBatchTiming(props) {
   let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
@@ -37,6 +37,9 @@ export default function AddBatchTiming() {
 
   const [formConstantValues, setFormConstantValues] =
     useState(BATCH_DETAILS_TIMING);
+
+    const [batchTimings, setBatchTimings] = useState([]);
+
 
   // useEffect(() => {
   //   if (sports?.length && hasExecuted.current) {
@@ -140,14 +143,31 @@ export default function AddBatchTiming() {
     return inputElement;
   };
 
-  const nextClickHandler = async () => {
-    const result = await trigger();
-    if (result) {
-      const currentFormValues = getValues();
-      setFormData && setFormData({ ...formData, ...currentFormValues });
-      setCurrentStep && setCurrentStep(currentStep + 1);
-    }
+
+  const prevClickHandler = () => {
+    setCurrentStep && setCurrentStep(currentStep - 1);
   };
+
+  const submitCallback = () => {
+    const finalFormData = {
+      ...formData,
+      batchTimings,
+    };
+    props?.finalFormSubmissionHandler(finalFormData);
+  };
+
+  const onAddBatchTiming=(e)=>{
+    e.preventDefault()
+    let arr=[...batchTimings]
+    let obj={...formData}
+    arr.push({day:obj?.day,startTime:obj.startTime,endTime:obj.endTime})
+    delete obj.day
+    delete obj.startTime
+    delete obj.endTime
+    setBatchTimings(arr)
+    setFormData(obj)
+  }
+
 
   return (
     <>
@@ -176,7 +196,7 @@ export default function AddBatchTiming() {
         <Button
           className="border-1 mx-3 border-pink-600"
           type="button"
-          onClick={() => {}}
+          onClick={(e) => onAddBatchTiming(e)}
         >
           ADD
         </Button>
@@ -186,12 +206,19 @@ export default function AddBatchTiming() {
           /> */}
 
       <div className="mr-10 mt-10 flex justify-end">
-        <Button
-          className="border-1 mx-3 bg-pink-600 hover:bg-pink-800"
+      <Button
           type="button"
-          onClick={() => void nextClickHandler()}
+          className="mx-3 bg-pink-600 hover:bg-pink-800"
+          onClick={prevClickHandler}
         >
-          Next
+          Prev
+        </Button>
+        <Button
+          type="button"
+          className="mx-3 bg-pink-600 hover:bg-pink-800"
+          onClick={submitCallback}
+        >
+          Finish
         </Button>
       </div>
     </>

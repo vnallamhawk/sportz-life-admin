@@ -17,7 +17,7 @@ export interface BATCH_DETAILS_CONSTANTS_TYPES {
     | "selectCoach"
     | "maxCapacity"
     | "selectBatchFee"
-    | "selectDay"
+    | "day"
     | "startTime"
     | "endTIme";
   type: Type;

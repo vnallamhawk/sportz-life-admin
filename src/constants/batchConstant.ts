@@ -16,34 +16,34 @@ export const BATCH_DETAILS_CONSTANTS: BATCH_DETAILS_CONSTANTS_TYPES[] = [
     label: "Select Sports",
     id: "selectSports",
     type: "select",
-    options: [
-      { label: "Volleyball", value: "Volleyball" },
-      { label: "Volleyball", value: "Volleyball" },
-      { label: "Volleyball", value: "Volleyball" },
-      { label: "Volleyball", value: "Volleyball" },
-    ],
-    isMulti: true,
+    // options: [
+    //   { label: "Volleyball", value: "Volleyball" },
+    //   { label: "Volleyball", value: "Volleyball" },
+    //   { label: "Volleyball", value: "Volleyball" },
+    //   { label: "Volleyball", value: "Volleyball" },
+    // ],
+    // isMulti: true,
     placeHolder: "Select Sports",
     rules: {
       required: true,
     },
   },
-  {
-    label: "Select Coach",
-    id: "selectCoach",
-    type: "select",
-    options: [
-      { label: "Coach1", value: "Coach1" },
-      { label: "Coach1", value: "Coach1" },
-      { label: "Coach1", value: "Coach1" },
-      { label: "Coach1", value: "Coach1" },
-    ],
-    isMulti: true,
-    placeHolder: "Select Coaches",
-    rules: {
-      required: true,
-    },
-  },
+  // {
+  //   label: "Select Coach",
+  //   id: "selectCoach",
+  //   type: "select",
+  //   options: [
+  //     { label: "Coach1", value: "Coach1" },
+  //     { label: "Coach1", value: "Coach1" },
+  //     { label: "Coach1", value: "Coach1" },
+  //     { label: "Coach1", value: "Coach1" },
+  //   ],
+  //   isMulti: true,
+  //   placeHolder: "Select Coaches",
+  //   rules: {
+  //     required: true,
+  //   },
+  // },
   {
     label: "Max Batch Capacity",
     id: "maxCapacity",
@@ -60,15 +60,9 @@ export const BATCH_DETAILS_CONSTANTS: BATCH_DETAILS_CONSTANTS_TYPES[] = [
   {
     label: "Select Batch Fee",
     id: "selectBatchFee",
-    type: "select",
-    options: [
-      { label: "5000", value: "5000" },
-      { label: "5000", value: "5000" },
-      { label: "5000", value: "5000" },
-      { label: "5000", value: "5000" },
-    ],
+    type: "textbox",
     isMulti: true,
-    placeHolder: "Select Coaches",
+    placeHolder: "Select Batch Fee",
     rules: {
       required: false,
     },
@@ -78,7 +72,7 @@ export const BATCH_DETAILS_CONSTANTS: BATCH_DETAILS_CONSTANTS_TYPES[] = [
 export const BATCH_DETAILS_TIMING: BATCH_DETAILS_CONSTANTS_TYPES[] = [
   {
     label: "Select Day",
-    id: "selectDay",
+    id: "day",
     type: "select",
     options: [
       { label: "Sunday", value: "Sunday" },
@@ -90,7 +84,7 @@ export const BATCH_DETAILS_TIMING: BATCH_DETAILS_CONSTANTS_TYPES[] = [
       { label: "Saturday", value: "Saturday" },
     ],
     isMulti: true,
-    placeHolder: "Select Sports",
+    placeHolder: "Select Day",
     rules: {
       required: true,
     },

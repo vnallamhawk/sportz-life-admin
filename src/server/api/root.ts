@@ -10,6 +10,7 @@ import { inventoryRouter } from "./routers/inventory";
 
 import {centerSportsRouter} from "./routers/centerSports"
 import { adminUserRouter } from "./routers/adminUser";
+import { batchTimingRouter } from "./routers/batchTimings";
 
 /**
  * This is the primary router for your server.
@@ -22,6 +23,7 @@ export const appRouter = createTRPCRouter({
   coach: coachRouter,
   sports: sportRouter,
   batches: batchRouter,
+  batchTimings: batchTimingRouter,
   staff: staffRouter,
   inventory:inventoryRouter,
   centerInventory:centerInventoryRouter,

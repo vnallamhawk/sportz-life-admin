@@ -6,7 +6,7 @@ import Image from "next/image";
 import { protectedProcedure } from "~/server/api/trpc";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import { api } from "~/utils/api";
 

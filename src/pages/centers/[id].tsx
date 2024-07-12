@@ -25,7 +25,6 @@ import { ToastContext } from "~/contexts/Contexts";
 // import { dateFormat } from "~/helpers/date";
 // import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 // import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
-import router from "next/router";
 import Table from "~/components/Table";
 import CoachTableHeader from "~/components/AllCoaches/CoachTableHeader";
 import CoachTableBody from "~/components/AllCoaches/CoachTableBody";
@@ -279,7 +278,7 @@ export default function Page({ center }: { center: Centers }) {
             {selectedTab?.name === "batches" && (
               <Button
                 className="ml-3 bg-[#F3476D] p-2 text-white"
-                onClick={() => {router.push(`/centers/Batch/${center?.id}`)}}
+                onClick={() => router.push(`/centers/Batch/${center?.id}`)}
               >
                 Add New Batch
               </Button>
