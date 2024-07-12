@@ -36,6 +36,7 @@
     "flowbite": "^2.4.1",
     "flowbite-react": "^0.10.1",
     "lint-staged": "^14.0.1",
+    "moment-timezone": "^0.5.45",
     "next": "13.4.4",
     "next-auth": "4.22.1",
     "radix-ui": "1.0.1",
