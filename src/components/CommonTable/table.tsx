@@ -9,6 +9,7 @@ import {
 import Image from "next/image";
 import User from "../../images/user.png";
 import Dots from "../../images/dots.svg"
+import { Dropdown, DropdownHeader } from "flowbite-react";
 
 const TABLE_HEAD = ["Athlete Name", "Training Level", "Center", "Batch", "Fee Status of the Month", ""];
 
@@ -87,7 +88,7 @@ export default function () {
                 },
                 index,
               ) => {
-                
+
                 const isLast = index === TABLE_ROWS.length - 1;
                 const classes = isLast
                   ? "p-4 border-y-2 border-gray-100"
@@ -143,11 +144,19 @@ export default function () {
                       </div>
                     </td>
                     <td className={classes}>
-                      <button>
+                      <Dropdown label="" dismissOnClick={false} placement="top" className="view-drop bg-black rounded-lg" renderTrigger={() =>     
+                        <button className="py-2">
                         <Image src={Dots} alt="" />
-                      </button>
+                      </button>}>
+                      <DropdownHeader>
+                          <div className="flex items-center">
+                              <button className="mx-1 text-white">Edit</button>
+                              <button className="mx-1 text-white">View</button>
+                              <button className="mx-1 text-white">Delete</button>
+                          </div>
+                      </DropdownHeader>                    
+                      </Dropdown>                 
                     </td>
-
                   </tr>
                 );
               },
