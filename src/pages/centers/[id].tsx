@@ -39,6 +39,7 @@ import CenterDashBatchTableBody from "~/components/CenterDashboardTables/Batch/C
 import CenterDashCoachTableBody from "~/components/CenterDashboardTables/Coach/CenterDashCoachTableBody";
 import CenterDashAthleteTableBody from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableBody";
 import CenterDashInventoryTableBody from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableBody";
+import { useRouter } from "next/navigation";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -110,10 +111,12 @@ type TabsType = {
 };
 
 export default function Page({ center }: { center: Centers }) {
+  const router=useRouter()
   const [displayCertificate, setDisplayCertificate] = useState(false);
   const [displayBatch, setDisplayBatch] = useState(false);
   const [displayAttendance, setDisplayAttendance] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
+
 
   const handleCertificateClick = () =>
     setDisplayCertificate(!displayCertificate);
@@ -124,7 +127,6 @@ export default function Page({ center }: { center: Centers }) {
   const [loading, setLoading] = useState(true);
   const [finalTabs, setFinalTabs] = useState(tabs);
 
-console.log(center,"dbjsjsdfj")
 
   useEffect(()=>{
     if(finalTabs && finalTabs.length>0 && Object.keys(center).length>0 ){
@@ -277,7 +279,7 @@ console.log(center,"dbjsjsdfj")
             {selectedTab?.name === "batches" && (
               <Button
                 className="ml-3 bg-[#F3476D] p-2 text-white"
-                onClick={() => {}}
+                onClick={() => {router.push(`/centers/Batch/${center?.id}`)}}
               >
                 Add New Batch
               </Button>

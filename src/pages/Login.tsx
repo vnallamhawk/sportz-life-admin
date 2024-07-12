@@ -3,41 +3,39 @@ import Logo from "../images/logo.svg";
 import LoginMobileImage from "../images/pngwing.svg";
 import Link from "next/link";
 import Image from "next/image";
-import { protectedProcedure } from '~/server/api/trpc';
+import { protectedProcedure } from "~/server/api/trpc";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { api } from "~/utils/api";
 
-
 export default function Login() {
-  const router=useRouter()
+  const router = useRouter();
   const [loginDetails, setLoginDetails] = useState({});
-
 
   // const { mutate: createMutate } = api.adminUser.createAdminUser.useMutation({
   //   onSuccess: (response) => {
-     
+
   //     return response?.id
   //   },
   // });
 
   const handleSubmit = async (e) => {
-       e.preventDefault();
+    e.preventDefault();
 
     // createMutate({email:"gamuaggarwal@gmail.com",password:"Gamini@123"})
 
     const res = await signIn("credentials", {
       redirect: false,
-      email:loginDetails?.email,
-      password:loginDetails?.password,
+      email: loginDetails?.email,
+      password: loginDetails?.password,
     });
 
     if (res?.error) {
       alert("Login failed");
     } else {
-      router.push("/dashboard")
+      router.push("/dashboard");
     }
   };
 
@@ -78,8 +76,8 @@ export default function Login() {
                 type="password"
                 className="w-full rounded-lg border border-solid px-5 py-2"
                 placeholder="Type password"
-                name="password"
                 value={loginDetails?.password}
+                name="password"
                 onChange={(e) => handleChange(e)}
               />
             </div>
