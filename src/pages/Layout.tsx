@@ -10,17 +10,19 @@ import DashboardHeader from "~/components/DashboardHeader";
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { data: sessionData } = useSession();
+  const { data: sessionData,status } = useSession();
   const [openToast, setOpenToast] = useState(false);
   const toastValue = { openToast, setOpenToast };
   const pathname = usePathname();
   const router=useRouter()
 
-  useEffect(()=>{
-    if(!sessionData){
+  useEffect(() => {
+    if (status === 'unauthenticated') {
       router.push("/")
-    }
-  },[sessionData,router])
+    } 
+  }, [status, sessionData]);
+
+
   return (
     <>
     {/* <Header /> */}

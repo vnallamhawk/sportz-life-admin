@@ -1,5 +1,5 @@
 import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, getSession } from "next-auth/react";
 import { type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
@@ -31,5 +31,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
     </SessionProvider>
   );
 };
+MyApp.getInitialProps = async (context) => {
+  const { ctx } = context;
+  const session = await getSession(ctx);
 
+  return {
+    session,
+  };
+};
 export default api.withTRPC(MyApp);
