@@ -44,8 +44,8 @@ const multiFormData: MULTI_FORM_BATCH_TYPES = {
   name: "",
   selectSports: {},
   selectCoaches: [],
-  maxCapacity: 0,
-  selectBatchFee: [],
+  capacity: 0,
+  price: 0,
 };
 
 const defaultValues = {
@@ -124,6 +124,7 @@ export default function AddCoachMultiFormLayout({ center }: { center: Centers })
     api.batchTimings.createBatchTiming.useMutation({
       onSuccess: (response) => {
         console.log("response data is ", response);
+        router.push(`/centers/${center?.id}`)
         return response;
       },
     });
@@ -155,25 +156,26 @@ export default function AddCoachMultiFormLayout({ center }: { center: Centers })
   const finalFormSubmissionHandler = async (
     finalForm: Required<MULTI_FORM_TYPES>
   ) => {
-    debugger
     const sportId = finalForm?.selectSports?.value
-    // if (formData.isEditMode) {
-    //   editMutate({
-    //     ...finalForm
-    //   });
-    // } else {
-    //   setFormData({
-    //     ...finalForm,
-    //     centerId:center?.id,
-    //   });
-    //   createMutateBatch({
-    //     ...finalForm,
-    //     sportId
-    //     centerId:center?.id,
-    //   });
-    // }
+    if (formData.isEditMode) {
+      editMutate({
+        ...finalForm
+      });
+    } else {
+      setFormData({
+        ...finalForm,
+        centerId:center?.id,
+      });
+      createMutateBatch({
+        ...finalForm,
+        capacity:parseInt(finalForm?.capacity),
+        price:parseInt(finalForm?.price),
+        sportId:parseInt(sportId),
+        centerId:center?.id,
+
+      });
+    }
   };
-  console.log(formData,"dnsfsmdfnmds")
 
   return (
     <FormContext.Provider value={formProviderData}>

@@ -38,7 +38,7 @@ import CenterDashBatchTableBody from "~/components/CenterDashboardTables/Batch/C
 import CenterDashCoachTableBody from "~/components/CenterDashboardTables/Coach/CenterDashCoachTableBody";
 import CenterDashAthleteTableBody from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableBody";
 import CenterDashInventoryTableBody from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableBody";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -60,6 +60,12 @@ export const getServerSideProps = async (
           Inventories: true,
         },
       },
+      Batches:{
+        include:{
+          BatchSchedules:true,
+          Sports:true
+        }
+      }
     },
   });
 
@@ -134,6 +140,10 @@ export default function Page({ center }: { center: Centers }) {
       if(index>-1 && center?.CenterInventories){
         arr[index].value=center?.CenterInventories?.length
       }
+      const batchIndex=arr?.findIndex((item)=>item?.name==="batches")
+      if(batchIndex>-1 && center?.Batches){
+        arr[batchIndex].value=center?.Batches?.length
+      }
       setFinalTabs(arr)
     }
 
@@ -148,7 +158,7 @@ export default function Page({ center }: { center: Centers }) {
     CenterDashBatchTableHeader()
   );
   const [selectedBody, setSelectedBody] = useState(
-    CenterDashBatchTableBody()
+    CenterDashBatchTableBody(center?.Batches,center)
     // { name: filterByName },
     // handleIsLoading
   );
@@ -162,7 +172,7 @@ export default function Page({ center }: { center: Centers }) {
     } else if (tab?.name === "batches") {
       header = CenterDashBatchTableHeader();
 
-      body = CenterDashBatchTableBody();
+      body = CenterDashBatchTableBody(center?.Batches,center);
     } else if (tab?.name === "athletes") {
       header = CenterDashAthleteTableHeader();
       body = CenterDashAthleteTableBody();
@@ -174,7 +184,7 @@ export default function Page({ center }: { center: Centers }) {
     setSelectedBody(body);
   };
 
-  console.log(selectedTab, "sdghdsgfhh");
+
   return (
     <>
       <Card className="h-100 mx-5">

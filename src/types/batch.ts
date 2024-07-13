@@ -7,7 +7,7 @@ export interface BatchTableData {
   batchName: string;
   batchIds: number[];
 }
-export const InputType = ["textbox", "select", "calendar"] as const;
+export const InputType = ["textbox", "select", "calendar","time","number"] as const;
 type Type = (typeof InputType)[number];
 export interface BATCH_DETAILS_CONSTANTS_TYPES {
   label?: string;
@@ -15,8 +15,8 @@ export interface BATCH_DETAILS_CONSTANTS_TYPES {
     | "name"
     | "selectSports"
     | "selectCoach"
-    | "maxCapacity"
-    | "selectBatchFee"
+    | "capacity"
+    | "price"
     | "day"
     | "startTime"
     | "endTIme";
@@ -33,6 +33,6 @@ export interface CENTER_BATCH_TYPES {
   // selectSports: MultiSelectOption[];
   selectSports: MultiSelectOption;
   selectCoaches: MultiSelectOption;
-  maxCapicity: Number;
-  selectBatchFee: MultiSelectOption;
+  maxCapicity: number;
+  selectBatchFee: number;
 }

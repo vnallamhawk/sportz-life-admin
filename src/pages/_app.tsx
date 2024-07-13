@@ -7,6 +7,8 @@ import Layout from "./Layout";
 import Login from "./Login";
 import { usePathname } from "next/navigation";
 import ThemeContextProvider from "~/contexts/useThemeContext";
+import 'react-time-picker/dist/TimePicker.css';
+import 'react-clock/dist/Clock.css';
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

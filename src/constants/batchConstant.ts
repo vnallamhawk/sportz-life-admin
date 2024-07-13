@@ -46,8 +46,8 @@ export const BATCH_DETAILS_CONSTANTS: BATCH_DETAILS_CONSTANTS_TYPES[] = [
   // },
   {
     label: "Max Batch Capacity",
-    id: "maxCapacity",
-    type: "textbox",
+    id: "capacity",
+    type: "number",
     rules: {
       required: true,
       maxLength: {
@@ -59,8 +59,8 @@ export const BATCH_DETAILS_CONSTANTS: BATCH_DETAILS_CONSTANTS_TYPES[] = [
 
   {
     label: "Select Batch Fee",
-    id: "selectBatchFee",
-    type: "textbox",
+    id: "price",
+    type: "number",
     isMulti: true,
     placeHolder: "Select Batch Fee",
     rules: {
@@ -75,15 +75,15 @@ export const BATCH_DETAILS_TIMING: BATCH_DETAILS_CONSTANTS_TYPES[] = [
     id: "day",
     type: "select",
     options: [
-      { label: "Sunday", value: "Sunday" },
-      { label: "Monday", value: "Monday" },
-      { label: "Tuesday", value: "Tuesday" },
-      { label: "Wednesday", value: "Wednesday" },
-      { label: "Thrusday", value: "Thrusday" },
-      { label: "Friday", value: "Friday" },
-      { label: "Saturday", value: "Saturday" },
+      { label: "Sunday", value: "sun" },
+      { label: "Monday", value: "mon" },
+      { label: "Tuesday", value: "tue" },
+      { label: "Wednesday", value: "wed" },
+      { label: "Thrusday", value: "thu" },
+      { label: "Friday", value: "fri" },
+      { label: "Saturday", value: "sat" },
     ],
-    isMulti: true,
+    // isMulti: true,
     placeHolder: "Select Day",
     rules: {
       required: true,
@@ -92,7 +92,7 @@ export const BATCH_DETAILS_TIMING: BATCH_DETAILS_CONSTANTS_TYPES[] = [
   {
     label: "Start Time",
     id: "startTime",
-    type: "textbox",
+    type: "time",
     rules: {
       required: true,
       maxLength: {
@@ -104,8 +104,8 @@ export const BATCH_DETAILS_TIMING: BATCH_DETAILS_CONSTANTS_TYPES[] = [
 
   {
     label: "End Time",
-    id: "endTIme",
-    type: "textbox",
+    id: "endTime",
+    type: "time",
     rules: {
       required: true,
       maxLength: {
@@ -113,5 +113,21 @@ export const BATCH_DETAILS_TIMING: BATCH_DETAILS_CONSTANTS_TYPES[] = [
         message: "Too Many Characters",
       },
     },
+  },
+];
+
+
+export const BATCH_TIMING_TABLE_HEADERS = [
+  {
+    id: "day",
+    label: "Day",
+  },
+  {
+    label: "Start Time",
+    id: "startTime",
+  },
+  {
+    label: "End Time",
+    id: "endTime",
   },
 ];

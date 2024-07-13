@@ -9,13 +9,16 @@ import {
 import { FormContext } from "../../pages/centers/Batch/[id]";
 import Button from "../Button";
 import { Controller, useForm } from "react-hook-form";
-import Datepicker from "~/components/DatePicker/DatePickerWrapper";
+import Timepicker from "~/components/TimePicker/TimePickerWrapper";
 import { api } from "~/utils/api";
 import Select from "react-select";
 import {
   BATCH_DETAILS_CONSTANTS,
   BATCH_DETAILS_TIMING,
 } from "~/constants/batchConstant";
+import Table from "../Table";
+import BatchTimeTableHeader from "../BatchTiming/BatchTimingTableHeader";
+import BatchTimeTableBody from "../BatchTiming/BatchTimingTableBody";
 
 export default function AddBatchTiming(props) {
   let inputElement;
@@ -34,6 +37,7 @@ export default function AddBatchTiming(props) {
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
+  const [currentBatchDetail,setCurrentBatchDetail]=useState({})
 
   const [formConstantValues, setFormConstantValues] =
     useState(BATCH_DETAILS_TIMING);
@@ -74,6 +78,13 @@ export default function AddBatchTiming(props) {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [formData]);
   //test commit
+
+const handleChangeBatch=(value,id)=>{
+  let batchDetails={...currentBatchDetail}
+  batchDetails[id]=value
+  setCurrentBatchDetail(batchDetails)
+}
+
   const getInputElement = (props: BATCH_DETAILS_CONSTANTS_TYPES) => {
     const { type, rules, id, pattern, placeHolder } = props;
     switch (type) {
@@ -93,7 +104,7 @@ export default function AddBatchTiming(props) {
                   placeholder={placeHolder}
                   className="w-full"
                   onChange={(element) => {
-                    onChange(element);
+                    handleChangeBatch(element?.value,id);
                   }}
                 />
               );
@@ -101,17 +112,17 @@ export default function AddBatchTiming(props) {
           />
         );
         break;
-      case "calendar":
+      case "time":
         inputElement = (
           <Controller
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
-                <Datepicker
+                <Timepicker
                   placeHolder={props.placeHolder}
-                  value={new Date(value as string)}
+                  value={currentBatchDetail[id]?currentBatchDetail[id]:"10:00"}
                   className="h-12"
-                  onChangeHandler={onChange}
+                  onChangeHandler={(value)=>handleChangeBatch(value,id)}
                 />
               );
             }}
@@ -129,7 +140,7 @@ export default function AddBatchTiming(props) {
               <Textbox
                 className="h-12 w-full"
                 placeHolder={props.label}
-                onChangeHandler={onChange}
+                onChange={(e)=>handleChangeBatch(e.target.value,id)}
                 // TODO: FIX THIS TS ERROR
                 value={value as string}
               />
@@ -159,13 +170,8 @@ export default function AddBatchTiming(props) {
   const onAddBatchTiming=(e)=>{
     e.preventDefault()
     let arr=[...batchTimings]
-    let obj={...formData}
-    arr.push({day:obj?.day,startTime:obj.startTime,endTime:obj.endTime})
-    delete obj.day
-    delete obj.startTime
-    delete obj.endTime
+    arr.push(currentBatchDetail)
     setBatchTimings(arr)
-    setFormData(obj)
   }
 
 
@@ -201,10 +207,10 @@ export default function AddBatchTiming(props) {
           ADD
         </Button>
       </div>
-      {/* <Table
-          
-          /> */}
-
+      <Table
+          tableHeader={BatchTimeTableHeader()}
+          tableBody={BatchTimeTableBody(batchTimings)}
+        />
       <div className="mr-10 mt-10 flex justify-end">
       <Button
           type="button"

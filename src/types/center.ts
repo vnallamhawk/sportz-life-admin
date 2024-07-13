@@ -136,6 +136,6 @@ export interface MULTI_FORM_BATCH_TYPES {
   batchName: string;
   selectSports: MultiSelectOption[];
   selectCoaches: MultiSelectOption[];
-  MaxCapacity: Number;
-  selectBatchFee: MultiSelectOption[];
+  capacity: number;
+  price: number;
 }

@@ -174,7 +174,6 @@ export default function Page({ center }: { center: Centers }) {
     setSelectedBody(body);
   };
 
-  console.log(selectedTab, "sdghdsgfhh");
   return (
     <>
       <Card className="h-100 mx-5">

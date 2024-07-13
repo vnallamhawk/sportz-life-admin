@@ -114,9 +114,10 @@ export default function AddBatch() {
               <Textbox
                 className="h-12 w-full"
                 placeHolder={props.label}
+                type={type==="number"?"number":"text"}
                 onChangeHandler={onChange}
                 // TODO: FIX THIS TS ERROR
-                value={value as string}
+                value={value as string|number}
               />
             )}
             rules={rules}
