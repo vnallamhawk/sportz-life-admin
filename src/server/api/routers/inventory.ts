@@ -7,7 +7,7 @@ import {
 
 export const inventoryRouter = createTRPCRouter({
   getAllInventories: publicProcedure.query(({ ctx }) => {
-    const allInventories = ctx?.prisma?.inventories?.findMany();
+    const allInventories = ctx?.prisma?.inventories?.findMany({where:{createdBy:ctx.session.token.id}});
     return allInventories;
   }),
   createInventory: publicProcedure
@@ -15,20 +15,23 @@ export const inventoryRouter = createTRPCRouter({
     z.object({
       name: z.string(),
       category:z.string(),
+      createdBy:z.number()
     })
   )
   .mutation(
     async ({
       input: {
         name,
-        category
+        category,
+        createdBy
       },
       ctx,
     }) => {
       const response = await ctx.prisma.inventories.create({
         data: {
           name,
-          category
+          category,
+          createdBy
         },
       });
       return response;

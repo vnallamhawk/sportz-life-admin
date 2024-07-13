@@ -195,7 +195,6 @@ export default function AddCenterForm() {
       });
     }
   };
-  console.log(sessionData,"xdfjdjhjhjhdsj")
   return (
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
