@@ -11,6 +11,9 @@ import { inventoryRouter } from "./routers/inventory";
 import {centerSportsRouter} from "./routers/centerSports"
 import { adminUserRouter } from "./routers/adminUser";
 import { batchTimingRouter } from "./routers/batchTimings";
+import { staffPayrollRouter } from "./routers/staffPayroll";
+import { staffDesignationRouter } from "./routers/staffdesignation";
+import { taxSlabRouter } from "./routers/taxSlabs";
 
 /**
  * This is the primary router for your server.
@@ -28,7 +31,10 @@ export const appRouter = createTRPCRouter({
   inventory:inventoryRouter,
   centerInventory:centerInventoryRouter,
   centerSports:centerSportsRouter,
-  adminUser:adminUserRouter
+  adminUser:adminUserRouter,
+  staffPayroll:staffPayrollRouter,
+  staffDesignation:staffDesignationRouter,
+  tabSlab:taxSlabRouter
 });
 
 // export type definition of API

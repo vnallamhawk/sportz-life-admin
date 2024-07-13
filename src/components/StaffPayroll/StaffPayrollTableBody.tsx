@@ -2,7 +2,7 @@ import React from "react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Dropdown, DropdownHeader } from "flowbite-react";
 
-export default function StaffPayrollTableBody(tableData,center) {
+export default function StaffPayrollTableBody(tableData) {
   return (
     <>
       {tableData &&
@@ -35,7 +35,6 @@ export default function StaffPayrollTableBody(tableData,center) {
                       <DropdownHeader>
                           <div className="flex items-center">
                               <button className="mx-1 text-white" >Edit</button>
-                              <button className="mx-1 text-white">View</button>
                               <button className="mx-1 text-white">Delete</button>
                           </div>
                       </DropdownHeader>                    
