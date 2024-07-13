@@ -30,7 +30,6 @@ import AddCenter from "~/components/AddCenter/AddCenter";
 import AddInventory from "~/components/AddInventory/AddInventory";
 import AddStaff from "~/components/AddStaff/AddStaff";
 import AddSports from "~/components/AddSports/AddSports";
-import { useSession } from "next-auth/react";
 const multiFormData: MULTI_FORM_TYPES = {
   name: "",
   image: "",
@@ -64,7 +63,6 @@ export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 export default function AddCenterForm() {
   const router = useRouter();
   const id = Number(router?.query?.id);
-  const { data: sessionData } = useSession();
 
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -147,7 +145,6 @@ export default function AddCenterForm() {
       const finalCenterSports = formData?.sports?.map((v) => ({
         ... v,
         centerId,
-        createdBy:sessionData?.token?.id
       }));
 
       createMutateCenterSports(finalCenterSports);
@@ -155,8 +152,6 @@ export default function AddCenterForm() {
       const finalInventories = formData?.inventories?.map((v) => ({
         ...v,
         centerId,
-        createdBy:sessionData?.token?.id
-
       }));
       createMutateInventories(finalInventories);
     }
@@ -191,7 +186,6 @@ export default function AddCenterForm() {
         mobile: finalForm?.phoneNumber,
         address: finalForm?.address,
         image: "",
-        createdBy:sessionData?.token?.id
       });
     }
   };

@@ -28,7 +28,8 @@ export const centerRouter = createTRPCRouter({
   getAllCenters: publicProcedure.query(({ ctx }) => {
     const allCenters = ctx?.prisma.centers?.findMany({
       where:{
-        deletedAt:null
+        deletedAt:null,
+        createdBy:ctx.session.token.id
       }
       // include: {
       //   CoachSportsMaps: true,
@@ -95,6 +96,7 @@ export const centerRouter = createTRPCRouter({
         image: z.string(),
         mobile: z.string(),
         address: z.string(),
+        createdBy:z.number()
       })
     )
     .mutation(
@@ -104,7 +106,8 @@ export const centerRouter = createTRPCRouter({
           mobile,
           image,
           email,
-          address
+          address,
+          createdBy
         },
         ctx,
       }) => {
@@ -114,6 +117,7 @@ export const centerRouter = createTRPCRouter({
             email: email,
             mobile: mobile,
             address: address,
+            createdBy:createdBy
           },
         });
         return response;

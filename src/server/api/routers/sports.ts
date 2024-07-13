@@ -7,7 +7,7 @@ import {
 
 export const sportRouter = createTRPCRouter({
   getAllSports: publicProcedure.query(({ ctx }) => {
-    const allSports = ctx?.prisma?.sports?.findMany();
+    const allSports = ctx?.prisma?.sports?.findMany({where:{createdBy:ctx.session.token.id}});
     return allSports;
   }),
   createSports: publicProcedure
@@ -16,7 +16,8 @@ export const sportRouter = createTRPCRouter({
       name: z.string(),
       about:z.string(),
       image: z.string(),
-      subTitle:z.string()
+      subTitle:z.string(),
+      createdBy:z.number()
     })
   )
   .mutation(
@@ -25,7 +26,7 @@ export const sportRouter = createTRPCRouter({
         name,
         about,
         subTitle,
-        image
+        image,createdBy
       },
       ctx,
     }) => {
@@ -35,7 +36,8 @@ export const sportRouter = createTRPCRouter({
           about,
           subTitle,
           image: 'image',
-          icon:"dscsd"
+          icon:"dscsd",
+          createdBy
         },
       });
       return response;

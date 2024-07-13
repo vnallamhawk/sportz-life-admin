@@ -397,7 +397,7 @@ model Centers {
   address                String                   @db.Text
   email                     String?                     @unique(map: "email") @db.VarChar(255)
   mobile                 String                   @db.VarChar(255)
-  academyId              Int?
+  createdBy              Int
   status                 Int?                     @default(1) @db.TinyInt
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @default(now())
@@ -413,6 +413,10 @@ model Centers {
   Athletes          Athletes[]
   Batches    Batches[]
   Tests             Tests[]
+  Admin            Admin   @relation(fields: [createdBy], references: [id], map: "CenterAdmin_ibfk_1")
+  @@index([createdBy], map: "createdBy")
+
+
 }
 
 model Inventories {
@@ -424,6 +428,9 @@ model Inventories {
   updatedAt              DateTime                 @default(now())
   deletedAt              DateTime?                @db.DateTime(0)
   CenterInventories      CenterInventories[]
+  createdBy              Int
+ Admin            Admin   @relation(fields: [createdBy], references: [id], map: "InventoryAdmin_ibfk_1")
+  @@index([createdBy], map: "createdBy")
 }
 
 model Admin {
@@ -433,6 +440,15 @@ model Admin {
    createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @default(now())
   deletedAt              DateTime?                @db.DateTime(0)
+  Centers                Centers[]
+  Inventories           Inventories[]
+  Coaches               Coaches[]
+  Sports                Sports[]
+  TaxSlabs              TaxSlabs[]
+  Staffs              Staffs[]
+  StaffPayroll              StaffPayroll[]
+  StaffDesignation            StaffDesignation[]
+
 }
 
 model CenterInventories {
@@ -500,6 +516,9 @@ model Coaches {
   ScheduledPlans            ScheduledPlans[]
   TrainingDrills            TrainingDrills[]
   TrainingPlans             TrainingPlans[]
+    createdBy              Int
+ Admin            Admin   @relation(fields: [createdBy], references: [id], map: "CoachesAdmin_ibfk_1")
+  @@index([createdBy], map: "createdBy")
 
   @@index([centerId], map: "centerId")
 }
@@ -711,6 +730,10 @@ model Sports {
   Tests                  Tests[]
   TrainingDrills         TrainingDrills[]
   TrainingPlans          TrainingPlans[]
+    createdBy              Int
+ Admin            Admin   @relation(fields: [createdBy], references: [id], map: "SportsAdmin_ibfk_1")
+  @@index([createdBy], map: "createdBy")
+  
 }
 
 model SportsColorMaps {
@@ -731,12 +754,76 @@ model Staffs {
   id        Int      @id @default(autoincrement())
   image     String?  @db.VarChar(255)
   name      String   @db.VarChar(255)
+  designationId Int
+  payrollId   Int
   phone     String?  @unique(map: "phone") @db.VarChar(255)
   email     String?  @unique(map: "email") @db.VarChar(255)
   status    Int?     @default(1) @db.TinyInt
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   Feeds     Feeds[]
+  StaffDesignation    StaffDesignation   @relation(fields: [designationId], references: [id], onDelete: Cascade, map: "StaffDesignationMaps_ibfk_517")
+  StaffPayroll    StaffPayroll   @relation(fields: [payrollId], references: [id], onDelete: Cascade, map: "StaffPayrollMaps_ibfk_517")
+      createdBy              Int
+ Admin            Admin   @relation(fields: [createdBy], references: [id], map: "StaffsAdmin_ibfk_1")
+  @@index([createdBy], map: "createdBy")
+
+  @@index([designationId], map: "designationId")
+  @@index([payrollId], map: "payrollId")
+
+}
+model StaffDesignation {
+  id        Int      @id @default(autoincrement())
+  designation     String @db.VarChar(255)
+  status    Int?     @default(1) @db.TinyInt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt   DateTime?       @db.DateTime(0)
+  Staffs     Staffs[]
+  StaffPayroll  StaffPayroll[]
+
+    createdBy              Int
+ Admin            Admin   @relation(fields: [createdBy], references: [id], map: "StaffDesignationAdmin_ibfk_1")
+  @@index([createdBy], map: "createdBy")
+  
+
+}
+model StaffPayroll {
+  id        Int      @id @default(autoincrement())
+  taxable   Boolean  @default(false)
+  grossSalary    Float   
+  slabId       Int?
+  designationId     Int
+  tax_percent Int
+  netSalary   Float
+  status    Int?     @default(1) @db.TinyInt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt   DateTime?       @db.DateTime(0)
+  Staffs     Staffs[]
+  StaffDesignation    StaffDesignation  @relation(fields: [designationId], references: [id], map: "StaffDesignationPayrol_ibfk_1")
+  TaxSlabs    TaxSlabs?   @relation(fields: [slabId], references: [id], map: "PayrollSlabMaps_ibfk_517")
+      createdBy              Int
+ Admin            Admin   @relation(fields: [createdBy], references: [id], map: "StaffPayrollAdmin_ibfk_1")
+  @@index([createdBy], map: "createdBy")
+  @@index([designationId], map: "designationId")
+  @@index([slabId], map: "slabId")
+
+}
+
+model TaxSlabs {
+  id        Int      @id @default(autoincrement())
+  fromAmount     Int  
+  toAmount   Int 
+  percentage    Int   
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt   DateTime?       @db.DateTime(0)
+  StaffPayroll     StaffPayroll[]
+      createdBy              Int
+ Admin            Admin   @relation(fields: [createdBy], references: [id], map: "TaxSlabAdmin_ibfk_1")
+  @@index([createdBy], map: "createdBy")
+  
 }
 
 model TestBanks {
