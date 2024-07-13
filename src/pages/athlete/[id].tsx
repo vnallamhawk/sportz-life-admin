@@ -40,35 +40,35 @@ import CenterDashAthleteTableBody from "~/components/CenterDashboardTables/Athle
 import CenterDashInventoryTableBody from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableBody";
 import { useRouter } from "next/navigation";
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const id = context?.params?.id;
-  // const sports = await prisma.sports.findMany();
-  const center = await prisma.centers.findUnique({
-    where: {
-      id: id ? Number(id) : undefined,
-    },
-    include: {
-      CenterSports: {
-        include: {
-          Sports: true,
-        },
-      },
-      CenterInventories: {
-        include: {
-          Inventories: true,
-        },
-      },
-    },
-  });
+// export const getServerSideProps = async (
+//   context: GetServerSidePropsContext
+// ) => {
+//   const id = context?.params?.id;
+//   // const sports = await prisma.sports.findMany();
+//   const center = await prisma.centers.findUnique({
+//     where: {
+//       id: id ? Number(id) : undefined,
+//     },
+//     include: {
+//       CenterSports: {
+//         include: {
+//           Sports: true,
+//         },
+//       },
+//       CenterInventories: {
+//         include: {
+//           Inventories: true,
+//         },
+//       },
+//     },
+//   });
 
-  return {
-    props: {
-      center: JSON.parse(JSON.stringify(center)), // <== here is a solution
-    },
-  };
-};
+//   return {
+//     props: {
+//       center: JSON.parse(JSON.stringify(center)), // <== here is a solution
+//     },
+//   };
+// };
 
 const tabs = [
   {
@@ -127,17 +127,17 @@ export default function Page({ center }: { center: Centers }) {
   const [finalTabs, setFinalTabs] = useState(tabs);
 
 
-  useEffect(()=>{
-    if(finalTabs && finalTabs.length>0 && Object.keys(center).length>0 ){
-      const arr=[...finalTabs]
-      const index=arr?.findIndex((item)=>item?.name==="inventories")
-      if(index>-1 && center?.CenterInventories){
-        arr[index].value=center?.CenterInventories?.length
-      }
-      setFinalTabs(arr)
-    }
+  // useEffect(()=>{
+  //   if(finalTabs && finalTabs.length>0 && Object.keys(center).length>0 ){
+  //     const arr=[...finalTabs]
+  //     const index=arr?.findIndex((item)=>item?.name==="inventories")
+  //     if(index>-1 && center?.CenterInventories){
+  //       arr[index].value=center?.CenterInventories?.length
+  //     }
+  //     setFinalTabs(arr)
+  //   }
 
-  },[center,finalTabs])
+  // },[center,finalTabs])
 
 
   const handleIsLoading = (isLoading: boolean) => {

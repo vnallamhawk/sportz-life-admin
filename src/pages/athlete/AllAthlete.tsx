@@ -10,6 +10,7 @@ import FilterIcon from "../../images/filter-icon.svg";
 import Dots from "../../images/dots.svg";
 import List from "~/components/CommonList/list";
 import { Dropdown } from "flowbite-react";
+import Link from "next/link";
 
 export default function Athlete() {
     const [open, setOpen] = React.useState(false);
@@ -30,7 +31,9 @@ export default function Athlete() {
                                 <input type="search" className="2xl:min-w-[450px] border-gray-200 focus:border-gray-400 focus:ring-0 relative w-full text-gray-700 bg-transparent pl-4 pr-12 py-2 border-2 placeholder-gray-300 focus:outline-none rounded-lg text-base" placeholder="Search by name" />
                             </div>
                             <Filter />
-                            <button className="bg-mandy-dark text-white py-2.5 px-6 rounded-lg ml-3">Add New Athlete</button>
+                            <Link href="/athlete/AddAthlete">
+                                <button className="bg-mandy-dark text-white py-2.5 px-6 rounded-lg ml-3">Add New Athlete</button>
+                            </Link>
                         </div>
                         <div className="flex items-center lg:hidden ">
                             <button className="bg-mandy-dark rounded-full p-3 w-10 h-10 inline-flex justify-center items-center">

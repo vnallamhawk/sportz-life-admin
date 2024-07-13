@@ -10,7 +10,7 @@ import { signOut } from "next-auth/react";
 
 export default function DashboardHeader() {
   return (
-    <div className="py-7 ">
+    <div className="py-7 px-6">
       <div className="flex items-center justify-between">
         <div className="flex">
           <div className="mr-3 block lg:hidden">

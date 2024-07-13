@@ -27,7 +27,7 @@ export default function dashboard() {
   const [value, onChange] = useState<Value>(new Date());
 
   return (
-    <div >
+    <div className=" px-6">
  
       
       
