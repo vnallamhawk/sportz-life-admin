@@ -18,7 +18,7 @@ export default function Athlete() {
     return (
         <>
             <div className="px-6 bg-s-gray pb-7 h-full">
-                <DashboardHeader />
+                {/* <DashboardHeader /> */}
                 <div className="lg:p-6 shadow-sm rounded-2xl lg:bg-white">
                     <div className="flex items-center mb-6 justify-between ">
                         <div className="text-2xl font-medium font-heading uppercase">

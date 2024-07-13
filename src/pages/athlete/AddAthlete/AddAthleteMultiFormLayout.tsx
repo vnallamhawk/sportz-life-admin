@@ -175,7 +175,6 @@ export default function AddAthleteMultiFormLayout() {
 
   return (
     <div className="px-6 bg-s-gray pb-7">
-        <DashboardHeader />
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1 relative">
         <Card className="col-span-12 lg:col-span-4 h-full p-0 pt-10 bg-white rounded-l-xl relative">
