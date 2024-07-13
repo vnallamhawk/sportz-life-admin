@@ -81,11 +81,32 @@
     width: 100%;
     justify-content: space-between;
   }
+  .graph-tab li .absolute{
+    box-shadow: none;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+    color: black!important;
+  }
+  .graph-tab li{
+      color: #B5B5C3;
+  }
+  .graph-tab li.active{
+    color: black;
+}
 }
 
 @layer base {
   html {
     font-family: "DM Sans", sans-serif;
+  }
+  main{
+    @media(min-width: 992px){
+      max-width: calc(100% - 256px);
+    }
+
+  }
+  .tab-slider .slick-slide{
+    padding: 0 20px 0 0;
   }
 
   .scroll::-webkit-scrollbar {

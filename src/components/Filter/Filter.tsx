@@ -244,7 +244,7 @@ export default function Filter() {
                                 <div className="text-gray-600 font-medium text-base">Clear Filters</div>
                             </div>
                             <div className="min-h grow filters-mobile">
-                                <Tabs value="html" orientation="vertical" className="h-full">
+                                <Tabs value="Sports" orientation="vertical" className="h-full">
                                     <TabsHeader className="w-44 text-left px-0">
                                         <Tab value="Sports">Sports</Tab>
                                         <Tab value="centers">Centers</Tab>

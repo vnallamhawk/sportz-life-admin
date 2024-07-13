@@ -18,7 +18,7 @@ export default function Athlete() {
     const handleOpen = () => setOpen(!open);
     return (
         <>
-            <div className="px-6 bg-s-gray pb-7 h-full">
+            <div className="px-6 bg-s-gray pb-7">
                 {/* <DashboardHeader /> */}
                 <div className="lg:p-6 shadow-sm rounded-2xl lg:bg-white">
                     <div className="flex items-center mb-6 justify-between ">

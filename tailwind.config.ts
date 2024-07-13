@@ -28,7 +28,8 @@ export default {
 
         "mandy" : {
           "light" : "#F78AA2",
-          "dark" : "#f8436b"
+          "dark" : "#f8436b",
+          "500"  : "#F3476D"
         },
         "blush" :{
           "light" : "#FFBEAB",
@@ -36,6 +37,7 @@ export default {
         },
         "tertiary" : {
           "200" : "#E5FFF2",
+          "400" : "#B8FFDB",
           "700" : "#00B65A"
         },
       },
