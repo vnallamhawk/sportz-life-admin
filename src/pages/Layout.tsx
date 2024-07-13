@@ -16,11 +16,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router=useRouter()
 
-  // useEffect(()=>{
-  //   if(!sessionData){
-  //     router.push("/")
-  //   }
-  // },[sessionData,router])
+  useEffect(()=>{
+    if(!sessionData){
+      router.push("/")
+    }
+  },[sessionData,router])
   return (
     <>
     {/* <Header /> */}

@@ -35,16 +35,16 @@ export const authOptions: AuthOptions = {
     secret: process.env.JWT_SECRET,
   },
   callbacks: {
-    async jwt(token, user) {
-      if (user) {
-        token.id = user.id;
-        token.role = user.role;
+    async jwt(token) {
+      let obj={...token?.token}
+      if(!obj.id && token?.user?.id){
+        obj.id=token?.user?.id
       }
-      return token;
+      return obj;
     },
-    async session(session, token) {
+    async session(session, token) {    
       session.user = {
-        id: token.id,
+        id: token?.id,
       };
       return session;
     },

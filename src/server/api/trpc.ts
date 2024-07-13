@@ -49,7 +49,6 @@ const createInnerTRPCContext = (opts: CreateContextOptions,token:JWT|null) => {
   return {
     session,
     prisma,
-    user:token
   };
 };
 

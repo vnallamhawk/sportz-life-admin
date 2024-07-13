@@ -31,7 +31,6 @@ export default function Login() {
       email: loginDetails?.email,
       password: loginDetails?.password,
     });
-
     if (res?.error) {
       alert("Login failed");
     } else {
