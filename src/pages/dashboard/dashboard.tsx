@@ -27,9 +27,8 @@ export default function dashboard() {
   const [value, onChange] = useState<Value>(new Date());
 
   return (
-    <div className="px-6 bg-s-gray pb-7">
+    <div >
  
-        <DashboardHeader />
       
       
       <div className="flex items-start">

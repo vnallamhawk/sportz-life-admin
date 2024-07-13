@@ -22,7 +22,6 @@ export default function AllCoach() {
 
   return (
     <>
-      <DashboardHeader />
       <Card className="h-full">
         <header className="flex justify-between p-2">
           <CardTitle title="ALL COACHES" />
