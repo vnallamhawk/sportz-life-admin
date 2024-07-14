@@ -21,7 +21,7 @@ const AddInventory = (props) => {
   const [selectedInventory, setSelectedInventory] = useState({});
   const [finalOptions, setFinalOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [inventoryDetails,setInventoryDetails]=useState({})
+  const [inventoryDetails, setInventoryDetails] = useState({});
   const { data: allInventories } = api.inventory.getAllInventories.useQuery();
 
   const handleIsLoading = (isLoading: boolean) => {
@@ -29,21 +29,27 @@ const AddInventory = (props) => {
   };
   const { mutate: createMutate } = api.inventory.createInventory.useMutation({
     onSuccess: (response) => {
-      let arr:any=[...finalOptions]
-      arr.push({label: response?.name, value: response?.id })
-      setFinalOptions(arr)
+      let arr: any = [...finalOptions];
+      arr.push({ label: response?.name, value: response?.id });
+      setFinalOptions(arr);
     },
   });
+
   useEffect(() => {
     if (allInventories && allInventories?.length > 0) {
       let arr = [];
       for (let i = 0; i < allInventories.length; i++) {
         const index =
-        inventories && inventories.length > 0
-            ? inventories?.findIndex((item) => item?.name === finalOptions[i]?.value)
+          inventories && inventories.length > 0
+            ? inventories?.findIndex(
+                (item) => item?.name === finalOptions[i]?.value
+              )
             : -1;
         if (index === -1) {
-          arr.push({ label: allInventories[i]?.name, value: allInventories[i]?.id });
+          arr.push({
+            label: allInventories[i]?.name,
+            value: allInventories[i]?.id,
+          });
         }
       }
 
@@ -69,7 +75,7 @@ const AddInventory = (props) => {
   };
 
   const handleChangeInventory = (value: string) => {
-    let obj: any = { ...selectedInventory,value };
+    let obj: any = { ...selectedInventory, value };
     if (!obj.quantity) {
       obj.quantity = 1;
     }
@@ -83,7 +89,10 @@ const AddInventory = (props) => {
 
   const onSaveInventories = () => {
     const arr = [...inventories];
-    arr.push({...selectedInventory,inventoryId:parseInt(selectedInventory?.value)});
+    arr.push({
+      ...selectedInventory,
+      inventoryId: parseInt(selectedInventory?.value),
+    });
     setInventories(arr);
     setSelectedInventory({});
   };
@@ -99,7 +108,6 @@ const AddInventory = (props) => {
     createMutate(inventoryDetails);
 
     setShowModal(false);
-
 
     // api for create inventory
   };
@@ -169,7 +177,11 @@ const AddInventory = (props) => {
         </div>
         <Table
           tableHeader={InventoryTableHeader()}
-          tableBody={InventoryTableBody(inventories, removeInventory,finalOptions)}
+          tableBody={InventoryTableBody(
+            inventories,
+            removeInventory,
+            finalOptions
+          )}
         />
         {loading ? <LoadingSpinner /> : ""}
       </Card>

@@ -28,11 +28,80 @@ export const STAFF_TABLE_HEADERS = [
     label: "Contact No",
     id: "contactNo",
   },
+  // {
+  //   id: "kebabMenu",
+  // },
+];
+export const STAFF_DASH_CENTER_TABLE_HEADERS = [
   {
-    id: "kebabMenu",
+    label: "Center Name",
+    id: "center",
+  },
+  {
+    label: "Location",
+    id: "location",
+  },
+  {
+    label: "No. of Shifts",
+    id: "no_of_shifts",
+  },
+  {
+    label: "No. of Students",
+    id: "no_of_students",
+  },
+  {
+    label: "No. of batches",
+    id: "no_of_batches",
+  },
+  {
+    label: "Action",
+    id: "action",
   },
 ];
-
+export const STAFF_DASH_PAYROLL_TABLE_HEADERS = [
+  {
+    label: "Months",
+    id: "months",
+  },
+  {
+    label: "Payroll",
+    id: "payroll",
+  },
+  {
+    label: "Salary Date",
+    id: "salary_date",
+  },
+  {
+    label: "Payment Status",
+    id: "payment_status",
+  },
+  {
+    label: "Amount",
+    id: "amount",
+  },
+];
+export const STAFF_DASH_DUTY_TABLE_HEADERS = [
+  {
+    label: "Days",
+    id: "days",
+  },
+  {
+    label: "Shift name",
+    id: "shift_name",
+  },
+  {
+    label: "Center name",
+    id: "center_name",
+  },
+  {
+    label: "Shift start time",
+    id: "start_time",
+  },
+  {
+    label: "Shift start time",
+    id: "end_time",
+  },
+];
 export const STAFF_DETAILS_CONSTANTS: STAFF_DETAILS_CONSTANTS_TYPES[] = [
   {
     label: "Staff Name",
@@ -86,15 +155,15 @@ export const STAFF_DETAILS_CONSTANTS: STAFF_DETAILS_CONSTANTS_TYPES[] = [
       },
     },
   },
-  {
-    label: "Date of Birth",
-    id: "dateOfBirth",
-    type: "calendar",
-    placeHolder: "Date of Birth",
-    rules: {
-      required: true,
-    },
-  },
+  // {
+  //   label: "Date of Birth",
+  //   id: "dateOfBirth",
+  //   type: "calendar",
+  //   placeHolder: "Date of Birth",
+  //   rules: {
+  //     required: true,
+  //   },
+  // },
   {
     label: "Gender",
     id: "gender",
@@ -109,10 +178,26 @@ export const STAFF_DETAILS_CONSTANTS: STAFF_DETAILS_CONSTANTS_TYPES[] = [
     },
   },
   {
+    label: "Payroll",
+    id: "payroll",
+    type: "select",
+    options: [
+      { label: "payroll1", value: "Pay1" },
+      { label: "payroll2", value: "Pay2" },
+    ],
+    placeHolder: "Select Payroll",
+    rules: {
+      required: true,
+    },
+  },
+  {
     label: "Center",
     id: "center",
     type: "select",
-    options: [],
+    options: [
+      { label: "center1", value: "Center1" },
+      { label: "center2", value: "Center2" },
+    ],
     placeHolder: "Select Center",
     rules: {
       required: true,

@@ -10,7 +10,7 @@ import { signOut } from "next-auth/react";
 
 export default function DashboardHeader() {
   return (
-    <div className="py-7 px-6">
+    <div className="px-6 py-7 dark:bg-black dark:text-white">
       <div className="flex items-center justify-between">
         <div className="flex">
           <div className="mr-3 block lg:hidden">
@@ -72,7 +72,10 @@ export default function DashboardHeader() {
               </button>
             )}
           >
-            <Dropdown.Item className="rounded-lg py-3 shadow-xl shadow-slate-100" onClick={()=>signOut({ callbackUrl: '/' })}>
+            <Dropdown.Item
+              className="rounded-lg py-3 shadow-xl shadow-slate-100"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            >
               Logout
             </Dropdown.Item>
           </Dropdown>

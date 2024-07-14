@@ -1,47 +1,48 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import {
-    Button,
-    Dialog,
-    DialogHeader,
-    DialogBody,
-
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
 } from "@material-tailwind/react";
 import DatePicker from "react-datepicker";
 import Cross from "../../images/cross.svg";
-import Calendar from 'react-calendar';
+import Calendar from "react-calendar";
 import { Dropdown } from "flowbite-react";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 export default function () {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(!open);
-    const [startDate, setStartDate] = useState(new Date());
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(!open);
+  const [startDate, setStartDate] = useState(new Date());
 
-    const [value, onChange] = useState<Value>(new Date());
-    const customTheme = {
-        "inlineWrapper": "text-gray-500 font-medium text-lg bg-white border-gray-200 border w-full  focus:outline-none  font-medium rounded-lg  px-5 py-2.5 justify-between inline-flex items-center "
-    };
-    const Theme = {
-        "inlineWrapper": "text-gray-500 font-medium text-lg relative bg-white border-gray-200 border w-full  focus:outline-none  font-medium rounded-lg  px-5 py-2.5 justify-between inline-flex items-center "
-    };
-    return (
-        <>
-            <Button onClick={handleOpen} variant="gradient">
-                Open Dialog
-            </Button>
-            <Dialog
-                open={open}
-                handler={handleOpen}
-                animate={{
-                    mount: { scale: 1, y: 0 },
-                    unmount: { scale: 0.9, y: -100 },
-                }}
-                className="px-6 py-3 2xl:max-w-[30%] 2xl:min-w-[30%]"
-            >
-                {/* Attendee----------------------------------------------------------------------- */}
-                {/* <DialogHeader className="flex justify-between items-center pb-0 px-0">
+  const [value, onChange] = useState<Value>(new Date());
+  const customTheme = {
+    inlineWrapper:
+      "text-gray-500 font-medium text-lg bg-white border-gray-200 border w-full  focus:outline-none  font-medium rounded-lg  px-5 py-2.5 justify-between inline-flex items-center ",
+  };
+  const Theme = {
+    inlineWrapper:
+      "text-gray-500 font-medium text-lg relative bg-white border-gray-200 border w-full  focus:outline-none  font-medium rounded-lg  px-5 py-2.5 justify-between inline-flex items-center ",
+  };
+  return (
+    <>
+      <Button onClick={handleOpen} variant="gradient">
+        Open Dialog
+      </Button>
+      <Dialog
+        open={open}
+        handler={handleOpen}
+        animate={{
+          mount: { scale: 1, y: 0 },
+          unmount: { scale: 0.9, y: -100 },
+        }}
+        className="px-6 py-3 2xl:min-w-[30%] 2xl:max-w-[30%]"
+      >
+        {/* Attendee----------------------------------------------------------------------- */}
+        {/* <DialogHeader className="flex justify-between items-center pb-0 px-0">
                     <div className="text-2xl font-medium font-heading uppercase">Attendance</div>
                     <button onClick={handleOpen}><Image src={Cross} alt="" /></button>
                 </DialogHeader>
@@ -86,12 +87,10 @@ export default function () {
                         <button className="py-3 w-full bg-burgundy-dark text-white mt-5 rounded-lg">Done</button>
                     </div>
                 </DialogBody> */}
-                {/* Attendee----------------------------------------------------------------------- */}
+        {/* Attendee----------------------------------------------------------------------- */}
 
-
-
-                {/* send reminder----------------------------------------------------------------------- */}
-                {/* <DialogHeader className="flex justify-between items-center pb-0 px-0">
+        {/* send reminder----------------------------------------------------------------------- */}
+        {/* <DialogHeader className="flex justify-between items-center pb-0 px-0">
                     <div className="text-2xl font-medium font-heading uppercase">Send Reminder</div>
                     <button onClick={handleOpen}><Image src={Cross} alt="" /></button>
                 </DialogHeader>
@@ -106,10 +105,10 @@ export default function () {
                         <button className="py-3 w-full bg-burgundy-dark text-white mt-6 rounded-lg">Done</button>
                     </div>
                 </DialogBody> */}
-                {/* send reminder----------------------------------------------------------------------- */}
+        {/* send reminder----------------------------------------------------------------------- */}
 
-                {/* send reminder----------------------------------------------------------------------- */}
-                {/* <DialogHeader className="flex justify-between items-center pb-0 px-0">
+        {/* send reminder----------------------------------------------------------------------- */}
+        {/* <DialogHeader className="flex justify-between items-center pb-0 px-0">
                     <div className="text-2xl font-medium font-heading uppercase">Change Center</div>
                     <button onClick={handleOpen}><Image src={Cross} alt="" /></button>
                 </DialogHeader>
@@ -139,39 +138,55 @@ export default function () {
                         <button className="py-3 w-full bg-burgundy-dark text-white mt-6 rounded-lg">Save Changes</button>
                     </div>
                 </DialogBody> */}
-                {/* send reminder----------------------------------------------------------------------- */}
+        {/* send reminder----------------------------------------------------------------------- */}
 
-                {/* freeze----------------------------------------------------------------------- */}
-                <DialogHeader className="flex justify-between items-center pb-0 px-0">
-                    <div className="text-2xl font-medium font-heading uppercase">Freeze</div>
-                    <button onClick={handleOpen}><Image src={Cross} alt="" /></button>
-                </DialogHeader>
-                <DialogBody className="px-0">
-                    <div>
-                    <div>
+        {/* freeze----------------------------------------------------------------------- */}
+        <DialogHeader className="flex items-center justify-between px-0 pb-0">
+          <div className="font-heading text-2xl font-medium uppercase">
+            Freeze
+          </div>
+          <button onClick={handleOpen}>
+            <Image src={Cross} alt="" />
+          </button>
+        </DialogHeader>
+        <DialogBody className="px-0">
+          <div>
+            <div>
+              <div className="my-3">
+                {/* <input type="date" value="Freeze From" placeholder="Freeze From" className="w-full rounded-lg focus:ring-0 text-lg border-gray-400" /> */}
+                <DatePicker
+                  showIcon
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  className="c-date w-full rounded-lg border-gray-400 text-lg focus:ring-0"
+                />
+              </div>
+              <div className="my-3">
+                <DatePicker
+                  showIcon
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  className="c-date w-full rounded-lg border-gray-400 text-lg focus:ring-0"
+                  placeholderText="date"
+                />
+                {/* <input type="date" value="Freeze From" placeholder="Freeze To" className="w-full rounded-lg focus:ring-0 text-lg border-gray-400" /> */}
+              </div>
+              <div className="my-3">
+                <textarea
+                  className="min-h-[117px] w-full resize-y rounded-lg border border-solid border-gray-400 px-5 py-2 text-lg focus:ring-0"
+                  placeholder="Write a Reason"
+                ></textarea>
+              </div>
+            </div>
 
-                        <div className="my-3">
-                            {/* <input type="date" value="Freeze From" placeholder="Freeze From" className="w-full rounded-lg focus:ring-0 text-lg border-gray-400" /> */}
-                            <DatePicker showIcon  selected={startDate} onChange={(date) => setStartDate(date)}  className="w-full rounded-lg focus:ring-0 text-lg border-gray-400 c-date"/>
-                        </div>
-                        <div className="my-3">
-                            <DatePicker showIcon selected={startDate} onChange={(date) => setStartDate(date)}  className="w-full rounded-lg focus:ring-0 text-lg border-gray-400 c-date" placeholderText="date"/>
-                            {/* <input type="date" value="Freeze From" placeholder="Freeze To" className="w-full rounded-lg focus:ring-0 text-lg border-gray-400" /> */}
-                        </div>
-                        <div className="my-3">
+            <button className="mt-2 w-full rounded-lg bg-burgundy-dark py-3 text-white">
+              Done
+            </button>
+          </div>
+        </DialogBody>
 
-                            <textarea className="min-h-[117px] text-lg focus:ring-0 resize-y rounded-lg border border-solid px-5 py-2 w-full border-gray-400" placeholder="Write a Reason"></textarea>
-                        </div>
-                    </div>
-
-
-                    <button className="py-3 w-full bg-burgundy-dark text-white mt-2 rounded-lg">Done</button>
-                </div>
-            </DialogBody>
-
-            {/* freeze----------------------------------------------------------------------- */}
-
-        </Dialog >
-        </>
-    )
-} 
+        {/* freeze----------------------------------------------------------------------- */}
+      </Dialog>
+    </>
+  );
+}
