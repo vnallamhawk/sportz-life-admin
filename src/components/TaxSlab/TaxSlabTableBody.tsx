@@ -7,7 +7,7 @@ export default function TaxSlabTableBody(tableData) {
     <>
       {tableData &&
         tableData.length > 0 &&
-        tableData?.map(({ fromAmount, toAmount, tax_percent, id }, index) => (
+        tableData?.map(({ fromAmount, toAmount, percentage, id }, index) => (
           <tr
             key={`${id}-${index}`}
             className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
@@ -19,7 +19,7 @@ export default function TaxSlabTableBody(tableData) {
               {toAmount}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {tax_percent}
+              {percentage}
             </td>
           
             <td className="rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left">

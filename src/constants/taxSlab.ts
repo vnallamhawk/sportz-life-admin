@@ -9,7 +9,7 @@ export const TAX_SLAB_TABLE_HEADERS = [
     },
     {
       label: "Percent Deduction",
-      id: "tax_percent",
+      id: "percentage",
     },
  
   ];

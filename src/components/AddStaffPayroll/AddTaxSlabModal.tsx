@@ -58,7 +58,7 @@ function AddTaxSlabModal({
                 <div className="col-span-2">
                  
                   <input
-                    type="text"
+                    type="number"
                     name="fromAmount"
                     id="fromAmount"
                     className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500
@@ -75,7 +75,7 @@ function AddTaxSlabModal({
                 <div className="col-span-2">
                  
                   <input
-                    type="text"
+                    type="number"
                     name="toAmount"
                     id="toAmount"
                     className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500
@@ -92,7 +92,7 @@ function AddTaxSlabModal({
                 <div className="col-span-2">
                  
                   <input
-                    type="text"
+                    type="number"
                     name="tax_percent"
                     id="tax_percent"
                     className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500
@@ -103,7 +103,7 @@ function AddTaxSlabModal({
                     placeholder="Deduction Percent"
                     required
                     onChange={(e) =>
-                      handleDesignationChange("tax_percent", e.target.value)
+                      handleDesignationChange("percentage", e.target.value)
                     }                  />
                 </div>
                 {/* button div */}

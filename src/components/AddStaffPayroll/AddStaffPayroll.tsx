@@ -63,7 +63,7 @@ export default function AddPayroll(props) {
     if (designations?.length && hasExecuted.current) {
       const updatedFormConstantValues = formConstantValues.map(
         (formConstant) => {
-          if (formConstant.id === "designation") {
+          if (formConstant.id === "designationId") {
             return {
               ...formConstant,
               options: designations.map((designation: { designation: string; id: number }) => ({
@@ -80,6 +80,23 @@ export default function AddPayroll(props) {
       setFormConstantValues(updatedFormConstantValues);
     }
   }, [formConstantValues, designations, designations?.length]);
+
+  const handleTaxable=(e)=>{
+    debugger
+    const value=e.target.checked
+    let obj={...formData}
+    obj.taxable=value
+    if(value && obj.grossSalary){
+      const tax=props?.taxSlab?.find((item)=>obj.grossSalary>=item?.fromAmount && obj.grossSalary<=item?.toAmount)
+      if(tax){
+        obj.tax_percent=tax.tax_percent
+        obj.tax=(tax.tax_percent*obj.grossSalary)/100
+        obj.netSalary=obj.grossSalary-obj.tax
+        obj.slabId=tax.id
+      }
+      setFormData(obj)
+    }
+  }
   //test commit
   const getInputElement = (props) => {
     const { type, rules, id, pattern, placeHolder } = props;
@@ -135,7 +152,7 @@ export default function AddPayroll(props) {
                 return (
                   <Switch
                     value={value}
-                    onChange={onChange}
+                    onChange={(value)=>handleTaxable(value)}
                   />
                 );
               }}

@@ -23,13 +23,6 @@ import { type MULTI_FORM_TYPES } from "~/types/center";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import { ToastContext } from "~/contexts/Contexts";
-import FileUpload from "~/components/FileUpload";
-import { getSportsDictionaryServices } from "~/services/sportServices";
-import { dateFormat } from "~/helpers/date";
-import AddCenter from "~/components/AddCenter/AddCenter";
-import AddInventory from "~/components/AddInventory/AddInventory";
-import AddStaff from "~/components/AddStaff/AddStaff";
-import AddSports from "~/components/AddSports/AddSports";
 import AddPayroll from "~/components/AddStaffPayroll/AddStaffPayroll";
 import { Button } from "flowbite-react";
 import Table from "~/components/Table";
@@ -38,12 +31,8 @@ import TaxSlabTableBody from "~/components/TaxSlab/TaxSlabTableBody";
 import AddTaxSlabModal from "~/components/AddStaffPayroll/AddTaxSlabModal";
 import { useSession } from "next-auth/react";
 const multiFormData: MULTI_FORM_TYPES = {
-  name: "",
-  image: "",
-  phoneNumber: "",
-  email: "",
-  address: "",
-  selectSports: [],
+  designationId:"",
+  grossSalary:0,
   isEditMode: false,
 };
 
@@ -150,7 +139,9 @@ export default function AddCenterForm() {
   const submitTaxSlab=(e)=>{
     e.preventDefault()
     createMutateTaxSlab({
-          ...taxSlab,
+          fromAmount:parseInt(taxSlab?.fromAmount),
+          toAmount:parseInt(taxSlab?.toAmount),
+          percentage:parseInt(taxSlab?.percentage),
           createdBy:sessionData?.token?.id
         });
   }
@@ -181,7 +172,7 @@ export default function AddCenterForm() {
          <div>
             <Button
               className="ml-3 bg-pink-700 p-2 text-white"
-              onClick={() => router.push("/staffPayroll/AddPayroll")}
+              onClick={() => setShowTabSlabModal(!showTabSlabModal)}
             >
               Add Slab
             </Button>
