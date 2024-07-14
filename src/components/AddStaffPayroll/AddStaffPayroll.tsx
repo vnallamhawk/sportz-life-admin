@@ -17,8 +17,9 @@ import { STAFF_DETAILS_CONSTANT } from "~/constants/staffPayrollConstants";
 import { useRouter } from "next/router";
 import { Switch } from "@material-tailwind/react";
 import AddDesignationModal from "./AddDesignationModal";
+import { useSession } from "next-auth/react";
 
-export default function AddPayroll() {
+export default function AddPayroll(props) {
   let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
@@ -37,6 +38,9 @@ export default function AddPayroll() {
   const hasExecuted = useRef(true);
   const [showDesignationModal, setShowDesignationModal] = useState(false);
  const [designation,setDesignation]=useState({})
+ const { data: sessionData,status } = useSession();
+ const { data: staffDesignation } =api.staffDesignation.getAllDesignation.useQuery();
+ const [designations,setDesignations]=useState([])
 
   const [formConstantValues, setFormConstantValues] = useState(
     STAFF_DETAILS_CONSTANT
@@ -47,6 +51,35 @@ export default function AddPayroll() {
       setShowDesignationModal(!showDesignationModal)
     },
   });
+
+  useEffect(()=>{
+    if(staffDesignation && staffDesignation.length>0){
+      setDesignations(staffDesignation)
+    }
+
+  },[staffDesignation])
+  
+  useEffect(() => {
+    if (designations?.length && hasExecuted.current) {
+      const updatedFormConstantValues = formConstantValues.map(
+        (formConstant) => {
+          if (formConstant.id === "designation") {
+            return {
+              ...formConstant,
+              options: designations.map((designation: { designation: string; id: number }) => ({
+                label: designation.designation,
+                value: designation.id.toString(),
+              })),
+            };
+          } else {
+            return formConstant;
+          }
+        }
+      );
+      hasExecuted.current = false;
+      setFormConstantValues(updatedFormConstantValues);
+    }
+  }, [formConstantValues, designations, designations?.length]);
   //test commit
   const getInputElement = (props) => {
     const { type, rules, id, pattern, placeHolder } = props;

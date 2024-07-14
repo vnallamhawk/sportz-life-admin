@@ -3,6 +3,7 @@ export const STAFF_DETAILS_CONSTANT: CENTER_DETAILS_CONSTANTS_TYPES[] = [
       label: "Designation",
       id: "designation",
       type: "select",
+      placeholder:"Select Designation",
       rules: {
         required: true,
        
