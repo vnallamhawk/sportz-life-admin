@@ -35,7 +35,7 @@ export const STAFF_DETAILS_CONSTANT: CENTER_DETAILS_CONSTANTS_TYPES[] = [
       },
     {
       label: "Tax Deduction",
-      id: "tax",
+      id: "percentage",
       type: "number",
       rules: {
         required: true,

@@ -82,21 +82,27 @@ export default function AddPayroll(props) {
   }, [formConstantValues, designations, designations?.length]);
 
   const handleTaxable=(e)=>{
-    debugger
     const value=e.target.checked
     let obj={...formData}
     obj.taxable=value
     if(value && obj.grossSalary){
-      const tax=props?.taxSlab?.find((item)=>obj.grossSalary>=item?.fromAmount && obj.grossSalary<=item?.toAmount)
+      const tax=props?.taxslabs?.find((item)=>obj.grossSalary>=item?.fromAmount && obj.grossSalary<=item?.toAmount)
       if(tax){
-        obj.tax_percent=tax.tax_percent
-        obj.tax=(tax.tax_percent*obj.grossSalary)/100
+        obj.tax_percent=tax.percentage
+        obj.tax=(tax.percentage*obj.grossSalary)/100
         obj.netSalary=obj.grossSalary-obj.tax
         obj.slabId=tax.id
       }
       setFormData(obj)
     }
   }
+
+  const handleChangeFormData=(name,value)=>{
+    let obj={...formData}
+    obj[name]=value
+      setFormData(obj)
+    }
+  
   //test commit
   const getInputElement = (props) => {
     const { type, rules, id, pattern, placeHolder } = props;
@@ -117,7 +123,7 @@ export default function AddPayroll(props) {
                   placeholder={placeHolder}
                   className="w-full"
                   onChange={(element) => {
-                    onChange(element);
+                    handleChangeFormData(id,element?.value);
                   }}
                 />
               );
@@ -171,7 +177,7 @@ export default function AddPayroll(props) {
                 className="h-12 w-full"
                 placeHolder={props.label}
                 type={type==="number"?"number":"text"}
-                onChangeHandler={onChange}
+                onChangeHandler={(e)=>handleChangeFormData(id,parseInt(e.target.value))}
                 // TODO: FIX THIS TS ERROR
                 value={value as string|number}
               />
