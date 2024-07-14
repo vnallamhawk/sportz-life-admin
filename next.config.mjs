@@ -24,6 +24,10 @@ const config = {
         source: "/edit-coach-:id",
         destination: "/coach/AddCoach",
       },
+      {
+        source: "/edit-center-:id",
+        destination: "/centers/AddCenter",
+      },
     ];
   },
 };

@@ -8,6 +8,7 @@ import CoachTableHeader from "../../components/AllCoaches/CoachTableHeader";
 import CoachTableBody from "../../components/AllCoaches/CoachTableBody";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
+import DashboardHeader from "~/components/DashboardHeader";
 
 export default function AllCoach() {
   const router = useRouter();

@@ -1,0 +1,532 @@
+import React, { useContext, useEffect, useRef, useState } from "react";
+import Button from "~/components/Button";
+import Card from "~/components/Card";
+import Table from "../../components/CommonTable";
+import CardTitle from "~/components/Card/CardTitle";
+import Image, { StaticImageData } from "next/image";
+import CoachImg from "../../images/CoachesImg.png";
+import Plus from "../../images/plus.svg";
+import BatchImg from "../../images/BatchesImg.png";
+import Edit from "../../images/ic_fluent_edit_16_filled.svg";
+import SearchIcon from "../../images/search.png";
+import AtheleteImg from "../../images/AthelteImg.png";
+import InventoryImg from "../../images/InventoryImg.png";
+import { prisma } from "~/server/db";
+import { type GetServerSidePropsContext } from "next";
+import type { Centers } from "@prisma/client";
+import {
+  centerWiseCountData,
+} from "../../__stubs__/dashboardStubs";
+import { api } from "~/utils/api";
+import {
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+} from "@material-tailwind/react";
+
+// import { type Sports } from "@prisma/client";
+
+// import {
+//   type CoachWithRelations,
+//   ExperienceLevelEnum,
+//   TrainingLevelEnum,
+// } from "~/types/coach";
+import AddCenterSuccessToast from "~/components/AddCenter/AddCenterSuccessToast";
+import { ToastContext } from "~/contexts/Contexts";
+// import CoachCertificate from "~/components/Coach/Certificate/CoachCertificates";
+// import { dateFormat } from "~/helpers/date";
+// import CoachBatch from "~/components/Coach/Batch/CoachBatch";
+// import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
+import CoachTableHeader from "~/components/AllCoaches/CoachTableHeader";
+import CoachTableBody from "~/components/AllCoaches/CoachTableBody";
+import Search from "~/components/Search";
+import Filter from "~/components/Filter/Filter";
+import CenterDashCoachTableHeader from "~/components/CenterDashboardTables/Coach/CenterDashCoachTableHeader";
+import CenterDashBatchTableHeader from "~/components/CenterDashboardTables/Batch/CenterDashBatchTableHeader";
+import CenterDashAthleteTableHeader from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableHeader";
+import CenterDashInventoryTableHeader from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableHeader";
+import CenterDashBatchTableBody from "~/components/CenterDashboardTables/Batch/CenterDashBatchTableBody";
+import CenterDashCoachTableBody from "~/components/CenterDashboardTables/Coach/CenterDashCoachTableBody";
+import CenterDashAthleteTableBody from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableBody";
+import CenterDashInventoryTableBody from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableBody";
+import { useRouter } from "next/router";
+import Slider from "react-slick";
+import Calendar from "react-calendar";
+import { BarChart } from "recharts";
+
+// export const getServerSideProps = async (
+//   context: GetServerSidePropsContext
+// ) => {
+//   const id = context?.params?.id;
+//   // const sports = await prisma.sports.findMany();
+//   const center = await prisma.centers.findUnique({
+//     where: {
+//       id: id ? Number(id) : undefined,
+//     },
+//     include: {
+//       CenterSports: {
+//         include: {
+//           Sports: true,
+//         },
+//       },
+//       CenterInventories: {
+//         include: {
+//           Inventories: true,
+//         },
+//       },
+//       Batches:{
+//         include:{
+//           BatchSchedules:true,
+//           Sports:true
+//         }
+//       }
+//     },
+//   });
+
+//   return {
+//     props: {
+//       center: JSON.parse(JSON.stringify(center)), // <== here is a solution
+//     },
+//   };
+// };
+
+const tabs = [
+  {
+    label: "Coaches",
+    name: "coaches",
+    value: "05",
+    image: CoachImg,
+    allLabel: "All Coaches",
+  },
+  {
+    label: "Batches",
+    name: "batches",
+    value: "04",
+    image: BatchImg,
+    allLabel: "All Batches",
+  },
+  {
+    label: "Atheletes",
+    name: "athletes",
+    value: "66",
+    image: AtheleteImg,
+    allLabel: "All Athelte",
+  },
+  {
+    label: "Inventories",
+    name: "inventories",
+    value: "15",
+    image: InventoryImg,
+    allLabel: "All Inventory",
+  },
+];
+
+type TabsType = {
+  label: string;
+  name: string;
+  value: string;
+  image: StaticImageData;
+  allLabel: string;
+};
+type ValuePiece = Date | null;
+
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
+export default function Page({ center }: { center: Centers }) {
+  const router = useRouter()
+  const [displayCertificate, setDisplayCertificate] = useState(false);
+  const [displayBatch, setDisplayBatch] = useState(false);
+  const [displayAttendance, setDisplayAttendance] = useState(false);
+  const { openToast, setOpenToast } = useContext(ToastContext);
+  const [value, onChange] = useState<Value>(new Date());
+
+  const handleCertificateClick = () =>
+    setDisplayCertificate(!displayCertificate);
+  const handleBatchClick = () => setDisplayBatch(!displayBatch);
+  const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
+  const sportsArr: string[] = ["Rugby", "Baseball", "Tennis", "BasketBall"];
+  const [filterByName, setFilterByName] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [finalTabs, setFinalTabs] = useState(tabs);
+
+
+  // useEffect(()=>{
+  //   if(finalTabs && finalTabs.length>0 && Object.keys(center).length>0 ){
+  //     const arr=[...finalTabs]
+  //     const index=arr?.findIndex((item)=>item?.name==="inventories")
+  //     if(index>-1 && center?.CenterInventories){
+  //       arr[index].value=center?.CenterInventories?.length
+  //     }
+  //     const batchIndex=arr?.findIndex((item)=>item?.name==="batches")
+  //     if(batchIndex>-1 && center?.Batches){
+  //       arr[batchIndex].value=center?.Batches?.length
+  //     }
+  //     setFinalTabs(arr)
+  //   }
+
+  // },[center,finalTabs])
+
+
+  const handleIsLoading = (isLoading: boolean) => {
+    setLoading(isLoading);
+  };
+  const [selectedTab, setSelectedTab] = useState(tabs[1]);
+  const [selectedHeader, setSelectedHeader] = useState(
+    CenterDashBatchTableHeader()
+  );
+  const [selectedBody, setSelectedBody] = useState(
+    CenterDashBatchTableBody(center?.Batches, center)
+    // { name: filterByName },
+    // handleIsLoading
+  );
+
+  const handleClick = (tab: TabsType) => {
+    let header, body;
+    setSelectedTab(tab);
+    if (tab?.name === "coaches") {
+      header = CenterDashCoachTableHeader();
+      body = CenterDashCoachTableBody();
+    } else if (tab?.name === "batches") {
+      header = CenterDashBatchTableHeader();
+
+      body = CenterDashBatchTableBody(center?.Batches, center);
+    } else if (tab?.name === "athletes") {
+      header = CenterDashAthleteTableHeader();
+      body = CenterDashAthleteTableBody();
+    } else {
+      header = CenterDashInventoryTableHeader();
+      body = CenterDashInventoryTableBody(center?.CenterInventories);
+    }
+    setSelectedHeader(header);
+    setSelectedBody(body);
+  };
+  var settings = {
+    dots: false,
+    arrows: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4.5,
+    slidesToScroll: 4.5,
+  };
+
+
+  return (
+    <>
+      <Card className="h-100 mx-5 bg-white">
+        <header className="flex justify-between items-start  mb-5">
+          <CardTitle title="ATHLETE DETAILS" />
+          <Button onClick={() => router.push(`/edit-center-${center?.id}`)} >
+            <Image src={Edit} className="mr-2" alt="" />Edit Athlete
+          </Button>
+        </header>
+        <div className="flex">
+          <div>
+            <Image
+              className="h-[150px] w-[150px] rounded-full object-cover"
+              src={"/images/rugby.jpg"}
+              alt=""
+              width="200"
+              height="150"
+            />
+            <div className="mt-8 border border-dashed p-2 border-tertiary-700">
+              <div className="flex items-center bg-tertiary-200 p-2 border border-tertiary-400 justify-center">
+                <div className="text-4xl font-heading mr-3 text-tertiary-700">#15</div>
+                <div className="leading-4  text-tertiary-700 w-16 text-base">Player Ranking</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-10/12 pl-10">
+            <div className="text-3xl font-medium font-heading uppercase">John H. Martin</div>
+            <div className="text-blush-dark text-base">Rugby</div>
+            <div className="grid grid-cols-3 gap-4 mt-5">
+              <div className="col-span-1">
+                <div className="Contact mt-4">
+                  <div className="text-sm text-gray-400 mb-1"> Blood Group </div>
+                  <div className="font-bold text-gray-600">B Positive </div>
+                </div>
+                <div className="Contact mt-4">
+                  <div className="text-sm text-gray-400 mb-1"> Contact Number</div>
+                  <div className="font-bold text-gray-600">+5 123 456 7890</div>
+                </div>
+                <div className="Contact mt-4">
+                  <div className="text-sm text-gray-400 mb-1"> Father’s Name</div>
+                  <div className="font-bold text-gray-600">Alexander G. Martin </div>
+                </div>
+                <div className="Contact mt-4">
+                  <div className="text-sm text-gray-400 mb-1"> Center</div>
+                  <div className="font-bold text-gray-600">Indoor Stadium</div>
+                </div>
+              </div>
+              <div className="col-span-1">
+                <div className="Contact mt-4">
+                  <div className="text-sm text-gray-400 mb-1"> Height</div>
+                  <div className="font-bold text-gray-600">2.6 CM</div>
+                </div>
+                <div className="Contact mt-4">
+                  <div className="text-sm text-gray-400 mb-1"> Email</div>
+                  <div className="font-bold text-gray-600 leading-none">example@email.com</div>
+                </div>
+                <div className="Contact mt-4">
+                  <div className="text-sm text-gray-400 mb-1"> Residential Address</div>
+                  <div className="font-bold text-gray-600">57/3 Kadamtala Bazar,Street 25, Howrah,
+                    WB - 7111102</div>
+                </div>
+              </div>
+              <div className="col-span-1">
+                <div className="Contact mt-4">
+                  <div className="text-sm text-gray-400 mb-1"> Weight</div>
+                  <div className="font-bold text-gray-600">56 KG</div>
+                </div>
+                <div className="Contact mt-4">
+                  <div className="text-sm text-gray-400 mb-1"> Age</div>
+                  <div className="font-bold text-gray-600">16 Years Old</div>
+                </div>
+                <div className="Contact mt-4">
+                  <div className="text-sm text-gray-400 mb-1"> Gender</div>
+                  <div className="font-bold text-gray-600">Male</div>
+                </div>
+                <div className="Contact mt-4">
+                  <div className="text-sm text-gray-400 mb-1"> Training Level</div>
+                  <div className="font-bold text-gray-600">Advanced</div>
+                </div>
+              </div>
+
+
+            </div>
+
+          </div>
+        </div>
+        <div className="mt-8 tab-slider">
+          <Slider {...settings}>
+            {tabs?.map((tab, index) => {
+              return (
+                <div
+                  className={`rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px] `}
+                  onClick={() => {
+                    handleClick(tab);
+                  }}
+                  key={index}
+
+                >
+                  <div className="flex items-center">
+                    <div>
+                      <Image
+                        className="h-[56px] w-[56px] rounded-lg"
+                        src={tab?.image}
+                        alt={`${tab?.name}_img`}
+                        width={56}
+                        height={56}
+                      />
+                    </div>
+                    <div className="pl-3">
+                      <p className={`text-burgundy-light text-base`}>{tab?.label}</p>
+                      <div className="font-heading text-5xl leading-10">{tab?.value}</div>
+                    </div>
+                  </div>
+                </div>
+
+              );
+            })}
+          </Slider>
+        </div>
+
+      </Card>
+      {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
+      <CoachBatch coach={coach} displayBatch={displayBatch} />
+      <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
+
+      <Card className="h-100 mx-5 mt-5 bg-white py-7">
+        <header className="flex justify-between">
+          <CardTitle title="Attendance" />
+          <div className="relative">
+            <Image src={SearchIcon} className="absolute right-3 top-2 z-10" alt="" />
+            <input type="search" className="2xl:min-w-[450px] border-gray-200 focus:border-gray-400 focus:ring-0 relative w-full text-gray-700 bg-transparent pl-4 pr-12 py-2 border-2 placeholder-gray-300 focus:outline-none rounded-lg text-base" placeholder="Search by name" />
+          </div>
+        </header>
+        {/* Attendance view --------------------------------------------------------- */}
+        <div className="grid grid-cols-5 gap-4">
+          <div className="col-span-1">
+            <div className={`rounded-xl bg-[#404469] text-white p-4 `}>
+              <div className="">Total Classes Held</div>
+              <div className="font-heading text-5xl">16</div>
+            </div>
+          </div>
+          <div className="col-span-1">
+            <div className={`rounded-xl bg-[#00B65A] text-white p-4 `}>
+              <div className="">Present</div>
+              <div className="font-heading text-5xl">16</div>
+            </div>
+          </div>
+          <div className="col-span-1">
+            <div className={`rounded-xl bg-[#BE1A0E] text-white p-4 `}>
+              <div className="">Absent</div>
+              <div className="font-heading text-5xl">16</div>
+            </div>
+          </div>
+          <div className="col-span-1">
+            <div className={`rounded-lg bg-[#FFA500] text-white p-4  `}>
+              <div className="">Late</div>
+              <div className="font-heading text-5xl">16</div>
+            </div>
+          </div>
+          <div className="col-span-1">
+            <div className={`rounded-xl bg-[#EDEDED] text-black p-4 `}>
+              <div className="">Cancelled</div>
+              <div className="font-heading text-5xl">16</div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-5">
+          <div className="grid grid-cols-12 gap-4">
+            <div className="col-span-5">
+              <Card
+                title="Calendar View"
+                className="border border-gray-200 uppercase"
+              >
+                <Calendar onChange={onChange} value={value} />
+              </Card>
+            </div>
+            <div className="col-span-7">
+              <Card
+                title=""
+                className="border border-gray-200 uppercase"
+              >
+                <Tabs value="attn">
+                  <TabsHeader className="graph-tab">
+                    <Tab value={'attn'} color="red-500" activeClassName="active" className="font-heading text-xl shadow-none w-auto uppercase mr-3">
+                      Attendance Logs for JUne
+                    </Tab>
+                    <Tab value={`graph`} color="red" activeClassName="active" className="font-heading text-xl shadow-none w-auto uppercase">
+                      Graph
+                    </Tab>
+                  </TabsHeader>
+                  <TabsBody>
+                    <TabPanel value={'attn'}>
+                      <div className="mt-5 max-h-[370px] overflow-auto px-0 scroll lg:block hidden">
+                        <table className="table-auto common-table text-sm w-full min-w-max  text-left border-separate border-spacing-y-3">
+                          <tbody>
+                            <tr>
+                              <td className="p-4 border-y-2 border-gray-100">
+                                Sunday 01
+                              </td>
+                              <td className="p-4 border-y-2 border-gray-100 w-32 font-medium">
+                                10:30am
+                              </td>
+                              <td className="p-4 border-y-2 border-gray-100 font-medium">
+                                Present
+                              </td>
+                              <td className="p-4 border-y-2 border-gray-100 font-medium">
+                                <span className="text-sm py-1 border-tertiary-700 bg-tertiary-200 text-tertiary-700 font-normal border px-3 rounded-full capitalize">Fee Clear</span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td className="p-4 border-y-2 border-gray-100">
+                                Sunday 01
+                              </td>
+                              <td className="p-4 border-y-2 border-gray-100 font-medium">
+                                10:30am
+                              </td>
+                              <td className="p-4 border-y-2 border-gray-100 font-medium">
+                                Present
+                              </td>
+                              <td className="p-4 border-y-2 border-gray-100 font-medium">
+                                <span className="text-sm py-1 border-tertiary-700 bg-tertiary-200 text-tertiary-700 font-normal border px-3 rounded-full capitalize">Fee Clear</span>
+                              </td>
+                            </tr>
+
+                          </tbody>
+                        </table>
+                      </div>
+
+                    </TabPanel>
+                    <TabPanel value={`graph`}>
+                      <Card
+                        title=""
+                      >
+                        <BarChart data={centerWiseCountData} />
+                      </Card>
+                    </TabPanel>
+                  </TabsBody>
+                </Tabs>
+              </Card>
+            </div>
+          </div>
+        </div>
+        {/* Attendance view --------------------------------------------------------- */}
+
+        {/* Batches view --------------------------------------------------------- */}
+        <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Batches</div>
+        <Table />
+        {/* Batches view --------------------------------------------------------- */}
+
+
+        {/* Payment History --------------------------------------------------------- */}
+        <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Payment History</div>
+        <Table />
+        {/* Payment History --------------------------------------------------------- */}
+
+        {/* Assessment --------------------------------------------------------- */}
+        <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Assessment</div>
+        <Table />
+        {/* Assessment --------------------------------------------------------- */}
+
+        {/* Medical History --------------------------------------------------------- */}
+
+        <div className="mt-10">
+          <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Medical History</div>
+
+          <div className="mt-5 max-h-[370px] overflow-auto px-0 scroll lg:block hidden">
+            <table className="table-fixed common-table w-full min-w-max  text-left border-separate border-spacing-y-3">
+              <thead>
+                <tr>
+                  <th className="pl-7 w-20 text-gray-400 font-medium" >#</th>
+                  <th className="text-justify text-gray-400 font-medium">Medical History </th>
+                  <th className="w-32 text-gray-400 font-medium">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="p-4 border-y-2 border-gray-100 w-20" >01</td>
+                  <td className="p-4 border-y-2 border-gray-100  text-justify">
+                    <div>
+                      Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et blanditiis sunt qui asperiores tempore eos similique veniam aut maxime veniam aut possimus possimus qui voluptatem maiores.AAA
+                    </div>
+                  </td>
+                  <td className="p-4 border-y-2 border-gray-100 w-32 text-gray-400 font-medium">
+                    Remove
+                  </td>
+                </tr>
+                <tr>
+                  <td className="p-4 border-y-2 border-gray-100 w-20" >01</td>
+                  <td className="p-4 border-y-2 border-gray-100  text-justify">
+                    <div>
+                      Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et blanditiis sunt qui asperiores tempore eos similique veniam aut maxime veniam aut possimus possimus qui voluptatem maiores.AAA
+                    </div>
+                  </td>
+                  <td className="p-4 border-y-2 border-gray-100 w-32 text-gray-400 font-medium">
+                    Remove
+                  </td>
+                </tr>
+                <tr>
+                  <td className="p-4 border-y-2 border-gray-100 w-20" >01</td>
+                  <td className="p-4 border-y-2 border-gray-100  text-justify">
+                    <div>
+                      Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et blanditiis sunt qui asperiores tempore eos similique veniam aut maxime veniam aut possimus possimus qui voluptatem maiores.AAA
+                    </div>
+                  </td>
+                  <td className="p-4 border-y-2 border-gray-100 w-32 text-gray-400 font-medium">
+                    Remove
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {/* Medical History --------------------------------------------------------- */}
+      </Card >
+    </>
+  );
+}

@@ -11,14 +11,14 @@ export default function FileUpload({
     onDrop: onDropCallback,
   });
 
-  const className = classNames("wfp--dropzone__input", {
+  const className = classNames("wfp--dropzone__input text-red-700", {
     "wfp--dropzone__input--drag-active": isDragActive,
   });
 
   return (
     <div {...getRootProps({ isDragActive, className: className })}>
       <input {...getInputProps()} />
-      <a>Drop files or click here to upload</a>
+      <a className="text-red-800">Drop files or click here to upload</a>
     </div>
   );
 }

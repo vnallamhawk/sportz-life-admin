@@ -5,8 +5,15 @@ import { sportRouter } from "./routers/sports";
 import { centerRouter } from "./routers/center";
 import { batchRouter } from "./routers/batches";
 import { staffRouter } from "./routers/staff";
+import { centerInventoryRouter } from "./routers/centerInventory";
 import { inventoryRouter } from "./routers/inventory";
+
 import {centerSportsRouter} from "./routers/centerSports"
+import { adminUserRouter } from "./routers/adminUser";
+import { batchTimingRouter } from "./routers/batchTimings";
+import { staffPayrollRouter } from "./routers/staffPayroll";
+import { staffDesignationRouter } from "./routers/staffdesignation";
+import { taxSlabRouter } from "./routers/taxSlabs";
 
 /**
  * This is the primary router for your server.
@@ -19,9 +26,15 @@ export const appRouter = createTRPCRouter({
   coach: coachRouter,
   sports: sportRouter,
   batches: batchRouter,
+  batchTimings: batchTimingRouter,
   staff: staffRouter,
   inventory:inventoryRouter,
-  centerSports:centerSportsRouter
+  centerInventory:centerInventoryRouter,
+  centerSports:centerSportsRouter,
+  adminUser:adminUserRouter,
+  staffPayroll:staffPayrollRouter,
+  staffDesignation:staffDesignationRouter,
+  tabSlab:taxSlabRouter
 });
 
 // export type definition of API

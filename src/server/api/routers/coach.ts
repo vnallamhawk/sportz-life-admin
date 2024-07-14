@@ -121,6 +121,7 @@ export const coachRouter = createTRPCRouter({
         },
         ctx,
       }) => {
+        console.log("centerIds", centerIds);
         const sportsId = sports.map(({ value }) => value);
         const response = await ctx.prisma.coaches.create({
           data: {
@@ -162,7 +163,6 @@ export const coachRouter = createTRPCRouter({
             //   })),
             // },
             experience: "",
-            academyId: 1,
             dateOfBirth: dateOfBirth,
             trainingLevel: "advanced",
             experienceLevel: "two_five",

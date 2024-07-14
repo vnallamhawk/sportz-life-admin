@@ -50,23 +50,7 @@ export const getServerSideProps = async (
       // Batches: true,
     },
   });
-  console.log(coach, "coach details");
-
-  // const batches = await prisma.batches.findMany({
-  //   where: {
-  //     id: {
-  //       in: coach?.batches.map((batch) => batch.batchId),
-  //     },
-  //   },
-  // });
-  // const centers = await prisma.center.findMany({
-  //   where: {
-  //     id: {
-  //       in: batches.map((batch) => batch.centerId),
-  //     },
-  //   },
-  // });
-  // const coachSportsMaps = coach?.CoachSportsMaps as CoachSportsMaps[];
+  
   const centers = coach?.Centers;
   const batches = coach?.Batches as Batches[];
   return {
@@ -141,7 +125,6 @@ export default function Page({
   coach: Coach;
   sports: Sports[];
 }) {
-  console.log("coach data", coach);
   const sportsDictionary = sports?.reduce(
     (accumulator: Record<number, string>, current) => {
       accumulator[current.id] = current.name;
@@ -165,7 +148,7 @@ export default function Page({
       <Card className="h-100 mx-5">
         <header className="flex justify-between">
           <CardTitle title="COACH DETAILS" />
-          <Button onClick={() => void router.push(`/edit-coach-${coach.id}`)}>
+          <Button onClick={() =>  router.push(`/edit-coach-${coach.id}`)}>
             Edit Coach
           </Button>
         </header>

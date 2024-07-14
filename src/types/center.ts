@@ -87,6 +87,10 @@ export interface InventoryData {
   quantity: number;
 }
 
+export interface SportsData {
+  name: string;
+}
+
 // export interface MULTI_FORM_TYPES extends COACH_TYPES {
 //   certificates: COACH_CERTIFICATE_TABLE_TYPES[];
 //   batchTableData?: BatchTableData[];
@@ -127,3 +131,11 @@ export enum SelectCoaches {
 //   // batches: CoachesOnBatches[];
 //   batchTableData?: BatchTableData[];
 // };
+
+export interface MULTI_FORM_BATCH_TYPES {
+  batchName: string;
+  selectSports: MultiSelectOption[];
+  selectCoaches: MultiSelectOption[];
+  capacity: number;
+  price: number;
+}

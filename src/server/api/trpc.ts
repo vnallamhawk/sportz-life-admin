@@ -1,3 +1,5 @@
+
+
 /**
  * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
  * 1. You want to modify request context (see Part 1).
@@ -12,7 +14,10 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
 import superjson from "superjson";
 import { ZodError } from "zod";
-import { getServerAuthSession } from "~/server/auth";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from '~/server/auth';
+import { getToken, JWT } from 'next-auth/jwt';
+
 import { prisma } from "~/server/db";
 
 /**
@@ -37,9 +42,12 @@ type CreateContextOptions = {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (opts: CreateContextOptions) => {
+const createInnerTRPCContext = (opts: CreateContextOptions,token:JWT|null) => {
+   const session=opts.session
+   
+
   return {
-    session: opts.session,
+    session,
     prisma,
   };
 };
@@ -52,13 +60,16 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
  */
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
+     // Example of setting up async storage (getToken) in context
+
+  const token = await getToken({ req, secret: process.env.JWT_SECRET });
 
   // Get the session from the server using the getServerSession wrapper function
-  const session = await getServerAuthSession({ req, res });
+  const session = await getServerSession( req, res ,authOptions);
 
   return createInnerTRPCContext({
     session,
-  });
+  },token);
 };
 
 /**
@@ -108,6 +119,7 @@ export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+  console.log(ctx,"sdbsdfhfhhjfdh")
   if (!ctx.session || ctx.session.user !== null) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }

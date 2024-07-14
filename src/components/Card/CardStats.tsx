@@ -27,7 +27,7 @@ export default function CardStats({
           />
 
           <div className="ml-5">
-            <div className="font-bold text-base text-burgundy">{title}</div>
+            <div className="font-bold text-base text-burgundy-light">{title}</div>
             <div className="text-4xl font-normal font-heading">{count}</div>
           </div>
         </div>

@@ -27,6 +27,10 @@ import {
 export const centerRouter = createTRPCRouter({
   getAllCenters: publicProcedure.query(({ ctx }) => {
     const allCenters = ctx?.prisma.centers?.findMany({
+      where:{
+        deletedAt:null,
+        createdBy:ctx.session.token.id
+      }
       // include: {
       //   CoachSportsMaps: true,
       // },
@@ -41,16 +45,17 @@ export const centerRouter = createTRPCRouter({
     )
     .query(async (opts) => {
       try {
-        console.log("opts are", opts);
         const centers = await opts.ctx?.prisma?.centers?.findUnique({
           where: {
             id: opts.input.id,
           },
           include: {
-            // CoachSportsMaps: true,
-            // batches: true,
-            // centers: true,
-            // certificates: true,
+            CenterSports:{
+              include:{
+                Sports:true
+              }
+            }
+         
           },
         });
 
@@ -91,6 +96,7 @@ export const centerRouter = createTRPCRouter({
         image: z.string(),
         mobile: z.string(),
         address: z.string(),
+        createdBy:z.number()
       })
     )
     .mutation(
@@ -100,7 +106,8 @@ export const centerRouter = createTRPCRouter({
           mobile,
           image,
           email,
-          address
+          address,
+          createdBy
         },
         ctx,
       }) => {
@@ -110,6 +117,7 @@ export const centerRouter = createTRPCRouter({
             email: email,
             mobile: mobile,
             address: address,
+            createdBy:createdBy
           },
         });
         return response;
@@ -119,92 +127,67 @@ export const centerRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        about: z.string(),
-        contactNumber: z.string(),
-        email: z.string(),
-        designation: z.string(),
-       
-        dateOfBirth: z.date(),
-    
-        batchIds: z.array(z.number()),
-        centerIds: z.array(z.number()),
-        coachId: z.number(),
+        email:z.string(),
+        image: z.string(),
+        mobile: z.string(),
+        address: z.string(),
+        centerId:z.number()
       })
     )
     .mutation(
       async ({
         input: {
           name,
-          about,
-          contactNumber,
+          mobile,
+          image,
           email,
-          designation,
-          gender,
-          certificates,
-          dateOfBirth,
-          // sports,
-          trainingLevel,
-          experienceLevel,
-          // batchIds,
-          // centerIds,
-          coachId,
+          address,
+          centerId
         },
         ctx,
       }) => {
-        const sportsId = sports.map(({ value }) => value);
-        //eslint-disable-next-line no-console
         const response = await ctx.prisma.centers.update({
           where: {
-            id: coachId,
+            id: centerId,
           },
           data: {
             name: name,
-            about: about,
-            contactNumber: contactNumber,
             email: email,
-            designation: designation,
-            gender: gender.toLowerCase(),
-            // certificates: {
-            //   create: certificates,
-            // },
-            // sports: {
-            //   create: sportsId.map((id) => ({
-            //     sport: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            // centers: {
-            //   create: centerIds.map((id) => ({
-            //     center: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            // batches: {
-            //   create: batchIds.map((id) => ({
-            //     batch: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            dateOfBirth: dateOfBirth,
-            trainingLevel: "advanced",
-            experienceLevel: "two_five",
+            mobile: mobile,
+            address: address,
           },
         });
 
         return response;
       }
     ),
+    deleteCenter: publicProcedure
+    .input(
+      z.object({
+        
+        centerId: z.number(),
+        deletedAt: z.string(),
+      })
+    )
+    .mutation(
+      async ({
+        input: {
+          centerId,
+          deletedAt
+        },
+        ctx,
+      }) => {
 
-  // getSecretMessage: protectedProcedure.query(() => {
-  //   return "you can now see this secret message!";
-  // }),
+        const response = await ctx.prisma.centers.update({
+          where: {
+            id: centerId,
+          },
+          data: {
+            deletedAt
+          },
+        });
+
+        return response;
+      }
+    ),
 });

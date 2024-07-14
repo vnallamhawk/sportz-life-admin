@@ -5,7 +5,7 @@
 @import "@radix-ui/colors/violet.css";
 @import "react-datepicker/dist/react-datepicker.css";
 @import "react-tabs/style/react-tabs.css";
-@import 'react-calendar/dist/Calendar.css';
+@import "react-calendar/dist/Calendar.css";
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
 
@@ -46,7 +46,7 @@
   }
 
   .common-table tr.active {
-    box-shadow: 0 9px 32px 0 rgba(0, 0, 0, 0.1)
+    box-shadow: 0 9px 32px 0 rgba(0, 0, 0, 0.1);
   }
 
   .common-table tr.disabled {
@@ -54,7 +54,7 @@
   }
 
   .common-table tr:nth-child(2) {
-    box-shadow: 0 9px 32px 0 rgba(0, 0, 0, 0.1)
+    box-shadow: 0 9px 32px 0 rgba(0, 0, 0, 0.1);
   }
 
   .common-table tr:nth-child(3) {
@@ -64,18 +64,49 @@
   .common-table tr:nth-child(4) {
     opacity: 0.2;
   }
-  .filter-visible .f-screen{
-      right: 0;
+  .filter-visible .f-screen {
+    right: 0;
   }
-  .filter-visible .f-overlay{
+  .filter-visible .f-overlay {
     display: block;
   }
-
+  .accordion span.ml-4 {
+    display: none;
+  }
+  .dropdown button {
+    width: 100%;
+  }
+  .dropdown button span {
+    color: black;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .graph-tab li .absolute{
+    box-shadow: none;
+    border-bottom: 1px solid black;
+    border-radius: 0;
+    color: black!important;
+  }
+  .graph-tab li{
+      color: #B5B5C3;
+  }
+  .graph-tab li.active{
+    color: black;
+}
 }
 
 @layer base {
   html {
     font-family: "DM Sans", sans-serif;
+  }
+  main{
+    @media(min-width: 992px){
+      max-width: calc(100% - 256px);
+    }
+
+  }
+  .tab-slider .slick-slide{
+    padding: 0 20px 0 0;
   }
 
   .scroll::-webkit-scrollbar {
@@ -84,16 +115,52 @@
   }
 
   .scroll::-webkit-scrollbar-track {
-    background: #ffe6de;
-    /* color of the tracking area */
+    background: #f1f1f1;
   }
 
   .scroll::-webkit-scrollbar-thumb {
-    background-color: #ff9678;
+    background-color: #a09f9f;
     /* color of the scroll thumb */
     border-radius: 10px;
     /* roundness of the scroll thumb */
     /* creates padding around scroll thumb */
+  }
+  .filter-icon{
+    filter: brightness(100);
+    width: 30px;
+  }
+  .filters-mobile nav{
+      background: #EAEAEA;
+  }
+  .filters-mobile nav ul .shadow{
+    border-radius: 0!important;
+    box-shadow: none!important;
+    padding: 10px 0px;
+  }
+  .filters-mobile nav ul li .text-inherit{
+    text-align: left;
+    padding-left: 25px;
+  }
+  .filters-mobile nav ul li{
+    padding: 10px 0;
+    margin-bottom: 15px;
+    justify-content: flex-start;
+  }
+  .view-drop::after{
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #2f2f2f;
+    font-size: 0;
+    line-height: 0;
+    float: left;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%);
+
   }
 }
 
@@ -105,6 +172,26 @@ button[role="combobox"] {
   width: 100%;
 }
 
+body.dark {
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+.react-datepicker-wrapper{
+  width: 100%;
+}
+.c-date{
+  background: url(../images/calender.svg);
+  background-repeat: no-repeat;
+  background-position: center right 10px;
+}
+.c-select .react-select__control{
+  border-radius: 0.5rem;
+}
+.c-select .react-select__value-container{
+  /* padding-left: 20px; */
+  padding: 8px 8px 8px 20px;
+
+}
 
 /*******************************************************************************************************/
 /*                              Coach attendance calendar view                                         */
@@ -145,8 +232,14 @@ button[role="combobox"] {
 }
 
 .coachAttendanceCalendarView,
-.coachAttendanceCalendarView>div.react-datepicker-wrapper,
-.coachAttendanceCalendarView>div>div.react-datepicker__input-container .coachAttendanceCalendarView>div>div.react-datepicker__input-container input {
+.coachAttendanceCalendarView > div.react-datepicker-wrapper,
+.coachAttendanceCalendarView
+  > div
+  > div.react-datepicker__input-container
+  .coachAttendanceCalendarView
+  > div
+  > div.react-datepicker__input-container
+  input {
   width: 100%;
   height: 100%;
 }
