@@ -7,19 +7,19 @@ export default function StaffPayrollTableBody(tableData) {
     <>
       {tableData &&
         tableData.length > 0 &&
-        tableData?.map(({ designation, grossSalary, tax, netSalary, id }, index) => (
+        tableData?.map(({ StaffDesignation, grossSalary, tax, netSalary, id }, index) => (
           <tr
             key={`${id}-${index}`}
             className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
           >
             <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
-              {designation}
+              {StaffDesignation?.designation}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
               {grossSalary}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {tax}
+              {grossSalary-netSalary}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
               {netSalary}

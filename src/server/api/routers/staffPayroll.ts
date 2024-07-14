@@ -30,10 +30,10 @@ export const staffPayrollRouter = createTRPCRouter({
       where:{
         deletedAt:null,
         createdBy:ctx.session.token.id
-      }
-      // include: {
-      //   CoachSportsMaps: true,
-      // },
+      },
+      include: {
+        StaffDesignation: true,
+      },
     });
     return allPayroll;
   }),

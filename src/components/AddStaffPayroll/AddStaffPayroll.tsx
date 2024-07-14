@@ -123,7 +123,7 @@ export default function AddPayroll(props) {
                   placeholder={placeHolder}
                   className="w-full"
                   onChange={(element) => {
-                    handleChangeFormData(id,element?.value);
+                    handleChangeFormData(id,parseInt(element?.value));
                   }}
                 />
               );
@@ -191,24 +191,7 @@ export default function AddPayroll(props) {
     return inputElement;
   };
 
-  const finalFormSubmissionHandler = async (
-    finalForm: Required<MULTI_FORM_TYPES>
-  ) => {
-    // if (formData.isEditMode) {
-    //   editMutate({
-    //     ...finalForm,
-    //   });
-    // } else {
-  
-    //   setFormData({
-    //     ...finalForm
-    //   });
-    //   createMutate({
-    //     ...finalForm,
-    //     createdBy:sessionData?.token?.id
-    //   });
-    // }
-  };
+ 
 
   const submitDesignation=(e)=>{
     e.preventDefault()
@@ -261,7 +244,7 @@ export default function AddPayroll(props) {
         <Button
           type="button"
           className="mx-3 bg-pink-600 hover:bg-pink-800"
-          onClick={finalFormSubmissionHandler}
+          onClick={(e)=>props?.finalFormSubmissionHandler(formData)}
         >
           Add Payroll
         </Button>
