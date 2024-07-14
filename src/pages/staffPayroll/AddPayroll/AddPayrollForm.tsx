@@ -31,6 +31,11 @@ import AddInventory from "~/components/AddInventory/AddInventory";
 import AddStaff from "~/components/AddStaff/AddStaff";
 import AddSports from "~/components/AddSports/AddSports";
 import AddPayroll from "~/components/AddStaffPayroll/AddStaffPayroll";
+import { Button } from "flowbite-react";
+import Table from "~/components/Table";
+import TaxSlabTableHeader from "~/components/TaxSlab/TaxSlabTableHeader";
+import TaxSlabTableBody from "~/components/TaxSlab/TaxSlabTableBody";
+import AddTaxSlabModal from "~/components/AddStaffPayroll/AddTaxSlabModal";
 const multiFormData: MULTI_FORM_TYPES = {
   name: "",
   image: "",
@@ -77,172 +82,111 @@ export default function AddCenterForm() {
 
   //   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCenterUseEffectRun = useRef(false);
-  const { data: center } = id && api.center.getCenterById.useQuery({ id });
+  const { data: taxslabs } =api.tabSlab.getAllTaxSlab.useQuery();
+  const [showTabSlabModal, setShowTabSlabModal] = useState(false);
+ const [taxSlab,setTaxSlab]=useState({})
 
-  useEffect(() => {
-    if (id) {
-      if (center && !hasCenterUseEffectRun.current) {
-        setFormData(center);
-        hasCenterUseEffectRun.current = true;
-      }
-    }
-  }, [id]);
+  
+
+  const { mutate: createMutateTaxSlab } = api.tabSlab.createTaxSlab.useMutation({
+    onSuccess: (response) => {
+      setShowTabSlabModal(!showTabSlabModal)
+    },
+  });
+  // useEffect(() => {
+  //   if (id) {
+  //     if (center && !hasCenterUseEffectRun.current) {
+  //       setFormData(center);
+  //       hasCenterUseEffectRun.current = true;
+  //     }
+  //   }
+  // }, [id]);
 
   const formProviderData = {
     ...methods,
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   };
-  const { mutate: createMutate } = api.center.createCenter.useMutation({
+  const { mutate: createMutate } = api.staffPayroll.createStaffPayroll.useMutation({
     onSuccess: (response) => {
       console.log("response data is ", response);
-      setOpenToast(true);
-      setCenterId(response?.id);
+  
       return response?.id;
     },
   });
-  const { mutate: createMutateInventories } =
-    api.centerInventory.createCenterInventory.useMutation({
-      onSuccess: (response) => {
-        console.log("response data is ", response);
-        router.push(`/centers/${centerId ?? ""}`);
+  
+ 
 
-        return response;
-      },
-    });
-  const { mutate: createMutateCenterSports } =
-    api.centerSports.createCenterSports.useMutation({
-      onSuccess: (response) => {
-        console.log("response data is ", response);
-        return response;
-      },
-    });
+  // const { mutate: editMutate } = api.staffPayroll.editCenter.useMutation({
+  //   onSuccess: (response) => {
+  //     setOpenToast(true);
+  //     void router.push(`/centers/${response?.id ?? ""}`);
+  //   },
+  // });
 
-  const { mutate: editMutate } = api.center.editCenter.useMutation({
-    onSuccess: (response) => {
-      setOpenToast(true);
-      void router.push(`/centers/${response?.id ?? ""}`);
-    },
-  });
 
-  const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
-    setPreview(
-      acceptedFiles.map((upFile) =>
-        Object.assign(upFile, {
-          preview: URL.createObjectURL(upFile),
-        })
-      )
-    );
-  }, []);
-
-  useEffect(() => {
-    if (
-      formData &&
-      Object.keys(formData)?.length > 0 &&
-      formData?.sports &&
-      formData?.inventories &&
-      centerId
-    ) {
-      const finalCenterSports = formData?.sports?.map((v) => ({
-        ... v,
-        centerId,
-      }));
-
-      createMutateCenterSports(finalCenterSports);
-
-      const finalInventories = formData?.inventories?.map((v) => ({
-        ...v,
-        centerId,
-      }));
-      createMutateInventories(finalInventories);
-    }
-  }, [centerId, formData]);
 
   const finalFormSubmissionHandler = async (
     finalForm: Required<MULTI_FORM_TYPES>
   ) => {
     if (formData.isEditMode) {
-      editMutate({
-        ...finalForm,
-        mobile: finalForm?.phoneNumber,
-        address: finalForm?.location,
-      });
+      // editMutate({
+      //   ...finalForm,
+   
+      // });
     } else {
-      // eslint-disable-next-line no-console
-      console.log(finalForm);
-      // eslint-disable-next-line no-console
-      console.log(finalForm, "djbsdbfn");
-      const sportsId = finalForm?.selectSports.map(function (obj) {
-        return Number(obj.value);
-      });
       setFormData({
-        ...finalForm,
-        mobile: finalForm?.phoneNumber,
-        address: finalForm?.address,
-        image: "",
-        sportsId,
+        ...finalForm
       });
       createMutate({
         ...finalForm,
-        mobile: finalForm?.phoneNumber,
-        address: finalForm?.address,
-        image: "",
       });
     }
   };
+
+
+  const submitTaxSlab=(e)=>{
+    e.preventDefault()
+    createMutateTaxSlab({
+          ...taxSlab,
+          createdBy:sessionData?.token?.id
+        });
+  }
   return (
+    <>
+     {showTabSlabModal && (
+        <AddTaxSlabModal
+          show={showTabSlabModal}
+          setShow={setShowTabSlabModal}
+          setTaxSlab={setTaxSlab}
+          taxSlab={taxSlab}
+          submitTaxSlab={submitTaxSlab}
+        />
+      )}
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
-        <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
+        <Card className="col-span-8 ml-10 h-full p-0 pl-10 pt-10">
           <AddPayroll />
         </Card>
-        <Card className="col-span-2 bg-gray-100">
-          <div className="mb-10 font-bold">Center Image</div>
-
-          <div>
-            {preview.length ? (
-              preview.map((upFile, index) => {
-                return (
-                  <div
-                    className="previewImage mb-5 flex justify-center rounded-full"
-                    key={index}
-                  >
-                    <ImageWithFallback
-                      className="rounded-2xl"
-                      src={upFile.preview}
-                      alt="preview"
-                      height={205}
-                      width={205}
-                      fallbackSrc="/images/fallback.png"
-                    />
-                  </div>
-                );
-              })
-            ) : (
-              <div className="previewImage">
-                <ImageWithFallback
-                  src={""}
-                  alt="preview"
-                  height={500}
-                  width={500}
-                  fallbackSrc="/images/fallback.png"
-                />
-              </div>
-            )}
-            <div className="mb-5 flex justify-center">
-              <FileUpload onDropCallback={onDropCallback} />{" "}
-            </div>
-          </div>
-          <div>
-            <span className="mb-5 font-bold">Note</span>
-            <ul className="list-disc">
-              <li>Please upload jpg, png, .tiff file formats only</li>
-              <li>Maximum Size 100 MB</li>
-              <li>Minimum dimension 500px width by 500px height</li>
-            </ul>
+        <Card className="col-span-8 bg-gray-100">
+          <div className="mb-10 font-bold">Taxable Salary Slabs</div>
+          <Table
+          tableHeader={TaxSlabTableHeader()}
+          tableBody={TaxSlabTableBody(
+            taxslabs
+          )}
+        />
+         <div>
+            <Button
+              className="ml-3 bg-pink-700 p-2 text-white"
+              onClick={() => router.push("/staffPayroll/AddPayroll")}
+            >
+              Add Slab
+            </Button>
           </div>
         </Card>
       </div>
     </FormContext.Provider>
+    </>
   );
 }

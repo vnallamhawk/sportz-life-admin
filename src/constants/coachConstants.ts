@@ -54,13 +54,19 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   {
     label: "Designation",
     id: "designation",
-    type: "textbox",
-    rules: {
-      required: true,
-      maxLength: {
-        value: 25,
-        message: "Too Many Characters",
+    type: "select",
+    options:[
+      {
+        label:"Technical Director",value:"technical_director"
       },
+      {label:"Head Coach",value:"head_coach"},
+      {label:"Coach",value:"coach"},
+      {label:"Assistant Coach",value:"assistant_coach"},
+      {label:"Trainee Coach",value:"trainee_coach"}
+    ],
+    placeHolder: "Select Designation",
+    rules: {
+      required: true
     },
   },
   {
@@ -125,28 +131,25 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
       required: true,
     },
   },
-  // TODO: add this functionality for second phase
-  // {
-  //   label: "Select Payroll",
-  //   id: "payroll",
-  //   type: "select",
-  //   options: [
-  //     { label: "Junior Coach", value: "junior", id: "junior" },
-  //     { label: "Senior Coach", value: "senior", id: "senior" },
-  //   ],
-  //   placeHolder: "Select Payroll",
-  // },
-  // {
-  //   label: "Coaching Sports",
-  //   id: "coachingSports",
-  //   type: "select",
-  //   options: [],
-  //   placeHolder: "Coaching Sports",
-  //   rules: {
-  //     required: true,
-  //   },
-  //   isMulti: true,
-  // },
+  {
+    label: "Select Payroll",
+    id: "payroll",
+    type: "select",
+    placeHolder: "Select Payroll",
+    rules: {
+      required: true,
+    }, 
+  },
+  {
+    label: "Coaching Sports",
+    id: "coachingSports",
+    type: "select",
+    isMulti:true,
+    placeHolder: "Coaching Sports",
+    rules: {
+      required: true,
+    },
+  },
   {
     label: "Training level expertise",
     id: "trainingLevel",

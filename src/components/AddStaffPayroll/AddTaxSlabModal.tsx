@@ -1,17 +1,17 @@
 import React from "react";
 
-function AddDesignationModal({
+function AddTaxSlabModal({
   show,
   setShow,
-  submitDesignation,
-  setDesignation,
-  designation
+  submitTaxSlab,
+  setTaxSlab,
+  taxSlab
 }) {
 
   const handleDesignationChange = (name:string, value:string) => {
-    let obj :any= { ...designation };
+    let obj :any= { ...taxSlab };
     obj[name] = value;
-    setDesignation(obj);
+    setTaxSlab(obj);
   };
 
 
@@ -59,17 +59,51 @@ function AddDesignationModal({
                  
                   <input
                     type="text"
-                    name="designation"
-                    id="designation"
+                    name="fromAmount"
+                    id="fromAmount"
                     className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500
                          dark:focus:border-primary-500 w-50 block rounded-lg
                          border border-gray-300 bg-gray-50 p-2.5 text-sm
                          text-gray-900 dark:border-gray-500 dark:bg-gray-600
                          dark:text-white dark:placeholder-gray-400"
-                    placeholder="Type here"
+                    placeholder="From Amount"
                     required
                     onChange={(e) =>
-                      handleDesignationChange("designation", e.target.value)
+                      handleDesignationChange("fromAmount", e.target.value)
+                    }                  />
+                </div>
+                <div className="col-span-2">
+                 
+                  <input
+                    type="text"
+                    name="toAmount"
+                    id="toAmount"
+                    className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500
+                         dark:focus:border-primary-500 w-50 block rounded-lg
+                         border border-gray-300 bg-gray-50 p-2.5 text-sm
+                         text-gray-900 dark:border-gray-500 dark:bg-gray-600
+                         dark:text-white dark:placeholder-gray-400"
+                    placeholder="To Amount"
+                    required
+                    onChange={(e) =>
+                      handleDesignationChange("toAmount", e.target.value)
+                    }                  />
+                </div>
+                <div className="col-span-2">
+                 
+                  <input
+                    type="text"
+                    name="tax_percent"
+                    id="tax_percent"
+                    className="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500
+                         dark:focus:border-primary-500 w-50 block rounded-lg
+                         border border-gray-300 bg-gray-50 p-2.5 text-sm
+                         text-gray-900 dark:border-gray-500 dark:bg-gray-600
+                         dark:text-white dark:placeholder-gray-400"
+                    placeholder="Deduction Percent"
+                    required
+                    onChange={(e) =>
+                      handleDesignationChange("tax_percent", e.target.value)
                     }                  />
                 </div>
                 {/* button div */}
@@ -77,9 +111,9 @@ function AddDesignationModal({
                   <button
                     type="submit"
                     className=" w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    onClick={(e) => submitDesignation(e)}
+                    onClick={(e) => submitTaxSlab(e)}
                   >
-                    Add Designation
+                    Add Tax Slab
                   </button>
                 </div>
               </div>
@@ -91,4 +125,4 @@ function AddDesignationModal({
   );
 }
 
-export default AddDesignationModal;
+export default AddTaxSlabModal;

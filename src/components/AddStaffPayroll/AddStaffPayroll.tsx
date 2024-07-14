@@ -170,6 +170,7 @@ export default function AddPayroll() {
           setShow={setShowDesignationModal}
           setDesignation={setDesignation}
           submitDesignation={submitDesignation}
+          designation={designation}
         />
       )}
       <CardTitle title="ADD PAYROLL" />

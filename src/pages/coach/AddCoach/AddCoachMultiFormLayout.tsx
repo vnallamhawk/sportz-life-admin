@@ -76,10 +76,10 @@ export default function AddCoachMultiFormLayout() {
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
   const { data: sports } = api.sports.getAllSports.useQuery();
+  const { data: centers } = api.center.getAllCenters.useQuery();
+
   const { data: coach } = id && api.coach.getCoachById.useQuery({ id });
 
-  const sportsDictionary = getSportsDictionaryServices(sports);
-  // const { data: centers } = api.center.getAllCenters.useQuery();
   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCoachUseEffectRun = useRef(false);
 
@@ -88,7 +88,7 @@ export default function AddCoachMultiFormLayout() {
       setFormData(coach);
       hasCoachUseEffectRun.current = true;
     }
-  }, [id, sportsDictionary, batches]);
+  }, [id, batches]);
 
   const formProviderData = {
     ...methods,
