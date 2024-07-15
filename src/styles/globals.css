@@ -93,6 +93,23 @@
   .graph-tab li.active{
     color: black;
 }
+  .contact{
+    @media(max-width: 768px){
+      background: white;
+      padding: 15px;
+      border-radius: 20px;
+      position: relative;
+      padding-left: 40px;
+    }
+
+  }
+  .contact .line{
+    width: 6px;
+    height: 45px;
+    position: absolute;
+    left: 15px;
+    border-radius: 20px;
+  }
 }
 
 @layer base {
