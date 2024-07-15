@@ -7,49 +7,15 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import Image from "next/image";
-import User from "../../images/user.png";
 import Dots from "../../images/dots.svg"
+import User from "../../images/user.png";
+
 import { Dropdown, DropdownHeader } from "flowbite-react";
 
-const TABLE_HEAD = ["Athlete Name", "Training Level", "Center", "Batch", "Fee Status of the Month", ""];
-
-const TABLE_ROWS = [
-  {
-    img: User,
-    name: "John H. Martin",
-    t_level: "Intermediate",
-    center: "Biswa Bharati Stadium",
-    batch: "Rugby 03 Batch",
-    status: "Paid on 5/7/2023",
-  },
-  {
-    img: User,
-    name: "Robert G. Lioness",
-    t_level: "Advanced",
-    center: "Biswa Bharati Stadium",
-    batch: "Rugby 03 Batch",
-    status: "Due",
-  },
-  {
-    img: User,
-    name: "Emille Johnson",
-    t_level: "Advanced",
-    center: "Biswa Bharati Stadium",
-    batch: "Rugby 03 Batch",
-    status: "Paid on 5/7/2023",
-  },
-  {
-    img: User,
-    name: "John H. Martin",
-    t_level: "Beginner ",
-    center: "Biswa Bharati Stadium",
-    batch: "Rugby 03 Batch",
-    status: "Paid on 5/7/2023",
-  }
-];
 
 
-export default function () {
+
+const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: any; t_level: any; center: any; batch: any; status: any; }[]; })=> {
   return (
     <>
       <div className="overflow-auto px-0">
@@ -59,7 +25,7 @@ export default function () {
               <th className="p-4 pb-2 pl-7">
                 <input type="checkbox" className="w-5 h-5 rounded border-orange-light text-orange-light focus:ring-0" />
               </th>
-              {TABLE_HEAD.map((head) => (
+              {props?.TABLE_HEAD.map((head) => (
                 <th
                   key={head}
                   className="p-4 pb-2"
@@ -76,7 +42,7 @@ export default function () {
             </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS.map(
+            {props?.TABLE_ROWS.map(
               (
                 {
                   img,
@@ -89,13 +55,13 @@ export default function () {
                 index,
               ) => {
 
-                const isLast = index === TABLE_ROWS.length - 1;
+                const isLast = index === props?.TABLE_ROWS.length - 1;
                 const classes = isLast
                   ? "p-4 border-y-2 border-gray-100"
                   : "p-4 border-y-2 border-gray-100 ";
 
                 return (
-                  <tr key={name} className={``}>
+                  <tr key={index} className={``}>
                     <td className={`pl-7 ${classes}`}> <input type="checkbox" className="w-5 h-5 rounded border-orange-light text-orange-light focus:ring-0 " /></td>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
@@ -198,3 +164,5 @@ export default function () {
     </>
   )
 }
+
+export default CommonTable

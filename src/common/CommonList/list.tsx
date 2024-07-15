@@ -1,19 +1,9 @@
 
-import {
-  Typography,
-  Button,
-  Chip,
-  Avatar,
-  IconButton,
-} from "@material-tailwind/react";
+
 import Image from "next/image";
 import User from "../../images/user.png";
-import Dots from "../../images/dots.svg"
 
-
-
-
-export default function () {
+const CommonList= (props)=> {
   return (
     <>
       <div className="flex justify-between items-center border border-gray-300 rounded-xl p-4 mb-3">
@@ -32,3 +22,5 @@ export default function () {
     </>
   )
 }
+
+export default CommonList

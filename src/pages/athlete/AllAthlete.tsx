@@ -11,6 +11,7 @@ import Dots from "../../images/dots.svg";
 import List from "~/components/CommonList/list";
 import { Dropdown } from "flowbite-react";
 import Link from "next/link";
+import TableListView from "~/common/TableListView";
 
 export default function Athlete() {
     const [open, setOpen] = React.useState(false);
@@ -71,14 +72,7 @@ export default function Athlete() {
                         <button className="bg-white text-black border border-gray-300 py-0.5 px-4 rounded font-400 ml-2">Change Center</button>
                         <button className="bg-white text-black border border-gray-300 py-0.5 px-4 rounded font-400 ml-2">Change Batch</button>
                     </div>
-                    <div className="lg:block hidden">
-                        <Table />
-                    </div>
-                    <div className="lg:hidden block">
-                        <List />
-                        <List />
-                        <List />
-                    </div>
+                    <TableListView/>
                     
                 </div>
             </div>
