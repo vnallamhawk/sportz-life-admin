@@ -103,11 +103,13 @@
     }
 
   }
-  .contact .line{
+ .line{
     width: 6px;
     height: 45px;
     position: absolute;
     left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
     border-radius: 20px;
   }
 }
@@ -277,4 +279,7 @@ body.dark {
 
 .react-calendar {
   border: 0 !important;
+  @media(max-width:768px){
+    width: 100%
+  }
 }

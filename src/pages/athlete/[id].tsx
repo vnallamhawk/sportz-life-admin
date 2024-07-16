@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
-// import Table from "../../components/CommonTable";
+import TableListView from "~/common/TableListView";
 import CardTitle from "~/components/Card/CardTitle";
 import Image, { StaticImageData } from "next/image";
 import CoachImg from "../../images/CoachesImg.png";
@@ -11,6 +11,7 @@ import Edit from "../../images/ic_fluent_edit_16_filled.svg";
 import SearchIcon from "../../images/search.png";
 import AtheleteImg from "../../images/AthelteImg.png";
 import InventoryImg from "../../images/InventoryImg.png";
+import ChevronDown from "../../images/chevron-down.svg";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
 import type { Centers } from "@prisma/client";
@@ -402,37 +403,37 @@ export default function Page({ center }: { center: Centers }) {
               );
             })}
           </Slider>
-          
+
         </div>
 
       </Card>
       <Slider {...settings} className="md:hidden block mt-10 pl-6 tab-slider">
-            {tabs?.map((tab, index) => {
-              return (
-                <div
-                  className={`rounded-xl bg-[#EAEAEA] `}
-                  onClick={() => {
-                    handleClick(tab);
-                  }}
-                  key={index}
+        {tabs?.map((tab, index) => {
+          return (
+            <div
+              className={`rounded-xl bg-[#EAEAEA] `}
+              onClick={() => {
+                handleClick(tab);
+              }}
+              key={index}
 
-                >
-                  <div className="flex items-center py-3 justify-center px-3">
-                    <div className="pl-3">
-                      <p className={`text-black text-xl font-heading`}>{tab?.label}<span className="ml-1">({tab?.value})</span></p>
-                    </div>
-                  </div>
+            >
+              <div className="flex items-center py-3 justify-center px-3">
+                <div className="pl-3">
+                  <p className={`text-black text-xl font-heading`}>{tab?.label}<span className="ml-1">({tab?.value})</span></p>
                 </div>
+              </div>
+            </div>
 
-              );
-            })}
-          </Slider>
+          );
+        })}
+      </Slider>
       {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
       <CoachBatch coach={coach} displayBatch={displayBatch} />
       <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
 
-      <Card className="h-100 mx-5 mt-5 bg-white py-7">
-        <header className="flex justify-between">
+      <Card className="h-100 mx-5 mt-5 bg-white  py-7">
+        <header className="md:flex justify-between hidden">
           <CardTitle title="Attendance" />
           <div className="relative">
             <Image src={SearchIcon} className="absolute right-3 top-2 z-10" alt="" />
@@ -440,41 +441,46 @@ export default function Page({ center }: { center: Centers }) {
           </div>
         </header>
         {/* Attendance view --------------------------------------------------------- */}
-        <div className="grid xl:grid-cols-5 grid-cols-6 gap-4">
+        <div className="grid xl:grid-cols-5 grid-cols-6 gap-4 bg-[#FFE5DE] md:bg-white p-6 md:p-0 rounded-[30px]">
           <div className="xl:col-span-1 md:col-span-2 sm:col-span-3 col-span-6">
-            <div className={`rounded-xl bg-[#404469] text-white p-4 `}>
+            <div className={`rounded-xl md:bg-[#404469] md:text-white p-4 pl-10 md:pl-4  bg-white relative shadow-md md:shadow-none`}>
+              <div className="line bg-[#404469] md:hidden block"></div>
               <div className="">Total Classes Held</div>
-              <div className="font-heading text-5xl">16</div>
+              <div className="font-heading text-2xl md:text-5xl">16</div>
             </div>
           </div>
           <div className="xl:col-span-1 md:col-span-2 sm:col-span-3 col-span-6">
-            <div className={`rounded-xl bg-[#00B65A] text-white p-4 `}>
+            <div className={`rounded-xl md:bg-[#00B65A] md:text-white p-4 pl-10 md:pl-4  bg-white relative shadow-md md:shadow-none`}>
+              <div className="line bg-[#00B65A] md:hidden block"></div>
               <div className="">Present</div>
-              <div className="font-heading text-5xl">16</div>
+              <div className="font-heading text-2xl md:text-5xl">16</div>
             </div>
           </div>
           <div className="xl:col-span-1 md:col-span-2 sm:col-span-3 col-span-6">
-            <div className={`rounded-xl bg-[#BE1A0E] text-white p-4 `}>
+            <div className={`rounded-xl md:bg-[#BE1A0E] md:text-white p-4 pl-10 md:pl-4  bg-white relative shadow-md  md:shadow-none`}>
+              <div className="line bg-[#BE1A0E] md:hidden block"></div>
               <div className="">Absent</div>
-              <div className="font-heading text-5xl">16</div>
+              <div className="font-heading text-2xl md:text-5xl">16</div>
             </div>
           </div>
           <div className="xl:col-span-1 md:col-span-2 sm:col-span-3 col-span-6">
-            <div className={`rounded-lg bg-[#FFA500] text-white p-4  `}>
+            <div className={`rounded-lg md:bg-[#FFA500] md:text-white p-4 pl-10 md:pl-4  bg-white relative  shadow-md md:shadow-none`}>
+              <div className="line bg-[#FFA500] md:hidden block"></div>
               <div className="">Late</div>
-              <div className="font-heading text-5xl">16</div>
+              <div className="font-heading text-2xl md:text-5xl">16</div>
             </div>
           </div>
           <div className="xl:col-span-1 md:col-span-2 sm:col-span-3 col-span-6">
-            <div className={`rounded-xl bg-[#EDEDED] text-black p-4 `}>
+            <div className={`rounded-xl md:bg-[#EDEDED] md:text-white p-4 pl-10 md:pl-4  bg-white relative shadow-md md:shadow-none`}>
+              <div className="line bg-[#EDEDED] md:hidden block"></div>
               <div className="">Cancelled</div>
-              <div className="font-heading text-5xl">16</div>
+              <div className="font-heading text-2xl md:text-5xl">16</div>
             </div>
           </div>
         </div>
         <div className="mt-5">
           <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-5">
+            <div className="md:col-span-5 col-span-12">
               <Card
                 title="Calendar View"
                 className="border border-gray-200 uppercase"
@@ -482,7 +488,7 @@ export default function Page({ center }: { center: Centers }) {
                 <Calendar onChange={onChange} value={value} />
               </Card>
             </div>
-            <div className="col-span-7">
+            <div className="md:col-span-7 col-span-12">
               <Card
                 title=""
                 className="border border-gray-200 uppercase"
@@ -552,23 +558,103 @@ export default function Page({ center }: { center: Centers }) {
 
         {/* Batches view --------------------------------------------------------- */}
         <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Batches</div>
-        {/* <Table /> */}
+        <TableListView />
         {/* Batches view --------------------------------------------------------- */}
 
 
         {/* Payment History --------------------------------------------------------- */}
         <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Payment History</div>
-        {/* <Table /> */}
+        <div className="md:block hidden">
+          <TableListView />
+        </div>
+
+        <div className="flex justify-between items-center border border-gray-300 rounded-xl p-4 mb-3 md:hidden">
+          <div className="flex items-center">
+            <div>
+              <div className=" text-2xl font-heading font-medium">$99.00</div>
+              <div className="text-sm text-gray-400">Batch Name Goes Here</div>
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-sm text-gray-400 mb-1">Mar 01, 2023</div>
+            <div className="text-sm py-1 border-[#974062] bg-[#FFF8FB] text-[#974062] font-normal border px-3 rounded-full capitalize">More Detail</div>
+          </div>
+
+        </div>
+        <div className="flex justify-between items-center border border-gray-300 rounded-xl p-4 mb-3 md:hidden">
+          <div className="flex items-center">
+            <div>
+              <div className=" text-2xl font-heading font-medium">$99.00</div>
+              <div className="text-sm text-gray-400">Batch Name Goes Here</div>
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-sm text-gray-400 mb-1">Mar 01, 2023</div>
+            <div className="text-sm py-1 border-[#974062] bg-[#FFF8FB] text-[#974062] font-normal border px-3 rounded-full capitalize">More Detail</div>
+          </div>
+
+        </div>
+
+
         {/* Payment History --------------------------------------------------------- */}
 
         {/* Assessment --------------------------------------------------------- */}
         <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Assessment</div>
-        {/* <Table /> */}
+        <div className="md:block hidden">
+          <TableListView />
+        </div>
+        <div className="md:hidden block">
+          <div className="flex justify-between items-center border border-gray-300 rounded-xl p-4 mb-3 md:hidden">
+            <div className="flex items-center">
+              <div>
+                <div className="text-[#FFA500]">Upcoming</div>
+                <div className=" text-2xl font-heading font-medium">Assessment name here</div>
+                <div className="text-sm text-gray-400">One Time</div>
+              </div>
+            </div>
+            <div className="text-center bg-[#EAEAEA] w-11 h-11 rounded-full flex items-center justify-center">
+              <Image
+                className="w-[16px] h-[9px]"
+                src={ChevronDown}
+                alt={``}
+              />
+            </div>
+          </div>
+          <div className="border border-gray-300 rounded-xl p-4 mb-3 md:hidden">
+            <div className="flex justify-between items-center ">
+              <div className="flex items-center">
+                <div>
+                  <div className="text-[#FFA500]">Upcoming</div>
+                  <div className=" text-2xl font-heading font-medium">Assessment name here</div>
+                  <div className="text-sm text-gray-400">One Time</div>
+                </div>
+              </div>
+              <div className="text-center bg-[#EAEAEA] w-11 h-11 rounded-full flex items-center justify-center">
+                <Image
+                  className="w-[16px] h-[9px]"
+                  src={ChevronDown}
+                  alt={``}
+                />
+              </div>
+            </div>
+            <div>
+              <div className="flex justify-between items-center mt-8">
+                <div className="text-gray-500 font-bold">Test Date</div>
+                <div className="text-gray-700 font-bold">Aug 04, 2023</div>
+              </div>
+              <hr className="my-5" />
+              <div className="flex justify-between items-center mb-8">
+                <div className="text-gray-500 font-bold">Overall Score</div>
+                <div className="text-gray-700 font-bold">88/100</div>
+              </div>
+            </div>
+          </div>
+        </div>
         {/* Assessment --------------------------------------------------------- */}
 
         {/* Medical History --------------------------------------------------------- */}
 
-        <div className="mt-10">
+        <div className="mt-10 ">
           <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Medical History</div>
 
           <div className="mt-5 max-h-[370px] overflow-auto px-0 scroll lg:block hidden">
@@ -618,6 +704,19 @@ export default function Page({ center }: { center: Centers }) {
             </table>
           </div>
         </div>
+        <div className="border border-gray-300 rounded-xl p-4 mb-3 md:hidden block">
+          <div>
+            <div className=" text-xl font-medium mb-2">#01 History</div>
+            <div className="text-sm text-gray-400">Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et blanditiis sunt qui asperiores tempore eos similique veniam aut maxime veniam aut possimus possimus qui voluptatem maiores.</div>
+          </div>
+        </div>
+        <div className="border border-gray-300 rounded-xl p-4 mb-3 md:hidden block">
+          <div>
+            <div className=" text-xl font-medium mb-2">#02 History</div>
+            <div className="text-sm text-gray-400">Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et blanditiis sunt qui asperiores tempore eos similique veniam aut maxime veniam aut possimus possimus qui voluptatem maiores.</div>
+          </div>
+        </div>
+
         {/* Medical History --------------------------------------------------------- */}
       </Card >
     </>
