@@ -131,9 +131,7 @@ const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: an
         </table>
       </div>
       <div className="flex items-center justify-center p-4">
-        {/* <Button variant="outlined" size="sm">
-          Previous
-        </Button> */}
+    
         <div className="flex items-center gap-2">
           <IconButton variant="outlined" size="sm" className="mx-1">
             1

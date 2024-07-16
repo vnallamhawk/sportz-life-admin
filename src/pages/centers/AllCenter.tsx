@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import AllData from "~/common/AllData";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
@@ -18,6 +19,9 @@ const AllCenter = () => {
   };
   return (
     <>
+  <AllData title="ALL CENTERS" addButtonText="ADD NEW CENTER" addButtonUrl="/centers/AddCenter" dropdownItems={{}} />
+
+    <AllData />
       <Card className="h-full">
         <header className="flex justify-between p-2">
           <CardTitle title="ALL CENTERS" />
