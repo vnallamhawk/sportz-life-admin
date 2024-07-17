@@ -1,5 +1,5 @@
-import React from "react";
 import Card from "~/components/Card";
+import DatePickerWrapper from "~/components/DatePicker/DatePickerWrapper";
 
 const tabs = [
   {
@@ -42,31 +42,46 @@ const StaffDashAttend = () => {
         {/*Attendance  */}
         <div>
           <h2>Attendance</h2>
-          <div className="mt-8 flex w-10/12 justify-between">
+          <div className="mt-8 flex ">
             {tabs?.map((tab, index) => {
               return (
                 <div
-                  className={`flex gap-3 rounded-xl bg-[${tab.bgColor}] `}
+                  className={`mr-3 flex w-[10rem] gap-3 rounded-xl p-3 bg-[${tab.bgColor}] `}
                   onClick={handleClick}
                   key={index}
                 >
                   <div>
-                    <p className="text-[#CF8DA7]">{tab?.label}</p>
-                    <h1>{tab?.value}</h1>
+                    <p
+                      className={`${
+                        tab?.label === "Cancelled" ? "text-black" : "text-white"
+                      } text-sm `}
+                    >
+                      {tab?.label}
+                    </p>
+                    <h1
+                      className={`${
+                        tab?.label === "Cancelled" ? "text-black" : "text-white"
+                      } text-xl `}
+                    >
+                      {tab?.value}
+                    </h1>
                   </div>
                 </div>
               );
             })}
           </div>
         </div>
-
-        <div className="grid-cols-2">
-          {/* Calendar View */}
-          <div></div>
-          {/*Attendance Logs  */}
-          <div></div>
-        </div>
       </Card>
+      <div className="flex justify-center">
+        {/* Calendar View */}
+        <Card className="flex flex-col">
+          <h1>Calendar View</h1>
+        </Card>
+        {/*Attendance Logs  */}
+        <Card className="flex flex-col">
+          <h1>Graph View</h1>
+        </Card>
+      </div>
     </>
   );
 };

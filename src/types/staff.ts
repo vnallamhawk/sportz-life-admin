@@ -25,15 +25,20 @@ export interface STAFF_DETAILS_CONSTANTS_TYPES {
   isMulti?: boolean;
 }
 
+export interface STAFF_DUTY_SHIFT {
+  dutyDay: string;
+  dutyShift: string;
+}
+
 export interface STAFF_TYPES {
   staffName: string;
-  designation: string;
+  designation: MultiSelectOption[];
   contactNumber: string;
   email: string;
   dateOfBirth?: string;
-  gender?: MultiSelectOption;
-  payroll: MultiSelectOption;
+  gender?: MultiSelectOption[];
+  payroll: MultiSelectOption[];
   center: MultiSelectOption[];
 }
 
-export type STAFF_MULTI_FORM_TYPES = STAFF_TYPES;
+export interface STAFF_MULTI_FORM_TYPES extends STAFF_TYPES, STAFF_DUTY_SHIFT {}

@@ -10,7 +10,7 @@ import PostIcon from "~/components/Icons/PostIcon";
 import ReportsIcon from "~/components/Icons/ReportsIcon";
 import StaffIcon from "~/components/Icons/StaffIcon";
 import SupportIcon from "~/components/Icons/SupportIcon";
-// import TrainingDrillsIcon from "~/components/Icons/TrainingDrillsIcon";
+import TrainingDrillsIcon from "~/components/Icons/TrainingDrillsIcon";
 // import TrainingPlanIcon from "~/components/Icons/TrainingPlanIcon";
 import InjuryLogsIcon from "~/components/Icons/InjuryLogsIcon";
 import StaffPayrollIcon from "~/components/Icons/StaffPayrollIcon";
@@ -54,11 +54,11 @@ export const SIDE_NAV_ITEMS = [
     route: "/assessments",
     icon: <AssessmentsIcon />,
   },
-  // {
-  //   label: "Training Drills",
-  //   route: "/drills",
-  //   icon: <TrainingDrillsIcon />,
-  // },
+  {
+    label: "Training Drills",
+    route: "/drills",
+    icon: <TrainingDrillsIcon />,
+  },
   // {
   //   label: "Training Plan",
   //   route: "/plans",

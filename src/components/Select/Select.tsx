@@ -7,6 +7,7 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import React, { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import classNames from "classnames";
+import { MultiSelectOption } from "~/types/select";
 
 interface Options {
   label: string;
@@ -20,7 +21,7 @@ const Select = ({
   defaultValue,
   value,
   onChangeHandler,
-  searchable=false,
+  searchable = false,
   ...rest
 }: {
   value?: string;
@@ -29,24 +30,25 @@ const Select = ({
   placeholder?: string;
   defaultValue?: string;
   onChangeHandler?: (value: string) => void;
-  searchable:boolean
+  searchable: boolean;
 }) => {
-  const [searchTerm,setSearchTerm]=useState("")
-  const [finalOptions,setFinalOptions]=useState([])
+  const [searchTerm, setSearchTerm] = useState("");
+  const [finalOptions, setFinalOptions] = useState([]);
 
-  useEffect(()=>{
-    if(searchable && searchTerm?.length>0){
-      const filteredOptions = options && options?.length>0 && options?.filter(option =>
-        option?.label?.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      setFinalOptions(filteredOptions)
-    }else{
-      setFinalOptions(options)
+  useEffect(() => {
+    if (searchable && searchTerm?.length > 0) {
+      const filteredOptions =
+        options &&
+        options?.length > 0 &&
+        options?.filter((option) =>
+          option?.label?.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      setFinalOptions(filteredOptions);
+    } else {
+      setFinalOptions(options);
     }
+  }, [searchTerm, searchable, options]);
 
-  },[searchTerm,searchable,options])
-
- 
   // const onChangeHandler1 = (label) => {
   //   if (Array.isArray(options)) {
   //     const value = options?.find(
@@ -90,15 +92,17 @@ const Select = ({
           <ChevronUpIcon />
         </SelectPrimitive.ScrollUpButton>
         <SelectPrimitive.Viewport className="w-200 rounded-lg bg-white p-2 shadow-lg dark:bg-gray-100">
-        {searchable && <div className="select-search">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              className="select-search-input"
-            />
-          </div>}
+          {searchable && (
+            <div className="select-search">
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="select-search-input"
+              />
+            </div>
+          )}
           <SelectPrimitive.Group>
             {finalOptions?.map(({ label, value }, index) => (
               <SelectPrimitive.Item

@@ -1,26 +1,31 @@
-import React, { useState, useCallback } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  useContext,
+} from "react";
 import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { useForm } from "react-hook-form";
-import { type MULTI_FORM_TYPES } from "~/types/coach";
+// import { type MULTI_FORM_TYPES } from "~/types/coach";
 import FileUpload from "~/components/FileUpload";
 import AddStaffShift from "~/components/AddStaff/AddStaffShift";
 import AddStaff from "~/components/AddStaff/AddStaff";
+import { useRouter } from "next/router";
+import { api } from "~/utils/api";
+import { ToastContext } from "~/contexts/Contexts";
+import { useSession } from "next-auth/react";
 
-const multiFormData: MULTI_FORM_TYPES = {
-  contactNumber: "",
-  name: "",
+const multiFormData = {
+  staffName: "",
   designation: "",
+  contactNumber: "",
   email: "",
-  about: "",
-  dateOfBirth: undefined,
+  dateOfBirth: "",
+  gender: "",
   payroll: "",
-  coachingSports: [],
-  certificates: [],
-  batchIds: [],
-  centerIds: [],
-  isEditMode: false,
-  coachId: undefined,
+  center: "",
 };
 
 const defaultValues = {
@@ -37,19 +42,38 @@ export interface FormContextTypes {
     setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
   };
   multiFormData: {
-    formData: MULTI_FORM_TYPES;
-    setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>;
+    formData;
+    setFormData?: React.Dispatch<React.SetStateAction<{}>>;
   };
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 
 export default function AddStaffMultiFormLayout() {
   const methods = useForm();
+  const router = useRouter();
+  const id = Number(router?.query?.id);
+  const { data: sessionData } = useSession();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
+  const [formData, setFormData] = useState(
     defaultValues.multiFormData.formData
   );
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
+
+  const [staffId, setStaffId] = useState<number>();
+
+  const { setOpenToast } = useContext(ToastContext);
+
+  const hasStaffUseEffectRun = useRef(false);
+  const { data: staff } = id && api.staff.getStaffById.useQuery({ id });
+
+  useEffect(() => {
+    if (id) {
+      if (staff && !hasStaffUseEffectRun.current) {
+        setFormData(staff);
+        hasStaffUseEffectRun.current = true;
+      }
+    }
+  }, [id]);
 
   const formProviderData = {
     ...methods,
@@ -57,6 +81,41 @@ export default function AddStaffMultiFormLayout() {
     multiFormData: { formData, setFormData },
   };
 
+  // create staff api method
+  const { mutate: createMutate } = api.staff.createStaff.useMutation({
+    onSuccess: (response) => {
+      console.log("response data is ", response);
+      setOpenToast(true);
+      setStaffId(response?.id);
+      return response?.id;
+    },
+  });
+
+  const { mutate: createMutateStaffPayroll } =
+    api.staffPayroll.createStaffPayroll.useMutation({
+      onSuccess: (response) => {
+        console.log("response data is ", response);
+        router.push(`/staffs/${staffId ?? ""}`);
+
+        return response;
+      },
+    });
+  // doubt
+
+  // const { mutate: createMutateStaffCenters } =
+  //   api.cen.useMutation({
+  //     onSuccess: (response) => {
+  //       console.log("response data is ", response);
+  //       return response;
+  //     },
+  //   });
+
+  const { mutate: editMutate } = api.staff.editStaff.useMutation({
+    onSuccess: (response) => {
+      setOpenToast(true);
+      router.push(`/staffs/${response?.id ?? ""}`);
+    },
+  });
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
     setPreview(
       acceptedFiles.map((upFile) =>
@@ -67,12 +126,77 @@ export default function AddStaffMultiFormLayout() {
     );
   }, []);
 
+  useEffect(() => {
+    if (
+      formData &&
+      Object.keys(formData)?.length > 0 &&
+      formData?.payroll &&
+      formData?.centers &&
+      staffId
+    ) {
+      const finalStaffPayroll = formData?.payroll?.map((v) => ({
+        ...v,
+        staffId,
+        createdBy: sessionData?.token?.id,
+      }));
+
+      createMutateStaffPayroll(finalStaffPayroll);
+
+      const finalStaffCenters = formData?.centers?.map((v) => ({
+        ...v,
+        staffId,
+        createdBy: sessionData?.token?.id,
+      }));
+      //Todo
+      // createMutateStaffCenters(finalStaffCenters);
+    }
+  }, [staffId, formData]);
+
+  //final Form
+
+  //Todo APIs
+  const finalFormSubmissionHandler = async (
+    // finalForm: Required<MULTI_FORM_TYPES>
+    finalForm
+  ) => {
+    console.log(finalForm, "sdkjnfksdjf");
+    if (formData.isEditMode) {
+      editMutate({
+        ...finalForm,
+        mobile: finalForm?.phoneNumber,
+        address: finalForm?.location,
+      });
+    } else {
+      // eslint-disable-next-line no-console
+      // eslint-disable-next-line no-console
+      // const sportsId = finalForm?.selectSports.map(function (obj) {
+      //   return Number(obj.value);
+      // });
+      setFormData({
+        ...finalForm,
+        mobile: finalForm?.phoneNumber,
+        address: finalForm?.address,
+        image: "",
+        // sportsId,
+      });
+      createMutate({
+        ...finalForm,
+        mobile: finalForm?.phoneNumber,
+        address: finalForm?.address,
+        image: "",
+        createdBy: sessionData?.token?.id,
+      });
+    }
+  };
+
   return (
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 2 && <AddStaff />}
-          {currentStep === 1 && <AddStaffShift />}
+          {currentStep === 1 && <AddStaff />}
+          {currentStep === 2 && (
+            <AddStaffShift finalFormSubmission={finalFormSubmissionHandler} />
+          )}
         </Card>
         <Card className="col-span-2 bg-gray-100">
           <div className="mb-10 font-bold">Staff Image</div>

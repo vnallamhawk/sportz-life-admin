@@ -5,7 +5,7 @@ import Select from "react-select";
 import Table from "../Table";
 import Button from "../Button/Button";
 import CardTitle from "../Card/CardTitle";
-import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
+import { FormContext } from "~/pages/staff/AddStaff/AddStaffMultiFormLayout";
 import { formatBatchesTableData } from "~/helpers/batches";
 import { type BatchTableData } from "~/types/batch";
 import StaffShiftTableHeader from "../StaffShiftTable/StaffShiftTableHeader";
@@ -35,7 +35,8 @@ const shiftOptions =
     value: day,
   })) ?? [];
 
-export default function AddStaffShift() {
+export default function AddStaffShift({ finalFormSubmission }) {
+  const [staffShiftDetails, setStaffShiftDetails] = useState({});
   const {
     control,
     formState: { errors },
@@ -44,26 +45,25 @@ export default function AddStaffShift() {
     trigger,
   } = useForm({
     defaultValues: {
-      centerName: undefined,
-      batchName: undefined,
+      dutyDay: undefined,
+      dutyShift: undefined,
     },
   });
 
-  const [tableData, setTableData] = useState<BatchTableData[]>([]);
+  // const [tableData, setTableData] = useState<BatchTableData[]>([]);
   const {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData },
   } = useContext(FormContext);
 
-  useEffect(() => {
-    if (formData?.batchTableData?.length) {
-      setTableData(formData?.batchTableData);
-    }
-  }, [formData?.batchTableData]);
-
   const submitCallback = () => {
     // eslint-disable-next-line no-console
-    console.log("submit");
+    console.log("submit", { ...formData, ...staffShiftDetails });
+    const finalFormData = {
+      ...formData,
+      ...staffShiftDetails,
+    };
+    finalFormSubmission(finalFormData);
   };
 
   const prevClickHandler = () => {
@@ -88,6 +88,14 @@ export default function AddStaffShift() {
     }
   };
 
+  const handleChangeStaffDetails = (
+    name: string,
+    event: { label: string; value: string }
+  ) => {
+    let obj = { ...staffShiftDetails, [name]: event.value };
+    setStaffShiftDetails(obj);
+  };
+
   return (
     <div>
       <CardTitle title="ADD STAFF" />
@@ -108,17 +116,17 @@ export default function AddStaffShift() {
                 // @ts-ignore: Unreachable code error
                 options={daysOptions}
                 placeholder={"Select Day"}
-                onChange={(event) => {
-                  onChange(event);
+                onChange={(value) => {
+                  handleChangeStaffDetails("dutyDay", value);
                 }}
                 value={value}
               />
             );
           }}
-          name="centerName"
+          name="dutyDay"
         />
         <div className="text-red-800">
-          {errors.centerName && <span>This field is required</span>}
+          {errors.dutyDay && <span>This field is required</span>}
         </div>
 
         <Controller
@@ -132,7 +140,7 @@ export default function AddStaffShift() {
               options={shiftOptions}
               placeholder="Select Shift"
               onChange={(event) => {
-                onChange(event);
+                handleChangeStaffDetails("dutyShift", event);
               }}
               value={value}
             />
@@ -140,22 +148,22 @@ export default function AddStaffShift() {
           rules={{
             required: true,
           }}
-          name="batchName"
+          name="dutyShift"
         />
-        {errors.batchName && (
+        {errors.dutyShift && (
           <div className="text-red-800">This field is required</div>
         )}
       </div>
 
-      <Button type="button" className="mb-5" onClick={onAddBatchHandler}>
+      <Button type="button" className="mb-5" onClick={() => {}}>
         Add
       </Button>
-      {tableData?.length !== 0 && (
+      {/* {tableData?.length !== 0 && (
         <Table
           tableHeader={<StaffShiftTableHeader />}
           tableBody={<StaffShiftTableBody />}
         />
-      )}
+      )} */}
 
       <div className="flex justify-end">
         <Button

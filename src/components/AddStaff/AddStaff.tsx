@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import Card from "../Card";
 import CardTitle from "../Card/CardTitle";
 import Textbox from "../Textbox";
@@ -6,12 +6,15 @@ import Button from "../Button";
 import Table from "../Table";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { useRouter } from "next/navigation";
-import Select from "../Select";
 import { STAFF_DETAILS_CONSTANTS } from "~/constants/staffConstants";
 import { STAFF_DETAILS_CONSTANTS_TYPES, STAFF_TYPES } from "~/types/staff";
 import { Controller, useForm } from "react-hook-form";
 import { FormContext } from "~/pages/staff/AddStaff/AddStaffMultiFormLayout";
-import DatePicker from "../../components/DatePicker/DatePicker";
+import Datepicker from "~/components/DatePicker/DatePickerWrapper";
+import { api } from "~/utils/api";
+import TimePicker from "react-time-picker";
+import Select from "react-select";
+
 const AddStaff = () => {
   let inputElement;
   const {
@@ -34,24 +37,84 @@ const AddStaff = () => {
   const [loading, setLoading] = useState(false);
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
-    // const { data: sports } = api.sports.getAllSports.useQuery();
   };
+  const { data: payroll } = api.staffPayroll.getAllPayroll.useQuery();
+  const { data: designation } =
+    api.staffDesignation.getAllDesignation.useQuery();
+  // const { data: centers } = api.staff.getAllStaffs.useQuery();
+
   const [formConstantValues, setFormConstantValues] = useState(
     STAFF_DETAILS_CONSTANTS
   );
+  // console.log("centers data", centers);
+  useEffect(() => {
+    if (payroll?.length && hasExecuted.current) {
+      const updatedFormConstantValues = formConstantValues.map(
+        (formConstant) => {
+          if (formConstant.id === "payroll") {
+            // console.log("payroll", payroll);
+            return {
+              ...formConstant,
+              options: payroll.map(
+                (payroll: { name: string; id: number }, index) => ({
+                  label: `pay${index + 1}`,
+                  value: payroll.id.toString(),
+                })
+              ),
+            };
+          } else {
+            return formConstant;
+          }
+        }
+      );
+      hasExecuted.current = false;
+      console.log("updated", updatedFormConstantValues);
+      setFormConstantValues(updatedFormConstantValues);
+      console.log("formConst", formConstantValues);
+    }
+  }, [formConstantValues, payroll, payroll?.length]);
+  useEffect(() => {
+    if (designation?.length) {
+      const updatedFormConstantValues = formConstantValues.map(
+        (formConstant) => {
+          if (formConstant.id === "designation") {
+            return {
+              ...formConstant,
+              options: designation.map(
+                (desig: { designation: string; id: number }) => ({
+                  label: desig.designation,
+                  value: desig.id.toString(),
+                })
+              ),
+            };
+          } else {
+            console.log();
+            return formConstant;
+          }
+        }
+      );
+      setFormConstantValues(updatedFormConstantValues);
+    }
+  }, [designation, designation?.length]);
+
   // useEffect(() => {
-  //   if (sports?.length && hasExecuted.current) {
+  //   if (center?.length && hasExecuted.current) {
   //     const updatedFormConstantValues = formConstantValues.map(
   //       (formConstant) => {
-  //         if (formConstant.id === "coachingSports") {
+
+  //           // Todo staff center
+  //         if (formConstant.id === "center") {
   //           return {
   //             ...formConstant,
-  //             options: sports.map((sport: { name: string; id: number }) => ({
-  //               label: sport.name,
-  //               value: sport.id.toString(),
-  //             })),
+  //             options: center.map(
+  //               (center: { name: string; id: number }) => ({
+  //                 label: center.name,
+  //                 value: center.id.toString(),
+  //               })
+  //             ),
   //           };
-  //         } else {
+  //         }
+  //         else {
   //           return formConstant;
   //         }
   //       }
@@ -59,7 +122,7 @@ const AddStaff = () => {
   //     hasExecuted.current = false;
   //     setFormConstantValues(updatedFormConstantValues);
   //   }
-  // }, [formConstantValues, sports, sports?.length]);
+  // }, [formConstantValues, center, center?.length]);
 
   // useEffect(() => {
   //   // if (!isEditMode) {
@@ -105,7 +168,7 @@ const AddStaff = () => {
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
-                <DatePicker
+                <Datepicker
                   placeHolder={props.placeHolder}
                   value={new Date(value as string)}
                   className="h-12"
@@ -149,6 +212,7 @@ const AddStaff = () => {
       setCurrentStep && setCurrentStep(currentStep + 1);
     }
   };
+  // console.log("akfhkjdsf", formConstantValues);
   return (
     <>
       <Card className="h-full">

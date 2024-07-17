@@ -413,7 +413,9 @@ model Centers {
   Athletes          Athletes[]
   Batches    Batches[]
   Tests             Tests[]
+  Staffs            Staffs[]
   Admin            Admin   @relation(fields: [createdBy], references: [id], map: "CenterAdmin_ibfk_1")
+  
   @@index([createdBy], map: "createdBy")
 
 
@@ -754,7 +756,9 @@ model Staffs {
   id        Int      @id @default(autoincrement())
   image     String?  @db.VarChar(255)
   name      String   @db.VarChar(255)
+  age       String   @db.VarChar(10)
   designationId Int
+  centerId  Int
   payrollId   Int
   phone     String?  @unique(map: "phone") @db.VarChar(255)
   email     String?  @unique(map: "email") @db.VarChar(255)
@@ -766,6 +770,7 @@ model Staffs {
   StaffPayroll    StaffPayroll   @relation(fields: [payrollId], references: [id], onDelete: Cascade, map: "StaffPayrollMaps_ibfk_517")
       createdBy              Int
  Admin            Admin   @relation(fields: [createdBy], references: [id], map: "StaffsAdmin_ibfk_1")
+ Centers    Centers   @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "StaffCenterMap_ibfk_517")
   @@index([createdBy], map: "createdBy")
 
   @@index([designationId], map: "designationId")

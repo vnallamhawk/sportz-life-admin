@@ -168,11 +168,8 @@ export default function Page({ center }: { center: Centers }) {
     let header, body;
     setSelectedTab(tab);
     if (tab?.name === "attendance") {
-      return (
-        <>
-          <StaffDashAttend />
-        </>
-      );
+      // do something
+      // return <StaffDashAttend />;
     } else if (tab?.name === "centers") {
       header = StaffDashCenterTableHeader();
 
@@ -189,7 +186,7 @@ export default function Page({ center }: { center: Centers }) {
     setSelectedHeader(header);
     setSelectedBody(body);
   };
-
+  console.log(selectedTab, "data");
   return (
     <>
       <Card className="h-100 mx-5">
@@ -298,8 +295,11 @@ export default function Page({ center }: { center: Centers }) {
         <header className="flex justify-between">
           <CardTitle title={selectedTab?.allLabel!} />
         </header>
-
-        <Table tableHeader={selectedHeader} tableBody={selectedBody} />
+        {selectedTab?.name !== "attendance" ? (
+          <Table tableHeader={selectedHeader} tableBody={selectedBody} />
+        ) : (
+          <StaffDashAttend />
+        )}
       </Card>
     </>
   );

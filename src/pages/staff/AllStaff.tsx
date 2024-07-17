@@ -49,7 +49,7 @@ export default function AllCoach() {
               className="ml-3 bg-[#F3476D] p-2 text-white"
               onClick={() => router.push("/staff/AddStaff")}
             >
-              ADD New Staff
+              Add New Staff
             </Button>
           </div>
         </header>

@@ -118,13 +118,14 @@ export const STAFF_DETAILS_CONSTANTS: STAFF_DETAILS_CONSTANTS_TYPES[] = [
   {
     label: "Designation",
     id: "designation",
-    type: "textbox",
+    type: "select",
+    options: [
+      { label: "payroll1", value: "Pay1" },
+      { label: "payroll2", value: "Pay2" },
+    ],
+    placeHolder: "Select Designation",
     rules: {
       required: true,
-      maxLength: {
-        value: 25,
-        message: "Too Many Characters",
-      },
     },
   },
   {
@@ -155,15 +156,15 @@ export const STAFF_DETAILS_CONSTANTS: STAFF_DETAILS_CONSTANTS_TYPES[] = [
       },
     },
   },
-  // {
-  //   label: "Date of Birth",
-  //   id: "dateOfBirth",
-  //   type: "calendar",
-  //   placeHolder: "Date of Birth",
-  //   rules: {
-  //     required: true,
-  //   },
-  // },
+  {
+    label: "Date of Birth",
+    id: "dateOfBirth",
+    type: "calendar",
+    placeHolder: "Date of Birth",
+    rules: {
+      required: true,
+    },
+  },
   {
     label: "Gender",
     id: "gender",

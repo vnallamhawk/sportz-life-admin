@@ -8,11 +8,12 @@ import {
 import { api } from "~/utils/api";
 import { differenceInYears } from "date-fns";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NO_DATA } from "~/globals/globals";
 import { centerDictionaryServices } from "~/services/centerServices";
 import { Dropdown, DropdownHeader } from "flowbite-react";
 import Image from "next/image";
+import moment from "moment-timezone";
 
 interface staffTableFilter {
   name: string;
@@ -60,17 +61,43 @@ export default function StaffTableBody(
   // let tableData;
   const router = useRouter();
 
-  const { data: centers } = api.center.getAllCenters.useQuery();
+  // const [tableData, setTableData] = useState([]);
+
+  const { data: centers } = api.staff.getAllStaffs.useQuery();
 
   const { data: staffs, isLoading } =
     filter.name == ""
       ? api.staff.getAllStaffs.useQuery()
       : api.staff.getAllStaffsByName.useQuery(filter);
-  const centerDictionary = centerDictionaryServices(centers);
+  // const centerDictionary = centerDictionaryServices(centers);
+
+  console.log("data is ", staffs);
 
   useEffect(() => {
-    handleIsLoading(isLoading);
-  }, [handleIsLoading, isLoading]);
+    if (staffs && staffs.length > 0) {
+      // setTableData(staffs)
+      handleIsLoading(false);
+    } else {
+      handleIsLoading(isLoading);
+    }
+  }, [handleIsLoading, isLoading, staffs]);
+
+  // delete mutate
+  // const { mutate: deleteMutate } = api.staff.deleteStaff.useMutation({
+  //   onSuccess: (response) => {
+  //     let arr = [...tableData]
+  //     const index = tableData?.findIndex((item) => item?.id == response?.id);
+  //     if (index > -1) {
+  //       arr.splice(index,1)
+  //     }
+  //     setTableDate(arr);
+  //     return response;
+  //   }
+  // })
+
+  // const deleteStaff = (id: number) => {
+  //   deleteMutate({ staffId: id, deletedAt: moment().toISOString() });
+  // }
 
   const onClickHandler = (id: number) => {
     void router.push(`/staff/${id ?? ""}`);
@@ -152,19 +179,22 @@ export default function StaffTableBody(
                     <div className="flex items-center">
                       <button
                         className="mx-1 text-white"
-                        onClick={() => router.push(`/edit-center-${id}`)}
+                        // onClick={() => router.push(`/edit-staff-${id}`)}
+                        onClick={() => {}}
                       >
                         Edit
                       </button>
                       <button
                         className="mx-1 text-white"
-                        onClick={() => router.push(`/centers/${id ?? ""}`)}
+                        // onClick={() => router.push(`/staffs/${id ?? ""}`)}
+                        onClick={() => {}}
                       >
                         View
                       </button>
                       <button
                         className="mx-1 text-white"
-                        onClick={() => deleteCenter(id)}
+                        // onClick={() => deleteStaff(id)}
+                        onClick={() => {}}
                       >
                         Delete
                       </button>

@@ -16,15 +16,14 @@ export default function Login() {
 
   // const { mutate: createMutate } = api.adminUser.createAdminUser.useMutation({
   //   onSuccess: (response) => {
-
-  //     return response?.id
+  //     return response?.id;
   //   },
   // });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // createMutate({email:"gamuaggarwal@gmail.com",password:"Gamini@123"})
+    // createMutate({ email: "gamuaggarwal@gmail.com", password: "Gamini@123" });
 
     const res = await signIn("credentials", {
       redirect: false,
