@@ -12,6 +12,8 @@ import SearchIcon from "../../images/search.png";
 import AtheleteImg from "../../images/AthelteImg.png";
 import InventoryImg from "../../images/InventoryImg.png";
 import ChevronDown from "../../images/chevron-down.svg";
+import AddBatchCenter from "../addBatchCenter";
+import BatchDetails from "../batchdetails";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
 import type { Centers } from "@prisma/client";
@@ -235,6 +237,8 @@ export default function Page({ center }: { center: Centers }) {
 
   return (
     <>
+    {/* <AddBatchCenter /> */}
+    {/* <BatchDetails /> */}
       <Card className="h-100 mx-5 md:bg-white md:bg-none bg-gradient-to-r from-[#2D323D] to-[#141720]">
         <header className="lg:flex justify-between items-start  mb-5 hidden ">
           <CardTitle title="ATHLETE DETAILS" />
@@ -558,14 +562,14 @@ export default function Page({ center }: { center: Centers }) {
 
         {/* Batches view --------------------------------------------------------- */}
         <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Batches</div>
-        <TableListView />
+        {/* <TableListView /> */}
         {/* Batches view --------------------------------------------------------- */}
 
 
         {/* Payment History --------------------------------------------------------- */}
         <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Payment History</div>
         <div className="md:block hidden">
-          <TableListView />
+          {/* <TableListView /> */}
         </div>
 
         <div className="flex justify-between items-center border border-gray-300 rounded-xl p-4 mb-3 md:hidden">
@@ -601,7 +605,7 @@ export default function Page({ center }: { center: Centers }) {
         {/* Assessment --------------------------------------------------------- */}
         <div className="text-2xl mb-2 font-medium font-heading uppercase text-center lg:text-left">Assessment</div>
         <div className="md:block hidden">
-          <TableListView />
+          {/* <TableListView /> */}
         </div>
         <div className="md:hidden block">
           <div className="flex justify-between items-center border border-gray-300 rounded-xl p-4 mb-3 md:hidden">
