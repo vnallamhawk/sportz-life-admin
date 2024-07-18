@@ -16,40 +16,45 @@ const AllCenter = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [filterByName, setFilterByName] = useState("");
-  const [finalData,setFinalData]=useState([])
+  const [finalData, setFinalData] = useState([]);
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
 
   const { data: centers } =
-  filterByName == ""
-    ? api.center.getAllCenters.useQuery()
-    : api.center.getCentersByName.useQuery({name:filterByName});
+    filterByName == ""
+      ? api.center.getAllCenters.useQuery()
+      : api.center.getCentersByName.useQuery({ name: filterByName });
 
-
-    useEffect(()=>{
-
-      if(centers && centers?.length>0){
-       const  updatedCenters = centers.map(
-          (center) => {
-              return {
-                ...center,
-                batches:center?.Batches?.length
-              };
-            
-          }
-        );
-        setFinalData(updatedCenters)
-      }
-
-    },[JSON.stringify(centers)])
-
-
+  useEffect(() => {
+    if (centers && centers?.length > 0) {
+      const updatedCenters = centers.map((center) => {
+        return {
+          ...center,
+          batches: center?.Batches?.length,
+        };
+      });
+      setFinalData(updatedCenters);
+    }
+  }, [JSON.stringify(centers)]);
 
   return (
     <>
-  <AllData title="ALL CENTERS" addButtonText="ADD NEW CENTER" addButtonUrl="/centers/AddCenter" dropdownItems={{}} filter={false} TABLE_HEAD={CENTER_BATCH_TABLE_HEADERS} TABLE_ROWS={finalData} setFilterByName={setFilterByName} filterByName={filterByName} rowSelection={false} showImage={false}/>
-
+      <AllData
+        title="ALL CENTERS"
+        addButtonText="ADD NEW CENTER"
+        addButtonUrl="/centers/AddCenter"
+        dropdownItems={{}}
+        filter={false}
+        TABLE_HEAD={CENTER_BATCH_TABLE_HEADERS}
+        TABLE_ROWS={finalData}
+        setFilterByName={setFilterByName}
+        filterByName={filterByName}
+        rowSelection={false}
+        showImage={false}
+        onViewClick={(id)=>router.push(`/centers/${id ?? ""}`)}
+        onEditClick={(id)=>router.push(`/edit-center-${id}`)}
+      />
 
       {/* <Card className="h-full">
         <header className="flex justify-between p-2">

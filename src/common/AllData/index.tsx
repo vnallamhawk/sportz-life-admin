@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 
 
 
-const AllData=({title,addButtonText,addButtonUrl,dropdownItems,TABLE_ROWS,TABLE_HEAD,filter=true,filterByName,setFilterByName,rowSelection=true,showImage=true})=>{
+const AllData=({title,addButtonText,addButtonUrl,dropdownItems,TABLE_ROWS,TABLE_HEAD,filter=true,filterByName,setFilterByName,rowSelection=true,showImage=true,onViewClick,onEditClick})=>{
     const router=useRouter()
     const [open, setOpen] = React.useState(false);
 
@@ -75,7 +75,7 @@ const AllData=({title,addButtonText,addButtonUrl,dropdownItems,TABLE_ROWS,TABLE_
                 {dropdownItems?.delete &&<button className="bg-white text-black border border-gray-300 py-0.5 px-4 rounded font-400 ml-2">Delete</button>}
 
             </div>
-            <TableListView TABLE_HEAD={TABLE_HEAD} TABLE_ROWS={TABLE_ROWS} rowSelection={rowSelection} showImage={showImage}/>
+            <TableListView TABLE_HEAD={TABLE_HEAD} TABLE_ROWS={TABLE_ROWS} rowSelection={rowSelection} showImage={showImage} onViewClick={onViewClick} onEditClick={onEditClick}/>
             
         </div>
     </div>

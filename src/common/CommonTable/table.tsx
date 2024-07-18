@@ -15,7 +15,7 @@ import { Dropdown, DropdownHeader } from "flowbite-react";
 
 
 
-const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: any; t_level: any; center: any; batch: any; status: any; }[];rowSelection:boolean;showImage:boolean })=> {
+const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: any; t_level: any; center: any; batch: any; status: any; }[];rowSelection:boolean;showImage:boolean ;onViewClick:any;onEditClick:any})=> {
   return (
     <>
       <div className="overflow-auto px-0">
@@ -75,8 +75,8 @@ const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: an
                       </button>}>
                       <DropdownHeader>
                           <div className="flex items-center">
-                              <button className="mx-1 text-white">Edit</button>
-                              <button className="mx-1 text-white">View</button>
+                              <button className="mx-1 text-white" onClick={()=>props?.onEditClick(data?.id)}>Edit</button>
+                              <button className="mx-1 text-white" onClick={()=>props?.onViewClick(data?.id)}>View</button>
                               <button className="mx-1 text-white">Delete</button>
                           </div>
                       </DropdownHeader>                    
