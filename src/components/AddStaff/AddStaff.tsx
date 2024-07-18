@@ -41,12 +41,12 @@ const AddStaff = () => {
   const { data: payroll } = api.staffPayroll.getAllPayroll.useQuery();
   const { data: designation } =
     api.staffDesignation.getAllDesignation.useQuery();
-  // const { data: centers } = api.staff.getAllStaffs.useQuery();
+  const { data: centers } = api.center.getAllCenters.useQuery();
 
   const [formConstantValues, setFormConstantValues] = useState(
     STAFF_DETAILS_CONSTANTS
   );
-  // console.log("centers data", centers);
+  console.log("centers data", centers);
   useEffect(() => {
     let updatedFormConstantValues=formConstantValues
     if (payroll?.length>0) {
@@ -88,9 +88,30 @@ const AddStaff = () => {
         }
       );
     }
+       if (centers?.length ) {
+           updatedFormConstantValues = updatedFormConstantValues.map(
+            (formConstant) => {
+                // Todo staff center
+              if (formConstant.id === "center") {
+                return {
+                  ...formConstant,
+                  options: centers.map(
+                    (center: { name: string; id: number }) => ({
+                      label: center.name,
+                      value: center.id.toString(),
+                    })
+                  ),
+                };
+              }
+              else {
+                return formConstant;
+              }
+            }
+          );
+        }
     setFormConstantValues(updatedFormConstantValues);
 
-  }, [formConstantValues, JSON.stringify(payroll),JSON.stringify(designation)]);
+  }, [formConstantValues, JSON.stringify(payroll),JSON.stringify(designation),JSON.stringify(centers)]);
 
 
   // useEffect(() => {
