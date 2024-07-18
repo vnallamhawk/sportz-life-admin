@@ -147,7 +147,6 @@ export default function AddCenterForm() {
       const finalCenterSports = formData?.sports?.map((v) => ({
         ... v,
         centerId,
-        createdBy:sessionData?.token?.id
       }));
 
       createMutateCenterSports(finalCenterSports);
@@ -155,7 +154,6 @@ export default function AddCenterForm() {
       const finalInventories = formData?.inventories?.map((v) => ({
         ...v,
         centerId,
-        createdBy:sessionData?.token?.id
 
       }));
       createMutateInventories(finalInventories);

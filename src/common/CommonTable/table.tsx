@@ -25,7 +25,7 @@ const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: an
               <th className="p-4 pb-2 pl-7">
                 <input type="checkbox" className="w-5 h-5 rounded border-orange-light text-orange-light focus:ring-0" />
               </th>
-              {props?.TABLE_HEAD.map((head) => (
+              {props?.TABLE_HEAD?.map((head) => (
                 <th
                   key={head}
                   className="p-4 pb-2"
@@ -42,7 +42,7 @@ const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: an
             </tr>
           </thead>
           <tbody>
-            {props?.TABLE_ROWS.map(
+            {props?.TABLE_ROWS?.map(
               (
                 {
                   img,

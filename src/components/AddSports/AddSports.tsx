@@ -10,6 +10,7 @@ import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
 import { api } from "~/utils/api";
 import SportsTableBody from "../Sports/SportsTableBody";
 import AddSportModal from "./AddSportModal";
+import { useSession } from "next-auth/react";
 const AddSports = () => {
   const [loading, setLoading] = useState(false);
   const [sports, setSports] = useState([]);
@@ -17,7 +18,8 @@ const AddSports = () => {
   const [finalOptions, setFinalOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [sportDetails,setSportDetails]=useState({})
-  
+  const { data: sessionData } = useSession();
+
 
   const { data: allSports } = api.sports.getAllSports.useQuery();
 
@@ -86,7 +88,7 @@ const AddSports = () => {
 
   const addNewSport = (e) => {
     e.preventDefault();
-    createMutate({...sportDetails,image:""});
+    createMutate({...sportDetails,image:"",createdBy:sessionData?.token?.id});
     setShowModal(false);
 
     // api for create sport

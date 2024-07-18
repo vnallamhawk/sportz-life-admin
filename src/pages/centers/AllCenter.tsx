@@ -19,9 +19,9 @@ const AllCenter = () => {
   };
   return (
     <>
-  <AllData title="ALL CENTERS" addButtonText="ADD NEW CENTER" addButtonUrl="/centers/AddCenter" dropdownItems={{}} />
+  {/* <AllData title="ALL CENTERS" addButtonText="ADD NEW CENTER" addButtonUrl="/centers/AddCenter" dropdownItems={{}} /> */}
 
-    <AllData />
+
       <Card className="h-full">
         <header className="flex justify-between p-2">
           <CardTitle title="ALL CENTERS" />

@@ -46,7 +46,6 @@ const AddStaff = () => {
   const [formConstantValues, setFormConstantValues] = useState(
     STAFF_DETAILS_CONSTANTS
   );
-  console.log("centers data", centers);
   useEffect(() => {
     let updatedFormConstantValues=formConstantValues
     if (payroll?.length>0) {
@@ -88,14 +87,14 @@ const AddStaff = () => {
         }
       );
     }
-       if (centers?.length ) {
+       if (centers?.length>0) {
            updatedFormConstantValues = updatedFormConstantValues.map(
             (formConstant) => {
                 // Todo staff center
               if (formConstant.id === "center") {
                 return {
                   ...formConstant,
-                  options: centers.map(
+                  options: centers?.map(
                     (center: { name: string; id: number }) => ({
                       label: center.name,
                       value: center.id.toString(),
@@ -113,33 +112,6 @@ const AddStaff = () => {
 
   }, [formConstantValues, JSON.stringify(payroll),JSON.stringify(designation),JSON.stringify(centers)]);
 
-
-  // useEffect(() => {
-  //   if (center?.length && hasExecuted.current) {
-  //     const updatedFormConstantValues = formConstantValues.map(
-  //       (formConstant) => {
-
-  //           // Todo staff center
-  //         if (formConstant.id === "center") {
-  //           return {
-  //             ...formConstant,
-  //             options: center.map(
-  //               (center: { name: string; id: number }) => ({
-  //                 label: center.name,
-  //                 value: center.id.toString(),
-  //               })
-  //             ),
-  //           };
-  //         }
-  //         else {
-  //           return formConstant;
-  //         }
-  //       }
-  //     );
-  //     hasExecuted.current = false;
-  //     setFormConstantValues(updatedFormConstantValues);
-  //   }
-  // }, [formConstantValues, center, center?.length]);
 
   // useEffect(() => {
   //   // if (!isEditMode) {

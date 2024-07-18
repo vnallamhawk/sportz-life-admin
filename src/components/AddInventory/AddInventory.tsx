@@ -13,6 +13,7 @@ import InventoryTableBody from "../Inventory/InventoryTableBody";
 import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
 import AddInventoryModal from "./AddInventoryModal";
 import { api } from "~/utils/api";
+import { useSession } from "next-auth/react";
 
 const AddInventory = (props) => {
   const router = useRouter();
@@ -23,6 +24,7 @@ const AddInventory = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [inventoryDetails, setInventoryDetails] = useState({});
   const { data: allInventories } = api.inventory.getAllInventories.useQuery();
+  const { data: sessionData } = useSession();
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
@@ -105,7 +107,7 @@ const AddInventory = (props) => {
 
   const addNewInventory = (e) => {
     e.preventDefault();
-    createMutate(inventoryDetails);
+    createMutate({...inventoryDetails,        createdBy:sessionData?.token?.id});
 
     setShowModal(false);
 
