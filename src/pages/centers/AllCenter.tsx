@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AllData from "~/common/AllData";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
@@ -16,6 +16,7 @@ const AllCenter = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [filterByName, setFilterByName] = useState("");
+  const [finalData,setFinalData]=useState([])
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
@@ -25,9 +26,29 @@ const AllCenter = () => {
     ? api.center.getAllCenters.useQuery()
     : api.center.getCentersByName.useQuery({name:filterByName});
 
+
+    useEffect(()=>{
+
+      if(centers && centers?.length>0){
+       const  updatedCenters = centers.map(
+          (center) => {
+              return {
+                ...center,
+                batches:center?.Batches?.length
+              };
+            
+          }
+        );
+        setFinalData(updatedCenters)
+      }
+
+    },[JSON.stringify(centers)])
+
+
+
   return (
     <>
-  <AllData title="ALL CENTERS" addButtonText="ADD NEW CENTER" addButtonUrl="/centers/AddCenter" dropdownItems={{}} filter={false} TABLE_HEAD={CENTER_BATCH_TABLE_HEADERS} TABLE_ROWS={centers} setFilterByName={setFilterByName} filterByName={filterByName} rowSelection={false} showImage={false}/>
+  <AllData title="ALL CENTERS" addButtonText="ADD NEW CENTER" addButtonUrl="/centers/AddCenter" dropdownItems={{}} filter={false} TABLE_HEAD={CENTER_BATCH_TABLE_HEADERS} TABLE_ROWS={finalData} setFilterByName={setFilterByName} filterByName={filterByName} rowSelection={false} showImage={false}/>
 
 
       {/* <Card className="h-full">

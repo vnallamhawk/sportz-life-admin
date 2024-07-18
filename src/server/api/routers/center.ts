@@ -30,10 +30,10 @@ export const centerRouter = createTRPCRouter({
       where:{
         deletedAt:null,
         createdBy:ctx.session.token.id
-      }
-      // include: {
-      //   CoachSportsMaps: true,
-      // },
+      },
+      include: {
+        Batches: true,
+      },
     });
     return allCenters;
   }),

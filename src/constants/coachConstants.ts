@@ -238,7 +238,7 @@ export const CENTER_BATCH_TABLE_HEADERS = [
   },
   {
     label: "Batches",
-    id: "batch",
+    id: "batches",
   },
   {
     label: "Contact Number",
