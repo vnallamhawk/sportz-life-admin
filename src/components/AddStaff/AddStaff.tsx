@@ -48,8 +48,9 @@ const AddStaff = () => {
   );
   // console.log("centers data", centers);
   useEffect(() => {
-    if (payroll?.length && hasExecuted.current) {
-      const updatedFormConstantValues = formConstantValues.map(
+    let updatedFormConstantValues=formConstantValues
+    if (payroll?.length>0) {
+       updatedFormConstantValues = formConstantValues.map(
         (formConstant) => {
           if (formConstant.id === "payroll") {
             // console.log("payroll", payroll);
@@ -67,15 +68,9 @@ const AddStaff = () => {
           }
         }
       );
-      hasExecuted.current = false;
-      console.log("updated", updatedFormConstantValues);
-      setFormConstantValues(updatedFormConstantValues);
-      console.log("formConst", formConstantValues);
     }
-  }, [formConstantValues, payroll, payroll?.length]);
-  useEffect(() => {
-    if (designation?.length) {
-      const updatedFormConstantValues = formConstantValues.map(
+    if (designation?.length>0) {
+       updatedFormConstantValues = updatedFormConstantValues.map(
         (formConstant) => {
           if (formConstant.id === "designation") {
             return {
@@ -88,14 +83,15 @@ const AddStaff = () => {
               ),
             };
           } else {
-            console.log();
             return formConstant;
           }
         }
       );
-      setFormConstantValues(updatedFormConstantValues);
     }
-  }, [designation, designation?.length]);
+    setFormConstantValues(updatedFormConstantValues);
+
+  }, [formConstantValues, JSON.stringify(payroll),JSON.stringify(designation)]);
+
 
   // useEffect(() => {
   //   if (center?.length && hasExecuted.current) {
