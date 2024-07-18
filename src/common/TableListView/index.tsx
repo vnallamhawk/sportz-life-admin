@@ -15,7 +15,7 @@ const TableListView=({TABLE_HEAD,TABLE_ROWS,rowSelection,showImage,onViewClick,o
                     <div className="lg:hidden block">
                        {TABLE_ROWS && TABLE_ROWS.length>0 && TABLE_ROWS.map((item,index)=>{
                         return (
-                            <CommonList item={item} key={index} />
+                            <CommonList item={item} key={index} onViewClick={onViewClick}/>
                         )
 
                        }) }
