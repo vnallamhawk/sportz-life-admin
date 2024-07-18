@@ -14,9 +14,16 @@ import Link from "next/link";
 import TableListView from "~/common/TableListView";
 import AllData from "~/common/AllData";
 import User from "../../images/user.png";
+import { useRouter } from "next/router";
 
-
-const TABLE_HEAD = [{label:"Athlete Name",id:"name"}, {label:"Training Level",id:"t_level"}, {label:"Center",id:'center'}, {label:"Batch",id:"batch"}, {label:"Fee Status of the Month",id:"status"}];
+const TABLE_HEAD = [
+  { label: "Athlete Name", id: "name" },
+  { label: "Training Level", id: "t_level" },
+  { label: "Center", id: "center" },
+  { label: "Batch", id: "batch" },
+  { label: "Fee Status of the Month", id: "status" },
+  { label: "Action", id: "action" },
+];
 
 const TABLE_ROWS = [
   {
@@ -50,19 +57,36 @@ const TABLE_ROWS = [
     center: "Biswa Bharati Stadium",
     batch: "Rugby 03 Batch",
     status: "Paid on 5/7/2023",
-  }
+  },
 ];
 export default function Athlete() {
   const [filterByName, setFilterByName] = useState("");
+  const router=useRouter()
 
-    const dropdownObj={center:true,batch:true,delete:true,attendance:true,reminder:true,freeze:true}
+  const dropdownObj = {
+    center: true,
+    batch: true,
+    delete: true,
+    attendance: true,
+    reminder: true,
+    freeze: true,
+  };
 
-    return (
-        <>
-            <AllData title="ALL ATHLETES" addButtonText="Add Athlete" addButtonUrl="/athlete/AddAthlete" dropdownItems={dropdownObj} TABLE_HEAD={TABLE_HEAD} TABLE_ROWS={TABLE_ROWS} setFilterByName={setFilterByName} filterByName={filterByName}/>
-            <Modal />
-        </>
-    )
-
-
+  return (
+    <>
+      <AllData
+        title="ALL ATHLETES"
+        addButtonText="Add Athlete"
+        addButtonUrl="/athlete/AddAthlete"
+        dropdownItems={dropdownObj}
+        TABLE_HEAD={TABLE_HEAD}
+        TABLE_ROWS={TABLE_ROWS}
+        setFilterByName={setFilterByName}
+        filterByName={filterByName}
+        onViewClick={(id) => router.push(`/athlete/${id ?? ""}`)}
+        onEditClick={(id) => router.push(`/edit-athlete-${id}`)}
+      />
+      <Modal />
+    </>
+  );
 }

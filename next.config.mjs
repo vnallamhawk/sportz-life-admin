@@ -28,6 +28,10 @@ const config = {
         source: "/edit-center-:id",
         destination: "/centers/AddCenter",
       },
+      {
+        source: "/edit-athlete-:id",
+        destination: "/athlete/AddAthlete",
+      },
     ];
   },
 };
