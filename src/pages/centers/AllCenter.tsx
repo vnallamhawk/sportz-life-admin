@@ -9,6 +9,8 @@ import CenterBatchTableHeader from "~/components/CenterBatchTable/CenterBatchTab
 import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
 import Table from "~/components/Table";
 import Textbox from "~/components/Textbox";
+import { CENTER_BATCH_TABLE_HEADERS } from "~/constants/coachConstants";
+import { api } from "~/utils/api";
 
 const AllCenter = () => {
   const router = useRouter();
@@ -17,12 +19,18 @@ const AllCenter = () => {
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
+
+  const { data: centers } =
+  filterByName == ""
+    ? api.center.getAllCenters.useQuery()
+    : api.center.getCentersByName.useQuery({name:filterByName});
+
   return (
     <>
-  {/* <AllData title="ALL CENTERS" addButtonText="ADD NEW CENTER" addButtonUrl="/centers/AddCenter" dropdownItems={{}} /> */}
+  <AllData title="ALL CENTERS" addButtonText="ADD NEW CENTER" addButtonUrl="/centers/AddCenter" dropdownItems={{}} filter={false} TABLE_HEAD={CENTER_BATCH_TABLE_HEADERS} TABLE_ROWS={centers} setFilterByName={setFilterByName} filterByName={filterByName} rowSelection={false} showImage={false}/>
 
 
-      <Card className="h-full">
+      {/* <Card className="h-full">
         <header className="flex justify-between p-2">
           <CardTitle title="ALL CENTERS" />
           <div>
@@ -48,7 +56,7 @@ const AllCenter = () => {
           )}
         />
         {loading ? <LoadingSpinner /> : ""}
-      </Card>
+      </Card> */}
     </>
   );
 };

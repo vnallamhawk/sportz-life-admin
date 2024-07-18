@@ -15,19 +15,19 @@ import { Dropdown, DropdownHeader } from "flowbite-react";
 
 
 
-const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: any; t_level: any; center: any; batch: any; status: any; }[]; })=> {
+const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: any; t_level: any; center: any; batch: any; status: any; }[];rowSelection:boolean;showImage:boolean })=> {
   return (
     <>
       <div className="overflow-auto px-0">
         <table className="common-table w-full min-w-max table-auto text-left border-separate border-spacing-y-3">
           <thead>
             <tr>
-              <th className="p-4 pb-2 pl-7">
+              {props?.rowSelection && <th className="p-4 pb-2 pl-7">
                 <input type="checkbox" className="w-5 h-5 rounded border-orange-light text-orange-light focus:ring-0" />
-              </th>
+              </th>}
               {props?.TABLE_HEAD?.map((head) => (
                 <th
-                  key={head}
+                  key={head?.id}
                   className="p-4 pb-2"
                 >
                   <Typography
@@ -35,25 +35,14 @@ const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: an
                     className="font-normal leading-none opacity-70"
                   >
 
-                    {head}
+                    {head?.label}
                   </Typography>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {props?.TABLE_ROWS?.map(
-              (
-                {
-                  img,
-                  name,
-                  t_level,
-                  center,
-                  batch,
-                  status,
-                },
-                index,
-              ) => {
+            {props?.TABLE_ROWS?.map((data,index) => {
 
                 const isLast = index === props?.TABLE_ROWS.length - 1;
                 const classes = isLast
@@ -62,54 +51,24 @@ const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: an
 
                 return (
                   <tr key={index} className={``}>
-                    <td className={`pl-7 ${classes}`}> <input type="checkbox" className="w-5 h-5 rounded border-orange-light text-orange-light focus:ring-0 " /></td>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
+                    {props?.rowSelection &&<td className={`pl-7 ${classes}`}> <input type="checkbox" className="w-5 h-5 rounded border-orange-light text-orange-light focus:ring-0 " /></td>}
+                    {props?.TABLE_HEAD?.map((head,columnIndex)=>{
+                      return (
+<td className={classes} key={columnIndex}>
+                      {head?.id!=="status"?head?.id!=="action"?columnIndex==0 &&data?.image &&props?.showImage? <div className="flex items-center gap-3">
                         <Image src={User} alt="" className="w-6 h-6 md:w-8 md:h-8 rounded" />
                         <Typography
                           variant="small"
                           className="font-bold"
                         >
-                          {name}
+                          {data[head?.id]}
                         </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <Typography
+                      </div>: <Typography
                         variant="small"
                         className="font-bold"
                       >
-                        {t_level}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        className="font-bold"
-                      >
-                        {center}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <Typography
-                        variant="small"
-                        className="font-bold"
-                      >
-                        {batch}
-                      </Typography>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                        <Chip
-                          size="sm"
-                          variant="ghost"
-                          value={status}
-                          className="border-tertiary-700 bg-tertiary-200 text-tertiary-700 font-normal border px-3 rounded-full capitalize"
-
-                        />
-                      </div>
-                    </td>
-                    <td className={classes}>
+                        {data[head?.id]}
+                      </Typography>: 
                       <Dropdown label="" dismissOnClick={false} placement="top" className="view-drop bg-black rounded-lg" renderTrigger={() =>     
                         <button className="py-2">
                         <Image src={Dots} alt="" />
@@ -122,7 +81,18 @@ const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: an
                           </div>
                       </DropdownHeader>                    
                       </Dropdown>                 
+                    : <div className="w-max">
+                    <Chip
+                      size="sm"
+                      variant="ghost"
+                      value={data?.status}
+                      className="border-tertiary-700 bg-tertiary-200 text-tertiary-700 font-normal border px-3 rounded-full capitalize"
+
+                    />
+                  </div>}
                     </td>
+                      )
+                    })}
                   </tr>
                 );
               },

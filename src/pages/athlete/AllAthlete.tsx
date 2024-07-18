@@ -2,7 +2,7 @@ import DashboardHeader from "~/components/DashboardHeader";
 import Filter from "~/components/Filter";
 // import Table from "../../components/CommonTable";
 import Modal from "../../components/Modal";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import SearchIcon from "../../images/search.png";
 import Plus from "../../images/plus.svg";
@@ -53,11 +53,13 @@ const TABLE_ROWS = [
   }
 ];
 export default function Athlete() {
+  const [filterByName, setFilterByName] = useState("");
+
     const dropdownObj={center:true,batch:true,delete:true,attendance:true,reminder:true,freeze:true}
 
     return (
         <>
-            <AllData title="ALL ATHLETES" addButtonText="Add Athlete" addButtonUrl="/athlete/AddAthlete" dropdownItems={dropdownObj} TABLE_HEAD={TABLE_HEAD} TABLE_ROWS={TABLE_ROWS}/>
+            <AllData title="ALL ATHLETES" addButtonText="Add Athlete" addButtonUrl="/athlete/AddAthlete" dropdownItems={dropdownObj} TABLE_HEAD={TABLE_HEAD} TABLE_ROWS={TABLE_ROWS} setFilterByName={setFilterByName} filterByName={filterByName}/>
             <Modal />
         </>
     )

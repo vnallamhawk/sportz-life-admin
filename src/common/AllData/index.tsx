@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 
 
 
-const AllData=({title,addButtonText,addButtonUrl,dropdownItems,TABLE_ROWS,TABLE_HEAD})=>{
+const AllData=({title,addButtonText,addButtonUrl,dropdownItems,TABLE_ROWS,TABLE_HEAD,filter=true,filterByName,setFilterByName,rowSelection=true,showImage=true})=>{
     const router=useRouter()
     const [open, setOpen] = React.useState(false);
 
@@ -31,9 +31,9 @@ const AllData=({title,addButtonText,addButtonUrl,dropdownItems,TABLE_ROWS,TABLE_
                 <div className=" items-center lg:flex hidden ">
                     <div className="relative">
                         <Image src={SearchIcon} className="absolute right-3 top-2 z-10" alt="" />
-                        <input type="search" className="2xl:min-w-[450px] border-gray-200 focus:border-gray-400 focus:ring-0 relative w-full text-gray-700 bg-transparent pl-4 pr-12 py-2 border-2 placeholder-gray-300 focus:outline-none rounded-lg text-base" placeholder="Search by name" />
+                        <input type="search" className="2xl:min-w-[450px] border-gray-200 focus:border-gray-400 focus:ring-0 relative w-full text-gray-700 bg-transparent pl-4 pr-12 py-2 border-2 placeholder-gray-300 focus:outline-none rounded-lg text-base" placeholder="Search by name" onChange={(e)=>setFilterByName(e.target.value)} value={filterByName}/>
                     </div>
-                    <Filter />
+                   { filter && <Filter />}
                     <Link href={addButtonUrl}>
                         <button className="bg-mandy-dark text-white py-2.5 px-6 rounded-lg ml-3">{addButtonText}</button>
                     </Link>
@@ -75,7 +75,7 @@ const AllData=({title,addButtonText,addButtonUrl,dropdownItems,TABLE_ROWS,TABLE_
                 {dropdownItems?.delete &&<button className="bg-white text-black border border-gray-300 py-0.5 px-4 rounded font-400 ml-2">Delete</button>}
 
             </div>
-            <TableListView TABLE_HEAD={TABLE_HEAD} TABLE_ROWS={TABLE_ROWS}/>
+            <TableListView TABLE_HEAD={TABLE_HEAD} TABLE_ROWS={TABLE_ROWS} rowSelection={rowSelection} showImage={showImage}/>
             
         </div>
     </div>
