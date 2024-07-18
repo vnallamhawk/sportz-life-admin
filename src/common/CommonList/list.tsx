@@ -10,11 +10,11 @@ const CommonList= (props)=> {
         <div className="flex items-center">
           <Image src={User} className="w-10 h-10 rounded" alt="" />
           <div className="ml-3">
-            <div className="font-bold text-sm">Steve Clarion</div>
-            <div className="text-sm text-gray-400">Intermediate</div>
+            <div className="font-bold text-sm">{props?.item?.name}</div>
+            {props?.item?.t_level &&<div className="text-sm text-gray-400">{props?.item?.t_level}</div>}
           </div>
         </div>
-        <div className="text-sm py-1 border-tertiary-700 bg-tertiary-200 text-tertiary-700 font-normal border px-3 rounded-full capitalize">Fee Clear</div>
+        {props?.item?.status && props?.item?.status!="1" && <div className="text-sm py-1 border-tertiary-700 bg-tertiary-200 text-tertiary-700 font-normal border px-3 rounded-full capitalize">{props?.item?.status}</div>}
 
       </div>
       
