@@ -238,7 +238,7 @@ export default function Page({ center }: { center: Centers }) {
   return (
     <>
     {/* <AddBatchCenter /> */}
-    {/* <BatchDetails /> */}
+    <BatchDetails />
       <Card className="h-100 mx-5 md:bg-white md:bg-none bg-gradient-to-r from-[#2D323D] to-[#141720]">
         <header className="lg:flex justify-between items-start  mb-5 hidden ">
           <CardTitle title="ATHLETE DETAILS" />
