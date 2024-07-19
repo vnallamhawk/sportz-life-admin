@@ -30,14 +30,16 @@ export default function AddCoach() {
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
+  const { data: staffPayroll } = api.staffPayroll.getAllPayroll.useQuery();
 
   const [formConstantValues, setFormConstantValues] = useState(
     COACH_DETAILS_CONSTANTS
   );
 
   useEffect(() => {
-    if (sports?.length && hasExecuted.current) {
-      const updatedFormConstantValues = formConstantValues.map(
+    let updatedFormConstantValues=formConstantValues
+    if (sports?.length ) {
+       updatedFormConstantValues = formConstantValues.map(
         (formConstant) => {
           if (formConstant.id === "coachingSports") {
             return {
@@ -53,8 +55,29 @@ export default function AddCoach() {
         }
       );
       hasExecuted.current = false;
-      setFormConstantValues(updatedFormConstantValues);
     }
+    if (staffPayroll?.length>0) {
+      updatedFormConstantValues = updatedFormConstantValues.map(
+       (formConstant) => {
+         if (formConstant.id === "payroll") {
+           // console.log("payroll", payroll);
+           return {
+             ...formConstant,
+             options: staffPayroll?.map(
+               (payroll, index) => ({
+                 label: payroll?.StaffDesignation?.designation,
+                 value: payroll.id.toString(),
+               })
+             ),
+           };
+         } else {
+           return formConstant;
+         }
+       }
+     );
+   }
+   setFormConstantValues(updatedFormConstantValues);
+
   }, [formConstantValues, sports, sports?.length]);
 
   useEffect(() => {

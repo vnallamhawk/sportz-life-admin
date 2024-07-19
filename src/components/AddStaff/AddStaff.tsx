@@ -56,8 +56,8 @@ const AddStaff = () => {
             return {
               ...formConstant,
               options: payroll.map(
-                (payroll: { name: string; id: number }, index) => ({
-                  label: `pay${index + 1}`,
+                (payroll, index) => ({
+                  label: payroll?.StaffDesignation?.designation,
                   value: payroll.id.toString(),
                 })
               ),
