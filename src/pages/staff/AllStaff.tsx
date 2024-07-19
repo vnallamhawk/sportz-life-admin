@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "~/components/Card/Card";
 import CardTitle from "~/components/Card/CardTitle";
 import Textbox from "~/components/Textbox/Textbox";
@@ -11,22 +11,57 @@ import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
 import Modal from "~/components/Modal/modal";
 import StaffReminderModal from "~/components/Modal/StaffReminderModal";
 import StaffChangeCenterModal from "~/components/Modal/StaffChangeCenterModal";
+import AllData from "~/common/AllData";
+import { STAFF_TABLE_HEADERS } from "~/constants/staffConstants";
+import { api } from "~/utils/api";
 
 export default function AllCoach() {
   const router = useRouter();
 
+  const [finalData, setFinalData] = useState([]);
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
-  const [showReminder, setShowReminder] = useState(false);
-  const [showChangeCenter, setShowChangeCenter] = useState(false);
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
 
+  const { data: staffs } =
+    filterByName == ""
+      ? api.staff.getAllStaffs.useQuery()
+      : api.staff.getAllStaffsByName.useQuery({ name: filterByName });
+
+  useEffect(() => {
+    if (staffs && staffs?.length > 0) {
+      const updatedStaffs = staffs.map((staff) => {
+        return {
+          ...staff,
+        };
+      });
+      setFinalData(updatedStaffs);
+    }
+  }, [JSON.stringify(staffs)]);
+
   return (
     <>
-      {showReminder && (
+
+<AllData
+        title="ALL STAFFS"
+        addButtonText="ADD NEW STAFF"
+        addButtonUrl="/staff/AddStaff"
+        dropdownItems={{reminder:true,changeCenter:true}}
+        filter={false}
+        TABLE_HEAD={STAFF_TABLE_HEADERS}
+        TABLE_ROWS={finalData}
+        setFilterByName={setFilterByName}
+        filterByName={filterByName}
+        rowSelection={true}
+        showImage={false}
+        onViewClick={(id)=>router.push(`/staff/${id ?? ""}`)}
+        onEditClick={(id)=>router.push(`/edit-staff-${id}`)}
+      />
+
+      {/* {showReminder && (
         <StaffReminderModal open={showReminder} setShow={setShowReminder} />
       )}
 
@@ -72,7 +107,7 @@ export default function AllCoach() {
           tableBody={StaffTableBody({ name: filterByName }, handleIsLoading)}
         />
         {loading ? <LoadingSpinner /> : ""}
-      </Card>
+      </Card> */}
     </>
   );
 }

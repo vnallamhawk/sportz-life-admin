@@ -36,6 +36,10 @@ const config = {
         source: "/edit-staffPayroll-:id",
         destination: "/staffPayroll/AddPayroll",
       },
+      {
+        source: "/edit-staff-:id",
+        destination: "/staff/AddStaff",
+      },
       
     ];
   },
