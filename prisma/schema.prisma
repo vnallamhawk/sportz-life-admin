@@ -756,7 +756,7 @@ model Staffs {
   id        Int      @id @default(autoincrement())
   image     String?  @db.VarChar(255)
   name      String   @db.VarChar(255)
-  age       String   @db.VarChar(10)
+  dateOfBirth               DateTime                    @db.Date
   designationId Int
   centerId  Int
   payrollId   Int
@@ -765,7 +765,9 @@ model Staffs {
   status    Int?     @default(1) @db.TinyInt
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  deletedAt   DateTime?       @db.DateTime(0)
   Feeds     Feeds[]
+  StaffShifts   StaffShifts[]
   StaffDesignation    StaffDesignation   @relation(fields: [designationId], references: [id], onDelete: Cascade, map: "StaffDesignationMaps_ibfk_517")
   StaffPayroll    StaffPayroll   @relation(fields: [payrollId], references: [id], onDelete: Cascade, map: "StaffPayrollMaps_ibfk_517")
       createdBy              Int
@@ -777,6 +779,24 @@ model Staffs {
   @@index([payrollId], map: "payrollId")
 
 }
+
+model StaffShifts {
+  id        Int      @id @default(autoincrement())
+  staffId     Int  
+  day      String   @db.VarChar(255)
+  startTime String          
+  endTime   String  
+  shift    String   @db.VarChar(255)
+  status    Int?     @default(1) @db.TinyInt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt   DateTime?       @db.DateTime(0)
+
+  Staffs    Staffs   @relation(fields: [staffId], references: [id], onDelete: Cascade, map: "StaffShidtsMaps_ibfk_517")
+
+  @@index([staffId], map: "staffId")
+}
+
 model StaffDesignation {
   id        Int      @id @default(autoincrement())
   designation     String @db.VarChar(255)

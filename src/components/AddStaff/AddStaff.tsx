@@ -201,7 +201,8 @@ const AddStaff = () => {
       setCurrentStep && setCurrentStep(currentStep + 1);
     }
   };
-  // console.log("akfhkjdsf", formConstantValues);
+
+  
   return (
     <>
       <Card className="h-full">

@@ -10,6 +10,7 @@ import { formatBatchesTableData } from "~/helpers/batches";
 import { type BatchTableData } from "~/types/batch";
 import StaffShiftTableHeader from "../StaffShiftTable/StaffShiftTableHeader";
 import StaffShiftTableBody from "../StaffShiftTable/StaffShiftTableBody";
+import TimePicker from "react-time-picker";
 
 const days = [
   "Monday",
@@ -21,7 +22,7 @@ const days = [
   "Sunday",
 ];
 
-const shifts = ["Morning", "Afternoon", "Evening"];
+const shifts = ["Day", "Night"];
 
 const daysOptions =
   days?.map((day) => ({
@@ -36,7 +37,9 @@ const shiftOptions =
   })) ?? [];
 
 export default function AddStaffShift({ finalFormSubmission }) {
-  const [staffShiftDetails, setStaffShiftDetails] = useState({});
+  const [staffShiftDetails, setStaffShiftDetails] = useState([]);
+  const [currentStaffShift,setCurrentStaffShift]=useState({})
+
   const {
     control,
     formState: { errors },
@@ -45,8 +48,10 @@ export default function AddStaffShift({ finalFormSubmission }) {
     trigger,
   } = useForm({
     defaultValues: {
-      dutyDay: undefined,
-      dutyShift: undefined,
+      day: undefined,
+      shift: undefined,
+      startTime:"10:00",
+      endTime:"10:00"
     },
   });
 
@@ -70,31 +75,23 @@ export default function AddStaffShift({ finalFormSubmission }) {
     setCurrentStep && setCurrentStep(currentStep - 1);
   };
 
-  const onAddBatchHandler = async (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    const data = getValues();
-    const tableDataFormatter = formatBatchesTableData(data);
-    const result = await trigger();
 
-    // eslint-disable-next-line no-console
 
-    if (result && Object.keys(errors).length === 0) {
-      if (tableData?.length) {
-        setTableData((prev) => [...prev, tableDataFormatter]);
-      } else {
-        setTableData([tableDataFormatter]);
-      }
-      reset();
-    }
-  };
+  
 
-  const handleChangeStaffDetails = (
-    name: string,
-    event: { label: string; value: string }
-  ) => {
-    let obj = { ...staffShiftDetails, [name]: event.value };
-    setStaffShiftDetails(obj);
-  };
+  const handleChangeStaffTime=(value,id)=>{
+    let staffDetails={...currentStaffShift}
+    staffDetails[id]=value
+    setCurrentStaffShift(staffDetails)
+  }
+
+  const onAddStaffTiming=(e)=>{
+    e.preventDefault()
+    let arr=[...staffShiftDetails]
+    arr.push(currentStaffShift)
+    setStaffShiftDetails(arr)
+    setCurrentStaffShift({})
+  }
 
   return (
     <div>
@@ -111,22 +108,20 @@ export default function AddStaffShift({ finalFormSubmission }) {
             return (
               <Select
                 className="h-12 w-full"
-                // Todo: fix this TS error
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore: Unreachable code error
+                isMulti={true}
                 options={daysOptions}
                 placeholder={"Select Day"}
-                onChange={(value) => {
-                  handleChangeStaffDetails("dutyDay", value);
+                onChange={(event) => {
+                  handleChangeStaffTime(value, "day");
                 }}
                 value={value}
               />
             );
           }}
-          name="dutyDay"
+          name="day"
         />
         <div className="text-red-800">
-          {errors.dutyDay && <span>This field is required</span>}
+          {errors.day && <span>This field is required</span>}
         </div>
 
         <Controller
@@ -134,13 +129,10 @@ export default function AddStaffShift({ finalFormSubmission }) {
           render={({ field: { onChange, value } }) => (
             <Select
               className="h-12 w-full"
-              // Todo: fix this TS error
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore: Unreachable code error
               options={shiftOptions}
               placeholder="Select Shift"
               onChange={(event) => {
-                handleChangeStaffDetails("dutyShift", event);
+                handleChangeStaffTime(event?.value, "shift");
               }}
               value={value}
             />
@@ -148,14 +140,55 @@ export default function AddStaffShift({ finalFormSubmission }) {
           rules={{
             required: true,
           }}
-          name="dutyShift"
+          name="shift"
         />
-        {errors.dutyShift && (
+          <div className="text-red-800">
+          {errors.shift && <span>This field is required</span>}
+        </div>
+
+        <Controller
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <Timepicker
+                placeHolder={"Enter Start Time"}
+                  value={currentStaffShift['startTime']?currentStaffShift['startTime']:"10:00"}
+                  className="h-12"
+                  onChangeHandler={(value)=>handleChangeStaffTime(value,"startTime")}
+                />
+              );
+            }}
+            name={'startTime'}
+            rules={{
+              required: true,
+            }}
+          />
+            <div className="text-red-800">
+          {errors.startTime && <span>This field is required</span>}
+        </div>
+
+          <Controller
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <TimePicker
+                placeHolder={"Enter End Time"}
+                value={currentStaffShift['endTime']?currentStaffShift['endTime']:"10:00"}
+                className="h-12"
+                  onChangeHandler={(value)=>handleChangeStaffTime(value,"endTime")}
+                />
+              );
+            }}
+            name='endTime'
+            rules={{
+              required: true,
+            }}          />
+        {errors.endTime && (
           <div className="text-red-800">This field is required</div>
         )}
       </div>
 
-      <Button type="button" className="mb-5" onClick={() => {}}>
+      <Button type="button" className="mb-5" onClick={() => onAddStaffTiming(e)}>
         Add
       </Button>
       {/* {tableData?.length !== 0 && (

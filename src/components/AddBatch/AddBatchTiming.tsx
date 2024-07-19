@@ -172,6 +172,7 @@ const handleChangeBatch=(value,id)=>{
     let arr=[...batchTimings]
     arr.push(currentBatchDetail)
     setBatchTimings(arr)
+    setCurrentBatchDetail({})
   }
 
 

@@ -18,7 +18,7 @@ import { ToastContext } from "~/contexts/Contexts";
 import { useSession } from "next-auth/react";
 
 const multiFormData = {
-  staffName: "",
+  name: "",
   designation: "",
   contactNumber: "",
   email: "",
@@ -109,7 +109,14 @@ export default function AddStaffMultiFormLayout() {
   //       return response;
   //     },
   //   });
-
+  const { mutate: createMutateStaffTimings } =
+    api.staffTimings.createStaffTiming.useMutation({
+      onSuccess: (response) => {
+        console.log("response data is ", response);
+        router.push(`/staff/${staffId}`)
+        return response;
+      },
+    });
   const { mutate: editMutate } = api.staff.editStaff.useMutation({
     onSuccess: (response) => {
       setOpenToast(true);
@@ -130,27 +137,18 @@ export default function AddStaffMultiFormLayout() {
     if (
       formData &&
       Object.keys(formData)?.length > 0 &&
-      formData?.payroll &&
-      formData?.centers &&
+      formData?.staffShiftDetails &&
       staffId
     ) {
-      const finalStaffPayroll = formData?.payroll?.map((v) => ({
-        ...v,
-        staffId,
-        createdBy: sessionData?.token?.id,
+      const finalStaffTimings = formData?.staffShiftDetails?.map((v) => ({
+        ... v,
+        staffId:staffId
       }));
 
-      createMutateStaffPayroll(finalStaffPayroll);
-
-      const finalStaffCenters = formData?.centers?.map((v) => ({
-        ...v,
-        staffId,
-        createdBy: sessionData?.token?.id,
-      }));
-      //Todo
-      // createMutateStaffCenters(finalStaffCenters);
+      createMutateStaffTimings(finalStaffTimings);
     }
   }, [staffId, formData]);
+
 
   //final Form
 
@@ -163,8 +161,10 @@ export default function AddStaffMultiFormLayout() {
     if (formData.isEditMode) {
       editMutate({
         ...finalForm,
-        mobile: finalForm?.phoneNumber,
-        address: finalForm?.location,
+        designationId:parseInt(finalForm?.designation?.value),
+        centerId:parseInt(finalForm?.center?.value),
+        payrollId:parseInt(finalForm?.payroll?.value),
+        image: "",
       });
     } else {
       // eslint-disable-next-line no-console
@@ -181,8 +181,9 @@ export default function AddStaffMultiFormLayout() {
       });
       createMutate({
         ...finalForm,
-        mobile: finalForm?.phoneNumber,
-        address: finalForm?.address,
+        designationId:parseInt(finalForm?.designation?.value),
+        centerId:parseInt(finalForm?.center?.value),
+        payrollId:parseInt(finalForm?.payroll?.value),
         image: "",
         createdBy: sessionData?.token?.id,
       });
