@@ -10,8 +10,9 @@ import {
 export const staffRouter = createTRPCRouter({
   getAllStaffs: publicProcedure.query(({ ctx }) => {
     const allStaffs = ctx?.prisma?.staffs?.findMany({
-      include: {
-        center: true,
+      where:{
+        createdBy:ctx.session.token.id
+
       },
     });
     return allStaffs;
