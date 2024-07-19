@@ -2,11 +2,8 @@ import { type STAFF_DETAILS_CONSTANTS_TYPES } from "~/types/staff";
 
 export const STAFF_TABLE_HEADERS = [
   {
-    id: "selectControl",
-  },
-  {
     label: "Staff Name",
-    id: "staffName",
+    id: "name",
   },
   {
     label: "Designation",
@@ -26,11 +23,9 @@ export const STAFF_TABLE_HEADERS = [
   },
   {
     label: "Contact No",
-    id: "contactNo",
+    id: "phone",
   },
-  // {
-  //   id: "kebabMenu",
-  // },
+
 ];
 export const STAFF_DASH_CENTER_TABLE_HEADERS = [
   {
@@ -105,7 +100,7 @@ export const STAFF_DASH_DUTY_TABLE_HEADERS = [
 export const STAFF_DETAILS_CONSTANTS: STAFF_DETAILS_CONSTANTS_TYPES[] = [
   {
     label: "Staff Name",
-    id: "staffName",
+    id: "name",
     type: "textbox",
     rules: {
       required: true,
@@ -130,7 +125,7 @@ export const STAFF_DETAILS_CONSTANTS: STAFF_DETAILS_CONSTANTS_TYPES[] = [
   },
   {
     label: "Phone Number",
-    id: "contactNumber",
+    id: "phone",
     type: "textbox",
     rules: {
       required: true,

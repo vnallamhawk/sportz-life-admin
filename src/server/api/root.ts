@@ -14,6 +14,7 @@ import { batchTimingRouter } from "./routers/batchTimings";
 import { staffPayrollRouter } from "./routers/staffPayroll";
 import { staffDesignationRouter } from "./routers/staffdesignation";
 import { taxSlabRouter } from "./routers/taxSlabs";
+import { staffTimingRouter } from "./routers/staffTimings";
 
 /**
  * This is the primary router for your server.
@@ -34,7 +35,8 @@ export const appRouter = createTRPCRouter({
   adminUser:adminUserRouter,
   staffPayroll:staffPayrollRouter,
   staffDesignation:staffDesignationRouter,
-  tabSlab:taxSlabRouter
+  tabSlab:taxSlabRouter,
+  staffTimings:staffTimingRouter
 });
 
 // export type definition of API

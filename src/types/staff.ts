@@ -8,7 +8,7 @@ type Type = (typeof InputType)[number];
 export interface STAFF_DETAILS_CONSTANTS_TYPES {
   label?: string;
   id:
-    | "staffName"
+    | "name"
     | "designation"
     | "contactNumber"
     | "email"
@@ -26,12 +26,14 @@ export interface STAFF_DETAILS_CONSTANTS_TYPES {
 }
 
 export interface STAFF_DUTY_SHIFT {
-  dutyDay: string;
-  dutyShift: string;
+  day: string;
+  shift: string;
+  startTime:string;
+  endTime:string
 }
 
 export interface STAFF_TYPES {
-  staffName: string;
+  name: string;
   designation: MultiSelectOption[];
   contactNumber: string;
   email: string;
