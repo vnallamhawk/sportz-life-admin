@@ -112,6 +112,12 @@
     transform: translateY(-50%);
     border-radius: 20px;
   }
+  .pricing-tabs li.active{
+    color: #F3476D;
+  }
+  .pricing-tabs li.active .absolute{
+    border-color: #F3476D;
+  }
 }
 
 @layer base {
