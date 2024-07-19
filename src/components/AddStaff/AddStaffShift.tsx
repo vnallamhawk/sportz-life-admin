@@ -10,7 +10,7 @@ import { formatBatchesTableData } from "~/helpers/batches";
 import { type BatchTableData } from "~/types/batch";
 import StaffShiftTableHeader from "../StaffShiftTable/StaffShiftTableHeader";
 import StaffShiftTableBody from "../StaffShiftTable/StaffShiftTableBody";
-import TimePicker from "react-time-picker";
+import Timepicker from "~/components/TimePicker/TimePickerWrapper";
 
 const days = [
   "Monday",
@@ -58,16 +58,17 @@ export default function AddStaffShift({ finalFormSubmission }) {
   // const [tableData, setTableData] = useState<BatchTableData[]>([]);
   const {
     stepData: { currentStep, setCurrentStep },
-    multiFormData: { formData },
+    multiFormData: { formData,setFormData },
   } = useContext(FormContext);
 
   const submitCallback = () => {
     // eslint-disable-next-line no-console
-    console.log("submit", { ...formData, ...staffShiftDetails });
+    console.log("submit", { ...formData, staffShiftDetails });
     const finalFormData = {
       ...formData,
-      ...staffShiftDetails,
+      staffShiftDetails,
     };
+    setFormData(finalFormData)
     finalFormSubmission(finalFormData);
   };
 
@@ -92,7 +93,6 @@ export default function AddStaffShift({ finalFormSubmission }) {
     setStaffShiftDetails(arr)
     setCurrentStaffShift({})
   }
-
   return (
     <div>
       <CardTitle title="ADD STAFF" />
@@ -108,11 +108,10 @@ export default function AddStaffShift({ finalFormSubmission }) {
             return (
               <Select
                 className="h-12 w-full"
-                isMulti={true}
                 options={daysOptions}
                 placeholder={"Select Day"}
                 onChange={(event) => {
-                  handleChangeStaffTime(value, "day");
+                  handleChangeStaffTime(event?.value, "day");
                 }}
                 value={value}
               />
@@ -171,7 +170,7 @@ export default function AddStaffShift({ finalFormSubmission }) {
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
-                <TimePicker
+                <Timepicker
                 placeHolder={"Enter End Time"}
                 value={currentStaffShift['endTime']?currentStaffShift['endTime']:"10:00"}
                 className="h-12"
@@ -188,15 +187,14 @@ export default function AddStaffShift({ finalFormSubmission }) {
         )}
       </div>
 
-      <Button type="button" className="mb-5" onClick={() => onAddStaffTiming(e)}>
+      <Button type="button" className="mb-5" onClick={(e) => onAddStaffTiming(e)}>
         Add
       </Button>
-      {/* {tableData?.length !== 0 && (
-        <Table
-          tableHeader={<StaffShiftTableHeader />}
-          tableBody={<StaffShiftTableBody />}
+      <Table
+          tableHeader={StaffShiftTableHeader()}
+          tableBody={StaffShiftTableBody(staffShiftDetails)}
         />
-      )} */}
+    
 
       <div className="flex justify-end">
         <Button

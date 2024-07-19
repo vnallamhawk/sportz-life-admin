@@ -760,6 +760,7 @@ model Staffs {
   designationId Int
   centerId  Int
   payrollId   Int
+  gender                     Coaches_gender
   phone     String?  @unique(map: "phone") @db.VarChar(255)
   email     String?  @unique(map: "email") @db.VarChar(255)
   status    Int?     @default(1) @db.TinyInt

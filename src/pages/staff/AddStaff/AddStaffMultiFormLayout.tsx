@@ -134,6 +134,7 @@ export default function AddStaffMultiFormLayout() {
   }, []);
 
   useEffect(() => {
+    debugger
     if (
       formData &&
       Object.keys(formData)?.length > 0 &&
@@ -165,20 +166,12 @@ export default function AddStaffMultiFormLayout() {
         centerId:parseInt(finalForm?.center?.value),
         payrollId:parseInt(finalForm?.payroll?.value),
         image: "",
+        gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+        dateOfBirth: new Date(finalForm.dateOfBirth),
+
       });
     } else {
-      // eslint-disable-next-line no-console
-      // eslint-disable-next-line no-console
-      // const sportsId = finalForm?.selectSports.map(function (obj) {
-      //   return Number(obj.value);
-      // });
-      setFormData({
-        ...finalForm,
-        mobile: finalForm?.phoneNumber,
-        address: finalForm?.address,
-        image: "",
-        // sportsId,
-      });
+     setFormData(finalForm)
       createMutate({
         ...finalForm,
         designationId:parseInt(finalForm?.designation?.value),
@@ -186,6 +179,9 @@ export default function AddStaffMultiFormLayout() {
         payrollId:parseInt(finalForm?.payroll?.value),
         image: "",
         createdBy: sessionData?.token?.id,
+        gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+        dateOfBirth: new Date(finalForm.dateOfBirth),
+
       });
     }
   };
