@@ -34,7 +34,7 @@ export default function AllCoach() {
       const updatedCoaches = coaches.map((coach) => {
         return {
           ...coach,
-          batches: coach?.Batches?.length,
+          status: coach?.designation
         };
       });
       setFinalData(updatedCoaches);

@@ -1,9 +1,7 @@
 import { type COACH_DETAILS_CONSTANTS_TYPES } from "~/types/coach";
 
 export const COACH_TABLE_HEADERS = [
-  {
-    id: "selectControl",
-  },
+ 
   {
     label: "Coach Name",
     id: "name",
@@ -34,7 +32,8 @@ export const COACH_TABLE_HEADERS = [
     id: "contactNo",
   },
   {
-    id: "kebabMenu",
+    id: "action",
+    label:"Action"
   },
 ];
 

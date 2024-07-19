@@ -11,8 +11,10 @@ import StaffPayrollTableHeader from "~/components/StaffPayroll/StaffPayrollTable
 import Table from "~/components/Table";
 import Textbox from "~/components/Textbox";
 import { api } from "~/utils/api";
+import { STAFF_PAYROLL_TABLE_HEADERS } from "~/constants/staffPayroll";
+import AllData from "~/common/AllData";
 
-const AllCenter = () => {
+const AllStaffPayroll = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const handleIsLoading = (isLoading: boolean) => {
@@ -20,22 +22,41 @@ const AllCenter = () => {
   };
 
 
-  const [tableData,setTableData]=useState([])
+  const [finalData,setFinalData]=useState([])
 
 
   const { data: staffPayroll } = api.staffPayroll.getAllPayroll.useQuery()
 
 
-  useEffect(()=>{
-    if(staffPayroll && staffPayroll.length>0){
-      setTableData(staffPayroll)
-    }
-
-  },[staffPayroll])
+useEffect(() => {
+  if (staffPayroll && staffPayroll?.length > 0) {
+    const updatedStaffPayroll = staffPayroll.map((payroll) => {
+      return {
+        ...payroll,
+        designation:payroll?.StaffDesignation?.designation,
+        tax:payroll?.grossSalary-payroll?.netSalary
+      };
+    });
+    setFinalData(updatedStaffPayroll);
+  }
+}, [JSON.stringify(staffPayroll)]);
 
   return (
     <>
-      <Card className="h-full">
+
+<AllData
+        title="ALL PAYROLLS"
+        addButtonText="ADD Payroll"
+        addButtonUrl="/staffPayroll/AddPayroll"
+        dropdownItems={{}}
+        filter={false}
+        TABLE_HEAD={STAFF_PAYROLL_TABLE_HEADERS}
+        TABLE_ROWS={finalData}
+        rowSelection={false}
+        showImage={false}
+        onEditClick={(id)=>router.push(`/edit-staffPayroll-${id}`)}
+      />
+      {/* <Card className="h-full">
         <header className="flex justify-between p-2">
           <CardTitle title="ALL PAYROLLS" />
           <div>
@@ -54,9 +75,9 @@ const AllCenter = () => {
           )}
         />
         {loading ? <LoadingSpinner /> : ""}
-      </Card>
+      </Card> */}
     </>
   );
 };
 
-export default AllCenter;
+export default AllStaffPayroll;

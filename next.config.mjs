@@ -32,6 +32,11 @@ const config = {
         source: "/edit-athlete-:id",
         destination: "/athlete/AddAthlete",
       },
+      {
+        source: "/edit-staffPayroll-:id",
+        destination: "/staffPayroll/AddPayroll",
+      },
+      
     ];
   },
 };

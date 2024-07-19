@@ -76,7 +76,7 @@ const CommonTable= (props: { TABLE_HEAD: any[]; TABLE_ROWS: { img: any; name: an
                       <DropdownHeader>
                           <div className="flex items-center">
                               <button className="mx-1 text-white" onClick={()=>props?.onEditClick(data?.id)}>Edit</button>
-                              <button className="mx-1 text-white" onClick={()=>props?.onViewClick(data?.id)}>View</button>
+                              {props?.onViewClick && <button className="mx-1 text-white" onClick={()=>props?.onViewClick(data?.id)}>View</button>}
                               <button className="mx-1 text-white">Delete</button>
                           </div>
                       </DropdownHeader>                    
