@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { Switch } from "@material-tailwind/react";
 import AddDesignationModal from "./AddDesignationModal";
 import { useSession } from "next-auth/react";
+import AddForm from "~/common/AddForm";
 
 export default function AddPayroll(props) {
   let inputElement;
@@ -81,117 +82,24 @@ export default function AddPayroll(props) {
     }
   }, [formConstantValues, designations, designations?.length]);
 
-  const handleTaxable=(e)=>{
-    const value=e.target.checked
-    let obj={...formData}
-    obj.taxable=value
-    if(value && obj.grossSalary){
-      const tax=props?.taxslabs?.find((item)=>obj.grossSalary>=item?.fromAmount && obj.grossSalary<=item?.toAmount)
-      if(tax){
-        obj.tax_percent=tax.percentage
-        obj.tax=(tax.percentage*obj.grossSalary)/100
-        obj.netSalary=obj.grossSalary-obj.tax
-        obj.slabId=tax.id
+  useEffect(()=>{
+    if(formData && formData?.taxable){
+      let obj={...formData}
+      obj.taxable=formData?.taxable
+      if(formData?.taxable && obj.grossSalary){
+        const tax=props?.taxslabs?.find((item)=>obj.grossSalary>=item?.fromAmount && obj.grossSalary<=item?.toAmount)
+        if(tax){
+          obj.tax_percent=tax.percentage
+          obj.tax=(tax.percentage*obj.grossSalary)/100
+          obj.netSalary=obj.grossSalary-obj.tax
+          obj.slabId=tax.id
+        }
+        setFormData(obj)
       }
-      setFormData(obj)
-    }
-  }
-
-  const handleChangeFormData=(name,value)=>{
-    let obj={...formData}
-    obj[name]=value
-      setFormData(obj)
-    }
-  
-  //test commit
-  const getInputElement = (props) => {
-    const { type, rules, id, pattern, placeHolder } = props;
-    switch (type) {
-      case "select":
-        const { options } = props;
-        inputElement = (
-          <Controller
-            control={control}
-            name={id}
-            rules={rules}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <Select
-                  isMulti={props?.isMulti ?? false}
-                  options={options}
-                  value={value}
-                  placeholder={placeHolder}
-                  className="w-full"
-                  onChange={(element) => {
-                    handleChangeFormData(id,parseInt(element?.value));
-                  }}
-                />
-              );
-            }}
-          />
-        );
-        break;
-      case "calendar":
-        inputElement = (
-          <Controller
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <Datepicker
-                  placeHolder={props.placeHolder}
-                  value={new Date(value as string)}
-                  className="h-12"
-                  onChangeHandler={onChange}
-                />
-              );
-            }}
-            name={id}
-            rules={rules}
-          />
-        );
-        break;
-        case "switch":
-          inputElement = (
-            <Controller
-              control={control}
-              render={({ field: { onChange, value } }) => {
-                return (
-                  <Switch
-                    value={value}
-                    onChange={(value)=>handleTaxable(value)}
-                  />
-                );
-              }}
-              name={id}
-              rules={rules}
-            />
-          );
-          break;
-      default:
-        inputElement = (
-          <Controller
-            control={control}
-            name={id}
-            render={({ field: { onChange, value } }) => (
-              <Textbox
-                className="h-12 w-full"
-                placeHolder={props.label}
-                type={type==="number"?"number":"text"}
-                onChangeHandler={(e)=>handleChangeFormData(id,parseInt(e.target.value))}
-                // TODO: FIX THIS TS ERROR
-                value={value as string|number}
-              />
-            )}
-            rules={rules}
-            {...(pattern ? { pattern } : {})}
-          />
-        );
     }
 
-    return inputElement;
-  };
+  },[formData])
 
- 
 
   const submitDesignation=(e)=>{
     e.preventDefault()
@@ -212,27 +120,15 @@ export default function AddPayroll(props) {
           designation={designation}
         />
       )}
-      <CardTitle title="ADD PAYROLL" />
-      <div className="text-lg font-bold">PAYROLL DETAILS</div>
-      <div className="mt-10 grid grid-cols-2 gap-x-10 gap-y-12">
-        {formConstantValues.map((props) => (
-          <div key={props.id}>
-            {getInputElement(props)}
-
-            <span className="text-red-800">
-              {errors[props.id]?.type === "required" && (
-                <div>This field is required</div>
-              )}
-              {errors[props.id]?.type === "pattern" && (
-                <div> This field is not matching the pattern</div>
-              )}
-              {errors[props.id]?.type === "maxLength" && (
-                <div>{`This field is exceeding the max. character limit`}</div>
-              )}
-            </span>
-          </div>
-        ))}
-      </div>
+       <AddForm
+        cardTitle="ADD PAYROLL"
+        cardSubTitle="PAYROLL DETAILS"
+        formConstantValues={formConstantValues}
+        setFormData={setFormData}
+        formData={formData}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+      />
       <div className="flex justify-end">
         <Button
           type="button"

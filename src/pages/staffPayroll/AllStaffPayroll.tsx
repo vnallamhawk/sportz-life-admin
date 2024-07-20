@@ -56,26 +56,7 @@ useEffect(() => {
         showImage={false}
         onEditClick={(id)=>router.push(`/edit-staffPayroll-${id}`)}
       />
-      {/* <Card className="h-full">
-        <header className="flex justify-between p-2">
-          <CardTitle title="ALL PAYROLLS" />
-          <div>
-            <Button
-              className="ml-3 bg-pink-700 p-2 text-white"
-              onClick={() => router.push("/staffPayroll/AddPayroll")}
-            >
-              Add Payroll
-            </Button>
-          </div>
-        </header>
-        <Table
-          tableHeader={StaffPayrollTableHeader()}
-          tableBody={StaffPayrollTableBody(
-            tableData
-          )}
-        />
-        {loading ? <LoadingSpinner /> : ""}
-      </Card> */}
+     
     </>
   );
 };

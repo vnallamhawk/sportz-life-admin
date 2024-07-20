@@ -6,6 +6,7 @@ import Timepicker from "~/components/TimePicker/TimePickerWrapper";
 import CardTitle from "~/components/Card/CardTitle";
 import Image from "next/image";
 import Plus from "../../images/plus.svg";
+import { Switch } from "@material-tailwind/react";
 
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
@@ -112,6 +113,23 @@ const AddForm = ({
           />
         );
         break;
+        case "switch":
+          inputElement = (
+            <Controller
+              control={control}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <Switch
+                    value={value}
+                    onChange={(value)=>handleChangeTime(e.target.checked,"taxable")}
+                  />
+                );
+              }}
+              name={id}
+              rules={rules}
+            />
+          );
+          break;
       case "time":
         inputElement = (
           <Controller
