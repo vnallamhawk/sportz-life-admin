@@ -55,7 +55,7 @@ const AddForm = ({
       if (buttonItems?.prevNext) {
         obj[tablekey] = tableData;
       }
-      setFormData && setFormData();
+      setFormData && setFormData(obj);
       setCurrentStep && setCurrentStep(currentStep + 1);
     }
   };
@@ -64,10 +64,16 @@ const AddForm = ({
     setCurrentStep && setCurrentStep(currentStep - 1);
   };
 
-  const handleChangeCurrentData = (name, data) => {
+  const handleChangeCurrentData = (name, data,value) => {
     let obj = { ...currentTableData };
-    obj[name] = data?.value;
-    obj['name'] = data?.label;
+    if(data && Object.keys(data).length>0){
+      obj[name] = data?.value;
+      obj['name'] = data?.label;
+    }else{
+      obj[name]=value
+
+    }
+   
     setCurrentTableData(obj);
   };
 
@@ -284,7 +290,7 @@ const AddForm = ({
                       className="border-1 h-40 w-full grow rounded-lg border-gray-300 pl-5 focus:border-gray-600 focus:outline-none focus:ring-0 lg:h-20"
                       value={currentTableData[item?.name]}
                       onChange={(e) => {
-                        handleChangeCurrentData(item?.name, e.target.value);
+                        handleChangeCurrentData(item?.name,{}, e.target.value);
                       }}
                     />
                   ) : item?.type === "select" ? (
@@ -295,7 +301,7 @@ const AddForm = ({
                       placeholder={item?.placeholder}
                       className="w-full"
                       onChange={(element) =>
-                        handleChangeCurrentData(item?.name, element)
+                        handleChangeCurrentData(item?.name, element,"")
                       }
                     />
                   ) : (
@@ -304,7 +310,7 @@ const AddForm = ({
                       value={currentTableData[item?.name]}
                       type={item?.type}
                       onChange={(e) => {
-                        handleChangeCurrentData(item?.name, e.target.value);
+                        handleChangeCurrentData(item?.name,{},item?.type==="number"?parseInt(e.target.value):e.target.value);
                       }}
                     />
                   )}

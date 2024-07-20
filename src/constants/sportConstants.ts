@@ -3,7 +3,7 @@ import { MultiSelectOption } from "~/types/select";
 
 export const SPORTS_TABLE_HEADERS = [
   {
-    id: "sports",
+    id: "name",
     label: "Sports",
   },
   {

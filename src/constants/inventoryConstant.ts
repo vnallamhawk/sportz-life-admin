@@ -3,8 +3,8 @@ import { MultiSelectOption } from "~/types/select";
 
 export const INVENTORY_TABLE_HEADERS = [
   {
-    id: "inventories",
-    label: "Inventories",
+    id: "name",
+    label: "Inventory",
   },
   {
     label: "Qty",

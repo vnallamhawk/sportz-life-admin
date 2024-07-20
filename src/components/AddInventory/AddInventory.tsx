@@ -24,7 +24,6 @@ const AddInventory = (props) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [inventories, setInventories] = useState([]);
-  const [selectedInventory, setSelectedInventory] = useState({});
   const [finalOptions, setFinalOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [inventoryDetails, setInventoryDetails] = useState({});
@@ -81,14 +80,13 @@ const AddInventory = (props) => {
     props?.finalFormSubmissionHandler(finalFormData);
   };
 
-  const onSaveInventories = () => {
+  const onSaveInventories = (selectedInventory) => {
     const arr = [...inventories];
     arr.push({
       ...selectedInventory,
       inventoryId: parseInt(selectedInventory?.value),
     });
     setInventories(arr);
-    setSelectedInventory({});
   };
 
   const removeInventory = (index: number) => {

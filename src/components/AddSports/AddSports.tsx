@@ -57,23 +57,6 @@ const AddSports = () => {
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
-  const prevClickHandler = () => {
-    setCurrentStep && setCurrentStep(currentStep - 1);
-  };
-  const nextClickHandler = () => {
-    const finalFormData = {
-      ...formData,
-      sports,
-    };
-    setFormData(finalFormData);
-    setCurrentStep && setCurrentStep(currentStep + 1);
-  };
-
-  const handleChangeSports = (value: string) => {
-    let obj: any = { ...selectedSport,value };
-
-    setSelectedSport(obj);
-  };
 
   const onSaveSports = (currentSportData) => {
     const arr = [...sports];

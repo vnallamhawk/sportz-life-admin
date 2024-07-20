@@ -163,7 +163,7 @@ export default function AddCenterForm() {
   const finalFormSubmissionHandler = async (
     finalForm: Required<MULTI_FORM_TYPES>
   ) => {
-    if (formData.isEditMode) {
+    if (formData?.isEditMode) {
       editMutate({
         ...finalForm,
         mobile: finalForm?.phoneNumber,
@@ -174,7 +174,7 @@ export default function AddCenterForm() {
       console.log(finalForm);
       // eslint-disable-next-line no-console
       console.log(finalForm, "djbsdbfn");
-      const sportsId = finalForm?.selectSports.map(function (obj) {
+      const sportsId = finalForm?.selectSports?.map(function (obj) {
         return Number(obj.value);
       });
       setFormData({
@@ -206,42 +206,7 @@ export default function AddCenterForm() {
             />
           )}
         </Card>
-        <Card className="col-span-2 bg-stone-100 rounded-r-xl !rounded-l-none px-7 lg:block hidden">
-          <div className="font-medium uppercase text-2xl font-heading mb-10">Center Image</div>
-
-          <div>
-            {preview.length ? (
-              preview.map((upFile, index) => {
-                return (
-                  <div
-                    className="previewImage mb-5 flex justify-center rounded-full"
-                    key={index}
-                  >
-                    <ImageWithFallback
-                      className="rounded-full mx-auto mb-6"
-                      src={upFile.preview}
-                      alt="preview"
-                      height={205}
-                      width={205}
-                      fallbackSrc="/images/fallback-1.png"
-                    />
-                  </div>
-                );
-              })
-            ) : (
-              <div className="previewImage">
-                <ImageWithFallback
-                  src={""}
-                  alt="preview"
-                  height={205}
-                  width={205}
-                  className="rounded-full mx-auto mb-6"
-                  fallbackSrc="/images/fallback-1.png"
-                />
-              </div>
-            )}
-            </div>
-          </Card>
+       
           <Card className="col-span-2 bg-stone-100 rounded-r-xl !rounded-l-none px-7 lg:block hidden">
             <div className="font-medium uppercase text-2xl font-heading mb-10">Center Image</div>
 
