@@ -240,6 +240,7 @@ export default function AddCenterForm() {
                 />
               </div>
             )}
+            </div>
           </Card>
           <Card className="col-span-2 bg-stone-100 rounded-r-xl !rounded-l-none px-7 lg:block hidden">
             <div className="font-medium uppercase text-2xl font-heading mb-10">Center Image</div>
