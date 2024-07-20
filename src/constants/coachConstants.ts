@@ -183,9 +183,12 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
 
 export const COACH_CERTIFICATES_CONSTANTS = [
   {
-    placeholder: "Select Coach Certificates",
+    placeHolder: "Select Coach Certificates",
     id: "certificates",
     type:"select",
+    rules: {
+      required: true,
+    },
     options: [
       {
         label: "Bachelor Certificate in Sports",
@@ -206,6 +209,7 @@ export const COACH_CERTIFICATES_CONSTANTS = [
   },{
     label: "Institute Name",
     id: "instituteName",
+    placeHolder: "Institute Name",
     type: "textbox",
     rules: {
       required: true,
@@ -233,6 +237,29 @@ export const COACH_CERTIFICATES_CONSTANTS = [
       required: true,
     },
   },
+];
+
+export const COACH_BATCH_CONSTANTS = [
+  {
+    placeHolder: "Select Center",
+    id: "center",
+    type:"select",
+    options: [
+    ],
+    rules: {
+      required: true,
+    }
+  },{
+    placeHolder: "Select Batches",
+    id: "batches",
+    isMulti:true,
+    type:"select",
+    options: [
+    ],
+    rules: {
+      required: true,
+    }
+  }
 ];
 
 export const COACH_CERTIFICATE_TABLE_HEADERS = [
