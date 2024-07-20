@@ -14,6 +14,8 @@ import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
 import AddInventoryModal from "./AddInventoryModal";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
+import AddForm from "~/common/AddForm";
+import { INVENTORY_TABLE_HEADERS } from "~/constants/inventoryConstant";
 
 const AddInventory = (props) => {
   const router = useRouter();
@@ -61,7 +63,7 @@ const AddInventory = (props) => {
 
   const {
     stepData: { currentStep, setCurrentStep },
-    multiFormData: { formData },
+    multiFormData: { formData,setFormData },
   } = useContext(FormContext);
 
   const prevClickHandler = () => {
@@ -74,19 +76,6 @@ const AddInventory = (props) => {
       inventories,
     };
     props?.finalFormSubmissionHandler(finalFormData);
-  };
-
-  const handleChangeInventory = (value: string) => {
-    let obj: any = { ...selectedInventory, value };
-    if (!obj.quantity) {
-      obj.quantity = 1;
-    }
-    setSelectedInventory(obj);
-  };
-  const handleChangeQuantity = (e) => {
-    let obj: any = { ...selectedInventory, quantity: parseInt(e.target.value) };
-
-    setSelectedInventory(obj);
   };
 
   const onSaveInventories = () => {
@@ -125,84 +114,29 @@ const AddInventory = (props) => {
           handleInventory={addNewInventory}
         />
       )}
-      <Card className="h-full">
-        <header className="mb-3 flex justify-between p-2">
-          <CardTitle title="ADD CENTER" />
-        </header>
-        <div className="flex justify-between align-middle ">
-          <div>
-            <p className="text-xl text-gray-400">Hi!First things first</p>
-            <CardTitle title="ADD INVENTORIES" />
-          </div>
-          <div
-            className="  h-12 cursor-pointer  rounded-lg bg-pink-600 p-3  text-center text-white"
-            onClick={() => {
-              setShowModal(!showModal);
-            }}
-          >
-            Add New Inventory
-          </div>
-        </div>
-
-        <div className="flex justify-evenly">
-          <Select
-            // isMulti={props?.isMulti ?? false}
-            options={finalOptions}
-            value={selectedInventory?.name}
-            placeholder={"select Inventories"}
-            className="w-full"
-            onChangeHandler={(value) => handleChangeInventory(value)}
-          />
-          {selectedInventory && Object.keys(selectedInventory).length > 0 && (
-            <>
-              {" "}
-              <div className="ml-4 flex rounded-[5px]  border-2 border-gray-400">
-                <input
-                  className="w-10 text-gray-400"
-                  value={selectedInventory?.quantity}
-                  type="number"
-                  onChange={handleChangeQuantity}
-                />
-
-                <span className=" mt-2 flex justify-center px-2 text-center text-sm  text-gray-400">
-                  Qty
-                </span>
-              </div>
-              <Button
-                className="border-1  ml-3 rounded-lg border-pink-700 p-2 text-pink-700"
-                onClick={() => onSaveInventories()}
-              >
-                Add
-              </Button>
-            </>
-          )}
-        </div>
-        <Table
-          tableHeader={InventoryTableHeader()}
-          tableBody={InventoryTableBody(
-            inventories,
-            removeInventory,
-            finalOptions
-          )}
-        />
-        {loading ? <LoadingSpinner /> : ""}
-      </Card>
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          className="mx-3 bg-pink-600 hover:bg-pink-800"
-          onClick={prevClickHandler}
-        >
-          Prev
-        </Button>
-        <Button
-          type="button"
-          className="mx-3 bg-pink-600 hover:bg-pink-800"
-          onClick={submitCallback}
-        >
-          Finish
-        </Button>
-      </div>
+       <AddForm
+        cardTitle="ADD CENTER"
+        tableTitle="ADD INVENTORIES"
+        tableDescription={
+          "Hi!First things first"
+        }
+        tableFields={[{type:"select",name:"value",placeholder:"Select Inventrories",options:finalOptions},{type:"number",name:"quantity"}]}
+        TableHeadings={INVENTORY_TABLE_HEADERS}
+        tablekey="inventories"
+        tableData={inventories}
+        addTableData={onSaveInventories}
+        buttonItems={{ prevFinish: true }}
+        setFormData={setFormData}
+        formData={formData}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        addTableButtonText={'Add New Inventory'}
+        addTableButton={()=>{
+            setShowModal(!showModal);
+        }}
+        onRemoveTableButton={removeInventory}
+        finalFormSubmissionHandler={submitCallback}
+      />
     </>
   );
 };

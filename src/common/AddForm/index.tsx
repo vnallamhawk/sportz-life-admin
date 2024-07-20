@@ -31,7 +31,8 @@ const AddForm = ({
   finalFormSubmissionHandler,
   tableFields,
   addTableButtonText,
-  addTableButton
+  addTableButton,
+  onRemoveTableButton
 }) => {
   let inputElement;
   const {
@@ -48,7 +49,11 @@ const AddForm = ({
     const result = await trigger();
     if (result) {
       const currentFormValues = getValues();
-      setFormData && setFormData({ ...formData, ...currentFormValues });
+      let obj={ ...formData, ...currentFormValues }
+      if(buttonItems?.prevNext){
+        obj[tablekey]=tableData
+      }
+      setFormData && setFormData();
       setCurrentStep && setCurrentStep(currentStep + 1);
     }
   };
@@ -293,7 +298,7 @@ const AddForm = ({
                               {data[head?.id]}
                             </span>
                           ) : (
-                            <span className="border-y-2 border-gray-100 p-4 font-medium text-gray-400">
+                            <span className="border-y-2 border-gray-100 p-4 font-medium text-gray-400" onClick={()=>onRemoveTableButton(dataIndex)}>
                               Remove
                             </span>
                           )}

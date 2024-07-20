@@ -75,9 +75,9 @@ const AddSports = () => {
     setSelectedSport(obj);
   };
 
-  const onSaveSports = () => {
+  const onSaveSports = (currentSportData) => {
     const arr = [...sports];
-    arr.push({...selectedSport,sportId:parseInt(selectedSport?.value)});
+    arr.push({...currentSportData,sportId:parseInt(currentSportData?.value)});
     setSports(arr);
     setSelectedSport({});
   };
@@ -114,9 +114,9 @@ const AddSports = () => {
         tableDescription={
           "Hi!First things first"
         }
-        tableFields={[{type:"select",name:"name",placeholder:"Select Sports",options:finalOptions}]}
+        tableFields={[{type:"select",name:"value",placeholder:"Select Sports",options:finalOptions}]}
         TableHeadings={SPORTS_TABLE_HEADERS}
-        tablekey="medicalHistory"
+        tablekey="sports"
         tableData={sports}
         addTableData={onSaveSports}
         buttonItems={{ prevNext: true }}
@@ -128,67 +128,9 @@ const AddSports = () => {
         addTableButton={()=>{
             setShowModal(!showModal);
         }}
+        onRemoveTableButton={removeSports}
       />
-      {/* <Card className="h-full">
-        <header className="mb-3 flex justify-between p-2">
-          <CardTitle title="ADD CENTER" />
-        </header>
-        <div className="flex justify-between align-middle ">
-          <div>
-            <p className="text-xl text-gray-400">Hi!First things first</p>
-            <CardTitle title="ADD SPORTS" />
-          </div>
-          <div
-            className="  h-12 cursor-pointer  rounded-lg bg-pink-600 p-3  text-center text-white"
-            onClick={() => {
-              setShowModal(!showModal);
-            }}
-          >
-            Add New Sport
-          </div>
-        </div>
-        <div className="flex justify-evenly">
-        <Select
-            // isMulti={props?.isMulti ?? false}
-            options={finalOptions}
-            value={selectedSport?.name}
-            placeholder={"select sports"}
-            className="w-full"
-            onChangeHandler={(value) => handleChangeSports(value)}
-          />
 
-          {selectedSport && Object.keys(selectedSport).length > 0 && (
-            <Button
-              className="border-1  ml-3 rounded-lg border-pink-700 p-2 text-pink-700"
-              onClick={() => onSaveSports()}
-            >
-              Add
-            </Button>
-          )}
-        </div>
-
-        <Table
-          tableHeader={SportsTableHeader()}
-          tableBody={SportsTableBody(sports, removeSports,finalOptions)}
-        />
-        {loading ? <LoadingSpinner /> : ""}
-      </Card>
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          className="mx-3 bg-pink-600 hover:bg-pink-800"
-          onClick={prevClickHandler}
-        >
-          Prev
-        </Button>
-        <Button
-          type="button"
-          className="mx-3 bg-pink-600 hover:bg-pink-800"
-          onClick={nextClickHandler}
-        >
-          Next
-        </Button>
-      </div> */}
     </>
   );
 };
