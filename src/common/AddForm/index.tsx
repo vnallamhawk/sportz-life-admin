@@ -78,6 +78,12 @@ const AddForm = ({
    finalFormSubmissionHandler(finalFormData);
   };
 
+  const handleChangeTime=(value,name)=>{
+    let obj={...formData}
+    obj[name]=value
+    setFormData(obj)
+  }
+
   const getInputElement = (props) => {
     const { type, rules, id, pattern, placeHolder } = props;
     switch (type) {
@@ -115,10 +121,10 @@ const AddForm = ({
                 <Timepicker
                   placeHolder={props.placeHolder}
                   value={
-                    currentBatchDetail[id] ? currentBatchDetail[id] : "10:00"
+                    formData[id] ? formData[id] : "10:00"
                   }
                   className="h-12"
-                  onChangeHandler={(value) => handleChangeBatch(value, id)}
+                  onChangeHandler={(value) => handleChangeTime(value, id)}
                 />
               );
             }}
@@ -255,8 +261,8 @@ const AddForm = ({
           <Button
             className="border-1 mx-3 hidden rounded-md border-blush-light px-8 py-3 font-medium text-blush-light hover:border-blush-dark hover:text-blush-dark lg:block"
             type="button"
-            onClick={()=>{
-                addTableData(currentTableData)
+            onClick={(e)=>{
+                addTableData(tableFields?currentTableData:e)
                 setCurrentTableData({})
             }}
           >

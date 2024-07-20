@@ -16,6 +16,7 @@ import {
 } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import CardTitle from "../Card/CardTitle";
 import { dateFormat } from "~/helpers/date";
+import AddForm from "~/common/AddForm";
 
 export default function AddCoachCertificates({}) {
   const {
@@ -38,11 +39,15 @@ export default function AddCoachCertificates({}) {
     multiFormData: { formData, setFormData },
   } = useContext<FormContextTypes>(FormContext);
 
-  const [tableData, setTableData] = useState<COACH_CERTIFICATE_TABLE_TYPES[]>(
+ 
+  const [certificates, setCertificates] = useState<COACH_CERTIFICATE_TABLE_TYPES[]>(
     []
   );
+  const [formConstantValues, setFormConstantValues] = useState(
+    COACH_CERTIFICATES_CONSTANTS
+  );
+
   // eslint-disable-next-line no-console
-  console.log(tableData);
 
   const onAddHandler = async () => {
     const data = getValues();
@@ -55,10 +60,10 @@ export default function AddCoachCertificates({}) {
     if (data.endDate) data.endDate = dateFormat(new Date(data.endDate));
 
     if (result) {
-      if (tableData?.length) {
-        setTableData([data, ...tableData]);
+      if (certificates?.length) {
+        setCertificates([data, ...tableData]);
       } else {
-        setTableData([data]);
+        setCertificates([data]);
       }
       reset();
     }
@@ -80,13 +85,34 @@ export default function AddCoachCertificates({}) {
     if (formData?.certificates) {
       // eslint-disable-next-line no-console
       console.log(formData?.certificates);
-      setTableData(formData.certificates);
+      setCertificates(formData.certificates);
     }
   }, [formData?.certificates]);
 
   return (
     <>
-      <div>
+      <AddForm
+        cardTitle="ADD COACH"
+        cardSubTitle="ADD CERTIFICATES"
+        formConstantValues={formConstantValues}
+        buttonItems={{ prevNext: true }}
+        setFormData={setFormData}
+        formData={formData}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        tableTitle="Certificates"
+        mobileAddButtonText="Add another certificate"
+        TableHeadings={[
+          { label: "Certificate", id: "certificate" },
+          { label: "Institute", id: "institute" },
+          { label: "Action", id: "action" },
+        ]}
+        // tableFields={formConstantValues}
+        tablekey="certificates"
+        tableData={certificates}
+        addTableData={onAddHandler}
+      />
+      {/* <div>
         <CardTitle title="ADD COACH" />
         <div className="text-xl font-bold">ADD CERTIFICATES</div>
         <div className="mt-10 flex flex-row justify-between gap-5">
@@ -187,7 +213,7 @@ export default function AddCoachCertificates({}) {
             Next
           </Button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

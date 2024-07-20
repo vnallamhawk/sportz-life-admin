@@ -181,27 +181,59 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   },
 ];
 
-export const COACH_CERTIFICATES_CONSTANTS = {
-  placeholder: "Select Coach Certificates",
-  id: "certificates",
-  options: [
-    {
-      label: "Bachelor Certificate in Sports",
-      id: "bachelorCertificate",
-      value: "bachelorCertificate",
+export const COACH_CERTIFICATES_CONSTANTS = [
+  {
+    placeholder: "Select Coach Certificates",
+    id: "certificates",
+    type:"select",
+    options: [
+      {
+        label: "Bachelor Certificate in Sports",
+        id: "bachelorCertificate",
+        value: "bachelorCertificate",
+      },
+      {
+        label: "Masters Certificate in Sports",
+        id: "mastersCertificate",
+        value: "mastersCertificate",
+      },
+      {
+        label: "Diploma in Sports Coaching",
+        id: "diplomaSports",
+        value: "diplomaSports",
+      },
+    ],
+  },{
+    label: "Institute Name",
+    id: "instituteName",
+    type: "textbox",
+    rules: {
+      required: true,
+      maxLength: {
+        value: 35,
+        message: "Too Many Characters",
+      },
     },
-    {
-      label: "Masters Certificate in Sports",
-      id: "mastersCertificate",
-      value: "mastersCertificate",
+  },
+  {
+    label: "Start Date",
+    id: "startDate",
+    type: "calendar",
+    placeHolder: "Start Date",
+    rules: {
+      required: true,
     },
-    {
-      label: "Diploma in Sports Coaching",
-      id: "diplomaSports",
-      value: "diplomaSports",
+  },
+  {
+    label: "End Date",
+    id: "endDate",
+    type: "calendar",
+    placeHolder: "End Date",
+    rules: {
+      required: true,
     },
-  ],
-};
+  },
+];
 
 export const COACH_CERTIFICATE_TABLE_HEADERS = [
   {
