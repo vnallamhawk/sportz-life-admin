@@ -19,7 +19,6 @@ import { STAFF_TIMINGS_TABLE_HEADERS } from "~/constants/staffTimingConstants";
 
 export default function AddStaffShift({ finalFormSubmission }) {
   const [staffShiftDetails, setStaffShiftDetails] = useState([]);
-  const [currentStaffShift,setCurrentStaffShift]=useState({})
   const [formConstantValues, setFormConstantValues] = useState(
     STAFF_SHIFT_CONSTANTS
   );
@@ -55,26 +54,11 @@ export default function AddStaffShift({ finalFormSubmission }) {
     finalFormSubmission(finalFormData);
   };
 
-  const prevClickHandler = () => {
-    setCurrentStep && setCurrentStep(currentStep - 1);
-  };
 
-
-
-  
-
-  const handleChangeStaffTime=(value,id)=>{
-    let staffDetails={...currentStaffShift}
-    staffDetails[id]=value
-    setCurrentStaffShift(staffDetails)
-  }
-
-  const onAddStaffTiming=(e)=>{
-    e.preventDefault()
+  const onAddStaffTiming=(currentStaffShift)=>{
     let arr=[...staffShiftDetails]
-    arr.push(currentStaffShift)
+    arr.push({day:currentStaffShift?.day.value,shift:currentStaffShift?.shift.value,startTime:formData?.startTime,endTime:formData?.endTime})
     setStaffShiftDetails(arr)
-    setCurrentStaffShift({})
   }
   return (
     <div>
@@ -90,10 +74,12 @@ export default function AddStaffShift({ finalFormSubmission }) {
         tableTitle="SHIFTS"
         mobileAddButtonText="Add another shift"
         TableHeadings={STAFF_TIMINGS_TABLE_HEADERS}
-        // tableFields={formConstantValues}
-        tablekey="certificates"
+        //  tableFields={STAFF_SHIFT_CONSTANTS}
+        tablekey="staffShiftDetails"
         tableData={staffShiftDetails}
         addTableData={onAddStaffTiming}
+        finalFormSubmissionHandler={submitCallback}
+        isFormTable={true}
       />
       </div>
   );

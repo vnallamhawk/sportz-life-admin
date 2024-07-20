@@ -35,6 +35,7 @@ const AddForm = ({
   addTableButtonText,
   addTableButton,
   onRemoveTableButton,
+  isFormTable=false
 }) => {
   let inputElement;
   const {
@@ -321,7 +322,7 @@ const AddForm = ({
               className="border-1 mx-3 hidden rounded-md border-blush-light px-8 py-3 font-medium text-blush-light hover:border-blush-dark hover:text-blush-dark lg:block"
               type="button"
               onClick={(e) => {
-                addTableData(tableFields ? currentTableData : e);
+                addTableData(tableFields ? currentTableData:isFormTable?getValues(): e);
                 setCurrentTableData({});
               }}
             >
