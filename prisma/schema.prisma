@@ -487,7 +487,6 @@ model CoachSportsMaps {
 model Coaches {
   id                        Int                         @id @unique(map: "id") @default(autoincrement())
   name                      String                      @db.VarChar(255)
-  academyId                 Int
   image                     String?                     @db.VarChar(255)
   designation               String                      @db.VarChar(255)
   experience                String                      @db.VarChar(255)
