@@ -197,8 +197,8 @@ export default function AddCenterForm() {
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 1 && <AddCenter />}
-          {currentStep === 2 && <AddSports />}
+          {currentStep === 2 && <AddCenter />}
+          {currentStep === 1&& <AddSports />}
           {currentStep === 3 && (
             <AddInventory
               finalFormSubmissionHandler={finalFormSubmissionHandler}

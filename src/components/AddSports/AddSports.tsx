@@ -11,6 +11,8 @@ import { api } from "~/utils/api";
 import SportsTableBody from "../Sports/SportsTableBody";
 import AddSportModal from "./AddSportModal";
 import { useSession } from "next-auth/react";
+import AddForm from "~/common/AddForm";
+import { SPORTS_TABLE_HEADERS } from "~/constants/sportConstants";
 const AddSports = () => {
   const [loading, setLoading] = useState(false);
   const [sports, setSports] = useState([]);
@@ -106,7 +108,28 @@ const AddSports = () => {
           handleSport={addNewSport}
         />
       )}
-      <Card className="h-full">
+       <AddForm
+        cardTitle="ADD CENTER"
+        tableTitle="ADD SPORTS"
+        tableDescription={
+          "Hi!First things first"
+        }
+        tableFields={[{type:"select",name:"name",placeholder:"Select Sports",options:finalOptions}]}
+        TableHeadings={SPORTS_TABLE_HEADERS}
+        tablekey="medicalHistory"
+        tableData={sports}
+        addTableData={onSaveSports}
+        buttonItems={{ prevNext: true }}
+        setFormData={setFormData}
+        formData={formData}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        addTableButtonText={'Add New Sport'}
+        addTableButton={()=>{
+            setShowModal(!showModal);
+        }}
+      />
+      {/* <Card className="h-full">
         <header className="mb-3 flex justify-between p-2">
           <CardTitle title="ADD CENTER" />
         </header>
@@ -165,7 +188,7 @@ const AddSports = () => {
         >
           Next
         </Button>
-      </div>
+      </div> */}
     </>
   );
 };

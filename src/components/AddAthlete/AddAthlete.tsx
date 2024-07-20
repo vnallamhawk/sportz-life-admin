@@ -99,6 +99,7 @@ export default function AddCoach() {
           { label: "Medical History", id: "medicalHistory" },
           { label: "Action", id: "action" },
         ]}
+        tableFields={[{type:"textarea",name:"medicalHistory",placeholder:"Medical Pre-History 1"}]}
         tablekey="medicalHistory"
         tableData={medicalHistoryData}
         addTableData={addTableData}

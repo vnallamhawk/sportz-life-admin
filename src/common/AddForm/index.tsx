@@ -28,7 +28,10 @@ const AddForm = ({
   formData,
   setCurrentStep,
   currentStep,
-  finalFormSubmissionHandler
+  finalFormSubmissionHandler,
+  tableFields,
+  addTableButtonText,
+  addTableButton
 }) => {
   let inputElement;
   const {
@@ -164,10 +167,10 @@ const AddForm = ({
   return (
     <>
       <CardTitle title={cardTitle} />
-      <div className=" text-center font-heading text-3xl font-medium uppercase lg:text-left">
+     { cardSubTitle && <div className=" text-center font-heading text-3xl font-medium uppercase lg:text-left">
     {cardSubTitle}
-      </div>
-      <div className="grid-col-1 mt-8 grid gap-x-8 gap-y-4 lg:grid-cols-2 lg:gap-y-8 ">
+      </div>}
+    {formConstantValues && formConstantValues.length>0 &&   <div className="grid-col-1 mt-8 grid gap-x-8 gap-y-4 lg:grid-cols-2 lg:gap-y-8 ">
         {formConstantValues.map((formValues) => (
           <div key={formValues.id}>
             {getInputElement(formValues)}
@@ -185,8 +188,8 @@ const AddForm = ({
             </span>
           </div>
         ))}
-      </div>
-      <label className="col-span-2 mt-5 flex h-48 flex-col justify-center rounded-lg border-2 border-dashed border-gray-300 bg-stone-100 text-center lg:hidden">
+      </div>}
+    { imageTitle &&  <label className="col-span-2 mt-5 flex h-48 flex-col justify-center rounded-lg border-2 border-dashed border-gray-300 bg-stone-100 text-center lg:hidden">
         <div className="mb-3 flex items-center justify-center">
           <input type="file" className="hidden" />
           <div className="text-base font-medium text-gray-500">
@@ -197,7 +200,7 @@ const AddForm = ({
           The file size not more than 10 MB.
         </div>
         <div className="text-sm text-gray-300">JPEG, PNG, Video</div>
-      </label>
+      </label>}
 
      {tableData &&  TableHeadings && <div className="mt-10">
         <div className="mb-2 text-center font-heading text-2xl font-medium uppercase lg:text-left">
@@ -206,15 +209,44 @@ const AddForm = ({
         <div className="text-center text-gray-400 lg:text-left">
           {tableDescription}
         </div>
+       {addTableButtonText &&  <Button
+            type="button"
+            className="mx-3 bg-pink-600 hover:bg-pink-800"
+            onClick={addTableButton}
+
+          >
+           {addTableButtonText}
+          </Button> }
         <div className="mt-4 flex flex-col items-start lg:flex-row">
-          <textarea
-            placeholder="Medical Pre-History 1"
+         {tableFields?.map((item)=>{
+            return (
+                <>
+                {item?.type==="textarea"?<textarea
+            placeholder={item?.placeholder}
             className="border-1 h-40 w-full grow rounded-lg border-gray-300 pl-5 focus:border-gray-600 focus:outline-none focus:ring-0 lg:h-20"
-            value={currentTableData?.medicalHistory}
+            value={currentTableData[item?.name]}
             onChange={(e)=>{
-                handleChangeCurrentData("medicalHistory",e.target.value)
+                handleChangeCurrentData(item?.name,e.target.value)
             }}
-          />
+          />:item?.type==="select"?<Select
+          isMulti={item?.isMulti ?? false}
+          options={item?.options}
+          value={currentTableData[item?.name]}
+          placeholder={item?.placeholder}
+          className="w-full"
+          onChange={(element) => handleChangeCurrentData(item?.name,element.value)}
+        />: <input
+        className="w-10 text-gray-400"
+        value={currentTableData[item?.name]}
+        type={item?.type}
+        onChange={(e)=>{
+            handleChangeCurrentData(item?.name,e.target.value)
+        }}
+      />  
+}
+                </>
+            )
+         }) }
           <Button
             className="border-1 mx-3 hidden rounded-md border-blush-light px-8 py-3 font-medium text-blush-light hover:border-blush-dark hover:text-blush-dark lg:block"
             type="button"
@@ -286,8 +318,26 @@ const AddForm = ({
           </button>
         </div>
       )}
+          {buttonItems?.prevNext &&  (
+        <div className="bottom-8 right-0 mr-10 mt-10 flex justify-end lg:absolute">
+          <Button
+            type="button"
+            className="mx-3 bg-pink-600 hover:bg-pink-800"
+            onClick={prevClickHandler}
+          >
+            Prev
+          </Button>
+          <Button
+            type="button"
+            className="mx-3 bg-pink-600 hover:bg-pink-800"
+            onClick={nextClickHandler}
+          >
+            Next
+          </Button>
+        </div>
+      )}
 
-      {buttonItems?.prev && buttonItems?.finish && (
+      {buttonItems?.prevFinish &&  (
         <div className="bottom-8 right-0 mr-10 mt-10 flex justify-end lg:absolute">
           <Button
             type="button"

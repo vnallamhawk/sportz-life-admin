@@ -2,6 +2,7 @@ import React from "react";
 
 function AddSportModal({
   show,
+  setShow,
   sportDetails,
   setSportDetails,
   handleSport,
