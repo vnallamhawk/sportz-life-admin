@@ -7,6 +7,9 @@ import Table from "../Table";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { useRouter } from "next/navigation";
 import Select from "../Select";
+import Image from "next/image";
+import Plus from "../../images/plus.svg";
+import Remove from "../../images/remove.svg";
 // import { options } from "../../constants/inventoryConstant";
 import InventoryTableHeader from "../Inventory/InventoryTableHeader";
 import InventoryTableBody from "../Inventory/InventoryTableBody";
@@ -46,8 +49,8 @@ const AddInventory = (props) => {
         const index =
           inventories && inventories.length > 0
             ? inventories?.findIndex(
-                (item) => item?.name === finalOptions[i]?.value
-              )
+              (item) => item?.name === finalOptions[i]?.value
+            )
             : -1;
         if (index === -1) {
           arr.push({
@@ -96,7 +99,7 @@ const AddInventory = (props) => {
 
   const addNewInventory = (e) => {
     e.preventDefault();
-    createMutate({...inventoryDetails,        createdBy:sessionData?.token?.id});
+    createMutate({ ...inventoryDetails, createdBy: sessionData?.token?.id });
 
     setShowModal(false);
 

@@ -356,7 +356,7 @@ const AddForm = ({
         </div>
       </div>}
       {buttonItems?.next && (
-        <div className="bottom-8 right-0 mr-10 mt-10 flex justify-end lg:absolute">
+        <div className="bottom-8 right-0 lg:mr-10 mt-10 flex justify-end lg:absolute mb-10 lg:mb-0">
           <button
             className="w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
             type="button"
@@ -386,7 +386,7 @@ const AddForm = ({
       )}
 
       {buttonItems?.prevFinish &&  (
-        <div className="bottom-8 right-0 mr-10 mt-10 flex justify-end lg:absolute">
+        <div className="bottom-8 right-0 lg:mr-10 mt-10 flex justify-end lg:absolute mb-10 lg:mb-0">
           <Button
             type="button"
             className="mx-3 bg-pink-600 hover:bg-pink-800"

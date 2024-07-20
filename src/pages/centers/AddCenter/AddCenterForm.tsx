@@ -145,7 +145,7 @@ export default function AddCenterForm() {
       centerId
     ) {
       const finalCenterSports = formData?.sports?.map((v) => ({
-        ... v,
+        ...v,
         centerId,
       }));
 
@@ -189,14 +189,15 @@ export default function AddCenterForm() {
         mobile: finalForm?.phoneNumber,
         address: finalForm?.address,
         image: "",
-        createdBy:sessionData?.token?.id
+        createdBy: sessionData?.token?.id
       });
     }
   };
   return (
     <FormContext.Provider value={formProviderData}>
+      <div className="lg:px-6 bg-s-gray lg:pb-7">
       <div className="grid grid-cols-6 grid-rows-1">
-        <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
+        <Card className="col-span-12 lg:col-span-4 h-full p-0 pt-10 lg:bg-white rounded-l-xl !rounded-r-none relative pb-0 lg:pb-6 min-h-[535px] ">
           {currentStep === 1 && <AddCenter />}
           {currentStep === 2&& <AddSports />}
           {currentStep === 3&& (
@@ -239,21 +240,57 @@ export default function AddCenterForm() {
                 />
               </div>
             )}
-            <div className="mb-14 flex justify-center">
-              <FileUpload onDropCallback={onDropCallback} />{" "}
+          </Card>
+          <Card className="col-span-2 bg-stone-100 rounded-r-xl !rounded-l-none px-7 lg:block hidden">
+            <div className="font-medium uppercase text-2xl font-heading mb-10">Center Image</div>
+
+            <div>
+              {preview.length ? (
+                preview.map((upFile, index) => {
+                  return (
+                    <div
+                      className="previewImage mb-5 flex justify-center rounded-full"
+                      key={index}
+                    >
+                      <ImageWithFallback
+                        className="rounded-full mx-auto mb-6"
+                        src={upFile.preview}
+                        alt="preview"
+                        height={205}
+                        width={205}
+                        fallbackSrc="/images/fallback-1.png"
+                      />
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="previewImage">
+                  <ImageWithFallback
+                    src={""}
+                    alt="preview"
+                    height={205}
+                    width={205}
+                    className="rounded-full mx-auto mb-6"
+                    fallbackSrc="/images/fallback-1.png"
+                  />
+                </div>
+              )}
+              <div className="mb-14 flex justify-center">
+                <FileUpload onDropCallback={onDropCallback} />{" "}
+              </div>
             </div>
-          </div>
-          <div>
-            <div className="mb-5 font-bold">Note</div>
-            <ul className="list-disc pl-5 text-gray-500">
-              <li>Please upload jpg, png, .tiff file formats only</li>
-              <li>Maximum Size 100 MB</li>
-              <li>Minimum dimension 500px width by 500px height</li>
-            </ul>
-          </div>
-        </Card>
-     
+            <div>
+              <div className="mb-5 font-bold">Note</div>
+              <ul className="list-disc pl-5 text-gray-500">
+                <li>Please upload jpg, png, .tiff file formats only</li>
+                <li>Maximum Size 100 MB</li>
+                <li>Minimum dimension 500px width by 500px height</li>
+              </ul>
+            </div>
+          </Card>
+        </div>
       </div>
+      
     </FormContext.Provider>
   );
 }

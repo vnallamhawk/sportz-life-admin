@@ -118,6 +118,17 @@
   .pricing-tabs li.active .absolute{
     border-color: #F3476D;
   }
+  .invent-mobile:before{
+    position: fixed;
+    bottom: 0;
+    /* top: 0; */
+    width: calc(100% + 48px);
+    left: -24px;
+    right: -24px;
+    background: red;
+    z-index: -1;
+    height: 100px;
+  }
 }
 
 @layer base {
