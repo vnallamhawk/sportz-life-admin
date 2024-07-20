@@ -210,6 +210,7 @@ const AddForm = ({
           <textarea
             placeholder="Medical Pre-History 1"
             className="border-1 h-40 w-full grow rounded-lg border-gray-300 pl-5 focus:border-gray-600 focus:outline-none focus:ring-0 lg:h-20"
+            value={currentTableData?.medicalHistory}
             onChange={(e)=>{
                 handleChangeCurrentData("medicalHistory",e.target.value)
             }}
@@ -217,7 +218,10 @@ const AddForm = ({
           <Button
             className="border-1 mx-3 hidden rounded-md border-blush-light px-8 py-3 font-medium text-blush-light hover:border-blush-dark hover:text-blush-dark lg:block"
             type="button"
-            onClick={()=>addTableData(currentTableData)}
+            onClick={()=>{
+                addTableData(currentTableData)
+                setCurrentTableData({})
+            }}
           >
             Add
           </Button>
