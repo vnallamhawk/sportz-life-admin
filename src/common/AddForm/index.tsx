@@ -199,7 +199,7 @@ const AddForm = ({
         <div className="text-sm text-gray-300">JPEG, PNG, Video</div>
       </label>
 
-      <div className="mt-10">
+     {tableData &&  TableHeadings && <div className="mt-10">
         <div className="mb-2 text-center font-heading text-2xl font-medium uppercase lg:text-left">
           {tableTitle}
         </div>
@@ -233,7 +233,7 @@ const AddForm = ({
           </button>
         </div>
         <div className="scroll mt-5 hidden max-h-[370px] overflow-auto px-0 lg:block">
-          <table className="common-table w-full min-w-max table-fixed  border-separate border-spacing-y-3 text-left">
+          <table className="common-table w-full min-w-max table-auto  border-separate border-spacing-y-3 text-left">
             <thead>
               <tr>
                 {TableHeadings?.map((head, index) => {
@@ -255,17 +255,17 @@ const AddForm = ({
                   <tr key={dataIndex}>
                     {TableHeadings?.map((head, headIndex) => {
                       return (
-                        <div key={headIndex}>
+                        <td key={headIndex}>
                           {head?.id !== "action" ? (
-                            <td className="w-20 border-y-2 border-gray-100 p-4">
+                            <span className="border-y-2 border-gray-100 p-4">
                               {data[head?.id]}
-                            </td>
+                            </span>
                           ) : (
-                            <td className="w-32 border-y-2 border-gray-100 p-4 font-medium text-gray-400">
+                            <span className="border-y-2 border-gray-100 p-4 font-medium text-gray-400">
                               Remove
-                            </td>
+                            </span>
                           )}
-                        </div>
+                        </td>
                       );
                     })}
                   </tr>
@@ -274,7 +274,7 @@ const AddForm = ({
             </tbody>
           </table>
         </div>
-      </div>
+      </div>}
       {buttonItems?.next && (
         <div className="bottom-8 right-0 mr-10 mt-10 flex justify-end lg:absolute">
           <button

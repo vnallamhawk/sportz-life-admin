@@ -205,8 +205,8 @@ export default function AddCenterForm() {
             />
           )}
         </Card>
-        <Card className="col-span-2 bg-gray-100">
-          <div className="mb-10 font-bold">Center Image</div>
+        <Card className="col-span-2 bg-stone-100 rounded-r-xl !rounded-l-none px-7 lg:block hidden">
+          <div className="font-medium uppercase text-2xl font-heading mb-10">Center Image</div>
 
           <div>
             {preview.length ? (
@@ -217,12 +217,12 @@ export default function AddCenterForm() {
                     key={index}
                   >
                     <ImageWithFallback
-                      className="rounded-2xl"
+                      className="rounded-full mx-auto mb-6"
                       src={upFile.preview}
                       alt="preview"
                       height={205}
                       width={205}
-                      fallbackSrc="/images/fallback.png"
+                      fallbackSrc="/images/fallback-1.png"
                     />
                   </div>
                 );
@@ -232,25 +232,27 @@ export default function AddCenterForm() {
                 <ImageWithFallback
                   src={""}
                   alt="preview"
-                  height={500}
-                  width={500}
-                  fallbackSrc="/images/fallback.png"
+                  height={205}
+                  width={205}
+                  className="rounded-full mx-auto mb-6"
+                  fallbackSrc="/images/fallback-1.png"
                 />
               </div>
             )}
-            <div className="mb-5 flex justify-center">
+            <div className="mb-14 flex justify-center">
               <FileUpload onDropCallback={onDropCallback} />{" "}
             </div>
           </div>
           <div>
-            <span className="mb-5 font-bold">Note</span>
-            <ul className="list-disc">
+            <div className="mb-5 font-bold">Note</div>
+            <ul className="list-disc pl-5 text-gray-500">
               <li>Please upload jpg, png, .tiff file formats only</li>
               <li>Maximum Size 100 MB</li>
               <li>Minimum dimension 500px width by 500px height</li>
             </ul>
           </div>
         </Card>
+     
       </div>
     </FormContext.Provider>
   );

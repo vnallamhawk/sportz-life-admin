@@ -25,7 +25,7 @@ export default function AddCoach() {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
-  const [medicalHistoryData,setMedicalHistoryData]=useState([])
+  const [medicalHistoryData, setMedicalHistoryData] = useState([]);
 
   const {
     control,
@@ -75,18 +75,39 @@ export default function AddCoach() {
   }, [formData]);
   //test commit
 
-
-  const addTableData=(currentData)=>{
-    let arr=[...medicalHistoryData]
-    let obj={...currentData,["No."]:arr.length+1}
-    arr.push(obj)
-    setMedicalHistoryData(arr)
-  }
+  const addTableData = (currentData) => {
+    let arr = [...medicalHistoryData];
+    let obj = { ...currentData, ["No."]: arr.length + 1 };
+    arr.push(obj);
+    setMedicalHistoryData(arr);
+  };
 
   return (
     <>
-    <AddForm cardTitle="ADD ATHLETE" cardSubTitle="Athlete Personal Details" formConstantValues={formConstantValues} imageTitle="Attach Athlete Image" tableTitle="Medical History" tableDescription={"Kindly list down if your child has any allergies, major injuries, chronic diseases, physical disabilities & Children with special needs (CWSN)"} mobileAddButtonText="Add another medical history" TableHeadings={[{label:"#",id:"No."},{label:"Medical History",id:"medicalHistory"},{label:"Action",id:"action"}]} tablekey="medicalHistory" tableData={medicalHistoryData} addTableData={addTableData} buttonItems={{next:true}} setFormData={setFormData} formData={formData} currentStep={currentStep} setCurrentStep={setCurrentStep}/>
-
+      <AddForm
+        cardTitle="ADD ATHLETE"
+        cardSubTitle="Athlete Personal Details"
+        formConstantValues={formConstantValues}
+        imageTitle="Attach Athlete Image"
+        tableTitle="Medical History"
+        tableDescription={
+          "Kindly list down if your child has any allergies, major injuries, chronic diseases, physical disabilities & Children with special needs (CWSN)"
+        }
+        mobileAddButtonText="Add another medical history"
+        TableHeadings={[
+          { label: "#", id: "No." },
+          { label: "Medical History", id: "medicalHistory" },
+          { label: "Action", id: "action" },
+        ]}
+        tablekey="medicalHistory"
+        tableData={medicalHistoryData}
+        addTableData={addTableData}
+        buttonItems={{ next: true }}
+        setFormData={setFormData}
+        formData={formData}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+      />
     </>
-  )
+  );
 }

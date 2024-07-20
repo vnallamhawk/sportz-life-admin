@@ -16,6 +16,7 @@ import Select from "react-select";
 import { CENTER_DETAILS_CONSTANTS } from "~/constants/centerConstants";
 import { CENTER_DETAILS_CONSTANTS_TYPES } from "~/types/center";
 import { getSportsDictionaryServices } from "~/services/sportServices";
+import AddForm from "~/common/AddForm";
 
 export default function AddCenter() {
   let inputElement;
@@ -96,87 +97,21 @@ export default function AddCenter() {
   //     // eslint-disable-next-line react-hooks/exhaustive-deps
   //   }, [formData]);
   //test commit
-  const getInputElement = (props: CENTER_DETAILS_CONSTANTS_TYPES) => {
-    const { type, rules, id, pattern, placeHolder } = props;
-    switch (type) {
-      case "select":
-        const { options } = props;
-        inputElement = (
-          <Controller
-            control={control}
-            name={id}
-            rules={rules}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <Select
-                  isMulti={props?.isMulti ?? false}
-                  options={options}
-                  value={value}
-                  placeholder={placeHolder}
-                  className="w-full"
-                  onChange={(element) => {
-                    onChange(element);
-                  }}
-                />
-              );
-            }}
-          />
-        );
-        break;
-      case "calendar":
-        inputElement = (
-          <Controller
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <Datepicker
-                  placeHolder={props.placeHolder}
-                  value={new Date(value as string)}
-                  className="h-12"
-                  onChangeHandler={onChange}
-                />
-              );
-            }}
-            name={id}
-            rules={rules}
-          />
-        );
-        break;
-      default:
-        inputElement = (
-          <Controller
-            control={control}
-            name={id}
-            render={({ field: { onChange, value } }) => (
-              <Textbox
-                className="h-12 w-full"
-                placeHolder={props.label}
-                onChangeHandler={onChange}
-                // TODO: FIX THIS TS ERROR
-                value={value as string}
-              />
-            )}
-            rules={rules}
-            {...(pattern ? { pattern } : {})}
-          />
-        );
-    }
-
-    return inputElement;
-  };
-
-  const nextClickHandler = async () => {
-    const result = await trigger();
-    if (result) {
-      const currentFormValues = getValues();
-      setFormData && setFormData({ ...formData, ...currentFormValues });
-      setCurrentStep && setCurrentStep(currentStep + 1);
-    }
-  };
 
   return (
     <>
-      <CardTitle title="ADD CENTER" />
+<AddForm
+        cardTitle="ADD CENTER"
+        cardSubTitle="CENTER DETAILS"
+        formConstantValues={formConstantValues}
+        imageTitle="Center Image"
+        buttonItems={{ next: true }}
+        setFormData={setFormData}
+        formData={formData}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+      />
+            {/* <CardTitle title="" />
       <div className="text-lg font-bold">CENTER DETAILS</div>
       <div className="mt-10 grid grid-cols-2 gap-x-10 gap-y-12">
         {formConstantValues.map((props) => (
@@ -205,7 +140,7 @@ export default function AddCenter() {
         >
           Next
         </Button>
-      </div>
+      </div> */}
     </>
   );
 }
