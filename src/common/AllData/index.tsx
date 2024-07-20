@@ -44,7 +44,7 @@ const AllData=({title,addButtonText,addButtonUrl,dropdownItems,TABLE_ROWS,TABLE_
                     </button>
 
                   
-                    <div className="dropdown">
+                   {Object.keys(dropdownItems).length>0 &&  <div className="dropdown">
                         <Dropdown label="Late" dismissOnClick={false} 
                         renderTrigger={() => (
                             <button className="!w-auto px-2.5 bg-gray-300 rounded-full p-3 ml-3 w-10 h-10 max-w-10 inline-flex justify-center items-center">
@@ -59,14 +59,14 @@ const AllData=({title,addButtonText,addButtonUrl,dropdownItems,TABLE_ROWS,TABLE_
                             {dropdownItems?.changeBatch && <Dropdown.Item className="text-white hover:bg-black focus:bg-black">Change Batch</Dropdown.Item>}
                             {dropdownItems?.delete &&<Dropdown.Item className="text-white hover:bg-black focus:bg-black">Delete</Dropdown.Item>}
                         </Dropdown>
-                    </div>
-                    <button className="lg:hidden bg-black fixed bottom-24 right-10 rounded-full p-3 w-20 h-20 inline-flex justify-center items-center" onClick={()=>handleOpen}>
+                    </div>}
+                    {filter && <button className="lg:hidden bg-black fixed bottom-24 right-10 rounded-full p-3 w-20 h-20 inline-flex justify-center items-center" onClick={()=>handleOpen}>
                         <Image src={FilterIcon} className="filter-icon  " alt="" />
-                    </button>
+                    </button>}
                 </div>
             </div>
 
-            <div className="lg:flex mb-3  hidden">
+           {Object.keys(dropdownItems).length>0 &&  <div className="lg:flex mb-3  hidden">
                 { dropdownItems?.attendance &&<button className="bg-gray-500 text-white py-0.5 px-4 rounded font-400"  >Attendance</button>}
                 {dropdownItems?.reminder &&<button className="bg-white text-black border border-gray-300 py-0.5 px-4 rounded font-400 ml-2">Reminder</button>}
                 {dropdownItems?.freeze &&<button className="bg-white text-black border border-gray-300 py-0.5 px-4 rounded font-400 ml-2">Freeze</button>}
@@ -74,7 +74,7 @@ const AllData=({title,addButtonText,addButtonUrl,dropdownItems,TABLE_ROWS,TABLE_
                 {dropdownItems?.changeBatch &&<button className="bg-white text-black border border-gray-300 py-0.5 px-4 rounded font-400 ml-2">Change Batch</button>}
                 {dropdownItems?.delete &&<button className="bg-white text-black border border-gray-300 py-0.5 px-4 rounded font-400 ml-2">Delete</button>}
 
-            </div>
+            </div>}
             <TableListView TABLE_HEAD={TABLE_HEAD} TABLE_ROWS={TABLE_ROWS} rowSelection={rowSelection} showImage={showImage} onViewClick={onViewClick} onEditClick={onEditClick}/>
             
         </div>
