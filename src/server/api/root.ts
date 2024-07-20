@@ -15,6 +15,7 @@ import { staffPayrollRouter } from "./routers/staffPayroll";
 import { staffDesignationRouter } from "./routers/staffdesignation";
 import { taxSlabRouter } from "./routers/taxSlabs";
 import { staffTimingRouter } from "./routers/staffTimings";
+import { athleteRouter } from "./routers/athlete";
 
 /**
  * This is the primary router for your server.
@@ -36,7 +37,8 @@ export const appRouter = createTRPCRouter({
   staffPayroll:staffPayrollRouter,
   staffDesignation:staffDesignationRouter,
   tabSlab:taxSlabRouter,
-  staffTimings:staffTimingRouter
+  staffTimings:staffTimingRouter,
+  athlete:athleteRouter
 });
 
 // export type definition of API

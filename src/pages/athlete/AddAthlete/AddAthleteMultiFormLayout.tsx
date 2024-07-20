@@ -178,8 +178,8 @@ export default function AddAthleteMultiFormLayout() {
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1 relative">
         <Card className="col-span-12 lg:col-span-4 h-full p-0 pt-10 bg-white rounded-l-xl !rounded-r-none relative">
-          {currentStep === 1 && <AddAthlete />}
-           {/* {currentStep === 1 && <AddGeneralDetails />} */}
+          {currentStep === 1&& <AddAthlete />}
+           {currentStep === 2 && <AddGeneralDetails />}
           {/* {currentStep === 3 && (
             <AssignBatches
               // TODO: fix this TS error

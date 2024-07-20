@@ -119,14 +119,23 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
  
 ];
 
-export const ATHLETE_GENRAL_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
+export const ATHLETE_GENRAL_CONSTANTS = [
   {
-    label: "Sport",
-    id: "gender",
+    label: "Center",
+    id: "center",
     type: "select",
     options: [
-      { label: "A+", value: "A+" },
-      { label: "B+", value: "B+" },
+    ],
+    placeHolder: "Center",
+    rules: {
+      required: true,
+    },
+  },
+  {
+    label: "Sport",
+    id: "sport",
+    type: "select",
+    options: [
     ],
     placeHolder: "Sport",
     rules: {
@@ -135,7 +144,7 @@ export const ATHLETE_GENRAL_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   },
   {
     label: "Training Level",
-    id: "gender",
+    id: "training_level",
     type: "select",
     options: [
       { label: "A+", value: "A+" },
@@ -158,26 +167,13 @@ export const ATHLETE_GENRAL_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
       },
     },
   },
-  {
-    label: "Center",
-    id: "gender",
-    type: "select",
-    options: [
-      { label: "A+", value: "A+" },
-      { label: "B+", value: "B+" },
-    ],
-    placeHolder: "Center",
-    rules: {
-      required: true,
-    },
-  },
+ 
   {
     label: "Batch",
-    id: "gender",
+    id: "batch",
     type: "select",
     options: [
-      { label: "A+", value: "A+" },
-      { label: "B+", value: "B+" },
+     
     ],
     placeHolder: "Batch",
     rules: {
@@ -185,6 +181,50 @@ export const ATHLETE_GENRAL_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     },
   },
   
+]
+export const ATHLETE_CONTACT_CONSTANTS = [
+  {
+    label: "Email",
+    id: "email",
+    type: "textbox",
+    placeHolder: "Email",
+    rules: {
+      required: true,
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+        message: "Please enter a valid email !",
+      },
+      maxLength: {
+        value: 25,
+        message: "Too Many Characters",
+      },
+    },
+  },
+  {
+    label: "Phone Number",
+    id: "phone",
+    type: "textbox",
+    placeHolder: "Phone Number",
+    rules: {
+      required: true,
+      maxLength: {
+        value: 25,
+        message: "Too Many Characters",
+      },
+    },
+  },
+  {
+    label: "Residential Address",
+    id: "name",
+    type: "textarea",
+    rules: {
+      required: true,
+      maxLength: {
+        value: 100,
+        message: "Too Many Characters",
+      },
+    },
+  },
 ]
 
 export const COACH_CERTIFICATE_TABLE_HEADERS = [

@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import CardTitle from "~/components/Card/CardTitle";
-import { ATHLETE_DETAILS_CONSTANTS, ATHLETE_GENRAL_CONSTANTS } from "~/constants/athleteConstants";
+import { ATHLETE_CONTACT_CONSTANTS, ATHLETE_GENRAL_CONSTANTS } from "~/constants/athleteConstants";
 import Textbox from "~/components/Textbox";
 import {
   type COACH_TYPES,
@@ -12,6 +12,7 @@ import { Controller, useForm } from "react-hook-form";
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import { api } from "~/utils/api";
 import Select from "react-select";
+import AddForm from "~/common/AddForm";
 
 export default function AddGeneralDetails() {
   let inputElement;
@@ -29,22 +30,27 @@ export default function AddGeneralDetails() {
   } = useForm<COACH_TYPES>({ mode: "onSubmit" });
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
-  const { data: sports } = api.sports.getAllSports.useQuery();
+  const { data: centers } = api.center.getAllCenters.useQuery();
 
   const [formConstantValues, setFormConstantValues] = useState(
     ATHLETE_GENRAL_CONSTANTS
   );
 
+  const [formConstantValues1, setFormConstantValues1] = useState(
+    ATHLETE_CONTACT_CONSTANTS
+  );
+
   useEffect(() => {
-    if (sports?.length && hasExecuted.current) {
-      const updatedFormConstantValues = formConstantValues.map(
+   
+    if (centers?.length ) {
+      const updatedFormConstantValues = formConstantValues?.map(
         (formConstant) => {
-          if (formConstant.id === "coachingSports") {
+          if (formConstant.id === "center") {
             return {
               ...formConstant,
-              options: sports.map((sport: { name: string; id: number }) => ({
-                label: sport.name,
-                value: sport.id.toString(),
+              options: centers.map((center: { name: string; id: number }) => ({
+                label: center.name,
+                value: center.id.toString(),
               })),
             };
           } else {
@@ -52,10 +58,34 @@ export default function AddGeneralDetails() {
           }
         }
       );
-      hasExecuted.current = false;
       setFormConstantValues(updatedFormConstantValues);
     }
-  }, [formConstantValues, sports, sports?.length]);
+  }, [formConstantValues, centers, centers?.length]);
+
+  useEffect(()=>{
+    if(formData?.center && centers.length>0){
+      const center=centers?.find((item)=>item?.id==formData?.center?.value)
+      if (center?.CenterSports?.length ) {
+        const updatedFormConstantValues = formConstantValues?.map(
+          (formConstant) => {
+            if (formConstant.id === "sport") {
+              return {
+                ...formConstant,
+                options: center?.CenterSports?.map((sport: { name: string; id: number }) => ({
+                  label: sport.name,
+                  value: sport.id.toString(),
+                })),
+              };
+            } else {
+              return formConstant;
+            }
+          }
+        );
+        setFormConstantValues(updatedFormConstantValues);
+      }
+    }
+
+  },[formData?.center,centers])
 
   useEffect(() => {
     // if (!isEditMode) {
@@ -149,38 +179,26 @@ export default function AddGeneralDetails() {
 
   return (
     <>
+      <AddForm
+        cardTitle="ADD ATHLETE"
+        cardSubTitle="Athlete General Details"
+        formConstantValues={formConstantValues}
+        setFormData={setFormData}
+        formData={formData}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+      />
 
-      <CardTitle title="ADD ATHLETE" />
-      <div className=" font-medium uppercase text-3xl font-heading" >Athlete General Details</div>
-      <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-8">
-        {formConstantValues.map((props) => (
-          <div key={props.id}>
-            {getInputElement(props)}
+<AddForm
+        cardSubTitle="Contact Details"
+        formConstantValues={formConstantValues1}
+        setFormData={setFormData}
+        formData={formData}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        buttonItems={{prevFinish:true}}
+      />
 
-            <span className="text-red-800">
-              {errors[props.id]?.type === "required" && (
-                <div>This field is required</div>
-              )}
-              {errors[props.id]?.type === "pattern" && (
-                <div> This field is not matching the pattern</div>
-              )}
-              {errors[props.id]?.type === "maxLength" && (
-                <div>{`This field is exceeding the max. character limit`}</div>
-              )}
-            </span>
-          </div>
-        ))}
-      </div>
-    
-        <div className="mr-10 mt-10 flex justify-end absolute bottom-8 right-0">
-          <Button
-            className="!border-0 px-5 focus:ring-0 outline-0 bg-mandy-dark hover:bg-mandy-dark focus:outline-none focus:ring text-white"
-            type="button"
-            onClick={() => void nextClickHandler()}
-          >
-            Next
-          </Button>
-        </div>
 
       </>
       );

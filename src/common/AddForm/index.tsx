@@ -11,6 +11,7 @@ import { Switch } from "@material-tailwind/react";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import Button from "~/components/Button";
+import { Textarea } from "flowbite-react";
 
 const AddForm = ({
   cardTitle,
@@ -170,6 +171,24 @@ const AddForm = ({
           />
         );
         break;
+        case "textarea":
+          inputElement = (
+            <Controller
+              control={control}
+              name={id}
+              render={({ field: { onChange, value } }) => (
+                <Textarea
+                  className="h-12 w-full"
+                  placeholder={props.label}
+                  onChange={onChange}
+                  value={value as string}
+                />
+              )}
+              rules={rules}
+              {...(pattern ? { pattern } : {})}
+            />
+          );
+        break;
       default:
         inputElement = (
           <Controller
@@ -195,7 +214,7 @@ const AddForm = ({
 
   return (
     <>
-      <CardTitle title={cardTitle} />
+      {cardTitle && <CardTitle title={cardTitle} />}
      { cardSubTitle && <div className=" text-center font-heading text-3xl font-medium uppercase lg:text-left">
     {cardSubTitle}
       </div>}
