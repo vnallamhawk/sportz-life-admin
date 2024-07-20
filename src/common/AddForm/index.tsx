@@ -35,8 +35,11 @@ const AddForm = ({
   addTableButtonText,
   addTableButton,
   onRemoveTableButton,
-  isFormTable=false
-}) => {
+  isFormTable=false,
+  prevButtonText="Prev",
+  finishButtonText="Finish",
+  prevButtonClick,
+}:any) => {
   let inputElement;
   const {
     control,
@@ -79,8 +82,11 @@ const AddForm = ({
   };
 
   const submitCallback = () => {
+    const currentFormValues = getValues();
+
     const finalFormData = {
       ...formData,
+      ...currentFormValues
     };
     if (tablekey) {
       finalFormData[tablekey] = tableData;
@@ -130,7 +136,7 @@ const AddForm = ({
               return (
                 <Switch
                   value={value}
-                  onChange={(value) =>
+                  onChange={(e) =>
                     handleChangeTime(e.target.checked, "taxable")
                   }
                 />
@@ -416,16 +422,16 @@ const AddForm = ({
           <Button
             type="button"
             className="mx-3 bg-pink-600 hover:bg-pink-800"
-            onClick={prevClickHandler}
+            onClick={prevButtonClick?prevButtonClick:prevClickHandler}
           >
-            Prev
+            {prevButtonText}
           </Button>
           <Button
             type="button"
             className="mx-3 bg-pink-600 hover:bg-pink-800"
             onClick={submitCallback}
           >
-            Finish
+            {finishButtonText}
           </Button>
         </div>
       )}

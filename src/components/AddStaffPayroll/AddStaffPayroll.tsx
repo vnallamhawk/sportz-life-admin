@@ -82,11 +82,12 @@ export default function AddPayroll(props) {
     }
   }, [formConstantValues, designations, designations?.length]);
 
-  useEffect(()=>{
-    if(formData && formData?.taxable){
-      let obj={...formData}
-      obj.taxable=formData?.taxable
-      if(formData?.taxable && obj.grossSalary){
+  const onSubmit=(data)=>{
+    let obj={...data,taxable:formData?.taxable}
+    obj.grossSalary=parseInt(data.grossSalary)
+    obj.designationId=parseInt(data?.designationId?.value)
+    if(obj && obj?.taxable){
+      if(obj?.taxable && obj.grossSalary){
         const tax=props?.taxslabs?.find((item)=>obj.grossSalary>=item?.fromAmount && obj.grossSalary<=item?.toAmount)
         if(tax){
           obj.tax_percent=tax.percentage
@@ -96,9 +97,10 @@ export default function AddPayroll(props) {
         }
         setFormData(obj)
       }
-    }
 
-  },[formData])
+  }
+  props?.finalFormSubmissionHandler(obj)
+}
 
 
   const submitDesignation=(e)=>{
@@ -126,25 +128,15 @@ export default function AddPayroll(props) {
         formConstantValues={formConstantValues}
         setFormData={setFormData}
         formData={formData}
+        buttonItems={{prevFinish:true}}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
+        prevButtonText={"Add New Designation"}
+        finishButtonText={"Add Payroll"}
+        prevButtonClick={()=>setShowDesignationModal(!showDesignationModal)}
+        finalFormSubmissionHandler={(data)=>onSubmit(data)}
       />
-      <div className="flex justify-end">
-        <Button
-          type="button"
-          className="mx-3 bg-pink-600 hover:bg-pink-800"
-          onClick={()=>setShowDesignationModal(!showDesignationModal)}
-        >
-          Add New Designation
-        </Button>
-        <Button
-          type="button"
-          className="mx-3 bg-pink-600 hover:bg-pink-800"
-          onClick={(e)=>props?.finalFormSubmissionHandler(formData)}
-        >
-          Add Payroll
-        </Button>
-      </div>
+     
     </>
   );
 }

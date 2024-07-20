@@ -101,7 +101,7 @@ export default function AddCenterForm() {
   const { mutate: createMutate } = api.staffPayroll.createStaffPayroll.useMutation({
     onSuccess: (response) => {
       console.log("response data is ", response);
-  
+     router.push("/staffPayroll")
       return response?.id;
     },
   });
