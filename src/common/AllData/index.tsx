@@ -173,6 +173,7 @@ const AllData = ({
           showImage={showImage}
           onViewClick={onViewClick}
           onEditClick={onEditClick}
+          onDeleteClick={onDeleteClick}
         />
       </div>
     </div>

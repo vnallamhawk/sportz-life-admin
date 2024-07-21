@@ -28,7 +28,11 @@ export const coachRouter = createTRPCRouter({
   getAllCoaches: publicProcedure.query(({ ctx }) => {
     const allCoaches = ctx?.prisma.coaches?.findMany({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      where:{createdBy:ctx?.session?.token?.id}
+      where:{
+        deletedAt:null,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        createdBy:ctx?.session?.token?.id
+      },
     });
     return allCoaches;
   }),
@@ -211,6 +215,35 @@ export const coachRouter = createTRPCRouter({
             dateOfBirth: dateOfBirth,
             trainingLevel: "advanced",
             experienceLevel: "two_five",
+          },
+        });
+
+        return response;
+      }
+    ),
+
+    deleteCoach: publicProcedure
+    .input(
+      z.object({
+        coachId: z.number(),
+        deletedAt: z.string(),
+      })
+    )
+    .mutation(
+      async ({
+        input: {
+          coachId,
+          deletedAt
+        },
+        ctx,
+      }) => {
+
+        const response = await ctx.prisma.coaches.update({
+          where: {
+            id: coachId,
+          },
+          data: {
+            deletedAt
           },
         });
 

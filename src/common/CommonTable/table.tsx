@@ -23,6 +23,7 @@ const CommonTable = (props: {
   showImage: boolean;
   onViewClick: any;
   onEditClick: any;
+  onDeleteClick:any
 }) => {
   return (
     <>
@@ -135,7 +136,9 @@ const CommonTable = (props: {
                                         View
                                       </button>
                                     )}
-                                    <button className="mx-1 text-white">
+                                   <button className="mx-1 text-white" onClick={()=>{
+                                    props.onDeleteClick(data?.id)
+                                   }}>
                                       Delete
                                     </button>
                                   </div>

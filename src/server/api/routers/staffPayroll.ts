@@ -29,7 +29,8 @@ export const staffPayrollRouter = createTRPCRouter({
     const allPayroll = ctx?.prisma.staffPayroll?.findMany({
       where:{
         deletedAt:null,
-        createdBy:ctx.session.token.id
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        createdBy:ctx?.session?.token?.id
       },
       include: {
         StaffDesignation: true,
@@ -75,5 +76,34 @@ export const staffPayrollRouter = createTRPCRouter({
         });
         return response;
       }
+    ),
+    deletePayroll: publicProcedure
+    .input(
+      z.object({
+        payrollId: z.number(),
+        deletedAt: z.string(),
+      })
     )
+    .mutation(
+      async ({
+        input: {
+          payrollId,
+          deletedAt
+        },
+        ctx,
+      }) => {
+
+        const response = await ctx.prisma.staffPayroll.update({
+          where: {
+            id: payrollId,
+          },
+          data: {
+            deletedAt
+          },
+        });
+
+        return response;
+      }
+    ),
+
 });

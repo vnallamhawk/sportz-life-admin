@@ -72,7 +72,6 @@ export default function AssignBatches({
   }, [formConstantValues, centers, centers?.length,batches,]);
 
 useEffect(()=>{
-  debugger
   
   if(centerId){
     const center=centers?.find((item)=>item?.id==centerId)

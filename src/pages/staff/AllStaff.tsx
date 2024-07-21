@@ -14,6 +14,7 @@ import StaffChangeCenterModal from "~/components/Modal/StaffChangeCenterModal";
 import AllData from "~/common/AllData";
 import { STAFF_TABLE_HEADERS } from "~/constants/staffConstants";
 import { api } from "~/utils/api";
+import moment from "moment-timezone";
 
 export default function AllCoach() {
   const router = useRouter();
@@ -42,6 +43,26 @@ export default function AllCoach() {
     }
   }, [JSON.stringify(staffs)]);
 
+
+  const { mutate: deleteMutate } = api.staff.deleteStaff.useMutation({
+    onSuccess: (response) => {
+      let arr=[...finalData]
+      const index=finalData?.findIndex((item)=>item?.id==response?.id)
+      if(index>-1){
+        arr.splice(index,1)
+      }
+     setFinalData(arr)
+      return response
+    },
+  });
+  
+  const deleteStaff=(id:number)=>{
+  
+    deleteMutate({staffId:id,deletedAt:moment().toISOString()})
+   
+  
+  }
+
   return (
     <>
 
@@ -59,6 +80,8 @@ export default function AllCoach() {
         showImage={false}
         onViewClick={(id)=>router.push(`/staff/${id ?? ""}`)}
         onEditClick={(id)=>router.push(`/edit-staff-${id}`)}
+        onDeleteClick={(id)=>deleteStaff(id)}
+
       />
 
       {/* {showReminder && (

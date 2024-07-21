@@ -13,6 +13,7 @@ import Textbox from "~/components/Textbox";
 import { api } from "~/utils/api";
 import { STAFF_PAYROLL_TABLE_HEADERS } from "~/constants/staffPayroll";
 import AllData from "~/common/AllData";
+import moment from "moment-timezone";
 
 const AllStaffPayroll = () => {
   const router = useRouter();
@@ -41,6 +42,26 @@ useEffect(() => {
   }
 }, [JSON.stringify(staffPayroll)]);
 
+
+const { mutate: deleteMutate } = api.staffPayroll.deletePayroll.useMutation({
+  onSuccess: (response) => {
+    let arr=[...finalData]
+    const index=finalData?.findIndex((item)=>item?.id==response?.id)
+    if(index>-1){
+      arr.splice(index,1)
+    }
+   setFinalData(arr)
+    return response
+  },
+});
+
+const deletePayroll=(id:number)=>{
+
+  deleteMutate({payrollId:id,deletedAt:moment().toISOString()})
+ 
+
+}
+
   return (
     <>
 
@@ -55,6 +76,8 @@ useEffect(() => {
         rowSelection={false}
         showImage={false}
         onEditClick={(id)=>router.push(`/edit-staffPayroll-${id}`)}
+        onDeleteClick={(id)=>deletePayroll(id)}
+
       />
      
     </>
