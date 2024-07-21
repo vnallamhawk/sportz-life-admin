@@ -38,7 +38,7 @@ export const ATHLETE_TABLE_HEADERS = [
   },
 ];
 
-export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
+export const ATHLETE_DETAILS_CONSTANTS = [
   {
     label: "Athlete Name",
     id: "name",
@@ -53,7 +53,7 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   },
   {
     label: "Date of Birth",
-    id: "dateOfBirth",
+    id: "dob",
     type: "calendar",
     placeHolder: "Date of Birth",
     rules: {
@@ -70,8 +70,8 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     type: "select",
     placeHolder: "Gender",
     options: [
-      { label: "Female", value: "Female" },
-      { label: "Male", value: "Male" },
+      { label: "Female", value: "female" },
+      { label: "Male", value: "male" },
     ],
     rules: {
       required: true,
@@ -79,26 +79,18 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   },
   {
     label: "Height",
-    id: "name",
-    type: "select",
+    id: "height",
+    type: "number",
     placeHolder: "Height",
-    options: [
-      { label: "5.6", value: "5.6" },
-      { label: "6.2", value: "6.2" },
-    ],
     rules: {
       required: true,
     },
   },
   {
     label: "Weight",
-    id: "gender",
-    type: "select",
+    id: "weight",
+    type: "number",
     placeHolder: "Weight",
-    options: [
-      { label: "50", value: "50" },
-      { label: "60", value: "60" },
-    ],
     rules: {
       required: true,
     },
@@ -108,8 +100,14 @@ export const ATHLETE_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     id: "gender",
     type: "select",
     options: [
-      { label: "A+", value: "A+" },
-      { label: "B+", value: "B+" },
+      { label: "A+", value: "APos" },
+      { label: "B+", value: "BPos" },
+      { label: "A-", value: "ANeg" },
+      { label: "B-", value: "BNeg" },
+      { label: "AB+", value: "ABPos" },
+      { label: "O+", value: "OPos" },
+      { label: "AB-", value: "ABNeg" },
+      { label: "O-", value: "ONeg" },
     ],
     placeHolder: "Blood Group",
     rules: {

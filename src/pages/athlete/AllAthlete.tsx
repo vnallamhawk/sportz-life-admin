@@ -87,7 +87,7 @@ export default function Athlete() {
         addButtonUrl="/athlete/AddAthlete"
         dropdownItems={dropdownObj}
         TABLE_HEAD={TABLE_HEAD}
-        TABLE_ROWS={TABLE_ROWS}
+        TABLE_ROWS={athletes}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
         onViewClick={(id) => router.push(`/athlete/${id ?? ""}`)}
