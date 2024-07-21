@@ -139,11 +139,11 @@ const DetailPage = ({
   cardTitle,
   editButtonClick,
   editText,
-  ranking,
-  name,
-  description,
+  data,
   details,
-  tabs
+  tabs,
+  handleTabClick,
+  selectedComponent
 }) => {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
@@ -161,62 +161,15 @@ const DetailPage = ({
   const [loading, setLoading] = useState(true);
   const [finalTabs, setFinalTabs] = useState(tabs);
 
-  // useEffect(()=>{
-  //   if(finalTabs && finalTabs.length>0 && Object.keys(center).length>0 ){
-  //     const arr=[...finalTabs]
-  //     const index=arr?.findIndex((item)=>item?.name==="inventories")
-  //     if(index>-1 && center?.CenterInventories){
-  //       arr[index].value=center?.CenterInventories?.length
-  //     }
-  //     const batchIndex=arr?.findIndex((item)=>item?.name==="batches")
-  //     if(batchIndex>-1 && center?.Batches){
-  //       arr[batchIndex].value=center?.Batches?.length
-  //     }
-  //     setFinalTabs(arr)
-  //   }
 
-  // },[center,finalTabs])
-
-  const handleIsLoading = (isLoading: boolean) => {
-    setLoading(isLoading);
-  };
-  const [selectedTab, setSelectedTab] = useState(tabs[1]);
-  const [selectedHeader, setSelectedHeader] = useState(
-    CenterDashBatchTableHeader()
-  );
-  const [selectedBody, setSelectedBody] = useState(
-    CenterDashBatchTableBody(center?.Batches, center)
-    // { name: filterByName },
-    // handleIsLoading
-  );
-
-  const handleClick = (tab: TabsType) => {
-    let header, body;
-    setSelectedTab(tab);
-    if (tab?.name === "coaches") {
-      header = CenterDashCoachTableHeader();
-      body = CenterDashCoachTableBody();
-    } else if (tab?.name === "batches") {
-      header = CenterDashBatchTableHeader();
-
-      body = CenterDashBatchTableBody(center?.Batches, center);
-    } else if (tab?.name === "athletes") {
-      header = CenterDashAthleteTableHeader();
-      body = CenterDashAthleteTableBody();
-    } else {
-      header = CenterDashInventoryTableHeader();
-      body = CenterDashInventoryTableBody(center?.CenterInventories);
-    }
-    setSelectedHeader(header);
-    setSelectedBody(body);
-  };
+ 
   var settings = {
     dots: false,
     arrows: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToShow: 4.5,
+    slidesToScroll: 4.5,
     responsive: [
       {
         breakpoint: 1200,
@@ -241,8 +194,7 @@ const DetailPage = ({
 
   return (
     <>
-      {/* <AddBatchCenter /> */}
-      {/* <BatchDetails /> */}
+     
       <Card className="h-100 mx-5 bg-gradient-to-r from-[#2D323D] to-[#141720] md:bg-white md:bg-none">
         <header className="mb-5 hidden items-start  justify-between lg:flex ">
           <CardTitle title={cardTitle} />
@@ -260,11 +212,11 @@ const DetailPage = ({
               width="200"
               height="150"
             />
-            {ranking && (
+            {data?.ranking && (
               <div className="mt-8 hidden border border-dashed border-tertiary-700 p-2 lg:block">
                 <div className="flex items-center justify-center border border-tertiary-400 bg-tertiary-200 p-2">
                   <div className="mr-3 font-heading text-4xl text-tertiary-700">
-                    #{ranking}
+                    #{data?.ranking}
                   </div>
                   <div className="w-16  text-base leading-4 text-tertiary-700">
                     Player Ranking
@@ -276,17 +228,17 @@ const DetailPage = ({
 
           <div className="mt-3 w-full lg:mt-0 lg:w-10/12 lg:pl-10">
             <div className="text-center font-heading text-3xl font-medium uppercase text-white md:text-black lg:text-start">
-              {name}
+              {data?.name}
             </div>
             <div className="text-center text-base text-white md:text-blush-dark lg:text-start">
-              {description}
+              {data?.description}
             </div>
-            {ranking && (
+            {data?.ranking && (
               <div className="text-center lg:text-start">
                 <div className="mx-auto mt-4 inline-block border border-dashed border-orange-light p-2 lg:mt-8 lg:hidden">
                   <div className="flex items-center justify-center border border-[#FFF9F8] bg-[#FFD2C5] px-2 py-1">
                     <div className="mr-3 font-heading text-4xl text-black">
-                      #{ranking}
+                      #{data?.ranking}
                     </div>
                     <div className="w-16  text-base leading-4 text-black">
                       Player Ranking
@@ -363,7 +315,7 @@ const DetailPage = ({
             <div
               className={`rounded-xl bg-[#EAEAEA] `}
               onClick={() => {
-                handleClick(tab);
+                handleTabClick(tab);
               }}
               key={index}
             >
@@ -379,345 +331,14 @@ const DetailPage = ({
           );
         })}
       </Slider>
+      {selectedComponent}
       {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
       <CoachBatch coach={coach} displayBatch={displayBatch} />
       <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
 
-      <Card className="h-100 mx-5 mt-5 bg-white  py-7">
-        <header className="hidden justify-between md:flex">
-          <CardTitle title="Attendance" />
-          <div className="relative">
-            <Image
-              src={SearchIcon}
-              className="absolute right-3 top-2 z-10"
-              alt=""
-            />
-            <input
-              type="search"
-              className="relative w-full rounded-lg border-2 border-gray-200 bg-transparent py-2 pl-4 pr-12 text-base text-gray-700 placeholder-gray-300 focus:border-gray-400 focus:outline-none focus:ring-0 2xl:min-w-[450px]"
-              placeholder="Search by name"
-            />
-          </div>
-        </header>
-        {/* Attendance view --------------------------------------------------------- */}
-        <div className="grid grid-cols-6 gap-4 rounded-[30px] bg-[#FFE5DE] p-6 md:bg-white md:p-0 xl:grid-cols-5">
-          <div className="col-span-6 sm:col-span-3 md:col-span-2 xl:col-span-1">
-            <div
-              className={`relative rounded-xl bg-white p-4 pl-10 shadow-md  md:bg-[#404469] md:pl-4 md:text-white md:shadow-none`}
-            >
-              <div className="line block bg-[#404469] md:hidden"></div>
-              <div className="">Total Classes Held</div>
-              <div className="font-heading text-2xl md:text-5xl">16</div>
-            </div>
-          </div>
-          <div className="col-span-6 sm:col-span-3 md:col-span-2 xl:col-span-1">
-            <div
-              className={`relative rounded-xl bg-white p-4 pl-10 shadow-md  md:bg-[#00B65A] md:pl-4 md:text-white md:shadow-none`}
-            >
-              <div className="line block bg-[#00B65A] md:hidden"></div>
-              <div className="">Present</div>
-              <div className="font-heading text-2xl md:text-5xl">16</div>
-            </div>
-          </div>
-          <div className="col-span-6 sm:col-span-3 md:col-span-2 xl:col-span-1">
-            <div
-              className={`relative rounded-xl bg-white p-4 pl-10 shadow-md  md:bg-[#BE1A0E] md:pl-4 md:text-white  md:shadow-none`}
-            >
-              <div className="line block bg-[#BE1A0E] md:hidden"></div>
-              <div className="">Absent</div>
-              <div className="font-heading text-2xl md:text-5xl">16</div>
-            </div>
-          </div>
-          <div className="col-span-6 sm:col-span-3 md:col-span-2 xl:col-span-1">
-            <div
-              className={`relative rounded-lg bg-white p-4 pl-10 shadow-md  md:bg-[#FFA500] md:pl-4  md:text-white md:shadow-none`}
-            >
-              <div className="line block bg-[#FFA500] md:hidden"></div>
-              <div className="">Late</div>
-              <div className="font-heading text-2xl md:text-5xl">16</div>
-            </div>
-          </div>
-          <div className="col-span-6 sm:col-span-3 md:col-span-2 xl:col-span-1">
-            <div
-              className={`relative rounded-xl bg-white p-4 pl-10 shadow-md  md:bg-[#EDEDED] md:pl-4 md:text-white md:shadow-none`}
-            >
-              <div className="line block bg-[#EDEDED] md:hidden"></div>
-              <div className="">Cancelled</div>
-              <div className="font-heading text-2xl md:text-5xl">16</div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-5">
-          <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-12 md:col-span-5">
-              <Card
-                title="Calendar View"
-                className="border border-gray-200 uppercase"
-              >
-                <Calendar onChange={onChange} value={value} />
-              </Card>
-            </div>
-            <div className="col-span-12 md:col-span-7">
-              <Card title="" className="border border-gray-200 uppercase">
-                <Tabs value="attn">
-                  <TabsHeader className="graph-tab">
-                    <Tab
-                      value={"attn"}
-                      color="red-500"
-                      activeClassName="active"
-                      className="mr-3 w-auto font-heading text-xl uppercase shadow-none"
-                    >
-                      Attendance Logs for JUne
-                    </Tab>
-                    <Tab
-                      value={`graph`}
-                      color="red"
-                      activeClassName="active"
-                      className="w-auto font-heading text-xl uppercase shadow-none"
-                    >
-                      Graph
-                    </Tab>
-                  </TabsHeader>
-                  <TabsBody>
-                    <TabPanel value={"attn"}>
-                      <div className="scroll mt-5 hidden max-h-[370px] overflow-auto px-0 lg:block">
-                        <table className="common-table w-full min-w-max table-auto border-separate  border-spacing-y-3 text-left text-sm">
-                          <tbody>
-                            <tr>
-                              <td className="border-y-2 border-gray-100 p-4">
-                                Sunday 01
-                              </td>
-                              <td className="w-32 border-y-2 border-gray-100 p-4 font-medium">
-                                10:30am
-                              </td>
-                              <td className="border-y-2 border-gray-100 p-4 font-medium">
-                                Present
-                              </td>
-                              <td className="border-y-2 border-gray-100 p-4 font-medium">
-                                <span className="rounded-full border border-tertiary-700 bg-tertiary-200 px-3 py-1 text-sm font-normal capitalize text-tertiary-700">
-                                  Fee Clear
-                                </span>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td className="border-y-2 border-gray-100 p-4">
-                                Sunday 01
-                              </td>
-                              <td className="border-y-2 border-gray-100 p-4 font-medium">
-                                10:30am
-                              </td>
-                              <td className="border-y-2 border-gray-100 p-4 font-medium">
-                                Present
-                              </td>
-                              <td className="border-y-2 border-gray-100 p-4 font-medium">
-                                <span className="rounded-full border border-tertiary-700 bg-tertiary-200 px-3 py-1 text-sm font-normal capitalize text-tertiary-700">
-                                  Fee Clear
-                                </span>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </TabPanel>
-                    <TabPanel value={`graph`}>
-                      <Card title="">
-                        <BarChart data={centerWiseCountData} />
-                      </Card>
-                    </TabPanel>
-                  </TabsBody>
-                </Tabs>
-              </Card>
-            </div>
-          </div>
-        </div>
-        {/* Attendance view --------------------------------------------------------- */}
+    
 
-        {/* Batches view --------------------------------------------------------- */}
-        <div className="mb-2 text-center font-heading text-2xl font-medium uppercase lg:text-left">
-          Batches
-        </div>
-        {/* <TableListView /> */}
-        {/* Batches view --------------------------------------------------------- */}
 
-        {/* Payment History --------------------------------------------------------- */}
-        <div className="mb-2 text-center font-heading text-2xl font-medium uppercase lg:text-left">
-          Payment History
-        </div>
-        <div className="hidden md:block">{/* <TableListView /> */}</div>
-
-        <div className="mb-3 flex items-center justify-between rounded-xl border border-gray-300 p-4 md:hidden">
-          <div className="flex items-center">
-            <div>
-              <div className=" font-heading text-2xl font-medium">$99.00</div>
-              <div className="text-sm text-gray-400">Batch Name Goes Here</div>
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="mb-1 text-sm text-gray-400">Mar 01, 2023</div>
-            <div className="rounded-full border border-[#974062] bg-[#FFF8FB] px-3 py-1 text-sm font-normal capitalize text-[#974062]">
-              More Detail
-            </div>
-          </div>
-        </div>
-        <div className="mb-3 flex items-center justify-between rounded-xl border border-gray-300 p-4 md:hidden">
-          <div className="flex items-center">
-            <div>
-              <div className=" font-heading text-2xl font-medium">$99.00</div>
-              <div className="text-sm text-gray-400">Batch Name Goes Here</div>
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="mb-1 text-sm text-gray-400">Mar 01, 2023</div>
-            <div className="rounded-full border border-[#974062] bg-[#FFF8FB] px-3 py-1 text-sm font-normal capitalize text-[#974062]">
-              More Detail
-            </div>
-          </div>
-        </div>
-
-        {/* Payment History --------------------------------------------------------- */}
-
-        {/* Assessment --------------------------------------------------------- */}
-        <div className="mb-2 text-center font-heading text-2xl font-medium uppercase lg:text-left">
-          Assessment
-        </div>
-        <div className="hidden md:block">{/* <TableListView /> */}</div>
-        <div className="block md:hidden">
-          <div className="mb-3 flex items-center justify-between rounded-xl border border-gray-300 p-4 md:hidden">
-            <div className="flex items-center">
-              <div>
-                <div className="text-[#FFA500]">Upcoming</div>
-                <div className=" font-heading text-2xl font-medium">
-                  Assessment name here
-                </div>
-                <div className="text-sm text-gray-400">One Time</div>
-              </div>
-            </div>
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#EAEAEA] text-center">
-              <Image className="h-[9px] w-[16px]" src={ChevronDown} alt={``} />
-            </div>
-          </div>
-          <div className="mb-3 rounded-xl border border-gray-300 p-4 md:hidden">
-            <div className="flex items-center justify-between ">
-              <div className="flex items-center">
-                <div>
-                  <div className="text-[#FFA500]">Upcoming</div>
-                  <div className=" font-heading text-2xl font-medium">
-                    Assessment name here
-                  </div>
-                  <div className="text-sm text-gray-400">One Time</div>
-                </div>
-              </div>
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#EAEAEA] text-center">
-                <Image
-                  className="h-[9px] w-[16px]"
-                  src={ChevronDown}
-                  alt={``}
-                />
-              </div>
-            </div>
-            <div>
-              <div className="mt-8 flex items-center justify-between">
-                <div className="font-bold text-gray-500">Test Date</div>
-                <div className="font-bold text-gray-700">Aug 04, 2023</div>
-              </div>
-              <hr className="my-5" />
-              <div className="mb-8 flex items-center justify-between">
-                <div className="font-bold text-gray-500">Overall Score</div>
-                <div className="font-bold text-gray-700">88/100</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* Assessment --------------------------------------------------------- */}
-
-        {/* Medical History --------------------------------------------------------- */}
-
-        <div className="mt-10 ">
-          <div className="mb-2 text-center font-heading text-2xl font-medium uppercase lg:text-left">
-            Medical History
-          </div>
-
-          <div className="scroll mt-5 hidden max-h-[370px] overflow-auto px-0 lg:block">
-            <table className="common-table w-full min-w-max table-fixed  border-separate border-spacing-y-3 text-left">
-              <thead>
-                <tr>
-                  <th className="w-20 pl-7 font-medium text-gray-400">#</th>
-                  <th className="text-justify font-medium text-gray-400">
-                    Medical History{" "}
-                  </th>
-                  <th className="w-32 font-medium text-gray-400">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="w-20 border-y-2 border-gray-100 p-4">01</td>
-                  <td className="border-y-2 border-gray-100 p-4  text-justify">
-                    <div>
-                      Injuries: quo possimus dolores nam autem ipsa. Est soluta
-                      quia et blanditiis sunt qui asperiores tempore eos
-                      similique veniam aut maxime veniam aut possimus possimus
-                      qui voluptatem maiores.AAA
-                    </div>
-                  </td>
-                  <td className="w-32 border-y-2 border-gray-100 p-4 font-medium text-gray-400">
-                    Remove
-                  </td>
-                </tr>
-                <tr>
-                  <td className="w-20 border-y-2 border-gray-100 p-4">01</td>
-                  <td className="border-y-2 border-gray-100 p-4  text-justify">
-                    <div>
-                      Injuries: quo possimus dolores nam autem ipsa. Est soluta
-                      quia et blanditiis sunt qui asperiores tempore eos
-                      similique veniam aut maxime veniam aut possimus possimus
-                      qui voluptatem maiores.AAA
-                    </div>
-                  </td>
-                  <td className="w-32 border-y-2 border-gray-100 p-4 font-medium text-gray-400">
-                    Remove
-                  </td>
-                </tr>
-                <tr>
-                  <td className="w-20 border-y-2 border-gray-100 p-4">01</td>
-                  <td className="border-y-2 border-gray-100 p-4  text-justify">
-                    <div>
-                      Injuries: quo possimus dolores nam autem ipsa. Est soluta
-                      quia et blanditiis sunt qui asperiores tempore eos
-                      similique veniam aut maxime veniam aut possimus possimus
-                      qui voluptatem maiores.AAA
-                    </div>
-                  </td>
-                  <td className="w-32 border-y-2 border-gray-100 p-4 font-medium text-gray-400">
-                    Remove
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="mb-3 block rounded-xl border border-gray-300 p-4 md:hidden">
-          <div>
-            <div className=" mb-2 text-xl font-medium">#01 History</div>
-            <div className="text-sm text-gray-400">
-              Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et
-              blanditiis sunt qui asperiores tempore eos similique veniam aut
-              maxime veniam aut possimus possimus qui voluptatem maiores.
-            </div>
-          </div>
-        </div>
-        <div className="mb-3 block rounded-xl border border-gray-300 p-4 md:hidden">
-          <div>
-            <div className=" mb-2 text-xl font-medium">#02 History</div>
-            <div className="text-sm text-gray-400">
-              Injuries: quo possimus dolores nam autem ipsa. Est soluta quia et
-              blanditiis sunt qui asperiores tempore eos similique veniam aut
-              maxime veniam aut possimus possimus qui voluptatem maiores.
-            </div>
-          </div>
-        </div>
-
-        {/* Medical History --------------------------------------------------------- */}
-      </Card>
     </>
   );
 };
