@@ -1,16 +1,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useContext, useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import Select from "react-select";
-import Table from "../Table";
-import Button from "../Button/Button";
-import CardTitle from "../Card/CardTitle";
+import React, { useContext, useState } from "react";
+import {  useForm } from "react-hook-form";
+
 import { FormContext } from "~/pages/staff/AddStaff/AddStaffMultiFormLayout";
-import { formatBatchesTableData } from "~/helpers/batches";
-import { type BatchTableData } from "~/types/batch";
-import StaffShiftTableHeader from "../StaffShiftTable/StaffShiftTableHeader";
-import StaffShiftTableBody from "../StaffShiftTable/StaffShiftTableBody";
-import Timepicker from "~/components/TimePicker/TimePickerWrapper";
+
 import AddForm from "~/common/AddForm";
 import { STAFF_SHIFT_CONSTANTS } from "~/constants/staffConstants";
 import { STAFF_TIMINGS_TABLE_HEADERS } from "~/constants/staffTimingConstants";

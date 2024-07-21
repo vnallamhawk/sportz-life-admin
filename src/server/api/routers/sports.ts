@@ -7,7 +7,8 @@ import {
 
 export const sportRouter = createTRPCRouter({
   getAllSports: publicProcedure.query(({ ctx }) => {
-    const allSports = ctx?.prisma?.sports?.findMany({where:{createdBy:ctx.session.token.id}});
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const allSports = ctx?.prisma?.sports?.findMany({where:{createdBy:ctx?.session?.token?.id}});
     return allSports;
   }),
   createSports: publicProcedure

@@ -1,22 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import Card from "../Card";
-import CardTitle from "../Card/CardTitle";
-import Button from "../Button";
-import Table from "../Table";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import Select from "../Select";
-import SportsTableHeader from "../Sports/SportsTableHeader";
 import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
 import { api } from "~/utils/api";
-import SportsTableBody from "../Sports/SportsTableBody";
 import AddSportModal from "./AddSportModal";
 import { useSession } from "next-auth/react";
 import AddForm from "~/common/AddForm";
 import { SPORTS_TABLE_HEADERS } from "~/constants/sportConstants";
 const AddSports = () => {
-  const [loading, setLoading] = useState(false);
   const [sports, setSports] = useState([]);
-  const [selectedSport, setSelectedSport] = useState({});
   const [finalOptions, setFinalOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [sportDetails,setSportDetails]=useState({})
@@ -25,9 +15,7 @@ const AddSports = () => {
 
   const { data: allSports } = api.sports.getAllSports.useQuery();
 
-  const handleIsLoading = (isLoading: boolean) => {
-    setLoading(isLoading);
-  };
+ 
   const { mutate: createMutate } = api.sports.createSports.useMutation({
     onSuccess: (response) => {
       let arr:any=[...finalOptions]
@@ -62,7 +50,6 @@ const AddSports = () => {
     const arr = [...sports];
     arr.push({...currentSportData,sportId:parseInt(currentSportData?.value)});
     setSports(arr);
-    setSelectedSport({});
   };
 
   const removeSports = (index: number) => {

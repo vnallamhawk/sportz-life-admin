@@ -7,7 +7,8 @@ import {
 
 export const inventoryRouter = createTRPCRouter({
   getAllInventories: publicProcedure.query(({ ctx }) => {
-    const allInventories = ctx?.prisma?.inventories?.findMany({where:{createdBy:ctx.session.token.id}});
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const allInventories = ctx?.prisma?.inventories?.findMany({where:{createdBy:ctx?.session?.token?.id}});
     return allInventories;
   }),
   createInventory: publicProcedure

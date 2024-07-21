@@ -1,44 +1,23 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import Card from "../Card";
-import CardTitle from "../Card/CardTitle";
-import Textbox from "../Textbox";
-import Button from "../Button";
-import Table from "../Table";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import { useRouter } from "next/navigation";
 import { STAFF_DETAILS_CONSTANTS } from "~/constants/staffConstants";
-import { STAFF_DETAILS_CONSTANTS_TYPES, STAFF_TYPES } from "~/types/staff";
-import { Controller, useForm } from "react-hook-form";
+import type { STAFF_TYPES } from "~/types/staff";
+import { useForm } from "react-hook-form";
 import { FormContext } from "~/pages/staff/AddStaff/AddStaffMultiFormLayout";
-import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import { api } from "~/utils/api";
-import TimePicker from "react-time-picker";
-import Select from "react-select";
+
 import AddForm from "~/common/AddForm";
 
 const AddStaff = () => {
-  let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
   const {
-    control,
     getValues,
-    reset,
-    trigger,
-    formState: { errors },
-  } = useForm<STAFF_TYPES>({ mode: "onSubmit" });
-  const currentFormValues = getValues();
-  const hasExecuted = useRef(true);
 
-  const router = useRouter();
-  const [filterByName, setFilterByName] = useState("");
-  const [loading, setLoading] = useState(false);
-  const handleIsLoading = (isLoading: boolean) => {
-    setLoading(isLoading);
-  };
+  } = useForm<STAFF_TYPES>({ mode: "onSubmit" });
+
   const { data: payroll } = api.staffPayroll.getAllPayroll.useQuery();
   const { data: designation } =
     api.staffDesignation.getAllDesignation.useQuery();
@@ -111,7 +90,7 @@ const AddStaff = () => {
         }
     setFormConstantValues(updatedFormConstantValues);
 
-  }, [formConstantValues, JSON.stringify(payroll),JSON.stringify(designation),JSON.stringify(centers)]);
+  }, [centers, designation, formConstantValues, payroll]);
 
 
   // useEffect(() => {

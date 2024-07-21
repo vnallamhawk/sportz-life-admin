@@ -42,7 +42,7 @@ type CreateContextOptions = {
  *
  * @see https://create.t3.gg/en/usage/trpc#-serverapitrpcts
  */
-const createInnerTRPCContext = (opts: CreateContextOptions,token:JWT|null) => {
+const createInnerTRPCContext = (opts: CreateContextOptions) => {
    const session=opts.session
    
 
@@ -62,14 +62,13 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
      // Example of setting up async storage (getToken) in context
 
-  const token = await getToken({ req, secret: process.env.JWT_SECRET });
 
   // Get the session from the server using the getServerSession wrapper function
   const session = await getServerSession( req, res ,authOptions);
 
   return createInnerTRPCContext({
     session,
-  },token);
+  });
 };
 
 /**
@@ -119,7 +118,6 @@ export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  console.log(ctx,"sdbsdfhfhhjfdh")
   if (!ctx.session || ctx.session.user !== null) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }

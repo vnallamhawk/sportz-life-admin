@@ -36,14 +36,15 @@ export const authOptions: AuthOptions = {
     secret: process.env.JWT_SECRET,
   },
   callbacks: {
-    async jwt(token) {
-      let obj={...token?.token}
+     jwt(token) {
+      const obj={...token?.token}
       if(!obj.id && token?.user?.id){
         obj.id=token?.user?.id
       }
       return obj;
     },
-    async session(session, token) {    
+     session(session, token) {    
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       session.user = {
         id: token?.id,
       };

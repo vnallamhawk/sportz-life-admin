@@ -40,7 +40,6 @@ export const athleteRouter = createTRPCRouter({
 
         return athletes;
       } catch (error) {
-        console.log("error are ", error);
       }
     }),
   getAthleteByName: publicProcedure

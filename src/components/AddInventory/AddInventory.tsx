@@ -1,18 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import Card from "../Card";
-import CardTitle from "../Card/CardTitle";
-import Textbox from "../Textbox";
-import Button from "../Button";
-import Table from "../Table";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { useRouter } from "next/navigation";
-import Select from "../Select";
-import Image from "next/image";
-import Plus from "../../images/plus.svg";
-import Remove from "../../images/remove.svg";
-// import { options } from "../../constants/inventoryConstant";
-import InventoryTableHeader from "../Inventory/InventoryTableHeader";
-import InventoryTableBody from "../Inventory/InventoryTableBody";
 import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
 import AddInventoryModal from "./AddInventoryModal";
 import { api } from "~/utils/api";
@@ -21,8 +8,6 @@ import AddForm from "~/common/AddForm";
 import { INVENTORY_TABLE_HEADERS } from "~/constants/inventoryConstant";
 
 const AddInventory = (props) => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const [inventories, setInventories] = useState([]);
   const [finalOptions, setFinalOptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -30,9 +15,7 @@ const AddInventory = (props) => {
   const { data: allInventories } = api.inventory.getAllInventories.useQuery();
   const { data: sessionData } = useSession();
 
-  const handleIsLoading = (isLoading: boolean) => {
-    setLoading(isLoading);
-  };
+
   const { mutate: createMutate } = api.inventory.createInventory.useMutation({
     onSuccess: (response) => {
       let arr: any = [...finalOptions];
@@ -101,7 +84,6 @@ const AddInventory = (props) => {
 
     setShowModal(false);
 
-    // api for create inventory
   };
 
   return (

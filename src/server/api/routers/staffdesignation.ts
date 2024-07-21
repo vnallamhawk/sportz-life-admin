@@ -10,7 +10,8 @@ export const staffDesignationRouter = createTRPCRouter({
     const allDesignation = ctx?.prisma.staffDesignation?.findMany({
       where: {
         deletedAt: null,
-        createdBy: ctx.session.token.id,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        createdBy: ctx?.session?.token?.id,
       },
       // include: {
       //   CoachSportsMaps: true,

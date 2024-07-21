@@ -27,9 +27,8 @@ const coachingSportsSchema = z.array(
 export const coachRouter = createTRPCRouter({
   getAllCoaches: publicProcedure.query(({ ctx }) => {
     const allCoaches = ctx?.prisma.coaches?.findMany({
-      // include: {
-      //   CoachSportsMaps: true,
-      // },
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      where:{createdBy:ctx?.session?.token?.id}
     });
     return allCoaches;
   }),
@@ -41,7 +40,6 @@ export const coachRouter = createTRPCRouter({
     )
     .query(async (opts) => {
       try {
-        console.log("opts are", opts);
         const coaches = await opts.ctx?.prisma?.coaches?.findUnique({
           where: {
             id: opts.input.id,
@@ -94,6 +92,7 @@ export const coachRouter = createTRPCRouter({
         gender: z.enum(GENDER_VALUES),
         dateOfBirth: z.date(),
         trainingLevel: z.enum(TRAINING_LEVEL),
+        createdBy:z.number()
 
       })
     )
@@ -106,7 +105,8 @@ export const coachRouter = createTRPCRouter({
           designation,
           gender,
           dateOfBirth,
-          trainingLevel
+          trainingLevel,
+          createdBy
         },
         ctx,
       }) => {
@@ -120,6 +120,7 @@ export const coachRouter = createTRPCRouter({
             gender: gender.toLowerCase(),            
             dateOfBirth: dateOfBirth,
             trainingLevel: trainingLevel,
+            createdBy
           },
         });
         return response;

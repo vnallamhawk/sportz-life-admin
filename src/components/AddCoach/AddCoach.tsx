@@ -1,32 +1,23 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
-import CardTitle from "~/components/Card/CardTitle";
 import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
-import Textbox from "~/components/Textbox";
 import {
   type COACH_TYPES,
-  type COACH_DETAILS_CONSTANTS_TYPES,
 } from "~/types/coach";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
-import Button from "../Button";
-import { Controller, useForm } from "react-hook-form";
-import Datepicker from "~/components/DatePicker/DatePickerWrapper";
+import { useForm } from "react-hook-form";
+
 import { api } from "~/utils/api";
-import Select from "react-select";
 import AddForm from "~/common/AddForm";
 
 export default function AddCoach() {
-  let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
   const {
-    control,
     getValues,
     reset,
-    trigger,
-    formState: { errors },
   } = useForm<COACH_TYPES>({ mode: "onSubmit" });
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
