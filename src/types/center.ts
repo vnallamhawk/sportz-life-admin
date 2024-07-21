@@ -1,15 +1,6 @@
-import type { Sports } from "@prisma/client";
-import {
-  //   type Coaches,
-  //   type Batches,
-  type Centers,
-  // type CoachesOnBatches,
-  // type Certificates,
-  // type CoachesOnSports
-} from "@prisma/client";
 import { type Pattern, type Rules } from "./rules";
 import { type MultiSelectOption } from "./select";
-import { type BatchTableData } from "./batch";
+
 
 export const InputType = ["textbox", "select", "calendar"] as const;
 

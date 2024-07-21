@@ -1,5 +1,5 @@
 import { type Pattern, type Rules } from "./rules";
-import { MultiSelectOption } from "./select";
+import type { MultiSelectOption } from "./select";
 
 export interface BatchTableData {
   centerName: string;

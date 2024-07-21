@@ -1,136 +1,17 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext,  useState } from "react";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
-import TableListView from "~/common/TableListView";
 import CardTitle from "~/components/Card/CardTitle";
-import Image, { StaticImageData } from "next/image";
-import CoachImg from "../../images/CoachesImg.png";
-import Plus from "../../images/plus.svg";
-import BatchImg from "../../images/BatchesImg.png";
+import Image from "next/image";
+
 import Edit from "../../images/ic_fluent_edit_16_filled.svg";
-import SearchIcon from "../../images/search.png";
-import AtheleteImg from "../../images/AthelteImg.png";
-import InventoryImg from "../../images/InventoryImg.png";
-import ChevronDown from "../../images/chevron-down.svg";
-import AddBatchCenter from "../addBatchCenter";
-import BatchDetails from "../batchdetails";
-import { prisma } from "~/server/db";
-import { type GetServerSidePropsContext } from "next";
-import type { Centers } from "@prisma/client";
-import { centerWiseCountData } from "../../__stubs__/dashboardStubs";
-import { api } from "~/utils/api";
-import {
-  Tabs,
-  TabsHeader,
-  TabsBody,
-  Tab,
-  TabPanel,
-} from "@material-tailwind/react";
 
-// import { type Sports } from "@prisma/client";
 
-// import {
-//   type CoachWithRelations,
-//   ExperienceLevelEnum,
-//   TrainingLevelEnum,
-// } from "~/types/coach";
-import AddCenterSuccessToast from "~/components/AddCenter/AddCenterSuccessToast";
 import { ToastContext } from "~/contexts/Contexts";
-// import CoachCertificate from "~/components/Coach/Certificate/CoachCertificates";
-// import { dateFormat } from "~/helpers/date";
-// import CoachBatch from "~/components/Coach/Batch/CoachBatch";
-// import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
-import CoachTableHeader from "~/components/AllCoaches/CoachTableHeader";
-import CoachTableBody from "~/components/AllCoaches/CoachTableBody";
-import Search from "~/components/Search";
-import Filter from "~/components/Filter/Filter";
-import CenterDashCoachTableHeader from "~/components/CenterDashboardTables/Coach/CenterDashCoachTableHeader";
-import CenterDashBatchTableHeader from "~/components/CenterDashboardTables/Batch/CenterDashBatchTableHeader";
-import CenterDashAthleteTableHeader from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableHeader";
-import CenterDashInventoryTableHeader from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableHeader";
-import CenterDashBatchTableBody from "~/components/CenterDashboardTables/Batch/CenterDashBatchTableBody";
-import CenterDashCoachTableBody from "~/components/CenterDashboardTables/Coach/CenterDashCoachTableBody";
-import CenterDashAthleteTableBody from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableBody";
-import CenterDashInventoryTableBody from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableBody";
+
 import { useRouter } from "next/router";
 import Slider from "react-slick";
-import Calendar from "react-calendar";
-import { BarChart } from "recharts";
 
-// export const getServerSideProps = async (
-//   context: GetServerSidePropsContext
-// ) => {
-//   const id = context?.params?.id;
-//   // const sports = await prisma.sports.findMany();
-//   const center = await prisma.centers.findUnique({
-//     where: {
-//       id: id ? Number(id) : undefined,
-//     },
-//     include: {
-//       CenterSports: {
-//         include: {
-//           Sports: true,
-//         },
-//       },
-//       CenterInventories: {
-//         include: {
-//           Inventories: true,
-//         },
-//       },
-//       Batches:{
-//         include:{
-//           BatchSchedules:true,
-//           Sports:true
-//         }
-//       }
-//     },
-//   });
-
-//   return {
-//     props: {
-//       center: JSON.parse(JSON.stringify(center)), // <== here is a solution
-//     },
-//   };
-// };
-
-const tabs = [
-  {
-    label: "Coaches",
-    name: "coaches",
-    value: "05",
-    image: CoachImg,
-    allLabel: "All Coaches",
-  },
-  {
-    label: "Batches",
-    name: "batches",
-    value: "04",
-    image: BatchImg,
-    allLabel: "All Batches",
-  },
-  {
-    label: "Atheletes",
-    name: "athletes",
-    value: "66",
-    image: AtheleteImg,
-    allLabel: "All Athelte",
-  },
-  {
-    label: "Inventories",
-    name: "inventories",
-    value: "15",
-    image: InventoryImg,
-    allLabel: "All Inventory",
-  },
-];
-
-type TabsType = {
-  label: string;
-  name: string;
-  value: string;
-  image: StaticImageData;
-  allLabel: string;
-};
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -144,7 +25,7 @@ const DetailPage = ({
   tabs,
   handleTabClick,
   selectedComponent
-}) => {
+}:any) => {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
   const [displayBatch, setDisplayBatch] = useState(false);

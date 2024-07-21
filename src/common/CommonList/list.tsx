@@ -3,7 +3,7 @@
 import Image from "next/image";
 import User from "../../images/user.png";
 
-const CommonList= (props)=> {
+const CommonList= (props:any)=> {
   return (
     <>
       <div className="flex justify-between items-center border border-gray-300 rounded-xl p-4 mb-3" onClick={()=>props?.onViewClick(props?.item?.id)}>

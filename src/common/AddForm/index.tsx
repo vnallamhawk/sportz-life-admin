@@ -49,7 +49,7 @@ const AddForm = ({
     formState: { errors },
   } = useForm<any>({ mode: "onSubmit" });
 
-  const [currentTableData, setCurrentTableData] = useState({});
+  const [currentTableData, setCurrentTableData] = useState<any>({});
 
   const nextClickHandler = async () => {
     const result = await trigger();
@@ -68,9 +68,9 @@ const AddForm = ({
     setCurrentStep && setCurrentStep(currentStep - 1);
   };
 
-  const handleChangeCurrentData = (name, data,value) => {
-    let obj = { ...currentTableData };
-    if(data && Object.keys(data).length>0){
+  const handleChangeCurrentData = (name:string, data:{label:string,value:string},value:string|number) => {
+    const obj: any = { ...currentTableData };
+    if(data && Object.keys(data).length>0 && data?.label && data?.value){
       obj[name] = data?.value;
       obj['name'] = data?.label;
     }else{
@@ -94,13 +94,13 @@ const AddForm = ({
     finalFormSubmissionHandler(finalFormData);
   };
 
-  const handleChangeTime = (value, name) => {
-    let obj = { ...formData };
+  const handleChangeTime = (value:string|boolean, name:string) => {
+    let obj :any= { ...formData };
     obj[name] = value;
     setFormData(obj);
   };
 
-  const getInputElement = (props) => {
+  const getInputElement = (props:any) => {
     const { type, rules, id, pattern, placeHolder } = props;
     switch (type) {
       case "select":
@@ -236,7 +236,7 @@ const AddForm = ({
       )}
       {formConstantValues && formConstantValues.length > 0 && (
         <div className="grid-col-1 mt-8 grid gap-x-8 gap-y-4 lg:grid-cols-2 lg:gap-y-8 ">
-          {formConstantValues.map((formValues) => (
+          {formConstantValues?.map((formValues:any) => (
             <div key={formValues.id}>
               {getInputElement(formValues)}
 
@@ -288,7 +288,7 @@ const AddForm = ({
             </Button>
           )}
           <div className="mt-4 flex flex-col items-start lg:flex-row">
-            {tableFields?.map((item) => {
+            {tableFields?.map((item:any) => {
               return (
                 <>
                   {item?.type === "textarea" ? (
@@ -297,7 +297,7 @@ const AddForm = ({
                       className="border-1 h-40 w-full grow rounded-lg border-gray-300 pl-5 focus:border-gray-600 focus:outline-none focus:ring-0 lg:h-20"
                       value={currentTableData[item?.name]}
                       onChange={(e) => {
-                        handleChangeCurrentData(item?.name,{}, e.target.value);
+                        handleChangeCurrentData(item?.name,{label:"",value:""}, e.target.value);
                       }}
                     />
                   ) : item?.type === "select" ? (
@@ -317,7 +317,7 @@ const AddForm = ({
                       value={currentTableData[item?.name]}
                       type={item?.type}
                       onChange={(e) => {
-                        handleChangeCurrentData(item?.name,{},item?.type==="number"?parseInt(e.target.value):e.target.value);
+                        handleChangeCurrentData(item?.name,{label:"",value:""},item?.type==="number"?parseInt(e.target.value):e.target.value);
                       }}
                     />
                   )}
@@ -345,7 +345,7 @@ const AddForm = ({
             <table className="common-table w-full min-w-max table-auto  border-separate border-spacing-y-3 text-left">
               <thead>
                 <tr>
-                  {TableHeadings?.map((head, index) => {
+                  {TableHeadings?.map((head:{label:string,id:string}, index:number) => {
                     return (
                       <th
                         className="w-20 pl-7 font-medium text-gray-400"
@@ -358,10 +358,10 @@ const AddForm = ({
                 </tr>
               </thead>
               <tbody>
-                {tableData?.map((data, dataIndex) => {
+                {tableData?.map((data:any, dataIndex:number) => {
                   return (
                     <tr key={dataIndex}>
-                      {TableHeadings?.map((head, headIndex) => {
+                      {TableHeadings?.map((head:{label:string,id:string}, headIndex:number) => {
                         return (
                           <td key={headIndex}>
                             {head?.id !== "action" ? (

@@ -16,6 +16,9 @@ import { staffDesignationRouter } from "./routers/staffdesignation";
 import { taxSlabRouter } from "./routers/taxSlabs";
 import { staffTimingRouter } from "./routers/staffTimings";
 import { athleteRouter } from "./routers/athlete";
+import { coachCertificateRouter } from "./routers/coachCertifications";
+import { coachBatchesRouter } from "./routers/coachBatches";
+import { coachSportsRouter } from "./routers/coachSports";
 
 /**
  * This is the primary router for your server.
@@ -38,7 +41,10 @@ export const appRouter = createTRPCRouter({
   staffDesignation:staffDesignationRouter,
   tabSlab:taxSlabRouter,
   staffTimings:staffTimingRouter,
-  athlete:athleteRouter
+  athlete:athleteRouter,
+  coachCertificate:coachCertificateRouter,
+  coachBatches:coachBatchesRouter,
+  coachSports:coachSportsRouter
 });
 
 // export type definition of API

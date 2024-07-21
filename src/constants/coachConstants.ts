@@ -29,7 +29,7 @@ export const COACH_TABLE_HEADERS = [
   },
   {
     label: "Contact No",
-    id: "contactNo",
+    id: "phone",
   },
   {
     id: "action",
@@ -82,7 +82,7 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
   },
   {
     label: "Phone Number",
-    id: "contactNumber",
+    id: "phone",
     type: "textbox",
     rules: {
       required: true,

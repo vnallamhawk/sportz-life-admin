@@ -88,84 +88,38 @@ export const coachRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        about: z.string(),
-        contactNumber: z.string(),
+        phone: z.string(),
         email: z.string(),
         designation: z.string(),
         gender: z.enum(GENDER_VALUES),
-        certificates: certificatesSchema,
         dateOfBirth: z.date(),
-        sports: coachingSportsSchema,
         trainingLevel: z.enum(TRAINING_LEVEL),
-        experienceLevel: z.enum(EXPERIENCE_LEVEL),
-        batchIds: z.array(z.number()),
-        centerIds: z.array(z.number()),
+
       })
     )
     .mutation(
       async ({
         input: {
           name,
-          about,
-          contactNumber,
+          phone,
           email,
           designation,
           gender,
-          certificates,
           dateOfBirth,
-          sports,
-          trainingLevel,
-          experienceLevel,
-          batchIds,
-          centerIds,
+          trainingLevel
         },
         ctx,
       }) => {
-        console.log("centerIds", centerIds);
-        const sportsId = sports.map(({ value }) => value);
+
         const response = await ctx.prisma.coaches.create({
           data: {
             name: name,
-            about: about,
-            // contactNumber: contactNumber,
+             phone: phone,
             email: email,
             designation: designation,
-            gender: gender.toLowerCase(),
-            // certificates: {
-            //   create: certificates,
-            // },
-            // sports: {
-            //   create: sportsId.map((id) => ({
-            //     sport: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            centerId: 1,
-            // centers: {
-            //   create: centerIds.map((id) => ({
-            //     center: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            // batches: {
-            //   create: batchIds.map((id) => ({
-            //     batch: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            experience: "",
+            gender: gender.toLowerCase(),            
             dateOfBirth: dateOfBirth,
-            trainingLevel: "advanced",
-            experienceLevel: "two_five",
+            trainingLevel: trainingLevel,
           },
         });
         return response;

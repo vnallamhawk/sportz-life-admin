@@ -405,7 +405,6 @@ model Centers {
   AssessmentCenters      AssessmentCenters[]
   AthleteSportsMaps      AthleteSportsMaps[]
   CoachCentersBatches    CoachCentersBatches[]
-  Coaches                Coaches[]
   ScheduledCenterBatches ScheduledCenterBatches[]
   CenterInventories           CenterInventories[]
   CenterSports      CenterSports[]
@@ -498,8 +497,6 @@ model Coaches {
   email                     String?                     @unique(map: "email") @db.VarChar(255)
   about                     String                      @db.Text
   payrollId                 Int?
-  experienceLevel           Coaches_experienceLevel
-  centerId                  Int?
   status                    Int?                        @default(1) @db.TinyInt
   createdAt                 DateTime                    @default(now())
   updatedAt                 DateTime                    @default(now())
@@ -510,7 +507,6 @@ model Coaches {
   CoachCentersBatches       CoachCentersBatches[]
   CoachQualifications       CoachQualifications[]
   CoachSportsMaps           CoachSportsMaps[]
-  Centers                   Centers?                    @relation(fields: [centerId], references: [id], onDelete: NoAction, map: "Coaches_ibfk_642")
   InjuryLogs                InjuryLogs[]
   Ratings                   Ratings[]
   ScheduledCenterBatches    ScheduledCenterBatches[]
@@ -521,7 +517,6 @@ model Coaches {
  Admin            Admin   @relation(fields: [createdBy], references: [id], map: "CoachesAdmin_ibfk_1")
   @@index([createdBy], map: "createdBy")
 
-  @@index([centerId], map: "centerId")
 }
 
 model Colors {

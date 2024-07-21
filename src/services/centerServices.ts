@@ -1,8 +1,8 @@
-import { type Center } from "@prisma/client";
+import { type Centers } from "@prisma/client";
 
-export const centerDictionaryServices = (center?: Center[]) => {
+export const centerDictionaryServices = (center?: Centers[]) => {
   return center?.length
-    ? center.reduce((accumulator: Record<Center["id"], Center>, current) => {
+    ? center.reduce((accumulator: Record<Centers["id"], Centers>, current) => {
         accumulator[current.id] = current;
         return accumulator;
       }, {})
