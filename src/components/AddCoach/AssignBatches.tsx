@@ -37,6 +37,7 @@ export default function AssignBatches({
     COACH_BATCH_CONSTANTS
   );
   const [tableData, setTableData] = useState<BatchTableData[]>([]);
+  const [centerId,setCenterId]=useState<number>()
   const {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData,setFormData },
@@ -71,8 +72,10 @@ export default function AssignBatches({
   }, [formConstantValues, centers, centers?.length,batches,]);
 
 useEffect(()=>{
-  if(formData?.center){
-    const center=centers?.find((item)=>item?.id==formData?.center?.value)
+  debugger
+  
+  if(centerId){
+    const center=centers?.find((item)=>item?.id==centerId)
     if (center?.Batches?.length >0) {
      const updatedFormConstantValues = formConstantValues?.map(
        (formConstant) => {
@@ -93,7 +96,7 @@ useEffect(()=>{
 
    }
   }
-},[formData?.center])
+},[centerId])
 
   useEffect(() => {
     if (formData?.batchTableData?.length) {
@@ -101,44 +104,26 @@ useEffect(()=>{
     }
   }, [formData?.batchTableData]);
 
-  const submitCallback = () => {
+  const submitCallback = (finalData) => {
     const finalFormData = {
-      ...formData,
-      batchIds: tableData?.reduce<number[]>((accumulator, current) => {
-        if (current?.batchIds?.length) {
-          accumulator.push(...current.batchIds);
-        }
-        return accumulator;
-      }, []),
-      centerIds: tableData?.reduce<number[]>((accumulator, current) => {
-        if (current.centerId) {
-          accumulator.push(Number(current.centerId));
-        }
-        return accumulator;
-      }, []),
+      ...finalData,
+      coachBatches:tableData,
     };
     finalFormSubmissionHandler(finalFormData);
   };
 
-  const onAddBatchHandler = async (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    const data = getValues();
-    const tableDataFormatter = formatBatchesTableData(data);
-    const result = await trigger();
-
-    // eslint-disable-next-line no-console
-
-    if (result && Object.keys(errors).length === 0) {
-      if (tableData?.length) {
-        setTableData((prev) => [...prev, tableDataFormatter]);
-      } else {
-        setTableData([tableDataFormatter]);
-      }
-      reset();
+  const onAddBatchHandler = async (data) => {
+    const arr=[...tableData]
+    const batches=data?.batches && data?.batches.length>0?[...data?.batches]:[]
+    for(let i=0;i<batches.length;i++){
+      const obj={...data,centerId:data?.center?.value,batchId:data?.batches[i]?.value,}
+      arr.push(obj)
     }
-  };
+  
+    setTableData(arr)
+    }
+  
 
-  console.log(formConstantValues,"formConstantValuesformConstantValues");
 
   return (
     <div>
@@ -154,15 +139,18 @@ useEffect(()=>{
         tableTitle="Batches"
         mobileAddButtonText="Add another center's batch"
         TableHeadings={[
-          { label: "Center", id: "center" },
-          { label: "Batches", id: "batches" },
+          { label: "Center", id: "centerId" },
+          { label: "Batches", id: "batchId" },
           { label: "Action", id: "action" },
         ]}
         // tableFields={formConstantValues}
-        tablekey="batchTableData"
+        tablekey="coachBatches"
         tableData={tableData}
+        isFormTable={true}
         addTableData={onAddBatchHandler}
         finalFormSubmissionHandler={submitCallback}
+        dependentKey="center"
+        setDependentKey={(value)=>setCenterId(value)}
       />
     </div>
   );

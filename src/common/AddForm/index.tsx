@@ -39,6 +39,8 @@ const AddForm = ({
   prevButtonText="Prev",
   finishButtonText="Finish",
   prevButtonClick,
+  dependentKey,
+  setDependentKey
 }:any) => {
   let inputElement;
   const {
@@ -121,6 +123,9 @@ const AddForm = ({
                   classNamePrefix="react-select"
                   onChange={(element) => {
                     onChange(element);
+                    if(dependentKey && dependentKey===id){
+                      setDependentKey(element?.value)
+                    }
                   }}
                 />
               );

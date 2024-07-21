@@ -39,52 +39,29 @@ export default function AddCoachCertificates({}) {
     multiFormData: { formData, setFormData },
   } = useContext<FormContextTypes>(FormContext);
 
- 
-  const [certificates, setCertificates] = useState<COACH_CERTIFICATE_TABLE_TYPES[]>(
-    []
-  );
+  const [certificates, setCertificates] = useState<
+    COACH_CERTIFICATE_TABLE_TYPES[]
+  >([]);
   const [formConstantValues, setFormConstantValues] = useState(
     COACH_CERTIFICATES_CONSTANTS
   );
 
-  // eslint-disable-next-line no-console
+  const onAddHandler = (data: any) => {
+    const arr: any = [...certificates];
 
-  const onAddHandler = async () => {
-    const data = getValues();
-    let result = true;
-    if (!data.name || !data.instituteName) {
-      result = await trigger();
-    }
-    if (data.startDate) data.startDate = dateFormat(new Date(data.startDate));
+    const obj: unknown = {
+      ...data,
+      startDate: dateFormat(new Date(data.startDate)),
+      endDate: dateFormat(new Date(data.endDate)),
+      certificateType: data?.certificates?.value,
+    };
+    arr.push(obj);
 
-    if (data.endDate) data.endDate = dateFormat(new Date(data.endDate));
-
-    if (result) {
-      if (certificates?.length) {
-        setCertificates([data, ...tableData]);
-      } else {
-        setCertificates([data]);
-      }
-      reset();
-    }
-  };
-
-  const prevClickHandler = () => {
-    setFormData && setFormData({ ...formData, certificates: tableData });
-    setCurrentStep && setCurrentStep(currentStep - 1);
-  };
-
-  const onNextClickHandler = () => {
-    if (Object.keys(errors).length === 0) {
-      setFormData && setFormData({ ...formData, certificates: tableData });
-      setCurrentStep && setCurrentStep(currentStep + 1);
-    }
+    setCertificates(arr);
   };
 
   useEffect(() => {
     if (formData?.certificates) {
-      // eslint-disable-next-line no-console
-      console.log(formData?.certificates);
       setCertificates(formData.certificates);
     }
   }, [formData?.certificates]);
@@ -103,16 +80,16 @@ export default function AddCoachCertificates({}) {
         tableTitle="Certificates"
         mobileAddButtonText="Add another certificate"
         TableHeadings={[
-          { label: "Certificate", id: "certificate" },
-          { label: "Institute", id: "institute" },
+          { label: "Certificate", id: "certificateType" },
+          { label: "Institute", id: "instituteName" },
           { label: "Action", id: "action" },
         ]}
+        isFormTable={true}
         // tableFields={formConstantValues}
         tablekey="certificates"
         tableData={certificates}
         addTableData={onAddHandler}
       />
-     
     </>
   );
 }

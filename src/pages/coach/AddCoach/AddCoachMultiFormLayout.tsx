@@ -27,6 +27,7 @@ import { getSportsDictionaryServices } from "~/services/sportServices";
 import { type BatchTableData } from "~/types/batch";
 import { dateFormat } from "~/helpers/date";
 import { type MultiSelectOption } from "~/types/select";
+import { useSession } from "next-auth/react";
 
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: "",
@@ -75,13 +76,14 @@ export default function AddCoachMultiFormLayout() {
   );
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
-  const { data: sports } = api.sports.getAllSports.useQuery();
-  const { data: centers } = api.center.getAllCenters.useQuery();
+
+  const [coachId, setCoachId] = useState<number>();
 
   const { data: coach } = id && api.coach.getCoachById.useQuery({ id });
 
   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCoachUseEffectRun = useRef(false);
+  const { data: sessionData } = useSession();
 
   useEffect(() => {
     if (coach && !hasCoachUseEffectRun.current) {
@@ -98,6 +100,7 @@ export default function AddCoachMultiFormLayout() {
   const { mutate: createMutate } = api.coach.createCoach.useMutation({
     onSuccess: (response) => {
       console.log("response data is ", response);
+      setCoachId(reponse?.id);
       setOpenToast(true);
       void router.push(`/coach/${response?.id ?? ""}`);
     },
@@ -120,57 +123,93 @@ export default function AddCoachMultiFormLayout() {
     );
   }, []);
 
+  const { mutate: createMutateCoachSports } =
+    api.coachSports.createCoachSports.useMutation({
+      onSuccess: (response) => {
+        console.log("response data is ", response);
+
+        return response;
+      },
+    });
+  const { mutate: createMutateCoachCertificates } =
+    api.coachCertificate.createCoachCertificates.useMutation({
+      onSuccess: (response) => {
+        console.log("response data is ", response);
+        return response;
+      },
+    });
+
+  const { mutate: createMutateCoachBatches } =
+    api.coachBatches.createCoachbatches.useMutation({
+      onSuccess: (response) => {
+        console.log("response data is ", response);
+        router.push(`/coach/${coachId ?? ""}`);
+
+        return response;
+      },
+    });
+
+  useEffect(() => {
+    if (
+      formData &&
+      Object.keys(formData)?.length > 0 &&
+      formData?.coachingSports &&
+      formData?.certificates &&
+      formData?.coachBatches &&
+      coachId
+    ) {
+      const finalCoachSports = formData?.coachingSports?.map((v) => ({
+        sportsId: v.value,
+        ...v,
+        coachId,
+      }));
+
+      createMutateCoachSports(finalCoachSports);
+
+      const finalCertificates = formData?.certificates?.map((v) => ({
+        ...v,
+        startDate: new Date(v.startDate),
+        endDate: new Date(v.endDate),
+        coachId,
+      }));
+      createMutateCoachCertificates(finalCertificates);
+
+      const finalCenterBatches = formData?.coachBatches?.map((v) => ({
+        ...v,
+        centerId: v.center?.value,
+        batchId: v.batches?.value,
+        coachId,
+      }));
+      createMutateCoachBatches(finalCenterBatches);
+    }
+  }, [coachId, formData]);
+
   const finalFormSubmissionHandler = (
     finalForm: Required<MULTI_FORM_TYPES>
   ) => {
     if (formData.isEditMode) {
       editMutate({
         name: finalForm.name,
-        about: finalForm.about,
-        contactNumber: finalForm.contactNumber,
+        phone: finalForm.phone,
         email: finalForm.email,
-        designation: finalForm.designation,
+        designation: finalForm.designation?.value,
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-        certificates: finalForm.certificates.map((certificate) => ({
-          ...certificate,
-          startDate: new Date(certificate.startDate),
-          endDate: new Date(certificate.endDate),
-        })),
         dateOfBirth: new Date(finalForm.dateOfBirth),
-        sports: finalForm.coachingSports,
         trainingLevel: finalForm.trainingLevel
           .value as (typeof TRAINING_LEVEL)[number],
-        experienceLevel: finalForm.experienceLevel
-          .value as (typeof EXPERIENCE_LEVEL)[number],
-        batchIds: finalForm.batchIds,
-        centerIds: finalForm.centerIds,
         coachId: finalForm.coachId,
       });
     } else {
-      // eslint-disable-next-line no-console
-      console.log(finalForm);
-      // eslint-disable-next-line no-console
-      console.log(finalForm, "djbsdbfn");
       createMutate({
         name: finalForm.name,
-        about: finalForm.about,
-        contactNumber: finalForm.contactNumber,
+        phone: finalForm.phone,
         email: finalForm.email,
-        designation: finalForm.designation,
+        designation: finalForm.designation?.value,
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-        certificates: finalForm.certificates.map((certificate) => ({
-          ...certificate,
-          startDate: new Date(certificate.startDate),
-          endDate: new Date(certificate.endDate),
-        })),
         dateOfBirth: new Date(finalForm.dateOfBirth),
-        sports: finalForm.coachingSports,
         trainingLevel: finalForm.trainingLevel
           .value as (typeof TRAINING_LEVEL)[number],
-        experienceLevel: finalForm.experienceLevel
-          .value as (typeof EXPERIENCE_LEVEL)[number],
-        batchIds: finalForm.batchIds,
-        centerIds: finalForm.centerIds,
+        createdBy: sessionData?.token?.id,
       });
     }
   };
@@ -179,9 +218,9 @@ export default function AddCoachMultiFormLayout() {
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 1&& <AddCoach />}
+          {currentStep === 3 && <AddCoach />}
           {currentStep === 2 && <AddCoachCertificates />}
-          {currentStep === 3&& (
+          {currentStep === 1 && (
             <AssignBatches
               // TODO: fix this TS error
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -190,8 +229,10 @@ export default function AddCoachMultiFormLayout() {
             />
           )}
         </Card>
-        <Card className="col-span-2 bg-stone-100 rounded-r-xl !rounded-l-none px-7 lg:block hidden">
-          <div className="font-medium uppercase text-2xl font-heading mb-10">Coach Image</div>
+        <Card className="col-span-2 hidden !rounded-l-none rounded-r-xl bg-stone-100 px-7 lg:block">
+          <div className="mb-10 font-heading text-2xl font-medium uppercase">
+            Coach Image
+          </div>
 
           <div>
             {preview.length ? (
@@ -202,7 +243,7 @@ export default function AddCoachMultiFormLayout() {
                     key={index}
                   >
                     <ImageWithFallback
-                      className="rounded-full mx-auto mb-6"
+                      className="mx-auto mb-6 rounded-full"
                       src={upFile.preview}
                       alt="preview"
                       height={205}
@@ -219,7 +260,7 @@ export default function AddCoachMultiFormLayout() {
                   alt="preview"
                   height={205}
                   width={205}
-                  className="rounded-full mx-auto mb-6"
+                  className="mx-auto mb-6 rounded-full"
                   fallbackSrc="/images/fallback-1.png"
                 />
               </div>

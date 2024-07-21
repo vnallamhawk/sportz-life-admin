@@ -69,18 +69,6 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     },
   },
   {
-    label: "About",
-    id: "about",
-    type: "textbox",
-    rules: {
-      required: true,
-      maxLength: {
-        value: 80,
-        message: "Too Many Characters",
-      },
-    },
-  },
-  {
     label: "Phone Number",
     id: "phone",
     type: "textbox",
@@ -160,21 +148,6 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
       { label: "Advanced Level", value: "ADVANCED_LEVEL" },
     ],
     placeHolder: "Training level expertise",
-    rules: {
-      required: true,
-    },
-  },
-  {
-    label: "Years of Coaching Experience",
-    id: "experienceLevel",
-    type: "select",
-    options: [
-      { label: "0-1 year", value: "ZERO_ONE" },
-      { label: "2-5 years", value: "TWO_FIVE" },
-      { label: "6-10 years", value: "SIX_TEN" },
-      { label: "10+ years", value: "TEN_OVER" },
-    ],
-    placeHolder: "Experience Level",
     rules: {
       required: true,
     },
