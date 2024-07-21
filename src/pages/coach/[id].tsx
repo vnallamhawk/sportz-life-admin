@@ -45,8 +45,8 @@ export const getServerSideProps = async (
     },
     include: {
       // CoachSportsMaps: true,
-      Centers: true,
-      Batches: true,
+      // Centers: true,
+      // Batches: true,
       // Batches: true,
     },
   });

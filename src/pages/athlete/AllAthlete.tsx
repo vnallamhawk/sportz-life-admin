@@ -2,7 +2,7 @@ import DashboardHeader from "~/components/DashboardHeader";
 import Filter from "~/components/Filter";
 // import Table from "../../components/CommonTable";
 import Modal from "../../components/Modal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import SearchIcon from "../../images/search.png";
 import Plus from "../../images/plus.svg";
@@ -15,6 +15,8 @@ import TableListView from "~/common/TableListView";
 import AllData from "~/common/AllData";
 import User from "../../images/user.png";
 import { useRouter } from "next/router";
+import { api } from "~/utils/api";
+import moment from "moment-timezone";
 
 const TABLE_HEAD = [
   { label: "Athlete Name", id: "name" },
@@ -25,43 +27,16 @@ const TABLE_HEAD = [
   { label: "Action", id: "action" },
 ];
 
-const TABLE_ROWS = [
-  {
-    img: User,
-    name: "John H. Martin",
-    t_level: "Intermediate",
-    center: "Biswa Bharati Stadium",
-    batch: "Rugby 03 Batch",
-    status: "Paid on 5/7/2023",
-  },
-  {
-    img: User,
-    name: "Robert G. Lioness",
-    t_level: "Advanced",
-    center: "Biswa Bharati Stadium",
-    batch: "Rugby 03 Batch",
-    status: "Due",
-  },
-  {
-    img: User,
-    name: "Emille Johnson",
-    t_level: "Advanced",
-    center: "Biswa Bharati Stadium",
-    batch: "Rugby 03 Batch",
-    status: "Paid on 5/7/2023",
-  },
-  {
-    img: User,
-    name: "John H. Martin",
-    t_level: "Beginner ",
-    center: "Biswa Bharati Stadium",
-    batch: "Rugby 03 Batch",
-    status: "Paid on 5/7/2023",
-  },
-];
 export default function Athlete() {
   const [filterByName, setFilterByName] = useState("");
   const router=useRouter()
+  const [finalData, setFinalData] = useState([]);
+
+
+  const { data: athletes } =
+  filterByName == ""
+    ? api.athlete.getAllAthletes.useQuery()
+    : api.athlete.getAthleteByName.useQuery({ name: filterByName });
 
   const dropdownObj = {
     center: true,
@@ -71,6 +46,38 @@ export default function Athlete() {
     reminder: true,
     freeze: true,
   };
+
+  const { mutate: deleteMutate } = api.athlete.deleteAthlete.useMutation({
+    onSuccess: (response) => {
+      let arr=[...finalData]
+      const index=finalData?.findIndex((item)=>item?.id==response?.id)
+      if(index>-1){
+        arr.splice(index,1)
+      }
+     setFinalData(arr)
+      return response
+    },
+  });
+
+  useEffect(() => {
+    if (athletes && athletes?.length > 0) {
+      const updatedAthletes = athletes.map((athlete) => {
+        return {
+          ...athletes,
+          status: athlete?.designation
+        };
+      });
+      setFinalData(updatedAthletes);
+    }
+  }, [JSON.stringify(athletes)]);
+
+
+  const deleteAthlete=(id:number)=>{
+  
+    deleteMutate({athleteId:id,deletedAt:moment().toISOString()})
+   
+
+  }
 
   return (
     <>
@@ -85,6 +92,8 @@ export default function Athlete() {
         filterByName={filterByName}
         onViewClick={(id) => router.push(`/athlete/${id ?? ""}`)}
         onEditClick={(id) => router.push(`/edit-athlete-${id}`)}
+        onDeleteClick={(id)=>deleteAthlete(id)}
+
       />
       <Modal />
     </>

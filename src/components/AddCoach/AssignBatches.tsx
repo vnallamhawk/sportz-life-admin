@@ -95,13 +95,13 @@ useEffect(()=>{
 
    }
   }
-},[centerId])
+},[centerId, centers, formConstantValues])
 
   useEffect(() => {
-    if (formData?.batchTableData?.length) {
-      setTableData(formData?.batchTableData);
+    if (formData?.coachBatches?.length) {
+      setTableData(formData?.coachBatches);
     }
-  }, [formData?.batchTableData]);
+  }, [formData?.coachBatches]);
 
   const submitCallback = (finalData) => {
     const finalFormData = {
@@ -115,7 +115,7 @@ useEffect(()=>{
     const arr=[...tableData]
     const batches=data?.batches && data?.batches.length>0?[...data?.batches]:[]
     for(let i=0;i<batches.length;i++){
-      const obj={...data,centerId:data?.center?.value,batchId:data?.batches[i]?.value,}
+      const obj={...data,centerId:parseInt(data?.center?.value),batchId:parseInt(data?.batches[i]?.value),}
       arr.push(obj)
     }
   

@@ -14,8 +14,7 @@ import { api } from "~/utils/api";
 import Select from "react-select";
 import AddForm from "~/common/AddForm";
 
-export default function AddGeneralDetails() {
-  let inputElement;
+export default function AddGeneralDetails({finalFormSubmissionHandler}:any) {
   const {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
@@ -27,10 +26,10 @@ export default function AddGeneralDetails() {
     reset,
     trigger,
     formState: { errors },
-  } = useForm<COACH_TYPES>({ mode: "onSubmit" });
+  } = useForm({ mode: "onSubmit" });
   const currentFormValues = getValues();
-  const hasExecuted = useRef(true);
   const { data: centers } = api.center.getAllCenters.useQuery();
+  const [centerId,setCenterId]=useState<number>()
 
   const [formConstantValues, setFormConstantValues] = useState(
     ATHLETE_GENRAL_CONSTANTS
@@ -63,17 +62,18 @@ export default function AddGeneralDetails() {
   }, [formConstantValues, centers, centers?.length]);
 
   useEffect(()=>{
-    if(formData?.center && centers.length>0){
-      const center=centers?.find((item)=>item?.id==formData?.center?.value)
+    if(centerId){
+      const center=centers?.find((item)=>item?.id==centerId)
+      let updatedFormConstantValues
       if (center?.CenterSports?.length ) {
-        const updatedFormConstantValues = formConstantValues?.map(
+         updatedFormConstantValues = formConstantValues?.map(
           (formConstant) => {
             if (formConstant.id === "sport") {
               return {
                 ...formConstant,
-                options: center?.CenterSports?.map((sport: { name: string; id: number }) => ({
-                  label: sport.name,
-                  value: sport.id.toString(),
+                options: center?.CenterSports?.map((CenterSport) => ({
+                  label: CenterSport?.Sports?.name,
+                  value: CenterSport?.Sports?.id.toString(),
                 })),
               };
             } else {
@@ -81,11 +81,29 @@ export default function AddGeneralDetails() {
             }
           }
         );
-        setFormConstantValues(updatedFormConstantValues);
       }
+      if (center?.CenterSports?.length ) {
+         updatedFormConstantValues = updatedFormConstantValues?.map(
+          (formConstant) => {
+            if (formConstant.id === "batch") {
+              return {
+                ...formConstant,
+                options: center?.Batches?.map((batch: { name: string; id: number }) => ({
+                  label: batch.name,
+                  value: batch.id.toString(),
+                })),
+              };
+            } else {
+              return formConstant;
+            }
+          }
+        );
+      }
+      setFormConstantValues(updatedFormConstantValues);
+
     }
 
-  },[formData?.center,centers])
+  },[ centers, centerId, formConstantValues])
 
   useEffect(() => {
     // if (!isEditMode) {
@@ -98,85 +116,8 @@ export default function AddGeneralDetails() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
   //test commit
-  const getInputElement = (props: COACH_DETAILS_CONSTANTS_TYPES) => {
-    const { type, rules, id, pattern, placeHolder } = props;
-    switch (type) {
-      case "select":
-        const { options } = props;
-        inputElement = (
-          <Controller
-            control={control}
-            name={id}
-            rules={rules}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <Select
-                  isMulti={props?.isMulti ?? false}
-                  options={options}
-                  value={value}
-                  placeholder={placeHolder}
-                  className="w-full border-1 border-gray-300 c-select"
-                  classNamePrefix="react-select"
-                  onChange={(element) => {
-                    onChange(element);
-                  }}
-                />
-              );
-            }}
-          />
-        );
-        break;
-      case "calendar":
-        inputElement = (
-          <Controller
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <Datepicker
-                  placeHolder={props.placeHolder}
-                  value={new Date(value as string)}
-                  className="h-12"
-                  onChangeHandler={onChange}
-                />
-              );
-            }}
-            name={id}
-            rules={rules}
-          />
-        );
-        break;
-      default:
-        inputElement = (
-          <Controller
-            control={control}
-            name={id}
-            render={({ field: { onChange, value } }) => (
-              <Textbox
-                className="h-12 w-full"
-                placeHolder={props.label}
-                onChangeHandler={onChange}
-                // TODO: FIX THIS TS ERROR
-                value={value as string}
-              />
-            )}
-            rules={rules}
-            {...(pattern ? { pattern } : {})}
-          />
-        );
-    }
-
-    return inputElement;
-  };
-
-  const nextClickHandler = async () => {
-    const result = await trigger();
-    if (result) {
-      const currentFormValues = getValues();
-      setFormData && setFormData({ ...formData, ...currentFormValues });
-      setCurrentStep && setCurrentStep(currentStep + 1);
-    }
-  };
-
+  
+ 
   return (
     <>
       <AddForm
@@ -187,6 +128,8 @@ export default function AddGeneralDetails() {
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
+        dependentKey="center"
+        setDependentKey={(value)=>setCenterId(value)}
       />
 
 <AddForm
@@ -197,6 +140,7 @@ export default function AddGeneralDetails() {
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
         buttonItems={{prevFinish:true}}
+        finalFormSubmissionHandler={finalFormSubmissionHandler}
       />
 
 

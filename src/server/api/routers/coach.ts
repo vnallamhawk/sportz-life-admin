@@ -123,7 +123,7 @@ export const coachRouter = createTRPCRouter({
             designation: designation,
             gender: gender.toLowerCase(),            
             dateOfBirth: dateOfBirth,
-            trainingLevel: trainingLevel,
+            trainingLevel: trainingLevel.toLowerCase(),
             createdBy
           },
         });

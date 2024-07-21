@@ -142,10 +142,10 @@ export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
     id: "trainingLevel",
     type: "select",
     options: [
-      { label: "Beginner", value: "BEGINNER" },
-      { label: "Developer", value: "DEVELOPER" },
-      { label: "Intermediate Level", value: "INTERMEDIATE_LEVEL" },
-      { label: "Advanced Level", value: "ADVANCED_LEVEL" },
+      { label: "Beginner", value: "beginner" },
+      { label: "Developer", value: "developer" },
+      { label: "Intermediate Level", value: "intermediate" },
+      { label: "Advanced Level", value: "advanced" },
     ],
     placeHolder: "Training level expertise",
     rules: {

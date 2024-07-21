@@ -51,10 +51,10 @@ export interface ASSIGN_BATCHES_TYPES {
 
 export const GENDER_VALUES = ["MALE", "FEMALE"] as const;
 export const TRAINING_LEVEL = [
-  "BEGINNER",
-  "DEVELOPER",
-  "INTERMEDIATE_LEVEL",
-  "ADVANCED_LEVEL",
+  "beginner",
+  "intermediate",
+  "advanced",
+  "developer",
 ] as const;
 export const EXPERIENCE_LEVEL = [
   "ZERO_ONE",
@@ -91,6 +91,7 @@ export interface BatchData {
 }
 
 export interface MULTI_FORM_TYPES extends COACH_TYPES {
+  coachBatches: unknown;
   certificates: COACH_CERTIFICATE_TABLE_TYPES[];
   batchTableData?: BatchTableData[];
   batchIds?: number[];

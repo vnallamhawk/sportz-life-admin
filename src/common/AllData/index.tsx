@@ -27,6 +27,7 @@ const AllData = ({
   showImage = true,
   onViewClick,
   onEditClick,
+  onDeleteClick
 }:any) => {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);

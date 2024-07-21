@@ -100,9 +100,9 @@ export default function AddCoachMultiFormLayout() {
   const { mutate: createMutate } = api.coach.createCoach.useMutation({
     onSuccess: (response) => {
       console.log("response data is ", response);
-      setCoachId(reponse?.id);
+      setCoachId(response?.id);
       setOpenToast(true);
-      void router.push(`/coach/${response?.id ?? ""}`);
+      return response
     },
   });
 
@@ -159,7 +159,7 @@ export default function AddCoachMultiFormLayout() {
       coachId
     ) {
       const finalCoachSports = formData?.coachingSports?.map((v) => ({
-        sportsId: v.value,
+        sportId: parseInt(v.value),
         ...v,
         coachId,
       }));
@@ -200,6 +200,8 @@ export default function AddCoachMultiFormLayout() {
         coachId: finalForm.coachId,
       });
     } else {
+      setFormData({...finalForm})
+
       createMutate({
         name: finalForm.name,
         phone: finalForm.phone,

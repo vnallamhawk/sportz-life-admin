@@ -11,12 +11,14 @@ import { EXPERIENCE_LEVEL, GENDER_VALUES, TRAINING_LEVEL } from "~/types/coach";
 
 export const athleteRouter = createTRPCRouter({
   getAllAthletes: publicProcedure.query(({ ctx }) => {
-    const allCoaches = ctx?.prisma.athletes?.findMany({
-      // include: {
-      //   CoachSportsMaps: true,
-      // },
+    const allAthletes = ctx?.prisma.athletes?.findMany({
+      where:{
+        deletedAt:null,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        createdBy:ctx?.session?.token?.id
+      },
     });
-    return allCoaches;
+    return allAthletes;
   }),
   getAthleteById: publicProcedure
     .input(
@@ -237,7 +239,34 @@ export const athleteRouter = createTRPCRouter({
         return response;
       }
     ),
+    deleteAthlete: publicProcedure
+    .input(
+      z.object({
+        athleteId: z.number(),
+        deletedAt: z.string(),
+      })
+    )
+    .mutation(
+      async ({
+        input: {
+          athleteId,
+          deletedAt
+        },
+        ctx,
+      }) => {
 
+        const response = await ctx.prisma.athletes.update({
+          where: {
+            id: athleteId,
+          },
+          data: {
+            deletedAt
+          },
+        });
+
+        return response;
+      }
+    ),
   // getSecretMessage: protectedProcedure.query(() => {
   //   return "you can now see this secret message!";
   // }),

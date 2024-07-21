@@ -488,14 +488,12 @@ model Coaches {
   name                      String                      @db.VarChar(255)
   image                     String?                     @db.VarChar(255)
   designation               String                      @db.VarChar(255)
-  experience                String                      @db.VarChar(255)
   trainingLevel             Coaches_trainingLevel
   gender                    Coaches_gender
   dateOfBirth               DateTime                    @db.Date
   countryCode               String                      @default("+91") @db.VarChar(255)
   phone                     String?                     @unique(map: "phone") @db.VarChar(255)
   email                     String?                     @unique(map: "email") @db.VarChar(255)
-  about                     String                      @db.Text
   payrollId                 Int?
   status                    Int?                        @default(1) @db.TinyInt
   createdAt                 DateTime                    @default(now())
@@ -1046,7 +1044,7 @@ model CoachQualifications {
   createdAt       DateTime                            @default(now())
   updatedAt       DateTime                            @default(now())
   instituteName   String                              @db.VarChar(255)
-  fileUrl         String                              @db.VarChar(255)
+  fileUrl         String?                              @db.VarChar(255)
   fileName        String?                             @db.VarChar(255)
   fileType        CoachQualifications_fileType
   Coaches         Coaches                             @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "CoachQualifications_ibfk_1")
