@@ -198,9 +198,9 @@ export default function AddCenterForm() {
       <div className="lg:px-6 bg-s-gray lg:pb-7">
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-12 lg:col-span-4 h-full p-0 pt-10 lg:bg-white rounded-l-xl !rounded-r-none relative pb-0 lg:pb-6 min-h-[535px] ">
-          {currentStep === 1 && <AddCenter />}
-          {currentStep === 2&& <AddSports />}
-          {currentStep === 3&& (
+          {currentStep === 2 && <AddCenter />}
+          {currentStep === 1 && <AddSports />}
+          {currentStep === 2 && (
             <AddInventory
               finalFormSubmissionHandler={finalFormSubmissionHandler}
             />

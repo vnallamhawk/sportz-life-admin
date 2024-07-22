@@ -101,7 +101,7 @@ const AddInventory = (props) => {
         cardTitle="ADD CENTER"
         tableTitle="ADD INVENTORIES"
         tableDescription={
-          "Hi!First things first"
+          "Hi! First things first"
         }
         tableFields={[{type:"select",name:"value",placeholder:"Select Inventrories",options:finalOptions},{type:"number",name:"quantity"}]}
         TableHeadings={INVENTORY_TABLE_HEADERS}
@@ -117,6 +117,7 @@ const AddInventory = (props) => {
         addTableButton={()=>{
             setShowModal(!showModal);
         }}
+        mobileAddButtonText="Add another inventory"
         onRemoveTableButton={removeInventory}
         finalFormSubmissionHandler={submitCallback}
       />

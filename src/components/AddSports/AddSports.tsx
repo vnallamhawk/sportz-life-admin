@@ -95,6 +95,7 @@ const AddSports = () => {
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
         addTableButtonText={'Add New Sport'}
+        mobileAddButtonText="Add another Sport"
         addTableButton={()=>{
             setShowModal(!showModal);
         }}
