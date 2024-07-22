@@ -129,6 +129,30 @@
     z-index: -1;
     height: 100px;
   }
+  .switch input{
+    width: 45px;
+    height: 28px;
+    border-radius: 56px;
+    background-color: #B8BBC5;
+    border: 0;
+    outline: none!important;
+    box-shadow: none!important;
+    background-image: none!important;
+  }
+  .switch .peer:checked ~ .peer-checked\:border-green-500{
+    left: -0.20rem;
+  }
+  .switch label{
+    width: 24px;
+    height: 24px;
+    top: 88%;
+  }
+  .switch .-left-1 {
+    left: 0.1rem;
+}
+.box-shadow{
+  box-shadow: inset 0px -35px 23px -12px #CCC;
+}
 }
 
 @layer base {
