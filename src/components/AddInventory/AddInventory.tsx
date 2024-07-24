@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import AddForm from "~/common/AddForm";
 import { INVENTORY_TABLE_HEADERS } from "~/constants/inventoryConstant";
 import type { MultiSelectOption } from "~/types/select";
-import { Inventories } from "@prisma/client";
+import type { Inventories } from "@prisma/client";
 
 
 const AddInventory = (props: any) => {
@@ -38,8 +38,8 @@ const AddInventory = (props: any) => {
             : -1;
         if (index === -1) {
           arr.push({
-            label: allInventories[i]?.name,
-            value: allInventories[i]?.id,
+            label: allInventories[i]?.name||"",
+            value: allInventories[i]?.id||'',
           });
         }
       }
@@ -52,10 +52,6 @@ const AddInventory = (props: any) => {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
-
-  const prevClickHandler = () => {
-    setCurrentStep && setCurrentStep(currentStep - 1);
-  };
 
   const submitCallback = () => {
     const finalFormData = {
@@ -83,7 +79,6 @@ const AddInventory = (props: any) => {
   const addNewInventory = (e: any) => {
     e.preventDefault();
     createMutate({
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       ...inventoryDetails, createdBy: sessionData?.token?.id,
      
     });
