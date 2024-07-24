@@ -17,9 +17,7 @@ import BatchDetails from "../batchdetails";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
 import type { Athletes, Centers } from "@prisma/client";
-import {
-  centerWiseCountData,
-} from "../../__stubs__/dashboardStubs";
+import { centerWiseCountData } from "../../__stubs__/dashboardStubs";
 import { api } from "~/utils/api";
 import {
   Tabs,
@@ -68,7 +66,6 @@ export const getServerSideProps = async (
     where: {
       id: id ? Number(id) : undefined,
     },
-   
   });
 
   return {
@@ -120,8 +117,8 @@ type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-export default function Page({ athlete }:{athlete:Athletes}) {
-  const router = useRouter()
+export default function Page({ athlete }: { athlete: Athletes }) {
+  const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
   const [displayBatch, setDisplayBatch] = useState(false);
   const [displayAttendance, setDisplayAttendance] = useState(false);
@@ -136,7 +133,6 @@ export default function Page({ athlete }:{athlete:Athletes}) {
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
   const [finalTabs, setFinalTabs] = useState(tabs);
-
 
   // useEffect(()=>{
   //   if(finalTabs && finalTabs.length>0 && Object.keys(center).length>0 ){
@@ -153,7 +149,6 @@ export default function Page({ athlete }:{athlete:Athletes}) {
   //   }
 
   // },[center,finalTabs])
-
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
@@ -185,17 +180,18 @@ export default function Page({ athlete }:{athlete:Athletes}) {
     // }
     // setSelectedHeader(header);
     // setSelectedBody(body);
-
-  }
+  };
 
   return (
     <>
-    <DetailPage cardTitle='ATHLETE DETAILS' editButtonClick={()=>router.push(`/edit-athlete-${athlete?.id}`)} editText={'Edit Athlete'} tabs={tabs} handleTabClick={handleClick} data={athlete}/>
-  
-      
-
-
+      <DetailPage
+        cardTitle="ATHLETE DETAILS"
+        editButtonClick={() => router.push(`/edit-athlete-${athlete?.id}`)}
+        editText={"Edit Athlete"}
+        tabs={tabs}
+        handleTabClick={handleClick}
+        data={athlete}
+      />
     </>
   );
-
 }

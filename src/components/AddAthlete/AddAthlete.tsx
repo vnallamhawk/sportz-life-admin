@@ -1,23 +1,10 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
-import CardTitle from "~/components/Card/CardTitle";
-import { ATHLETE_DETAILS_CONSTANTS } from "~/constants/athleteConstants";
-import Textbox from "~/components/Textbox";
-import {
-  type COACH_TYPES,
-  type COACH_DETAILS_CONSTANTS_TYPES,
-} from "~/types/coach";
-import { FormContext } from "~/pages/athlete/AddAthlete/AddAthleteMultiFormLayout";
-import Button from "../Button";
-import { Controller, useForm } from "react-hook-form";
-import Datepicker from "~/components/DatePicker/DatePickerWrapper";
-import { api } from "~/utils/api";
-import Select from "react-select";
-import Card from "../Card";
-import { DividerHorizontalIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
-import SearchIcon from "../../images/search.png";
-import Plus from "../../images/plus.svg";
+import { useContext, useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import AddForm from "~/common/AddForm";
+import { ATHLETE_DETAILS_CONSTANTS } from "~/constants/athleteConstants";
+import { FormContext } from "~/pages/athlete/AddAthlete/AddAthleteMultiFormLayout";
+import { ATHLETE_TYPES } from "~/types/athlete";
+import { api } from "~/utils/api";
 
 export default function AddCoach() {
   let inputElement;
@@ -33,7 +20,7 @@ export default function AddCoach() {
     reset,
     trigger,
     formState: { errors },
-  } = useForm<COACH_TYPES>({ mode: "onSubmit" });
+  } = useForm<ATHLETE_TYPES>({ mode: "onSubmit" });
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
@@ -44,7 +31,7 @@ export default function AddCoach() {
 
   useEffect(() => {
     if (sports?.length && hasExecuted.current) {
-      const updatedFormConstantValues = formConstantValues.map(
+      const updatedFormConstantValues: any = formConstantValues.map(
         (formConstant) => {
           if (formConstant.id === "coachingSports") {
             return {
@@ -75,8 +62,8 @@ export default function AddCoach() {
   }, [formData]);
   //test commit
 
-  const addTableData = (currentData) => {
-    let arr = [...medicalHistoryData];
+  const addTableData = (currentData: any) => {
+    let arr: any = [...medicalHistoryData];
     let obj = { ...currentData, ["No."]: arr.length + 1 };
     arr.push(obj);
     setMedicalHistoryData(arr);
@@ -99,7 +86,13 @@ export default function AddCoach() {
           { label: "Medical History", id: "medicalHistory" },
           { label: "Action", id: "action" },
         ]}
-        tableFields={[{type:"textarea",name:"medicalHistory",placeholder:"Medical Pre-History 1"}]}
+        tableFields={[
+          {
+            type: "textarea",
+            name: "medicalHistory",
+            placeholder: "Medical Pre-History 1",
+          },
+        ]}
         tablekey="medicalHistory"
         tableData={medicalHistoryData}
         addTableData={addTableData}

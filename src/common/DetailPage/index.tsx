@@ -1,4 +1,4 @@
-import React, { useContext,  useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
@@ -6,11 +6,11 @@ import Image from "next/image";
 
 import Edit from "../../images/ic_fluent_edit_16_filled.svg";
 
-
 import { ToastContext } from "~/contexts/Contexts";
 
 import { useRouter } from "next/router";
 import Slider from "react-slick";
+import { TabType } from "~/types/common";
 
 type ValuePiece = Date | null;
 
@@ -24,8 +24,8 @@ const DetailPage = ({
   details,
   tabs,
   handleTabClick,
-  selectedComponent
-}:any) => {
+  selectedComponent,
+}: any) => {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
   const [displayBatch, setDisplayBatch] = useState(false);
@@ -42,8 +42,6 @@ const DetailPage = ({
   const [loading, setLoading] = useState(true);
   const [finalTabs, setFinalTabs] = useState(tabs);
 
-
- 
   var settings = {
     dots: false,
     arrows: false,
@@ -75,7 +73,6 @@ const DetailPage = ({
 
   return (
     <>
-     
       <Card className="h-100 mx-5 bg-gradient-to-r from-[#2D323D] to-[#141720] md:bg-white md:bg-none">
         <header className="mb-5 hidden items-start  justify-between lg:flex ">
           <CardTitle title={cardTitle} />
@@ -130,10 +127,10 @@ const DetailPage = ({
             )}
 
             <div className="mt-5 grid grid-cols-3 md:gap-4">
-              {details?.map((row, rowIndex) => {
+              {details?.map((row: any, rowIndex: number) => {
                 return (
                   <div className="col-span-12 md:col-span-1" key={rowIndex}>
-                    {row?.items?.map((item, index) => {
+                    {row?.items?.map((item: any, index: number) => {
                       return (
                         <div className="contact mt-4" key={index}>
                           <div className="line block bg-[#974062] md:hidden "></div>
@@ -156,12 +153,12 @@ const DetailPage = ({
         </div>
         <div className="tab-slider mt-8">
           <Slider {...settings} className="hidden md:block">
-            {tabs?.map((tab, index) => {
+            {tabs?.map((tab: TabType, index: number) => {
               return (
                 <div
                   className={`rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px] `}
                   onClick={() => {
-                    handleClick(tab);
+                    handleTabClick(tab);
                   }}
                   key={index}
                 >
@@ -191,7 +188,7 @@ const DetailPage = ({
         </div>
       </Card>
       <Slider {...settings} className="tab-slider mt-10 block pl-6 md:hidden">
-        {tabs?.map((tab, index) => {
+        {tabs?.map((tab: TabType, index: number) => {
           return (
             <div
               className={`rounded-xl bg-[#EAEAEA] `}
@@ -216,10 +213,6 @@ const DetailPage = ({
       {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
       <CoachBatch coach={coach} displayBatch={displayBatch} />
       <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
-
-    
-
-
     </>
   );
 };

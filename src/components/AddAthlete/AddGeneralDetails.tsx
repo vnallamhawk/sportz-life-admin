@@ -1,6 +1,9 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
 import CardTitle from "~/components/Card/CardTitle";
-import { ATHLETE_CONTACT_CONSTANTS, ATHLETE_GENRAL_CONSTANTS } from "~/constants/athleteConstants";
+import {
+  ATHLETE_CONTACT_CONSTANTS,
+  ATHLETE_GENRAL_CONSTANTS,
+} from "~/constants/athleteConstants";
 import Textbox from "~/components/Textbox";
 import {
   type COACH_TYPES,
@@ -14,7 +17,7 @@ import { api } from "~/utils/api";
 import Select from "react-select";
 import AddForm from "~/common/AddForm";
 
-export default function AddGeneralDetails({finalFormSubmissionHandler}:any) {
+export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
   const {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
@@ -29,7 +32,7 @@ export default function AddGeneralDetails({finalFormSubmissionHandler}:any) {
   } = useForm({ mode: "onSubmit" });
   const currentFormValues = getValues();
   const { data: centers } = api.center.getAllCenters.useQuery();
-  const [centerId,setCenterId]=useState<number>()
+  const [centerId, setCenterId] = useState<number>();
 
   const [formConstantValues, setFormConstantValues] = useState(
     ATHLETE_GENRAL_CONSTANTS
@@ -40,9 +43,8 @@ export default function AddGeneralDetails({finalFormSubmissionHandler}:any) {
   );
 
   useEffect(() => {
-   
-    if (centers?.length ) {
-      const updatedFormConstantValues = formConstantValues?.map(
+    if (centers?.length) {
+      const updatedFormConstantValues: any = formConstantValues?.map(
         (formConstant) => {
           if (formConstant.id === "center") {
             return {
@@ -61,37 +63,37 @@ export default function AddGeneralDetails({finalFormSubmissionHandler}:any) {
     }
   }, [formConstantValues, centers, centers?.length]);
 
-  useEffect(()=>{
-    if(centerId){
-      const center=centers?.find((item)=>item?.id==centerId)
-      let updatedFormConstantValues
-      if (center?.CenterSports?.length ) {
-         updatedFormConstantValues = formConstantValues?.map(
-          (formConstant) => {
-            if (formConstant.id === "sport") {
-              return {
-                ...formConstant,
-                options: center?.CenterSports?.map((CenterSport) => ({
-                  label: CenterSport?.Sports?.name,
-                  value: CenterSport?.Sports?.id.toString(),
-                })),
-              };
-            } else {
-              return formConstant;
-            }
+  useEffect(() => {
+    if (centerId) {
+      const center = centers?.find((item) => item?.id == centerId);
+      let updatedFormConstantValues: any;
+      if (center?.CenterSports?.length) {
+        updatedFormConstantValues = formConstantValues?.map((formConstant) => {
+          if (formConstant.id === "sport") {
+            return {
+              ...formConstant,
+              options: center?.CenterSports?.map((CenterSport) => ({
+                label: CenterSport?.Sports?.name,
+                value: CenterSport?.Sports?.id.toString(),
+              })),
+            };
+          } else {
+            return formConstant;
           }
-        );
+        });
       }
-      if (center?.CenterSports?.length ) {
-         updatedFormConstantValues = updatedFormConstantValues?.map(
-          (formConstant) => {
+      if (center?.CenterSports?.length) {
+        updatedFormConstantValues = updatedFormConstantValues?.map(
+          (formConstant: any) => {
             if (formConstant.id === "batch") {
               return {
                 ...formConstant,
-                options: center?.Batches?.map((batch: { name: string; id: number }) => ({
-                  label: batch.name,
-                  value: batch.id.toString(),
-                })),
+                options: center?.Batches?.map(
+                  (batch: { name: string; id: number }) => ({
+                    label: batch.name,
+                    value: batch.id.toString(),
+                  })
+                ),
               };
             } else {
               return formConstant;
@@ -100,10 +102,8 @@ export default function AddGeneralDetails({finalFormSubmissionHandler}:any) {
         );
       }
       setFormConstantValues(updatedFormConstantValues);
-
     }
-
-  },[ centers, centerId, formConstantValues])
+  }, [centers, centerId, formConstantValues]);
 
   useEffect(() => {
     // if (!isEditMode) {
@@ -116,8 +116,7 @@ export default function AddGeneralDetails({finalFormSubmissionHandler}:any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
   //test commit
-  
- 
+
   return (
     <>
       <AddForm
@@ -129,21 +128,19 @@ export default function AddGeneralDetails({finalFormSubmissionHandler}:any) {
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
         dependentKey="center"
-        setDependentKey={(value)=>setCenterId(value)}
+        setDependentKey={(value: any) => setCenterId(value)}
       />
 
-<AddForm
+      <AddForm
         cardSubTitle="Contact Details"
         formConstantValues={formConstantValues1}
         setFormData={setFormData}
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
-        buttonItems={{prevFinish:true}}
+        buttonItems={{ prevFinish: true }}
         finalFormSubmissionHandler={finalFormSubmissionHandler}
       />
-
-
-      </>
-      );
+    </>
+  );
 }
