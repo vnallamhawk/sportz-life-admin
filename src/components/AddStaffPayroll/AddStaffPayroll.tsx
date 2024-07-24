@@ -20,13 +20,13 @@ import AddDesignationModal from "./AddDesignationModal";
 import { useSession } from "next-auth/react";
 import AddForm from "~/common/AddForm";
 
-export default function AddPayroll(props) {
+export default function AddPayroll(props: any) {
   let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
-  const router=useRouter()
+  const router = useRouter();
 
   const {
     control,
@@ -38,28 +38,29 @@ export default function AddPayroll(props) {
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const [showDesignationModal, setShowDesignationModal] = useState(false);
- const [designation,setDesignation]=useState({})
- const { data: sessionData,status } = useSession();
- const { data: staffDesignation } =api.staffDesignation.getAllDesignation.useQuery();
- const [designations,setDesignations]=useState([])
+  const [designation, setDesignation] = useState<any>({});
+  const { data: sessionData, status } = useSession();
+  const { data: staffDesignation } =
+    api.staffDesignation.getAllDesignation.useQuery();
+  const [designations, setDesignations] = useState([]);
 
   const [formConstantValues, setFormConstantValues] = useState(
     STAFF_DETAILS_CONSTANT
   );
 
-  const { mutate: createMutate } = api.staffDesignation.createStaffDesignation.useMutation({
-    onSuccess: (response) => {
-      setShowDesignationModal(!showDesignationModal)
-    },
-  });
+  const { mutate: createMutate } =
+    api.staffDesignation.createStaffDesignation.useMutation({
+      onSuccess: (response) => {
+        setShowDesignationModal(!showDesignationModal);
+      },
+    });
 
-  useEffect(()=>{
-    if(staffDesignation && staffDesignation.length>0){
-      setDesignations(staffDesignation)
+  useEffect(() => {
+    if (staffDesignation && staffDesignation.length > 0) {
+      setDesignations(staffDesignation);
     }
+  }, [staffDesignation]);
 
-  },[staffDesignation])
-  
   useEffect(() => {
     if (designations?.length && hasExecuted.current) {
       const updatedFormConstantValues = formConstantValues.map(
@@ -67,10 +68,12 @@ export default function AddPayroll(props) {
           if (formConstant.id === "designationId") {
             return {
               ...formConstant,
-              options: designations.map((designation: { designation: string; id: number }) => ({
-                label: designation.designation,
-                value: designation.id.toString(),
-              })),
+              options: designations.map(
+                (designation: { designation: string; id: number }) => ({
+                  label: designation.designation,
+                  value: designation.id.toString(),
+                })
+              ),
             };
           } else {
             return formConstant;
@@ -82,34 +85,36 @@ export default function AddPayroll(props) {
     }
   }, [formConstantValues, designations, designations?.length]);
 
-  const onSubmit=(data)=>{
-    let obj={...data,taxable:formData?.taxable}
-    obj.grossSalary=parseInt(data.grossSalary)
-    obj.designationId=parseInt(data?.designationId?.value)
-    if(obj && obj?.taxable){
-      if(obj?.taxable && obj.grossSalary){
-        const tax=props?.taxslabs?.find((item)=>obj.grossSalary>=item?.fromAmount && obj.grossSalary<=item?.toAmount)
-        if(tax){
-          obj.tax_percent=tax.percentage
-          obj.tax=(tax.percentage*obj.grossSalary)/100
-          obj.netSalary=obj.grossSalary-obj.tax
-          obj.slabId=tax.id
+  const onSubmit = (data: any) => {
+    let obj = { ...data, taxable: formData?.taxable };
+    obj.grossSalary = parseInt(data.grossSalary);
+    obj.designationId = parseInt(data?.designationId?.value);
+    if (obj && obj?.taxable) {
+      if (obj?.taxable && obj.grossSalary) {
+        const tax = props?.taxslabs?.find(
+          (item: any) =>
+            obj.grossSalary >= item?.fromAmount &&
+            obj.grossSalary <= item?.toAmount
+        );
+        if (tax) {
+          obj.tax_percent = tax.percentage;
+          obj.tax = (tax.percentage * obj.grossSalary) / 100;
+          obj.netSalary = obj.grossSalary - obj.tax;
+          obj.slabId = tax.id;
         }
-        setFormData(obj)
+        setFormData(obj);
       }
+    }
+    props?.finalFormSubmissionHandler(obj);
+  };
 
-  }
-  props?.finalFormSubmissionHandler(obj)
-}
-
-
-  const submitDesignation=(e)=>{
-    e.preventDefault()
+  const submitDesignation = (e: any) => {
+    e.preventDefault();
     createMutate({
-          ...designation,
-          createdBy:sessionData?.token?.id
-        });
-  }
+      ...designation,
+      createdBy: sessionData?.token?.id,
+    });
+  };
 
   return (
     <>
@@ -122,21 +127,20 @@ export default function AddPayroll(props) {
           designation={designation}
         />
       )}
-       <AddForm
+      <AddForm
         cardTitle="ADD PAYROLL"
         cardSubTitle="PAYROLL DETAILS"
         formConstantValues={formConstantValues}
         setFormData={setFormData}
         formData={formData}
-        buttonItems={{prevFinish:true}}
+        buttonItems={{ prevFinish: true }}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
         prevButtonText={"Add New Designation"}
         finishButtonText={"Add Payroll"}
-        prevButtonClick={()=>setShowDesignationModal(!showDesignationModal)}
-        finalFormSubmissionHandler={(data)=>onSubmit(data)}
+        prevButtonClick={() => setShowDesignationModal(!showDesignationModal)}
+        finalFormSubmissionHandler={(data: any) => onSubmit(data)}
       />
-     
     </>
   );
 }

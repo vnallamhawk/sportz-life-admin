@@ -5,20 +5,18 @@ function AddInventoryModal({
   setShow,
   inventoryDetails,
   setInventoryDetails,
-  handleInventory
-}) {
-
-  const handleInventoryChange = (name:string, value:string) => {
-    let obj :any= { ...inventoryDetails };
+  handleInventory,
+}: any) {
+  const handleInventoryChange = (name: string, value: string) => {
+    let obj: any = { ...inventoryDetails };
     obj[name] = value;
     setInventoryDetails(obj);
   };
 
-
   return (
     <>
       <div
-        tabindex="-1"
+        // tabindex="-1"
         aria-hidden="true"
         className={`${
           !show ? `hidden` : ``
@@ -57,7 +55,7 @@ function AddInventoryModal({
               <div className="mb-4 grid grid-cols-2 gap-4">
                 <div className="col-span-2">
                   <label
-                    for="name"
+                    // for="name"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Inventory Name
@@ -75,13 +73,14 @@ function AddInventoryModal({
                     required
                     onChange={(e) =>
                       handleInventoryChange("name", e.target.value)
-                    }                  />
+                    }
+                  />
                 </div>
 
                 <div className="col-span-2">
                   <label
-                    for="countries"
-                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    // for="countries"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Select an option
                   </label>
@@ -90,7 +89,7 @@ function AddInventoryModal({
                     className="block w-[12rem] rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     onChange={(e) =>
                       handleInventoryChange("category", e.target.value)
-                    }  
+                    }
                   >
                     <option selected>Choose a Inventory</option>
                     <option value="Fitness">Fitness</option>

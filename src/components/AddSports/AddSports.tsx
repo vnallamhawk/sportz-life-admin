@@ -7,20 +7,18 @@ import AddForm from "~/common/AddForm";
 import { SPORTS_TABLE_HEADERS } from "~/constants/sportConstants";
 const AddSports = () => {
   const [sports, setSports] = useState([]);
-  const [finalOptions, setFinalOptions] = useState([]);
+  const [finalOptions, setFinalOptions] = useState<any>([]);
   const [showModal, setShowModal] = useState(false);
-  const [sportDetails,setSportDetails]=useState({})
+  const [sportDetails, setSportDetails] = useState({});
   const { data: sessionData } = useSession();
-
 
   const { data: allSports } = api.sports.getAllSports.useQuery();
 
- 
   const { mutate: createMutate } = api.sports.createSports.useMutation({
     onSuccess: (response) => {
-      let arr:any=[...finalOptions]
-      arr.push({label: response?.name, value: response?.id })
-      setFinalOptions(arr)
+      let arr: any = [...finalOptions];
+      arr.push({ label: response?.name, value: response?.id });
+      setFinalOptions(arr);
     },
   });
   useEffect(() => {
@@ -28,8 +26,10 @@ const AddSports = () => {
       let arr = [];
       for (let i = 0; i < allSports.length; i++) {
         const index =
-          sports && sports.length > 0
-            ? sports?.findIndex((item) => item?.name === finalOptions[i]?.value)
+          sports && sports?.length > 0
+            ? sports?.findIndex(
+                (item: any) => item?.name === finalOptions[i]?.value
+              )
             : -1;
         if (index === -1) {
           arr.push({ label: allSports[i]?.name, value: allSports[i]?.id });
@@ -45,10 +45,12 @@ const AddSports = () => {
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
-
-  const onSaveSports = (currentSportData) => {
-    const arr = [...sports];
-    arr.push({...currentSportData,sportId:parseInt(currentSportData?.value)});
+  const onSaveSports = (currentSportData: any) => {
+    const arr: any = [...sports];
+    arr.push({
+      ...currentSportData,
+      sportId: parseInt(currentSportData?.value),
+    });
     setSports(arr);
   };
 
@@ -58,9 +60,13 @@ const AddSports = () => {
     setSports(arr);
   };
 
-  const addNewSport = (e) => {
+  const addNewSport = (e: any) => {
     e.preventDefault();
-    createMutate({...sportDetails,image:"",createdBy:sessionData?.token?.id});
+    createMutate({
+      ...sportDetails,
+      image: "",
+      createdBy: sessionData?.token?.id,
+    });
     setShowModal(false);
 
     // api for create sport
@@ -78,13 +84,18 @@ const AddSports = () => {
           handleSport={addNewSport}
         />
       )}
-       <AddForm
+      <AddForm
         cardTitle="ADD CENTER"
         tableTitle="ADD SPORTS"
-        tableDescription={
-          "Hi!First things first"
-        }
-        tableFields={[{type:"select",name:"value",placeholder:"Select Sports",options:finalOptions}]}
+        tableDescription={"Hi!First things first"}
+        tableFields={[
+          {
+            type: "select",
+            name: "value",
+            placeholder: "Select Sports",
+            options: finalOptions,
+          },
+        ]}
         TableHeadings={SPORTS_TABLE_HEADERS}
         tablekey="sports"
         tableData={sports}
@@ -94,14 +105,13 @@ const AddSports = () => {
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
-        addTableButtonText={'Add New Sport'}
+        addTableButtonText={"Add New Sport"}
         mobileAddButtonText="Add another Sport"
-        addTableButton={()=>{
-            setShowModal(!showModal);
+        addTableButton={() => {
+          setShowModal(!showModal);
         }}
         onRemoveTableButton={removeSports}
       />
-
     </>
   );
 };

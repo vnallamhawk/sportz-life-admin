@@ -27,7 +27,9 @@ export default function AddBatch() {
     reset,
     trigger,
     formState: { errors },
-  } = useForm<CENTER_BATCH_TYPES>({ mode: "onSubmit" });
+  } = useForm<any>({ mode: "onSubmit" });
+
+  // useForm<CENTER_BATCH_TYPES>({ mode: "onSubmit" });
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
@@ -37,7 +39,7 @@ export default function AddBatch() {
   );
 
   useEffect(() => {
-    if (sports?.length ) {
+    if (sports?.length) {
       const updatedFormConstantValues = formConstantValues.map(
         (formConstant) => {
           if (formConstant.id === "selectSports") {
@@ -57,7 +59,6 @@ export default function AddBatch() {
       setFormConstantValues(updatedFormConstantValues);
     }
   }, [formConstantValues, sports, sports?.length]);
-
 
   const getInputElement = (props: BATCH_DETAILS_CONSTANTS_TYPES) => {
     const { type, rules, id, pattern, placeHolder } = props;
@@ -114,10 +115,10 @@ export default function AddBatch() {
               <Textbox
                 className="h-12 w-full"
                 placeHolder={props.label}
-                type={type==="number"?"number":"text"}
+                type={type === "number" ? "number" : "text"}
                 onChangeHandler={onChange}
                 // TODO: FIX THIS TS ERROR
-                value={value as string|number}
+                value={value as string | number}
               />
             )}
             rules={rules}

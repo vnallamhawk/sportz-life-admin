@@ -15,7 +15,6 @@ import { type BatchTableData } from "~/types/batch";
 import AddForm from "~/common/AddForm";
 import { COACH_BATCH_CONSTANTS } from "~/constants/coachConstants";
 
-
 export default function AssignBatches({
   finalFormSubmissionHandler,
 }: {
@@ -37,20 +36,18 @@ export default function AssignBatches({
     COACH_BATCH_CONSTANTS
   );
   const [tableData, setTableData] = useState<BatchTableData[]>([]);
-  const [centerId,setCenterId]=useState<number>()
+  const [centerId, setCenterId] = useState<number>();
   const {
     stepData: { currentStep, setCurrentStep },
-    multiFormData: { formData,setFormData },
+    multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
   const { data: centers } = api.center.getAllCenters.useQuery();
   const { data: batches } = api.batches.getAllBatches.useQuery();
 
-
- 
   useEffect(() => {
-    if (centers?.length > 0) {
-     const  updatedFormConstantValues = formConstantValues?.map(
+    if (centers?.length && centers?.length! > 0) {
+      const updatedFormConstantValues: any = formConstantValues?.map(
         (formConstant) => {
           if (formConstant.id === "center") {
             return {
@@ -67,35 +64,33 @@ export default function AssignBatches({
       );
       setFormConstantValues(updatedFormConstantValues);
     }
- 
+  }, [formConstantValues, centers, centers?.length, batches]);
 
-  }, [formConstantValues, centers, centers?.length,batches,]);
-
-useEffect(()=>{
-  
-  if(centerId){
-    const center=centers?.find((item)=>item?.id==centerId)
-    if (center?.Batches?.length >0) {
-     const updatedFormConstantValues = formConstantValues?.map(
-       (formConstant) => {
-         if (formConstant.id === "batches") {
-           return {
-             ...formConstant,
-             options: center?.Batches.map((batch: { name: string; id: number }) => ({
-               label: batch.name,
-               value: batch.id,
-             })),
-           };
-         } else {
-           return formConstant;
-         }
-       }
-     );
-     setFormConstantValues(updatedFormConstantValues);
-
-   }
-  }
-},[centerId, centers, formConstantValues])
+  useEffect(() => {
+    if (centerId) {
+      const center = centers?.find((item) => item?.id == centerId);
+      if (center?.Batches?.length && center?.Batches?.length! > 0) {
+        const updatedFormConstantValues: any = formConstantValues?.map(
+          (formConstant) => {
+            if (formConstant.id === "batches") {
+              return {
+                ...formConstant,
+                options: center?.Batches.map(
+                  (batch: { name: string; id: number }) => ({
+                    label: batch.name,
+                    value: batch.id,
+                  })
+                ),
+              };
+            } else {
+              return formConstant;
+            }
+          }
+        );
+        setFormConstantValues(updatedFormConstantValues);
+      }
+    }
+  }, [centerId, centers, formConstantValues]);
 
   useEffect(() => {
     if (formData?.coachBatches?.length) {
@@ -103,30 +98,33 @@ useEffect(()=>{
     }
   }, [formData?.coachBatches]);
 
-  const submitCallback = (finalData) => {
+  const submitCallback = (finalData: any) => {
     const finalFormData = {
       ...finalData,
-      coachBatches:tableData,
+      coachBatches: tableData,
     };
     finalFormSubmissionHandler(finalFormData);
   };
 
-  const onAddBatchHandler = async (data) => {
-    const arr=[...tableData]
-    const batches=data?.batches && data?.batches.length>0?[...data?.batches]:[]
-    for(let i=0;i<batches.length;i++){
-      const obj={...data,centerId:parseInt(data?.center?.value),batchId:parseInt(data?.batches[i]?.value),}
-      arr.push(obj)
+  const onAddBatchHandler = async (data: any) => {
+    const arr = [...tableData];
+    const batches =
+      data?.batches && data?.batches.length > 0 ? [...data?.batches] : [];
+    for (let i = 0; i < batches.length; i++) {
+      const obj = {
+        ...data,
+        centerId: parseInt(data?.center?.value),
+        batchId: parseInt(data?.batches[i]?.value),
+      };
+      arr.push(obj);
     }
-  
-    setTableData(arr)
-    }
-  
 
+    setTableData(arr);
+  };
 
   return (
     <div>
-        <AddForm
+      <AddForm
         cardTitle="ADD COACH"
         cardSubTitle="ASSIGN BATCHES"
         formConstantValues={formConstantValues}
@@ -149,7 +147,7 @@ useEffect(()=>{
         addTableData={onAddBatchHandler}
         finalFormSubmissionHandler={submitCallback}
         dependentKey="center"
-        setDependentKey={(value)=>setCenterId(value)}
+        setDependentKey={(value: any) => setCenterId(value)}
       />
     </div>
   );

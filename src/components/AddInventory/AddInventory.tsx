@@ -7,14 +7,13 @@ import { useSession } from "next-auth/react";
 import AddForm from "~/common/AddForm";
 import { INVENTORY_TABLE_HEADERS } from "~/constants/inventoryConstant";
 
-const AddInventory = (props) => {
+const AddInventory = (props: any) => {
   const [inventories, setInventories] = useState([]);
-  const [finalOptions, setFinalOptions] = useState([]);
+  const [finalOptions, setFinalOptions] = useState<any>([]);
   const [showModal, setShowModal] = useState(false);
   const [inventoryDetails, setInventoryDetails] = useState({});
   const { data: allInventories } = api.inventory.getAllInventories.useQuery();
   const { data: sessionData } = useSession();
-
 
   const { mutate: createMutate } = api.inventory.createInventory.useMutation({
     onSuccess: (response) => {
@@ -31,8 +30,8 @@ const AddInventory = (props) => {
         const index =
           inventories && inventories.length > 0
             ? inventories?.findIndex(
-              (item) => item?.name === finalOptions[i]?.value
-            )
+                (item: any) => item?.name === finalOptions[i]?.value
+              )
             : -1;
         if (index === -1) {
           arr.push({
@@ -48,7 +47,7 @@ const AddInventory = (props) => {
 
   const {
     stepData: { currentStep, setCurrentStep },
-    multiFormData: { formData,setFormData },
+    multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
   const prevClickHandler = () => {
@@ -63,8 +62,8 @@ const AddInventory = (props) => {
     props?.finalFormSubmissionHandler(finalFormData);
   };
 
-  const onSaveInventories = (selectedInventory) => {
-    const arr = [...inventories];
+  const onSaveInventories = (selectedInventory: any) => {
+    const arr: any = [...inventories];
     arr.push({
       ...selectedInventory,
       inventoryId: parseInt(selectedInventory?.value),
@@ -78,12 +77,11 @@ const AddInventory = (props) => {
     setInventories(arr);
   };
 
-  const addNewInventory = (e) => {
+  const addNewInventory = (e: any) => {
     e.preventDefault();
     createMutate({ ...inventoryDetails, createdBy: sessionData?.token?.id });
 
     setShowModal(false);
-
   };
 
   return (
@@ -97,13 +95,19 @@ const AddInventory = (props) => {
           handleInventory={addNewInventory}
         />
       )}
-       <AddForm
+      <AddForm
         cardTitle="ADD CENTER"
         tableTitle="ADD INVENTORIES"
-        tableDescription={
-          "Hi! First things first"
-        }
-        tableFields={[{type:"select",name:"value",placeholder:"Select Inventrories",options:finalOptions},{type:"number",name:"quantity"}]}
+        tableDescription={"Hi! First things first"}
+        tableFields={[
+          {
+            type: "select",
+            name: "value",
+            placeholder: "Select Inventrories",
+            options: finalOptions,
+          },
+          { type: "number", name: "quantity" },
+        ]}
         TableHeadings={INVENTORY_TABLE_HEADERS}
         tablekey="inventories"
         tableData={inventories}
@@ -113,9 +117,9 @@ const AddInventory = (props) => {
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
-        addTableButtonText={'Add New Inventory'}
-        addTableButton={()=>{
-            setShowModal(!showModal);
+        addTableButtonText={"Add New Inventory"}
+        addTableButton={() => {
+          setShowModal(!showModal);
         }}
         mobileAddButtonText="Add another inventory"
         onRemoveTableButton={removeInventory}

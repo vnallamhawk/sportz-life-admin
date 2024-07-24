@@ -13,10 +13,7 @@ const AddStaff = () => {
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
-  const {
-    getValues,
-
-  } = useForm<STAFF_TYPES>({ mode: "onSubmit" });
+  const { getValues } = useForm<STAFF_TYPES>({ mode: "onSubmit" });
 
   const { data: payroll } = api.staffPayroll.getAllPayroll.useQuery();
   const { data: designation } =
@@ -27,29 +24,25 @@ const AddStaff = () => {
     STAFF_DETAILS_CONSTANTS
   );
   useEffect(() => {
-    let updatedFormConstantValues=formConstantValues
-    if (payroll?.length>0) {
-       updatedFormConstantValues = formConstantValues.map(
-        (formConstant) => {
-          if (formConstant.id === "payroll") {
-            // console.log("payroll", payroll);
-            return {
-              ...formConstant,
-              options: payroll.map(
-                (payroll, index) => ({
-                  label: payroll?.StaffDesignation?.designation,
-                  value: payroll.id.toString(),
-                })
-              ),
-            };
-          } else {
-            return formConstant;
-          }
+    let updatedFormConstantValues = formConstantValues;
+    if (payroll && payroll?.length > 0) {
+      updatedFormConstantValues = formConstantValues.map((formConstant) => {
+        if (formConstant.id === "payroll") {
+          // console.log("payroll", payroll);
+          return {
+            ...formConstant,
+            options: payroll.map((payroll, index) => ({
+              label: payroll?.StaffDesignation?.designation,
+              value: payroll.id.toString(),
+            })),
+          };
+        } else {
+          return formConstant;
         }
-      );
+      });
     }
-    if (designation?.length>0) {
-       updatedFormConstantValues = updatedFormConstantValues.map(
+    if (designation && designation?.length > 0) {
+      updatedFormConstantValues = updatedFormConstantValues.map(
         (formConstant) => {
           if (formConstant.id === "designation") {
             return {
@@ -67,31 +60,26 @@ const AddStaff = () => {
         }
       );
     }
-       if (centers?.length>0) {
-           updatedFormConstantValues = updatedFormConstantValues.map(
-            (formConstant) => {
-                // Todo staff center
-              if (formConstant.id === "center") {
-                return {
-                  ...formConstant,
-                  options: centers?.map(
-                    (center: { name: string; id: number }) => ({
-                      label: center.name,
-                      value: center.id.toString(),
-                    })
-                  ),
-                };
-              }
-              else {
-                return formConstant;
-              }
-            }
-          );
+    if (centers && centers?.length > 0) {
+      updatedFormConstantValues = updatedFormConstantValues.map(
+        (formConstant) => {
+          // Todo staff center
+          if (formConstant.id === "center") {
+            return {
+              ...formConstant,
+              options: centers?.map((center: { name: string; id: number }) => ({
+                label: center.name,
+                value: center.id.toString(),
+              })),
+            };
+          } else {
+            return formConstant;
+          }
         }
+      );
+    }
     setFormConstantValues(updatedFormConstantValues);
-
   }, [centers, designation, formConstantValues, payroll]);
-
 
   // useEffect(() => {
   //   // if (!isEditMode) {
@@ -103,10 +91,10 @@ const AddStaff = () => {
   //   // }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [formData]);
-  
+
   return (
     <>
-    <AddForm
+      <AddForm
         cardTitle="ADD STAFFS"
         cardSubTitle="STAFF DETAILS"
         formConstantValues={formConstantValues}
@@ -117,7 +105,6 @@ const AddStaff = () => {
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
       />
-    
     </>
   );
 };

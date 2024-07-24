@@ -5,20 +5,18 @@ function AddDesignationModal({
   setShow,
   submitDesignation,
   setDesignation,
-  designation
-}) {
-
-  const handleDesignationChange = (name:string, value:string) => {
-    let obj :any= { ...designation };
+  designation,
+}: any) {
+  const handleDesignationChange = (name: string, value: string) => {
+    let obj: any = { ...designation };
     obj[name] = value;
     setDesignation(obj);
   };
 
-
   return (
     <>
       <div
-        tabindex="-1"
+        // tabindex="-1"
         aria-hidden="true"
         className={`${
           !show ? `hidden` : ``
@@ -29,7 +27,7 @@ function AddDesignationModal({
           <div className="relative rounded-lg bg-white shadow dark:bg-gray-700">
             <div className="flex items-center justify-between rounded-t border-b p-4 dark:border-gray-600 md:p-5">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Add New Designation
+                Add New Designation
               </h3>
               <button
                 type="button"
@@ -56,7 +54,6 @@ function AddDesignationModal({
             <form className="p-4 md:p-5">
               <div className="mb-4 grid grid-cols-2 gap-4">
                 <div className="col-span-2">
-                 
                   <input
                     type="text"
                     name="designation"
@@ -70,7 +67,8 @@ function AddDesignationModal({
                     required
                     onChange={(e) =>
                       handleDesignationChange("designation", e.target.value)
-                    }                  />
+                    }
+                  />
                 </div>
                 {/* button div */}
                 <div>

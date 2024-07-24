@@ -7,9 +7,8 @@ function AddSportModal({
   setSportDetails,
   handleSport,
 }: any) {
-
-  const handleSportChange = (name:string, value:string) => {
-    let obj :any= { ...sportDetails };
+  const handleSportChange = (name: string, value: string) => {
+    let obj: any = { ...sportDetails };
     obj[name] = value;
     setSportDetails(obj);
   };
@@ -17,7 +16,7 @@ function AddSportModal({
   return (
     <>
       <div
-        tabindex="-1"
+        // tabindex="-1"
         aria-hidden="true"
         className={`${
           !show ? `hidden` : ``
@@ -56,7 +55,8 @@ function AddSportModal({
               <div className="mb-4 grid grid-cols-2 gap-4">
                 <div className="col-span-2">
                   <label
-                    for="name"
+                    htmlFor="name"
+                    // for="name"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Sport Name
@@ -78,7 +78,8 @@ function AddSportModal({
 
                 <div className="col-span-2">
                   <label
-                    for="about"
+                    // for="about"
+                    htmlFor="about"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
                     About
@@ -99,7 +100,7 @@ function AddSportModal({
                 </div>
                 <div className="col-span-2">
                   <label
-                    for="subtitle"
+                    htmlFor="subtitle"
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >
                     SubTitle
@@ -123,7 +124,8 @@ function AddSportModal({
                 <div className="col-span-2">
                   <label
                     className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    for="file_input"
+                    // for="file_input"
+                    htmlFor="file_input"
                   >
                     Upload file
                   </label>
@@ -134,7 +136,9 @@ function AddSportModal({
                     aria-describedby="file_input_help"
                     id="file_input"
                     type="file"
-                    onChange={(e) => handleSportChange("image", e.target.files)}
+                    onChange={(e: any) =>
+                      handleSportChange("image", e.target.files)
+                    }
                   />
                   <p
                     className="mt-1 text-sm text-gray-500 dark:text-gray-300"

@@ -20,7 +20,7 @@ import Table from "../Table";
 import BatchTimeTableHeader from "../BatchTiming/BatchTimingTableHeader";
 import BatchTimeTableBody from "../BatchTiming/BatchTimingTableBody";
 
-export default function AddBatchTiming(props) {
+export default function AddBatchTiming(props: any) {
   let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
@@ -33,17 +33,18 @@ export default function AddBatchTiming(props) {
     reset,
     trigger,
     formState: { errors },
-  } = useForm<CENTER_BATCH_TYPES>({ mode: "onSubmit" });
+  } = useForm<any>({ mode: "onSubmit" });
+
+  // useForm<CENTER_BATCH_TYPES>({ mode: "onSubmit" });
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
-  const [currentBatchDetail,setCurrentBatchDetail]=useState({})
+  const [currentBatchDetail, setCurrentBatchDetail] = useState<any>({});
 
   const [formConstantValues, setFormConstantValues] =
     useState(BATCH_DETAILS_TIMING);
 
-    const [batchTimings, setBatchTimings] = useState([]);
-
+  const [batchTimings, setBatchTimings] = useState([]);
 
   // useEffect(() => {
   //   if (sports?.length && hasExecuted.current) {
@@ -79,11 +80,11 @@ export default function AddBatchTiming(props) {
   // }, [formData]);
   //test commit
 
-const handleChangeBatch=(value,id)=>{
-  let batchDetails={...currentBatchDetail}
-  batchDetails[id]=value
-  setCurrentBatchDetail(batchDetails)
-}
+  const handleChangeBatch = (value: any, id: string | number) => {
+    let batchDetails = { ...currentBatchDetail };
+    batchDetails[id] = value;
+    setCurrentBatchDetail(batchDetails);
+  };
 
   const getInputElement = (props: BATCH_DETAILS_CONSTANTS_TYPES) => {
     const { type, rules, id, pattern, placeHolder } = props;
@@ -104,7 +105,7 @@ const handleChangeBatch=(value,id)=>{
                   placeholder={placeHolder}
                   className="w-full"
                   onChange={(element) => {
-                    handleChangeBatch(element?.value,id);
+                    handleChangeBatch(element?.value, id);
                   }}
                 />
               );
@@ -120,9 +121,11 @@ const handleChangeBatch=(value,id)=>{
               return (
                 <Timepicker
                   placeHolder={props.placeHolder}
-                  value={currentBatchDetail[id]?currentBatchDetail[id]:"10:00"}
+                  value={
+                    currentBatchDetail[id] ? currentBatchDetail[id] : "10:00"
+                  }
                   className="h-12"
-                  onChangeHandler={(value)=>handleChangeBatch(value,id)}
+                  onChangeHandler={(value) => handleChangeBatch(value, id)}
                 />
               );
             }}
@@ -140,7 +143,13 @@ const handleChangeBatch=(value,id)=>{
               <Textbox
                 className="h-12 w-full"
                 placeHolder={props.label}
-                onChange={(e)=>handleChangeBatch(e.target.value,id)}
+                // If batch Timing Error come unComment this
+                // onChange={(e: any) =>
+                //   handleChangeBatch(e.target.value, id)
+                // }
+                onChangeHandler={(e: any) =>
+                  handleChangeBatch(e.target.value, id)
+                }
                 // TODO: FIX THIS TS ERROR
                 value={value as string}
               />
@@ -154,7 +163,6 @@ const handleChangeBatch=(value,id)=>{
     return inputElement;
   };
 
-
   const prevClickHandler = () => {
     setCurrentStep && setCurrentStep(currentStep - 1);
   };
@@ -167,14 +175,13 @@ const handleChangeBatch=(value,id)=>{
     props?.finalFormSubmissionHandler(finalFormData);
   };
 
-  const onAddBatchTiming=(e)=>{
-    e.preventDefault()
-    let arr=[...batchTimings]
-    arr.push(currentBatchDetail)
-    setBatchTimings(arr)
-    setCurrentBatchDetail({})
-  }
-
+  const onAddBatchTiming = (e: any) => {
+    e.preventDefault();
+    let arr: any = [...batchTimings];
+    arr.push(currentBatchDetail);
+    setBatchTimings(arr);
+    setCurrentBatchDetail({});
+  };
 
   return (
     <>
@@ -209,11 +216,11 @@ const handleChangeBatch=(value,id)=>{
         </Button>
       </div>
       <Table
-          tableHeader={BatchTimeTableHeader()}
-          tableBody={BatchTimeTableBody(batchTimings)}
-        />
+        tableHeader={BatchTimeTableHeader()}
+        tableBody={BatchTimeTableBody(batchTimings)}
+      />
       <div className="mr-10 mt-10 flex justify-end">
-      <Button
+        <Button
           type="button"
           className="mx-3 bg-pink-600 hover:bg-pink-800"
           onClick={prevClickHandler}
