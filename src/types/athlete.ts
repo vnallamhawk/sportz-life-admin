@@ -1,4 +1,4 @@
-import { MultiSelectOption } from "./select";
+import type { MultiSelectOption } from "./select";
 
 export interface ATHLETE_TYPES {
   name: string;

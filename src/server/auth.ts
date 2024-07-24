@@ -16,9 +16,9 @@ export const authOptions: AuthOptions = {
       },
       authorize: async (credentials) => {
         const user = await prisma.admin.findUnique({
-          where: { email: credentials.email },
+          where: { email: credentials?.email },
         });
-        if (user && bcrypt.compareSync(credentials.password, user.password)) {
+        if (user && bcrypt.compareSync(credentials?.password||"", user.password)) {
           return {
             id: user.id,
             email: user.email,
@@ -43,9 +43,10 @@ export const authOptions: AuthOptions = {
       }
       return obj;
     },
-     session(session, token) {    
+     session(session: { user: { id: any; }; }, token: { id: any; }) {    
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       session.user = {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         id: token?.id,
       };
       return session;

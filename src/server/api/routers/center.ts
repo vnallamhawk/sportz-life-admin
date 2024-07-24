@@ -29,7 +29,6 @@ export const centerRouter = createTRPCRouter({
     const allCenters = ctx?.prisma.centers?.findMany({
       where:{
         deletedAt:null,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         createdBy:ctx?.session?.token?.id
       },
       include: {
@@ -67,7 +66,6 @@ export const centerRouter = createTRPCRouter({
 
         return centers;
       } catch (error) {
-        console.log("error are ", error);
       }
     }),
   getCentersByName: publicProcedure

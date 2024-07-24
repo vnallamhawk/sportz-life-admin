@@ -14,7 +14,6 @@ export const athleteRouter = createTRPCRouter({
     const allAthletes = ctx?.prisma.athletes?.findMany({
       where:{
         deletedAt:null,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         createdBy:ctx?.session?.token?.id
       },
     });

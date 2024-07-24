@@ -11,7 +11,7 @@ export const taxSlabRouter = createTRPCRouter({
     const allSlabs = ctx?.prisma.taxSlabs?.findMany({
       where:{
         deletedAt:null,
-        createdBy:ctx.session.token.id
+        createdBy:ctx?.session?.token?.id
       }
       // include: {
       //   CoachSportsMaps: true,
