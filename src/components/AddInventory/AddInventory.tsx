@@ -6,18 +6,21 @@ import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import AddForm from "~/common/AddForm";
 import { INVENTORY_TABLE_HEADERS } from "~/constants/inventoryConstant";
+import type { MultiSelectOption } from "~/types/select";
+import { Inventories } from "@prisma/client";
+
 
 const AddInventory = (props: any) => {
   const [inventories, setInventories] = useState([]);
-  const [finalOptions, setFinalOptions] = useState<any>([]);
+  const [finalOptions, setFinalOptions] = useState<MultiSelectOption[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [inventoryDetails, setInventoryDetails] = useState({});
+  const [inventoryDetails, setInventoryDetails] = useState({name:"",category:""});
   const { data: allInventories } = api.inventory.getAllInventories.useQuery();
   const { data: sessionData } = useSession();
 
   const { mutate: createMutate } = api.inventory.createInventory.useMutation({
     onSuccess: (response) => {
-      let arr: any = [...finalOptions];
+      const arr: MultiSelectOption[] = [...finalOptions];
       arr.push({ label: response?.name, value: response?.id });
       setFinalOptions(arr);
     },
@@ -25,12 +28,12 @@ const AddInventory = (props: any) => {
 
   useEffect(() => {
     if (allInventories && allInventories?.length > 0) {
-      let arr = [];
+      const arr :MultiSelectOption[]= [];
       for (let i = 0; i < allInventories.length; i++) {
         const index =
           inventories && inventories.length > 0
             ? inventories?.findIndex(
-                (item: any) => item?.name === finalOptions[i]?.value
+                (item: Inventories) => item?.name === finalOptions[i]?.value
               )
             : -1;
         if (index === -1) {
@@ -43,7 +46,7 @@ const AddInventory = (props: any) => {
 
       setFinalOptions(arr);
     }
-  }, [inventories, allInventories]);
+  }, [inventories, allInventories, finalOptions]);
 
   const {
     stepData: { currentStep, setCurrentStep },
@@ -79,7 +82,11 @@ const AddInventory = (props: any) => {
 
   const addNewInventory = (e: any) => {
     e.preventDefault();
-    createMutate({ ...inventoryDetails, createdBy: sessionData?.token?.id });
+    createMutate({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      ...inventoryDetails, createdBy: sessionData?.token?.id,
+     
+    });
 
     setShowModal(false);
   };
