@@ -1,12 +1,12 @@
 import React from "react";
 
-export default function CenterDashInventoryTableBody(data) {
+export default function CenterDashInventoryTableBody(data: any) {
   return (
     <>
       {data &&
         data.length > 0 &&
         // tableData?.map(({ name, address, batches, mobile }, index) => (
-        data?.map((inventory, index) => (
+        data?.map((inventory: any, index: number) => (
           <tr
             key={`${inventory?.id}-${index}`}
             className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"

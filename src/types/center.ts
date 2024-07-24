@@ -1,7 +1,6 @@
 import { type Pattern, type Rules } from "./rules";
 import { type MultiSelectOption } from "./select";
 
-
 export const InputType = ["textbox", "select", "calendar"] as const;
 
 type Type = (typeof InputType)[number];
@@ -74,12 +73,14 @@ export interface MULTI_FORM_TYPES extends CENTER_TYPES {
 }
 
 export interface InventoryData {
+  value?: any;
   name: string;
   quantity: number;
 }
 
 export interface SportsData {
   name: string;
+  value?: any;
 }
 
 // export interface MULTI_FORM_TYPES extends COACH_TYPES {

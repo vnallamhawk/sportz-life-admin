@@ -10,13 +10,14 @@ export default function CoachCertificate({
   coach,
   displayBatch,
 }: {
-  coach: CoachWithRelations;
+  // coach: CoachWithRelations;
+  coach: any;
   displayBatch: boolean;
 }) {
   const [tableCoach, setTableCoach] = useState(coach);
   const [filterByBatch, setFilterByBatch] = useState("");
   const handleFilterByBatchChange = (filter: string) => {
-    const newBatch = coach.batches.filter((batch) => {
+    const newBatch = coach.batches.filter((batch: any) => {
       return batch.batch.name.toLowerCase().includes(filter);
     });
     const newTableCoach = { ...tableCoach };

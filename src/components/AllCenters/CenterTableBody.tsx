@@ -44,54 +44,54 @@ export default function CoachTableBody(
 
   return (
     <>
-      {tableData?.map(
-        (
-          { name, location, email, phoneNumber, id },
-          index
-        ) => (
-          <tr
-            key={`${name}-${index}`}
-            className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
-            onClick={() => onClickHandler(id)}
-          >
-            <td className="rounded-l-lg border-y-2 border-l-2 border-solid pl-5">
-              <Checkbox.Root className="CheckboxRoot" defaultChecked id="c1">
-                <Checkbox.Indicator className="CheckboxIndicator">
-                  <CheckIcon />
-                </Checkbox.Indicator>
-              </Checkbox.Root>
-            </td>
-            <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
-              {name}
-            </td>
-            {/* <td className="border-y-2 border-solid px-6 py-3 text-left">
+      {/* {tableData?.map(({ name, location, email, phoneNumber, id }, index) => ( */}
+      {tableData?.map(({ name, email, id }, index) => (
+        <tr
+          key={`${name}-${index}`}
+          className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
+          onClick={() => onClickHandler(id)}
+        >
+          <td className="rounded-l-lg border-y-2 border-l-2 border-solid pl-5">
+            <Checkbox.Root className="CheckboxRoot" defaultChecked id="c1">
+              <Checkbox.Indicator className="CheckboxIndicator">
+                <CheckIcon />
+              </Checkbox.Indicator>
+            </Checkbox.Root>
+          </td>
+          <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
+            {name}
+          </td>
+          {/* <td className="border-y-2 border-solid px-6 py-3 text-left">
               {differenceInYears(new Date(), new Date(dateOfBirth))}
             </td> */}
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
+
+          {/* <td className="border-y-2 border-solid px-6 py-3 text-left">
               {location}
-            </td>
-            {/* <td className="border-y-2 border-solid px-6 py-3 text-left">
+            </td> */}
+
+          {/* <td className="border-y-2 border-solid px-6 py-3 text-left">
               {sports}
             </td> */}
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {email}
-            </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">{`batch`}</td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
+          <td className="border-y-2 border-solid px-6 py-3 text-left">
+            {email}
+          </td>
+          <td className="border-y-2 border-solid px-6 py-3 text-left">{`batch`}</td>
+
+          {/* <td className="border-y-2 border-solid px-6 py-3 text-left">
               {phoneNumber}
-            </td>
-            <td className="rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left">
-              <DropdownMenu.Root>
-                <DropdownMenu.Trigger asChild>
-                  <button className="IconButton" aria-label="Customise options">
-                    <HamburgerMenuIcon />
-                  </button>
-                </DropdownMenu.Trigger>
-              </DropdownMenu.Root>
-            </td>
-          </tr>
-        )
-      )}
+            </td> */}
+
+          <td className="rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left">
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger asChild>
+                <button className="IconButton" aria-label="Customise options">
+                  <HamburgerMenuIcon />
+                </button>
+              </DropdownMenu.Trigger>
+            </DropdownMenu.Root>
+          </td>
+        </tr>
+      ))}
     </>
   );
 }

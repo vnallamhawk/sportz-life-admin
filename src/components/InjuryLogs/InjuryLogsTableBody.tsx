@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { NO_DATA } from "~/globals/globals";
 import type { Coaches } from "@prisma/client";
 import type { CoachSportsMaps } from "@prisma/client";
+import { AnyRecord } from "dns";
 
 interface coachTableFilter {
   name: string;
@@ -33,12 +34,14 @@ export default function CoachTableBody(
   if (coaches && sports) {
     tableData =
       coaches &&
-      coaches.map((coach: Coach) => {
+      // coaches.map((coach: Coach) => {
+      coaches.map((coach: any) => {
         return {
           ...coach,
           sports: coach.CoachSportsMaps.length
             ? coach?.CoachSportsMaps?.map(
-                (sport) => sports.find((s) => s.id === sport.sportId)?.name
+                (sport: any) =>
+                  sports.find((s) => s.id === sport?.sportId)?.name
               )?.join(",")
             : "",
         };

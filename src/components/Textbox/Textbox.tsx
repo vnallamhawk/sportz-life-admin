@@ -6,9 +6,10 @@ interface Textbox {
   onChangeHandler?: (event: ChangeEvent<HTMLInputElement>) => void;
   onClick?: (e?: React.FormEvent<HTMLInputElement>) => void;
   placeHolder?: string;
-  value?: string|number;
-  setValue?: (value: string|number) => void;
-  type?:string
+  value?: string | number;
+  // setValue?: (value: string | number) => void;
+  setValue?: (value: any) => void;
+  type?: string;
 }
 
 export default function Textbox({
@@ -18,15 +19,18 @@ export default function Textbox({
   onClick,
   value,
   setValue,
-  type="text",
+  type = "text",
   ...rest
 }: Textbox) {
   return (
     <input
       {...rest}
-      className={classNames("rounded-lg border-1 border-gray-300 pl-5 focus:outline-none focus:ring-0 focus:border-gray-600", {
-        [`${className}`]: className !== "",
-      })}
+      className={classNames(
+        "border-1 rounded-lg border-gray-300 pl-5 focus:border-gray-600 focus:outline-none focus:ring-0",
+        {
+          [`${className}`]: className !== "",
+        }
+      )}
       placeholder={placeHolder}
       value={value}
       type={type}
@@ -36,7 +40,11 @@ export default function Textbox({
           if (onChangeHandler != undefined) onChangeHandler(e);
           return;
         }
-        e.target.value == value ? value : setValue(type==="number"?parseInt(e.target.value):e.target.value);
+        e.target.value == value
+          ? value
+          : setValue(
+              type === "number" ? parseInt(e.target.value) : e.target.value
+            );
       }}
     />
   );

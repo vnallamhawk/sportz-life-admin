@@ -4,13 +4,15 @@ import type { InventoryData } from "~/types/center";
 
 export default function InventoryTableBody(
   data: InventoryData[],
-  removeInventory,
-  finalOptions
+  removeInventory: any,
+  finalOptions: any
 ) {
   return (
     <>
       {data?.map(({ value, quantity }, index) => {
-        const label = finalOptions?.find((op) => op?.value == value)?.label;
+        const label = finalOptions?.find(
+          (op: any) => op?.value == value
+        )?.label;
         return (
           <tr
             key={`${value}-${index}`}

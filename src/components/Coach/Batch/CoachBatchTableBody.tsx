@@ -3,9 +3,10 @@ import { type CoachWithRelations } from "~/types/coach";
 export default function CoachCertificateTableBody({
   coach,
 }: {
-  coach: CoachWithRelations;
+  // coach: CoachWithRelations;
+  coach: any;
 }) {
-  const tableItems = coach.batches.map((batch) => (
+  const tableItems = coach.batches.map((batch: any) => (
     <tr className="h-14 w-full font-bold text-gray-600" key={batch.batchId}>
       <td className="rounded-l-lg border-y-2 border-l-2 border-solid pl-5">
         {batch.batch.name}

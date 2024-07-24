@@ -16,7 +16,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 export default function () {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState<any>(new Date());
 
   const [value, onChange] = useState<Value>(new Date());
   const customTheme = {

@@ -4,7 +4,13 @@ import Image from "next/image";
 import React from "react";
 import Cross from "../../images/cross.svg";
 
-const StaffChangeCenterModal = ({ open, setShow }) => {
+const StaffChangeCenterModal = ({
+  open,
+  setShow,
+}: {
+  open: boolean;
+  setShow: (val: boolean) => void;
+}) => {
   const customTheme = {
     inlineWrapper:
       "text-gray-500 font-medium text-lg bg-white border-gray-200 border w-full  focus:outline-none  font-medium rounded-lg  px-5 py-2.5 justify-between inline-flex items-center ",
