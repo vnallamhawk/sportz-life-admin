@@ -3,6 +3,7 @@ import CardTitle from "~/components/Card/CardTitle";
 import Select from "react-select";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { Dropdown } from "flowbite-react";
+import { Switch } from "@material-tailwind/react";
 
 
 export default function AddPlans() {
@@ -43,6 +44,14 @@ export default function AddPlans() {
                             classNamePrefix="react-select"
                         />
                     </div>
+                    <div>
+                        <label>Prorata (Per Class)</label>
+                        <div className="switch mt-1">
+                            <Switch color="green" defaultChecked />
+                            <span className="text-sm ml-5">On</span>
+                        </div>
+                    </div>
+
                 </div>
                 <div className="text-end mt-10">
                     <button
