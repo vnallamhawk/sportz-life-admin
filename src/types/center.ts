@@ -70,6 +70,9 @@ export interface MULTI_FORM_TYPES extends CENTER_TYPES {
   // centerIds?: number[];
   isEditMode: boolean;
   centerId?: number;
+  designationId?: any;
+  taxable?: any;
+  grossSalary?: any;
 }
 
 export interface InventoryData {

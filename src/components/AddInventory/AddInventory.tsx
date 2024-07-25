@@ -9,12 +9,14 @@ import { INVENTORY_TABLE_HEADERS } from "~/constants/inventoryConstant";
 import type { MultiSelectOption } from "~/types/select";
 import type { Inventories } from "@prisma/client";
 
-
 const AddInventory = (props: any) => {
   const [inventories, setInventories] = useState([]);
   const [finalOptions, setFinalOptions] = useState<MultiSelectOption[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [inventoryDetails, setInventoryDetails] = useState({name:"",category:""});
+  const [inventoryDetails, setInventoryDetails] = useState({
+    name: "",
+    category: "",
+  });
   const { data: allInventories } = api.inventory.getAllInventories.useQuery();
   const { data: sessionData } = useSession();
 
@@ -28,7 +30,7 @@ const AddInventory = (props: any) => {
 
   useEffect(() => {
     if (allInventories && allInventories?.length > 0) {
-      const arr :MultiSelectOption[]= [];
+      const arr: MultiSelectOption[] = [];
       for (let i = 0; i < allInventories.length; i++) {
         const index =
           inventories && inventories.length > 0
@@ -38,8 +40,8 @@ const AddInventory = (props: any) => {
             : -1;
         if (index === -1) {
           arr.push({
-            label: allInventories[i]?.name||"",
-            value: allInventories[i]?.id||'',
+            label: allInventories[i]?.name || "",
+            value: allInventories[i]?.id || "",
           });
         }
       }
@@ -79,8 +81,8 @@ const AddInventory = (props: any) => {
   const addNewInventory = (e: any) => {
     e.preventDefault();
     createMutate({
-      ...inventoryDetails, createdBy: sessionData?.token?.id,
-     
+      ...inventoryDetails,
+      createdBy: sessionData ? sessionData.token.id : 1,
     });
 
     setShowModal(false);

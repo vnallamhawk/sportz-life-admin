@@ -42,8 +42,9 @@ export interface FormContextTypes {
     setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
   };
   multiFormData: {
-    formData;
-    setFormData?: React.Dispatch<React.SetStateAction<{}>>;
+    formData?: any;
+    // setFormData?: React.Dispatch<React.SetStateAction<{}>>;
+    setFormData?: any;
   };
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
@@ -113,7 +114,7 @@ export default function AddStaffMultiFormLayout() {
     api.staffTimings.createStaffTiming.useMutation({
       onSuccess: (response) => {
         console.log("response data is ", response);
-        router.push(`/staff/${staffId}`)
+        router.push(`/staff/${staffId}`);
         return response;
       },
     });
@@ -140,47 +141,44 @@ export default function AddStaffMultiFormLayout() {
       formData?.staffShiftDetails &&
       staffId
     ) {
-      const finalStaffTimings = formData?.staffShiftDetails?.map((v) => ({
-        ... v,
-        staffId:staffId
+      const finalStaffTimings = formData?.staffShiftDetails?.map((v: any) => ({
+        ...v,
+        staffId: staffId,
       }));
 
       createMutateStaffTimings(finalStaffTimings);
     }
   }, [staffId, formData]);
 
-
   //final Form
 
   //Todo APIs
   const finalFormSubmissionHandler = async (
     // finalForm: Required<MULTI_FORM_TYPES>
-    finalForm
+    finalForm: any
   ) => {
     console.log(finalForm, "sdkjnfksdjf");
     if (formData.isEditMode) {
       editMutate({
         ...finalForm,
-        designationId:parseInt(finalForm?.designation?.value),
-        centerId:parseInt(finalForm?.center?.value),
-        payrollId:parseInt(finalForm?.payroll?.value),
+        designationId: parseInt(finalForm?.designation?.value),
+        centerId: parseInt(finalForm?.center?.value),
+        payrollId: parseInt(finalForm?.payroll?.value),
         image: "",
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
         dateOfBirth: new Date(finalForm.dateOfBirth),
-
       });
     } else {
-     setFormData(finalForm)
+      setFormData(finalForm);
       createMutate({
         ...finalForm,
-        designationId:parseInt(finalForm?.designation?.value),
-        centerId:parseInt(finalForm?.center?.value),
-        payrollId:parseInt(finalForm?.payroll?.value),
+        designationId: parseInt(finalForm?.designation?.value),
+        centerId: parseInt(finalForm?.center?.value),
+        payrollId: parseInt(finalForm?.payroll?.value),
         image: "",
         createdBy: sessionData?.token?.id,
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
         dateOfBirth: new Date(finalForm.dateOfBirth),
-
       });
     }
   };
@@ -194,8 +192,10 @@ export default function AddStaffMultiFormLayout() {
             <AddStaffShift finalFormSubmission={finalFormSubmissionHandler} />
           )}
         </Card>
-        <Card className="col-span-2 bg-stone-100 rounded-r-xl !rounded-l-none px-7 lg:block hidden">
-          <div className="font-medium uppercase text-2xl font-heading mb-10">Staff Image</div>
+        <Card className="col-span-2 hidden !rounded-l-none rounded-r-xl bg-stone-100 px-7 lg:block">
+          <div className="mb-10 font-heading text-2xl font-medium uppercase">
+            Staff Image
+          </div>
 
           <div>
             {preview.length ? (
@@ -206,7 +206,7 @@ export default function AddStaffMultiFormLayout() {
                     key={index}
                   >
                     <ImageWithFallback
-                      className="rounded-full mx-auto mb-6"
+                      className="mx-auto mb-6 rounded-full"
                       src={upFile.preview}
                       alt="preview"
                       height={205}
@@ -223,7 +223,7 @@ export default function AddStaffMultiFormLayout() {
                   alt="preview"
                   height={205}
                   width={205}
-                  className="rounded-full mx-auto mb-6"
+                  className="mx-auto mb-6 rounded-full"
                   fallbackSrc="/images/fallback-1.png"
                 />
               </div>
@@ -241,7 +241,6 @@ export default function AddStaffMultiFormLayout() {
             </ul>
           </div>
         </Card>
-   
       </div>
     </FormContext.Provider>
   );

@@ -25,7 +25,6 @@ import AddAthlete from "../../../components/AddAthlete/AddAthlete";
 import DashboardHeader from "~/components/DashboardHeader";
 import AddGeneralDetails from "~/components/AddAthlete/AddGeneralDetails";
 
-
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: "",
   name: "",
@@ -93,7 +92,7 @@ export default function AddAthleteMultiFormLayout() {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   };
-  const { mutate: createMutate } = api.coach.createCoach.useMutation({
+  const { mutate: createMutate } = api.athlete.createAthlete.useMutation({
     onSuccess: (response) => {
       console.log("response data is ", response);
       setOpenToast(true);
@@ -151,7 +150,6 @@ export default function AddAthleteMultiFormLayout() {
       console.log(finalForm, "djbsdbfn");
       createMutate({
         name: finalForm.name,
-        about: finalForm.about,
         contactNumber: finalForm.contactNumber,
         email: finalForm.email,
         designation: finalForm.designation,
@@ -174,62 +172,68 @@ export default function AddAthleteMultiFormLayout() {
   };
 
   return (
-    <div className="px-6 bg-s-gray pb-7">
-    <FormContext.Provider value={formProviderData}>
-      <div className="grid grid-cols-6 grid-rows-1 relative">
-        <Card className="col-span-12 lg:col-span-4 h-full p-0 pt-10 bg-white rounded-l-xl !rounded-r-none relative">
-          {currentStep === 1&& <AddAthlete />}
-           {currentStep === 2 && <AddGeneralDetails finalFormSubmissionHandler={finalFormSubmissionHandler}/>}
-        </Card>
-        <Card className="col-span-2 bg-stone-100 rounded-r-xl !rounded-l-none px-7 lg:block hidden">
-          <div className="font-medium uppercase text-2xl font-heading mb-10">Athlete Image</div>
-
-          <div>
-            {preview.length ? (
-              preview.map((upFile, index) => {
-                return (
-                  <div
-                    className="previewImage mb-5 flex justify-center rounded-full"
-                    key={index}
-                  >
-                    <ImageWithFallback
-                      className="rounded-full mx-auto mb-6"
-                      src={upFile.preview}
-                      alt="preview"
-                      height={205}
-                      width={205}
-                      fallbackSrc="/images/fallback-1.png"
-                    />
-                  </div>
-                );
-              })
-            ) : (
-              <div className="previewImage">
-                <ImageWithFallback
-                  src={""}
-                  alt="preview"
-                  height={205}
-                  width={205}
-                  className="rounded-full mx-auto mb-6"
-                  fallbackSrc="/images/fallback-1.png"
-                />
-              </div>
+    <div className="bg-s-gray px-6 pb-7">
+      <FormContext.Provider value={formProviderData}>
+        <div className="relative grid grid-cols-6 grid-rows-1">
+          <Card className="relative col-span-12 h-full !rounded-r-none rounded-l-xl bg-white p-0 pt-10 lg:col-span-4">
+            {currentStep === 1 && <AddAthlete />}
+            {currentStep === 2 && (
+              <AddGeneralDetails
+                finalFormSubmissionHandler={finalFormSubmissionHandler}
+              />
             )}
-            <div className="mb-14 flex justify-center">
-              <FileUpload onDropCallback={onDropCallback} />{" "}
+          </Card>
+          <Card className="col-span-2 hidden !rounded-l-none rounded-r-xl bg-stone-100 px-7 lg:block">
+            <div className="mb-10 font-heading text-2xl font-medium uppercase">
+              Athlete Image
             </div>
-          </div>
-          <div>
-            <div className="mb-5 font-bold">Note</div>
-            <ul className="list-disc pl-5 text-gray-500">
-              <li>Please upload jpg, png, .tiff file formats only</li>
-              <li>Maximum Size 100 MB</li>
-              <li>Minimum dimension 500px width by 500px height</li>
-            </ul>
-          </div>
-        </Card>
-      </div>
-    </FormContext.Provider>
+
+            <div>
+              {preview.length ? (
+                preview.map((upFile, index) => {
+                  return (
+                    <div
+                      className="previewImage mb-5 flex justify-center rounded-full"
+                      key={index}
+                    >
+                      <ImageWithFallback
+                        className="mx-auto mb-6 rounded-full"
+                        src={upFile.preview}
+                        alt="preview"
+                        height={205}
+                        width={205}
+                        fallbackSrc="/images/fallback-1.png"
+                      />
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="previewImage">
+                  <ImageWithFallback
+                    src={""}
+                    alt="preview"
+                    height={205}
+                    width={205}
+                    className="mx-auto mb-6 rounded-full"
+                    fallbackSrc="/images/fallback-1.png"
+                  />
+                </div>
+              )}
+              <div className="mb-14 flex justify-center">
+                <FileUpload onDropCallback={onDropCallback} />{" "}
+              </div>
+            </div>
+            <div>
+              <div className="mb-5 font-bold">Note</div>
+              <ul className="list-disc pl-5 text-gray-500">
+                <li>Please upload jpg, png, .tiff file formats only</li>
+                <li>Maximum Size 100 MB</li>
+                <li>Minimum dimension 500px width by 500px height</li>
+              </ul>
+            </div>
+          </Card>
+        </div>
+      </FormContext.Provider>
     </div>
   );
 }

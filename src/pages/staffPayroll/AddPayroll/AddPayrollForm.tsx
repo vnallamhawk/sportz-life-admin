@@ -10,8 +10,8 @@ import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { useForm } from "react-hook-form";
 import Addcenter from "../../../components/Addcenter/Addcenter";
-import AddcenterCertificates from "~/components/Addcenter/AddcenterCertificates";
-import AssignBatches from "~/components/Addcenter/AssignBatches";
+// import AddcenterCertificates from "~/components/Addcenter/AddcenterCertificates";
+// import AssignBatches from "~/components/Addcenter/AssignBatches";
 // import {
 //   type TRAINING_LEVEL,
 //   type GENDER_VALUES,
@@ -30,12 +30,16 @@ import TaxSlabTableHeader from "~/components/TaxSlab/TaxSlabTableHeader";
 import TaxSlabTableBody from "~/components/TaxSlab/TaxSlabTableBody";
 import AddTaxSlabModal from "~/components/AddStaffPayroll/AddTaxSlabModal";
 import { useSession } from "next-auth/react";
-const multiFormData: MULTI_FORM_TYPES = {
-  designationId:"",
-  grossSalary:0,
+// const multiFormData: MULTI_FORM_TYPES = {
+//   designationId: "",
+//   grossSalary: 0,
+//   isEditMode: false,
+// };
+const multiFormData: any = {
+  designationId: "",
+  grossSalary: 0,
   isEditMode: false,
 };
-
 const defaultValues = {
   stepData: {
     currentStep: 1,
@@ -51,7 +55,8 @@ export interface FormContextTypes {
   };
   multiFormData: {
     formData: MULTI_FORM_TYPES;
-    setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>;
+    // setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>;
+    setFormData?: any;
   };
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
@@ -62,7 +67,10 @@ export default function AddCenterForm() {
 
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
+  // const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
+  //   defaultValues.multiFormData.formData
+  // );
+  const [formData, setFormData] = useState<any>(
     defaultValues.multiFormData.formData
   );
   const [centerId, setCenterId] = useState<number>();
@@ -72,18 +80,18 @@ export default function AddCenterForm() {
 
   //   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCenterUseEffectRun = useRef(false);
-  const { data: taxslabs } =api.tabSlab.getAllTaxSlab.useQuery();
+  const { data: taxslabs } = api.tabSlab.getAllTaxSlab.useQuery();
   const [showTabSlabModal, setShowTabSlabModal] = useState(false);
- const [taxSlab,setTaxSlab]=useState({})
- const { data: sessionData,status } = useSession();
+  const [taxSlab, setTaxSlab] = useState<any>({});
+  const { data: sessionData, status } = useSession();
 
-  
-
-  const { mutate: createMutateTaxSlab } = api.tabSlab.createTaxSlab.useMutation({
-    onSuccess: (response) => {
-      setShowTabSlabModal(!showTabSlabModal)
-    },
-  });
+  const { mutate: createMutateTaxSlab } = api.tabSlab.createTaxSlab.useMutation(
+    {
+      onSuccess: (response) => {
+        setShowTabSlabModal(!showTabSlabModal);
+      },
+    }
+  );
   // useEffect(() => {
   //   if (id) {
   //     if (center && !hasCenterUseEffectRun.current) {
@@ -98,15 +106,14 @@ export default function AddCenterForm() {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   };
-  const { mutate: createMutate } = api.staffPayroll.createStaffPayroll.useMutation({
-    onSuccess: (response) => {
-      console.log("response data is ", response);
-     router.push("/staffPayroll")
-      return response?.id;
-    },
-  });
-  
- 
+  const { mutate: createMutate } =
+    api.staffPayroll.createStaffPayroll.useMutation({
+      onSuccess: (response) => {
+        console.log("response data is ", response);
+        router.push("/staffPayroll");
+        return response?.id;
+      },
+    });
 
   // const { mutate: editMutate } = api.staffPayroll.editCenter.useMutation({
   //   onSuccess: (response) => {
@@ -115,40 +122,37 @@ export default function AddCenterForm() {
   //   },
   // });
 
-
-
   const finalFormSubmissionHandler = async (
-    finalForm: Required<MULTI_FORM_TYPES>
+    // finalForm: Required<MULTI_FORM_TYPES>
+    finalForm: Required<any>
   ) => {
     if (formData.isEditMode) {
       // editMutate({
       //   ...finalForm,
-   
       // });
     } else {
       setFormData({
-        ...finalForm
+        ...finalForm,
       });
       createMutate({
         ...finalForm,
-        createdBy:sessionData?.token?.id
+        createdBy: sessionData?.token?.id,
       });
     }
   };
 
-
-  const submitTaxSlab=(e)=>{
-    e.preventDefault()
+  const submitTaxSlab = (e: any) => {
+    e.preventDefault();
     createMutateTaxSlab({
-          fromAmount:parseInt(taxSlab?.fromAmount),
-          toAmount:parseInt(taxSlab?.toAmount),
-          percentage:parseInt(taxSlab?.percentage),
-          createdBy:sessionData?.token?.id
-        });
-  }
+      fromAmount: parseInt(taxSlab?.fromAmount),
+      toAmount: parseInt(taxSlab?.toAmount),
+      percentage: parseInt(taxSlab?.percentage),
+      createdBy: sessionData ? sessionData?.token?.id : 1,
+    });
+  };
   return (
     <>
-     {showTabSlabModal && (
+      {showTabSlabModal && (
         <AddTaxSlabModal
           show={showTabSlabModal}
           setShow={setShowTabSlabModal}
@@ -157,30 +161,31 @@ export default function AddCenterForm() {
           submitTaxSlab={submitTaxSlab}
         />
       )}
-    <FormContext.Provider value={formProviderData}>
-      <div className="grid grid-cols-6 grid-rows-1">
-        <Card className="col-span-8 ml-10 h-full p-0 pl-10 pt-10">
-          <AddPayroll taxslabs={taxslabs} finalFormSubmissionHandler={finalFormSubmissionHandler}/>
-        </Card>
-        <Card className="col-span-8 bg-gray-100">
-          <div className="mb-10 font-bold">Taxable Salary Slabs</div>
-          <Table
-          tableHeader={TaxSlabTableHeader()}
-          tableBody={TaxSlabTableBody(
-            taxslabs
-          )}
-        />
-         <div>
-            <Button
-              className="ml-3 bg-pink-700 p-2 text-white"
-              onClick={() => setShowTabSlabModal(!showTabSlabModal)}
-            >
-              Add Slab
-            </Button>
-          </div>
-        </Card>
-      </div>
-    </FormContext.Provider>
+      <FormContext.Provider value={formProviderData}>
+        <div className="grid grid-cols-6 grid-rows-1">
+          <Card className="col-span-8 ml-10 h-full p-0 pl-10 pt-10">
+            <AddPayroll
+              taxslabs={taxslabs}
+              finalFormSubmissionHandler={finalFormSubmissionHandler}
+            />
+          </Card>
+          <Card className="col-span-8 bg-gray-100">
+            <div className="mb-10 font-bold">Taxable Salary Slabs</div>
+            <Table
+              tableHeader={TaxSlabTableHeader()}
+              tableBody={TaxSlabTableBody(taxslabs)}
+            />
+            <div>
+              <Button
+                className="ml-3 bg-pink-700 p-2 text-white"
+                onClick={() => setShowTabSlabModal(!showTabSlabModal)}
+              >
+                Add Slab
+              </Button>
+            </div>
+          </Card>
+        </div>
+      </FormContext.Provider>
     </>
   );
 }

@@ -29,14 +29,13 @@ const TABLE_HEAD = [
 
 export default function Athlete() {
   const [filterByName, setFilterByName] = useState("");
-  const router=useRouter()
-  const [finalData, setFinalData] = useState([]);
-
+  const router = useRouter();
+  const [finalData, setFinalData] = useState<any>([]);
 
   const { data: athletes } =
-  filterByName == ""
-    ? api.athlete.getAllAthletes.useQuery()
-    : api.athlete.getAthleteByName.useQuery({ name: filterByName });
+    filterByName == ""
+      ? api.athlete.getAllAthletes.useQuery()
+      : api.athlete.getAthleteByName.useQuery({ name: filterByName });
 
   const dropdownObj = {
     center: true,
@@ -49,35 +48,33 @@ export default function Athlete() {
 
   const { mutate: deleteMutate } = api.athlete.deleteAthlete.useMutation({
     onSuccess: (response) => {
-      let arr=[...finalData]
-      const index=finalData?.findIndex((item)=>item?.id==response?.id)
-      if(index>-1){
-        arr.splice(index,1)
+      let arr = [...finalData];
+      const index = finalData?.findIndex(
+        (item: any) => item?.id == response?.id
+      );
+      if (index > -1) {
+        arr.splice(index, 1);
       }
-     setFinalData(arr)
-      return response
+      setFinalData(arr);
+      return response;
     },
   });
 
   useEffect(() => {
     if (athletes && athletes?.length > 0) {
-      const updatedAthletes = athletes.map((athlete) => {
+      const updatedAthletes: any = athletes.map((athlete) => {
         return {
           ...athletes,
-          status: athlete?.designation
+          // status: athlete?.designation,
         };
       });
       setFinalData(updatedAthletes);
     }
   }, [JSON.stringify(athletes)]);
 
-
-  const deleteAthlete=(id:number)=>{
-  
-    deleteMutate({athleteId:id,deletedAt:moment().toISOString()})
-   
-
-  }
+  const deleteAthlete = (id: number) => {
+    deleteMutate({ athleteId: id, deletedAt: moment().toISOString() });
+  };
 
   return (
     <>
@@ -90,10 +87,9 @@ export default function Athlete() {
         TABLE_ROWS={athletes}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
-        onViewClick={(id) => router.push(`/athlete/${id ?? ""}`)}
-        onEditClick={(id) => router.push(`/edit-athlete-${id}`)}
-        onDeleteClick={(id)=>deleteAthlete(id)}
-
+        onViewClick={(id: any) => router.push(`/athlete/${id ?? ""}`)}
+        onEditClick={(id: any) => router.push(`/edit-athlete-${id}`)}
+        onDeleteClick={(id: any) => deleteAthlete(id)}
       />
       <Modal />
     </>

@@ -42,7 +42,7 @@ export default function AddPayroll(props: any) {
   const { data: sessionData, status } = useSession();
   const { data: staffDesignation } =
     api.staffDesignation.getAllDesignation.useQuery();
-  const [designations, setDesignations] = useState([]);
+  const [designations, setDesignations] = useState<any>([]);
 
   const [formConstantValues, setFormConstantValues] = useState(
     STAFF_DETAILS_CONSTANT
