@@ -53,7 +53,7 @@
     opacity: 0.5;
   }
 
-  .common-table tr:nth-child(2) {
+  /* .common-table tr:nth-child(2) {
     box-shadow: 0 9px 32px 0 rgba(0, 0, 0, 0.1);
   }
 
@@ -63,7 +63,7 @@
 
   .common-table tr:nth-child(4) {
     opacity: 0.2;
-  }
+  } */
   .filter-visible .f-screen {
     right: 0;
   }
@@ -151,7 +151,7 @@
     left: 0.1rem;
 }
 .box-shadow{
-  box-shadow: inset 0px -35px 23px -12px #CCC;
+  box-shadow: inset 0px -58px 64px -66px #CCC;
 }
 }
 
