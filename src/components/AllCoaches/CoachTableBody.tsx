@@ -33,12 +33,13 @@ export default function CoachTableBody(
   if (coaches && sports) {
     tableData =
       coaches &&
-      coaches.map((coach: Coach) => {
+      // coaches.map((coach: Coach) => {
+      coaches.map((coach: any) => {
         return {
           ...coach,
           sports: coach?.CoachSportsMaps?.length
             ? coach?.CoachSportsMaps?.map(
-                (sport) => sports.find((s) => s.id === sport.sportId)?.name
+                (sport: any) => sports.find((s) => s.id === sport.sportId)?.name
               )?.join(",")
             : "",
         };

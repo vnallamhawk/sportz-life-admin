@@ -129,8 +129,11 @@ export enum SelectCoaches {
 
 export interface MULTI_FORM_BATCH_TYPES {
   batchName: string;
+  name?: string;
   selectSports: MultiSelectOption[];
   selectCoaches: MultiSelectOption[];
+  batchTimings?: any[];
+  isEditMode?: boolean;
   capacity: number;
   price: number;
 }

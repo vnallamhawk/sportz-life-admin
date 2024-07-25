@@ -9,7 +9,7 @@ const AddSports = () => {
   const [sports, setSports] = useState([]);
   const [finalOptions, setFinalOptions] = useState<any>([]);
   const [showModal, setShowModal] = useState(false);
-  const [sportDetails, setSportDetails] = useState({});
+  const [sportDetails, setSportDetails] = useState<any>({});
   const { data: sessionData } = useSession();
 
   const { data: allSports } = api.sports.getAllSports.useQuery();
@@ -65,7 +65,8 @@ const AddSports = () => {
     createMutate({
       ...sportDetails,
       image: "",
-      createdBy: sessionData?.token?.id,
+      createdBy: sessionData ? sessionData?.token?.id : 1,
+      // createdBy: sessionData?.token?.id,
     });
     setShowModal(false);
 

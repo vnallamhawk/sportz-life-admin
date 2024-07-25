@@ -18,7 +18,7 @@ const TableListView = ({
   showImage: boolean;
   onViewClick: () => void;
   onEditClick: () => void;
-  onDeleteClick: () => void;
+  onDeleteClick?: () => void;
 }) => {
   return (
     <>

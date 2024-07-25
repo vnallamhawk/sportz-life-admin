@@ -1,9 +1,10 @@
-import { type Certificates } from "@prisma/client";
+// import { type Certificates } from "@prisma/client";
 
 export default function CoachCertificateTableBody({
   certificates,
 }: {
-  certificates: Certificates[];
+  // certificates: Certificates[];
+  certificates: any[];
 }) {
   const tableItems = certificates?.map((cert) => (
     <tr className="h-14 w-full font-bold text-gray-600" key={cert.id}>

@@ -10,14 +10,15 @@ export default function CoachCertificate({
   coach,
   displayCertificate,
 }: {
-  coach: CoachWithRelations;
+  // coach: CoachWithRelations;
+  coach: any;
   displayCertificate: boolean;
 }) {
   const [certificates, setCertificates] = useState(coach.certificates);
   const [filterByCertificate, setFilterByCertificate] = useState("");
   const handleFilterByCertificateChange = (filter: string) => {
     setCertificates(
-      coach.certificates.filter((cert) => {
+      coach.certificates.filter((cert: any) => {
         return cert.name.toLowerCase().includes(filter);
       })
     );

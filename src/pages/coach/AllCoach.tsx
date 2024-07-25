@@ -19,8 +19,8 @@ export default function AllCoach() {
 
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
-  const [finalData, setFinalData] = useState([]);
- 
+  const [finalData, setFinalData] = useState<any>([]);
+
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
@@ -35,7 +35,7 @@ export default function AllCoach() {
       const updatedCoaches = coaches.map((coach) => {
         return {
           ...coach,
-          status: coach?.designation
+          status: coach?.designation,
         };
       });
       setFinalData(updatedCoaches);
@@ -44,22 +44,21 @@ export default function AllCoach() {
 
   const { mutate: deleteMutate } = api.coach.deleteCoach.useMutation({
     onSuccess: (response) => {
-      let arr=[...finalData]
-      const index=finalData?.findIndex((item)=>item?.id==response?.id)
-      if(index>-1){
-        arr.splice(index,1)
+      let arr = [...finalData];
+      const index = finalData?.findIndex(
+        (item: any) => item?.id == response?.id
+      );
+      if (index > -1) {
+        arr.splice(index, 1);
       }
-     setFinalData(arr)
-      return response
+      setFinalData(arr);
+      return response;
     },
   });
 
-  const deleteCoach=(id:number)=>{
-  
-    deleteMutate({coachId:id,deletedAt:moment().toISOString()})
-   
-
-  }
+  const deleteCoach = (id: number) => {
+    deleteMutate({ coachId: id, deletedAt: moment().toISOString() });
+  };
 
   return (
     <>
@@ -86,11 +85,11 @@ export default function AllCoach() {
         />
         {loading ? <LoadingSpinner /> : ""}
       </Card> */}
-    <AllData
+      <AllData
         title="ALL COACHES"
         addButtonText="ADD NEW COACH"
         addButtonUrl="/coach/AddCoach"
-        dropdownItems={{reminder:true,freeze:true,changeBatch:true}}
+        dropdownItems={{ reminder: true, freeze: true, changeBatch: true }}
         filter={false}
         TABLE_HEAD={COACH_TABLE_HEADERS}
         TABLE_ROWS={finalData}
@@ -98,12 +97,10 @@ export default function AllCoach() {
         filterByName={filterByName}
         rowSelection={true}
         showImage={false}
-        onViewClick={(id)=>router.push(`/coach/${id ?? ""}`)}
-        onEditClick={(id)=>router.push(`/edit-coach-${id}`)}
-        onDeleteClick={(id)=>deleteCoach(id)}
-
+        onViewClick={(id: any) => router.push(`/coach/${id ?? ""}`)}
+        onEditClick={(id: any) => router.push(`/edit-coach-${id}`)}
+        onDeleteClick={(id: any) => deleteCoach(id)}
       />
-
     </>
   );
 }

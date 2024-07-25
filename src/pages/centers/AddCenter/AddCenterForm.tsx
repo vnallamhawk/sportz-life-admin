@@ -9,9 +9,9 @@ import React, {
 import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { useForm } from "react-hook-form";
-import Addcenter from "../../../components/Addcenter/Addcenter";
-import AddcenterCertificates from "~/components/Addcenter/AddcenterCertificates";
-import AssignBatches from "~/components/Addcenter/AssignBatches";
+// import Addcenter from "../../../components/Addcenter/Addcenter";
+// import AddcenterCertificates from "~/components/Addcenter/AddcenterCertificates";
+// import AssignBatches from "~/components/Addcenter/AssignBatches";
 // import {
 //   type TRAINING_LEVEL,
 //   type GENDER_VALUES,
@@ -154,7 +154,6 @@ export default function AddCenterForm() {
       const finalInventories = formData?.inventories?.map((v) => ({
         ...v,
         centerId,
-
       }));
       createMutateInventories(finalInventories);
     }
@@ -189,26 +188,28 @@ export default function AddCenterForm() {
         mobile: finalForm?.phoneNumber,
         address: finalForm?.address,
         image: "",
-        createdBy: sessionData?.token?.id
+        createdBy: sessionData?.token?.id,
       });
     }
   };
   return (
     <FormContext.Provider value={formProviderData}>
-      <div className="lg:px-6 bg-s-gray lg:pb-7">
-      <div className="grid grid-cols-6 grid-rows-1">
-        <Card className="col-span-12 lg:col-span-4 h-full p-0 pt-10 lg:bg-white rounded-l-xl !rounded-r-none relative pb-0 lg:pb-6 min-h-[535px] ">
-          {currentStep === 1 && <AddCenter />}
-          {currentStep === 2 && <AddSports />}
-          {currentStep === 3 && (
-            <AddInventory
-              finalFormSubmissionHandler={finalFormSubmissionHandler}
-            />
-          )}
-        </Card>
-       
-          <Card className="col-span-2 bg-stone-100 rounded-r-xl !rounded-l-none px-7 lg:block hidden">
-            <div className="font-medium uppercase text-2xl font-heading mb-10">Center Image</div>
+      <div className="bg-s-gray lg:px-6 lg:pb-7">
+        <div className="grid grid-cols-6 grid-rows-1">
+          <Card className="relative col-span-12 h-full min-h-[535px] !rounded-r-none rounded-l-xl p-0 pb-0 pt-10 lg:col-span-4 lg:bg-white lg:pb-6 ">
+            {currentStep === 1 && <AddCenter />}
+            {currentStep === 2 && <AddSports />}
+            {currentStep === 3 && (
+              <AddInventory
+                finalFormSubmissionHandler={finalFormSubmissionHandler}
+              />
+            )}
+          </Card>
+
+          <Card className="col-span-2 hidden !rounded-l-none rounded-r-xl bg-stone-100 px-7 lg:block">
+            <div className="mb-10 font-heading text-2xl font-medium uppercase">
+              Center Image
+            </div>
 
             <div>
               {preview.length ? (
@@ -219,7 +220,7 @@ export default function AddCenterForm() {
                       key={index}
                     >
                       <ImageWithFallback
-                        className="rounded-full mx-auto mb-6"
+                        className="mx-auto mb-6 rounded-full"
                         src={upFile.preview}
                         alt="preview"
                         height={205}
@@ -236,7 +237,7 @@ export default function AddCenterForm() {
                     alt="preview"
                     height={205}
                     width={205}
-                    className="rounded-full mx-auto mb-6"
+                    className="mx-auto mb-6 rounded-full"
                     fallbackSrc="/images/fallback-1.png"
                   />
                 </div>
@@ -256,7 +257,6 @@ export default function AddCenterForm() {
           </Card>
         </div>
       </div>
-      
     </FormContext.Provider>
   );
 }

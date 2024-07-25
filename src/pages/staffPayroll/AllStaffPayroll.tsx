@@ -22,50 +22,44 @@ const AllStaffPayroll = () => {
     setLoading(isLoading);
   };
 
+  const [finalData, setFinalData] = useState<any>([]);
 
-  const [finalData,setFinalData]=useState([])
+  const { data: staffPayroll } = api.staffPayroll.getAllPayroll.useQuery();
 
-
-  const { data: staffPayroll } = api.staffPayroll.getAllPayroll.useQuery()
-
-
-useEffect(() => {
-  if (staffPayroll && staffPayroll?.length > 0) {
-    const updatedStaffPayroll = staffPayroll.map((payroll) => {
-      return {
-        ...payroll,
-        designation:payroll?.StaffDesignation?.designation,
-        tax:payroll?.grossSalary-payroll?.netSalary
-      };
-    });
-    setFinalData(updatedStaffPayroll);
-  }
-}, [JSON.stringify(staffPayroll)]);
-
-
-const { mutate: deleteMutate } = api.staffPayroll.deletePayroll.useMutation({
-  onSuccess: (response) => {
-    let arr=[...finalData]
-    const index=finalData?.findIndex((item)=>item?.id==response?.id)
-    if(index>-1){
-      arr.splice(index,1)
+  useEffect(() => {
+    if (staffPayroll && staffPayroll?.length > 0) {
+      const updatedStaffPayroll = staffPayroll.map((payroll) => {
+        return {
+          ...payroll,
+          designation: payroll?.StaffDesignation?.designation,
+          tax: payroll?.grossSalary - payroll?.netSalary,
+        };
+      });
+      setFinalData(updatedStaffPayroll);
     }
-   setFinalData(arr)
-    return response
-  },
-});
+  }, [JSON.stringify(staffPayroll)]);
 
-const deletePayroll=(id:number)=>{
+  const { mutate: deleteMutate } = api.staffPayroll.deletePayroll.useMutation({
+    onSuccess: (response) => {
+      let arr = [...finalData];
+      const index = finalData?.findIndex(
+        (item: any) => item?.id == response?.id
+      );
+      if (index > -1) {
+        arr.splice(index, 1);
+      }
+      setFinalData(arr);
+      return response;
+    },
+  });
 
-  deleteMutate({payrollId:id,deletedAt:moment().toISOString()})
- 
-
-}
+  const deletePayroll = (id: number) => {
+    deleteMutate({ payrollId: id, deletedAt: moment().toISOString() });
+  };
 
   return (
     <>
-
-<AllData
+      <AllData
         title="ALL PAYROLLS"
         addButtonText="ADD Payroll"
         addButtonUrl="/staffPayroll/AddPayroll"
@@ -75,11 +69,9 @@ const deletePayroll=(id:number)=>{
         TABLE_ROWS={finalData}
         rowSelection={false}
         showImage={false}
-        onEditClick={(id)=>router.push(`/edit-staffPayroll-${id}`)}
-        onDeleteClick={(id)=>deletePayroll(id)}
-
+        onEditClick={(id: any) => router.push(`/edit-staffPayroll-${id}`)}
+        onDeleteClick={(id: any) => deletePayroll(id)}
       />
-     
     </>
   );
 };

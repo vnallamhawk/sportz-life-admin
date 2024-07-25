@@ -6,15 +6,14 @@ import {
 } from "~/server/api/trpc";
 import { EXPERIENCE_LEVEL, GENDER_VALUES, TRAINING_LEVEL } from "~/types/coach";
 
-
 // Now add this object into an array
 
 export const athleteRouter = createTRPCRouter({
   getAllAthletes: publicProcedure.query(({ ctx }) => {
     const allAthletes = ctx?.prisma.athletes?.findMany({
-      where:{
-        deletedAt:null,
-        createdBy:ctx?.session?.token?.id
+      where: {
+        deletedAt: null,
+        createdBy: ctx?.session?.token?.id,
       },
     });
     return allAthletes;
@@ -40,8 +39,7 @@ export const athleteRouter = createTRPCRouter({
         });
 
         return athletes;
-      } catch (error) {
-      }
+      } catch (error) {}
     }),
   getAthleteByName: publicProcedure
     .input(
@@ -175,7 +173,7 @@ export const athleteRouter = createTRPCRouter({
           email,
           designation,
           gender,
-          certificates,
+          // certificates,
           dateOfBirth,
           // sports,
           trainingLevel,
@@ -186,7 +184,7 @@ export const athleteRouter = createTRPCRouter({
         },
         ctx,
       }) => {
-        const sportsId = sports.map(({ value }) => value);
+        // const sportsId = sports.map(({ value }:{value:any}) => value);
         //eslint-disable-next-line no-console
         const response = await ctx.prisma.athletes.update({
           where: {
@@ -238,34 +236,25 @@ export const athleteRouter = createTRPCRouter({
         return response;
       }
     ),
-    deleteAthlete: publicProcedure
+  deleteAthlete: publicProcedure
     .input(
       z.object({
         athleteId: z.number(),
         deletedAt: z.string(),
       })
     )
-    .mutation(
-      async ({
-        input: {
-          athleteId,
-          deletedAt
+    .mutation(async ({ input: { athleteId, deletedAt }, ctx }) => {
+      const response = await ctx.prisma.athletes.update({
+        where: {
+          id: athleteId,
         },
-        ctx,
-      }) => {
+        data: {
+          deletedAt,
+        },
+      });
 
-        const response = await ctx.prisma.athletes.update({
-          where: {
-            id: athleteId,
-          },
-          data: {
-            deletedAt
-          },
-        });
-
-        return response;
-      }
-    ),
+      return response;
+    }),
   // getSecretMessage: protectedProcedure.query(() => {
   //   return "you can now see this secret message!";
   // }),

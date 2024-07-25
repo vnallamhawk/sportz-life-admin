@@ -60,12 +60,12 @@ export const getServerSideProps = async (
           Inventories: true,
         },
       },
-      Batches:{
-        include:{
-          BatchSchedules:true,
-          Sports:true
-        }
-      }
+      Batches: {
+        include: {
+          BatchSchedules: true,
+          Sports: true,
+        },
+      },
     },
   });
 
@@ -116,12 +116,11 @@ type TabsType = {
 };
 
 export default function Page({ center }: { center: Centers }) {
-  const router=useRouter()
+  const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
   const [displayBatch, setDisplayBatch] = useState(false);
   const [displayAttendance, setDisplayAttendance] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
-
 
   const handleCertificateClick = () =>
     setDisplayCertificate(!displayCertificate);
@@ -132,23 +131,20 @@ export default function Page({ center }: { center: Centers }) {
   const [loading, setLoading] = useState(true);
   const [finalTabs, setFinalTabs] = useState(tabs);
 
-
-  useEffect(()=>{
-    if(finalTabs && finalTabs.length>0 && Object.keys(center).length>0 ){
-      const arr=[...finalTabs]
-      const index=arr?.findIndex((item)=>item?.name==="inventories")
-      if(index>-1 && center?.CenterInventories){
-        arr[index].value=center?.CenterInventories?.length
+  useEffect(() => {
+    if (finalTabs && finalTabs.length > 0 && Object.keys(center).length > 0) {
+      const arr = [...finalTabs];
+      const index = arr?.findIndex((item) => item?.name === "inventories");
+      if (index > -1 && center?.CenterInventories) {
+        arr[index].value = center?.CenterInventories?.length;
       }
-      const batchIndex=arr?.findIndex((item)=>item?.name==="batches")
-      if(batchIndex>-1 && center?.Batches){
-        arr[batchIndex].value=center?.Batches?.length
+      const batchIndex = arr?.findIndex((item) => item?.name === "batches");
+      if (batchIndex > -1 && center?.Batches) {
+        arr[batchIndex].value = center?.Batches?.length;
       }
-      setFinalTabs(arr)
+      setFinalTabs(arr);
     }
-
-  },[center,finalTabs])
-
+  }, [center, finalTabs]);
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
@@ -158,7 +154,7 @@ export default function Page({ center }: { center: Centers }) {
     CenterDashBatchTableHeader()
   );
   const [selectedBody, setSelectedBody] = useState(
-    CenterDashBatchTableBody(center?.Batches,center)
+    CenterDashBatchTableBody(center?.Batches, center)
     // { name: filterByName },
     // handleIsLoading
   );
@@ -172,7 +168,7 @@ export default function Page({ center }: { center: Centers }) {
     } else if (tab?.name === "batches") {
       header = CenterDashBatchTableHeader();
 
-      body = CenterDashBatchTableBody(center?.Batches,center);
+      body = CenterDashBatchTableBody(center?.Batches, center);
     } else if (tab?.name === "athletes") {
       header = CenterDashAthleteTableHeader();
       body = CenterDashAthleteTableBody();
@@ -183,7 +179,6 @@ export default function Page({ center }: { center: Centers }) {
     setSelectedHeader(header);
     setSelectedBody(body);
   };
-
 
   return (
     <>
@@ -210,7 +205,7 @@ export default function Page({ center }: { center: Centers }) {
               {/* {coach?.CoachSportsMaps?.map(
                 ({ sportId }) => sportsDictionary?.[sportId]
               ).join(" ,")} */}
-              {center?.CenterSports.map((ele, index) => (
+              {center?.CenterSports.map((ele: any, index: number) => (
                 <div
                   className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm"
                   key={index}

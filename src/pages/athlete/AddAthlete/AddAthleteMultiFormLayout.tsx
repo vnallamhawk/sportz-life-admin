@@ -150,17 +150,18 @@ export default function AddAthleteMultiFormLayout() {
       console.log(finalForm, "djbsdbfn");
       createMutate({
         name: finalForm.name,
+        about: finalForm.about,
         contactNumber: finalForm.contactNumber,
         email: finalForm.email,
         designation: finalForm.designation,
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-        certificates: finalForm.certificates.map((certificate) => ({
-          ...certificate,
-          startDate: new Date(certificate.startDate),
-          endDate: new Date(certificate.endDate),
-        })),
+        // certificates: finalForm.certificates.map((certificate) => ({
+        //   ...certificate,
+        //   startDate: new Date(certificate.startDate),
+        //   endDate: new Date(certificate.endDate),
+        // })),
         dateOfBirth: new Date(finalForm.dateOfBirth),
-        sports: finalForm.coachingSports,
+        // sports: finalForm.coachingSports,
         trainingLevel: finalForm.trainingLevel
           .value as (typeof TRAINING_LEVEL)[number],
         experienceLevel: finalForm.experienceLevel

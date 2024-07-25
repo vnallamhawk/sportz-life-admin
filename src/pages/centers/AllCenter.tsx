@@ -17,7 +17,7 @@ const AllCenter = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [filterByName, setFilterByName] = useState("");
-  const [finalData, setFinalData] = useState([]);
+  const [finalData, setFinalData] = useState<any>([]);
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
@@ -32,7 +32,7 @@ const AllCenter = () => {
       const updatedCenters = centers.map((center) => {
         return {
           ...center,
-          batches: center?.Batches?.length,
+          // batches: center?.Batches?.length,
         };
       });
       setFinalData(updatedCenters);
@@ -41,22 +41,21 @@ const AllCenter = () => {
 
   const { mutate: deleteMutate } = api.center.deleteCenter.useMutation({
     onSuccess: (response) => {
-      let arr=[...finalData]
-      const index=finalData?.findIndex((item)=>item?.id==response?.id)
-      if(index>-1){
-        arr.splice(index,1)
+      let arr = [...finalData];
+      const index = finalData?.findIndex(
+        (item: any) => item?.id == response?.id
+      );
+      if (index > -1) {
+        arr.splice(index, 1);
       }
-     setFinalData(arr)
-      return response
+      setFinalData(arr);
+      return response;
     },
   });
 
-  const deleteCenter=(id:number)=>{
-  
-    deleteMutate({centerId:id,deletedAt:moment().toISOString()})
-   
-
-  }
+  const deleteCenter = (id: number) => {
+    deleteMutate({ centerId: id, deletedAt: moment().toISOString() });
+  };
 
   return (
     <>
@@ -72,9 +71,9 @@ const AllCenter = () => {
         filterByName={filterByName}
         rowSelection={false}
         showImage={false}
-        onViewClick={(id)=>router.push(`/centers/${id ?? ""}`)}
-        onEditClick={(id)=>router.push(`/edit-center-${id}`)}
-        onDeleteClick={(id)=>deleteCenter(id)}
+        onViewClick={(id: any) => router.push(`/centers/${id ?? ""}`)}
+        onEditClick={(id: any) => router.push(`/edit-center-${id}`)}
+        onDeleteClick={(id: any) => deleteCenter(id)}
       />
 
       {/* <Card className="h-full">

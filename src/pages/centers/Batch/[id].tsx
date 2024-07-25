@@ -39,10 +39,10 @@ import { GetServerSidePropsContext } from "next";
 import { prisma } from "~/server/db";
 import type { Centers } from "@prisma/client";
 
-
 const multiFormData: MULTI_FORM_BATCH_TYPES = {
-  name: "",
-  selectSports: {},
+  // name: "",
+  batchName: "",
+  selectSports: [],
   selectCoaches: [],
   capacity: 0,
   price: 0,
@@ -67,7 +67,6 @@ export interface FormContextTypes {
   };
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
-
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -99,7 +98,11 @@ export const getServerSideProps = async (
   };
 };
 
-export default function AddCoachMultiFormLayout({ center }: { center: Centers }) {
+export default function AddCoachMultiFormLayout({
+  center,
+}: {
+  center: Centers;
+}) {
   const router = useRouter();
   const id = Number(router?.query?.id);
 
@@ -112,8 +115,6 @@ export default function AddCoachMultiFormLayout({ center }: { center: Centers })
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
   const [batchId, setBatchId] = useState<number>();
 
- 
-
   const formProviderData = {
     ...methods,
     stepData: { currentStep, setCurrentStep },
@@ -124,18 +125,17 @@ export default function AddCoachMultiFormLayout({ center }: { center: Centers })
     api.batchTimings.createBatchTiming.useMutation({
       onSuccess: (response) => {
         console.log("response data is ", response);
-        router.push(`/centers/${center?.id}`)
+        router.push(`/centers/${center?.id}`);
         return response;
       },
     });
-    const { mutate: createMutateBatch } =
-    api.batches.createBatch.useMutation({
-      onSuccess: (response) => {
-        console.log("response data is ", response);
-        setBatchId(response?.id)
-        return response;
-      },
-    });
+  const { mutate: createMutateBatch } = api.batches.createBatch.useMutation({
+    onSuccess: (response) => {
+      console.log("response data is ", response);
+      setBatchId(response?.id);
+      return response;
+    },
+  });
   useEffect(() => {
     if (
       formData &&
@@ -143,10 +143,10 @@ export default function AddCoachMultiFormLayout({ center }: { center: Centers })
       formData?.batchTimings &&
       batchId
     ) {
-      const finalBatchTimings = formData?.batchTimings?.map((v) => ({
-        ... v,
+      const finalBatchTimings = formData?.batchTimings?.map((v: any) => ({
+        ...v,
         batchId,
-        centerId:center?.id
+        centerId: center?.id,
       }));
 
       createMutateBatchTimings(finalBatchTimings);
@@ -156,23 +156,22 @@ export default function AddCoachMultiFormLayout({ center }: { center: Centers })
   const finalFormSubmissionHandler = async (
     finalForm: Required<MULTI_FORM_TYPES>
   ) => {
-    const sportId = finalForm?.selectSports?.value
+    const sportId = finalForm?.selectSports?.value;
     if (formData.isEditMode) {
       editMutate({
-        ...finalForm
+        ...finalForm,
       });
     } else {
       setFormData({
         ...finalForm,
-        centerId:center?.id,
+        centerId: center?.id,
       });
       createMutateBatch({
         ...finalForm,
-        capacity:parseInt(finalForm?.capacity),
-        price:parseInt(finalForm?.price),
-        sportId:parseInt(sportId),
-        centerId:center?.id,
-
+        capacity: parseInt(finalForm?.capacity),
+        price: parseInt(finalForm?.price),
+        sportId: parseInt(sportId),
+        centerId: center?.id,
       });
     }
   };
@@ -182,7 +181,11 @@ export default function AddCoachMultiFormLayout({ center }: { center: Centers })
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
           {currentStep === 1 && <AddBatch />}
-          {currentStep === 2 && <AddBatchTiming finalFormSubmissionHandler={finalFormSubmissionHandler}/>}
+          {currentStep === 2 && (
+            <AddBatchTiming
+              finalFormSubmissionHandler={finalFormSubmissionHandler}
+            />
+          )}
         </Card>
         <Card className="col-span-2 bg-black">
           <div className="flex gap-4">
@@ -237,7 +240,9 @@ export default function AddCoachMultiFormLayout({ center }: { center: Centers })
             />
             <div>
               <p className="text-[#A7AAC9]">Inventory</p>
-              <h1 className="text-2xl font-bold text-white">{center?.CenterInventories?.length}</h1>
+              <h1 className="text-2xl font-bold text-white">
+                {center?.CenterInventories?.length}
+              </h1>
             </div>
           </div>
         </Card>
