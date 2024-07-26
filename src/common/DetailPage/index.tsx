@@ -25,7 +25,8 @@ const DetailPage = ({
   tabs,
   handleTabClick,
   selectedComponent,
-  selectedTab
+  selectedTab,
+  badgeData
 }: any) => {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
@@ -48,8 +49,8 @@ const DetailPage = ({
     arrows: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 4.5,
-    slidesToScroll: 4.5,
+    slidesToShow:tabs?.length>4? 4.5:4,
+    slidesToScroll: tabs?.length>4? 4.5:4,
     responsive: [
       {
         breakpoint: 1200,
@@ -108,6 +109,19 @@ const DetailPage = ({
           <div className="mt-3 w-full lg:mt-0 lg:w-10/12 lg:pl-10">
             <div className="text-center font-heading text-3xl font-medium uppercase text-white md:text-black lg:text-start">
               {data?.name}
+            </div>
+            <div className="flex justify-start">
+              {/* {coach?.CoachSportsMaps?.map(
+                ({ sportId }) => sportsDictionary?.[sportId]
+              ).join(" ,")} */}
+              {badgeData.map((ele: any, index: number) => (
+                <div
+                  className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm"
+                  key={index}
+                >
+                  <p className="text-pink-500">{ele?.Sports?.name}</p>
+                </div>
+              ))}
             </div>
             <div className="text-center text-base text-white md:text-blush-dark lg:text-start">
               {data?.description}

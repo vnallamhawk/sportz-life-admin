@@ -15,10 +15,10 @@ export const CENTER_DASH_BATCH_TABLE_HEADERS = [
     label: "Sport",
     id: "sport",
   },
-  // {
-  //   label: "Date",
-  //   id: "date",
-  // },
+  {
+    label: "Batch Start Date",
+    id: "startDate",
+  },
   {
     label: "Action",
     id: "action",

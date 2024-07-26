@@ -248,22 +248,26 @@ export const COACH_CERTIFICATE_TABLE_HEADERS = [
   },
 ];
 
-export const CENTER_BATCH_TABLE_HEADERS = [
+export const ATHLETE_BATCH_TABLE_HEADERS = [
   {
-    label: "Center Name",
-    id: "center",
+    label: "Batch Name",
+    id: "batchName",
   },
   {
-    label: "Location",
-    id: "location",
+    label: "Coach",
+    id: "coach",
   },
   {
-    label: "Batches",
-    id: "batch",
+    label: "Sport",
+    id: "sport",
   },
   {
-    label: "Contact Number",
-    id: "mobile",
+    label: "No. of Students",
+    id: "students",
+  },
+  {
+    label: "Batch Fee",
+    id: "batchFee",
   },
   {
     label: "Action",
@@ -280,7 +284,8 @@ export const ATHLETE_MEDICAL_TABLE_HEADERS = [
     id: "medical_history",
   },
   {
-    label: "Actions",
-    id: "actions",
+    label: "Action",
+    id: "action",
   },
 ];
+

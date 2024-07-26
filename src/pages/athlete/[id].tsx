@@ -57,7 +57,7 @@ import AllData from "~/common/AllData";
 import { CENTER_DASH_BATCH_TABLE_HEADERS } from "~/constants/centerDashTables";
 import { PAYMENT_HISTORY_TABLE_HEADERS } from "~/constants/payment";
 import { ASSESSMENT_TABLE_HEADERS } from "~/constants/assessment";
-import { ATHLETE_MEDICAL_TABLE_HEADERS } from "~/constants/athleteConstants";
+import { ATHLETE_BATCH_TABLE_HEADERS, ATHLETE_MEDICAL_TABLE_HEADERS } from "~/constants/athleteConstants";
 import Attendance from "~/components/Attendance";
 
 export const getServerSideProps = async (
@@ -180,7 +180,7 @@ export default function Page({ athlete }: { athlete: Athletes }) {
       
     } else{
       if (tab?.name === "batches") {
-        TABLE_HEAD = CENTER_DASH_BATCH_TABLE_HEADERS
+        TABLE_HEAD = ATHLETE_BATCH_TABLE_HEADERS
   
       } else if (tab?.name === "payment_history") {
         TABLE_HEAD = PAYMENT_HISTORY_TABLE_HEADERS

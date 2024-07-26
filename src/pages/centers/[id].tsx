@@ -39,6 +39,14 @@ import CenterDashCoachTableBody from "~/components/CenterDashboardTables/Coach/C
 import CenterDashAthleteTableBody from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableBody";
 import CenterDashInventoryTableBody from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableBody";
 import { useRouter } from "next/router";
+import DetailPage from "~/common/DetailPage";
+import AllData from "~/common/AllData";
+import {
+  CENTER_DASH_ATHLETE_TABLE_HEADERS,
+  CENTER_DASH_BATCH_TABLE_HEADERS,
+  CENTER_DASH_COACH_TABLE_HEADERS,
+  CENTER_DASH_INVENTORY_TABLE_HEADERS,
+} from "~/constants/centerDashTables";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -55,6 +63,8 @@ export const getServerSideProps = async (
           Sports: true,
         },
       },
+      Athletes:true,
+      // Coaches:true,
       CenterInventories: {
         include: {
           Inventories: true,
@@ -121,6 +131,8 @@ export default function Page({ center }: { center: Centers }) {
   const [displayBatch, setDisplayBatch] = useState(false);
   const [displayAttendance, setDisplayAttendance] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
+  const [selectedTab, setSelectedTab] = useState<string>(tabs[1]?.name);
+  const [selectedComponent, setSelectedComponent] = useState();
 
   const handleCertificateClick = () =>
     setDisplayCertificate(!displayCertificate);
@@ -149,150 +161,68 @@ export default function Page({ center }: { center: Centers }) {
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
-  const [selectedTab, setSelectedTab] = useState(tabs[1]);
-  const [selectedHeader, setSelectedHeader] = useState(
-    CenterDashBatchTableHeader()
-  );
-  const [selectedBody, setSelectedBody] = useState(
-    CenterDashBatchTableBody(center?.Batches, center)
-    // { name: filterByName },
-    // handleIsLoading
-  );
 
   const handleClick = (tab: TabsType) => {
-    let header, body;
-    setSelectedTab(tab);
-    if (tab?.name === "coaches") {
-      header = CenterDashCoachTableHeader();
-      body = CenterDashCoachTableBody();
-    } else if (tab?.name === "batches") {
-      header = CenterDashBatchTableHeader();
+    let TABLE_HEAD;
+    let TABLE_ROWS = [];
+    if (tab?.name === "batches") {
+      TABLE_HEAD = CENTER_DASH_BATCH_TABLE_HEADERS;
+      TABLE_ROWS=center?.Batches
+    } else if (tab?.name === "coaches") {
+      TABLE_HEAD = CENTER_DASH_COACH_TABLE_HEADERS;
+      TABLE_ROWS=center?.Coaches
 
-      body = CenterDashBatchTableBody(center?.Batches, center);
     } else if (tab?.name === "athletes") {
-      header = CenterDashAthleteTableHeader();
-      body = CenterDashAthleteTableBody();
+      TABLE_HEAD = CENTER_DASH_ATHLETE_TABLE_HEADERS;
+      TABLE_ROWS=center?.Athletes
+
     } else {
-      header = CenterDashInventoryTableHeader();
-      body = CenterDashInventoryTableBody(center?.CenterInventories);
+      TABLE_HEAD = CENTER_DASH_INVENTORY_TABLE_HEADERS;
+      TABLE_ROWS=center?.CenterInventories.map((center) => {
+        return {
+          ...center,name:center?.Inventories?.name
+           // batches: center?.Batches?.length,
+        };
+      });
     }
-    setSelectedHeader(header);
-    setSelectedBody(body);
+    const component = (
+      <AllData
+        title={tab?.allLabel}
+        dropdownItems={{}}
+        TABLE_HEAD={TABLE_HEAD}
+        TABLE_ROWS={TABLE_ROWS}
+        rowSelection={false}
+        showImage={false}
+      />
+    );
+
+    setSelectedComponent(component);
+    setSelectedTab(tab?.name);
   };
 
   return (
     <>
-      <Card className="h-100 mx-5">
-        <header className="flex justify-between">
-          <CardTitle title="CENTER DETAILS" />
-          <Button onClick={() => router.push(`/edit-center-${center?.id}`)}>
-            Edit Center
-          </Button>
-        </header>
-        <div className="flex">
-          <Image
-            className=" mt-5 h-[150px] w-[150px] rounded-xl"
-            src={"/images/rugby.jpg"}
-            alt=""
-            width="200"
-            height="150"
-          />
-          <div className="w-10/12 px-10">
-            <div className="mb-2 mt-5  text-lg font-bold">
-              <span>{center?.name}</span>
-            </div>
-            <div className="flex justify-start">
-              {/* {coach?.CoachSportsMaps?.map(
-                ({ sportId }) => sportsDictionary?.[sportId]
-              ).join(" ,")} */}
-              {center?.CenterSports.map((ele: any, index: number) => (
-                <div
-                  className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm"
-                  key={index}
-                >
-                  <p className="text-pink-500">{ele?.Sports?.name}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 flex gap-4">
-              <div className="Contact mr-3">
-                <div className="text-sm text-gray-400"> Contact Number </div>
-                <div className="font-bold text-gray-600">{center?.mobile}</div>
-              </div>
-
-              <div className="Email mr-3">
-                <div className=" text-sm text-gray-400"> Email</div>
-                <div className="font-bold text-gray-600">{center?.email}</div>
-              </div>
-
-              <div className="Location mr-3">
-                <div className=" text-sm text-gray-400">Location</div>
-                <div className="font-bold text-gray-600">{center?.address}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-8 flex w-10/12 justify-between">
-          {tabs?.map((tab, index) => {
-            return (
-              <div
-                className="flex gap-3 rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px] hover:border-pink-500"
-                onClick={() => {
-                  handleClick(tab);
-                }}
-                key={index}
-              >
-                <div>
-                  <Image
-                    className="h-[56px] w-[56px] rounded-lg"
-                    src={tab?.image}
-                    alt={`${tab?.name}_img`}
-                    width={56}
-                    height={56}
-                  />
-                </div>
-                <div>
-                  <p className="text-[#CF8DA7]">{tab?.label}</p>
-                  <h1>{tab?.value}</h1>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <AddCenterSuccessToast
-          open={openToast}
-          setOpen={setOpenToast}
-        ></AddCenterSuccessToast>
-      </Card>
-      {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
-      <CoachBatch coach={coach} displayBatch={displayBatch} />
-      <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
-
-      {/* Table dikhate hai */}
-      <Card className="h-100 mx-5 mt-5">
-        {/* Header */}
-        <header className="flex justify-between">
-          <CardTitle title={selectedTab?.allLabel!} />
-          <div className="flex justify-center align-middle">
-            <Search pos="right" />
-
-            {/* filter ka div */}
-            {/* <Filter /> */}
-
-            {/* Button */}
-            {selectedTab?.name === "batches" && (
-              <Button
-                className="ml-3 bg-[#F3476D] p-2 text-white"
-                onClick={() => router.push(`/centers/Batch/${center?.id}`)}
-              >
-                Add New Batch
-              </Button>
-            )}
-          </div>
-        </header>
-
-        <Table tableHeader={selectedHeader} tableBody={selectedBody} />
-      </Card>
+      <DetailPage
+        cardTitle="CENTER DETAILS"
+        editButtonClick={() => router.push(`/edit-center-${center?.id}`)}
+        editText={"Edit Center"}
+        tabs={tabs}
+        handleTabClick={handleClick}
+        data={center}
+        selectedComponent={selectedComponent}
+        selectedTab={selectedTab}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        badgeData={center?.CenterSports}
+        details={[
+          {
+              items: [
+                { label: "Contact Number", value: center?.mobile },
+                { label: "Email", value: center?.email },
+                { lable: "Location", value: center?.address },
+              ],
+            },
+        ]}
+      />
     </>
   );
 }

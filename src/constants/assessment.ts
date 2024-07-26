@@ -21,7 +21,7 @@ export const ASSESSMENT_TABLE_HEADERS = [
         id: "score",
       },
       {
-        label: "Actions",
-        id: "actions",
+        label: "Action",
+        id: "action",
       },
   ];
