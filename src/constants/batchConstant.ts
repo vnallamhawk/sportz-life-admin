@@ -69,7 +69,7 @@ export const BATCH_DETAILS_CONSTANTS: BATCH_DETAILS_CONSTANTS_TYPES[] = [
   },
 ];
 
-export const BATCH_DETAILS_TIMING: BATCH_DETAILS_CONSTANTS_TYPES[] = [
+export const BATCH_DETAILS_TIMING = [
   {
     label: "Select Day",
     id: "day",

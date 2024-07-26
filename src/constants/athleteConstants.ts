@@ -270,3 +270,17 @@ export const CENTER_BATCH_TABLE_HEADERS = [
     id: "action",
   },
 ];
+export const ATHLETE_MEDICAL_TABLE_HEADERS = [
+  {
+    label: "#",
+    id: "no.",
+  },
+  {
+    label: "Medical History",
+    id: "medical_history",
+  },
+  {
+    label: "Actions",
+    id: "actions",
+  },
+];

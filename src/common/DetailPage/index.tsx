@@ -10,7 +10,7 @@ import { ToastContext } from "~/contexts/Contexts";
 
 import { useRouter } from "next/router";
 import Slider from "react-slick";
-import { TabType } from "~/types/common";
+import type { TabType } from "~/types/common";
 
 type ValuePiece = Date | null;
 
@@ -25,6 +25,7 @@ const DetailPage = ({
   tabs,
   handleTabClick,
   selectedComponent,
+  selectedTab
 }: any) => {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
@@ -42,7 +43,7 @@ const DetailPage = ({
   const [loading, setLoading] = useState(true);
   const [finalTabs, setFinalTabs] = useState(tabs);
 
-  var settings = {
+  const settings = {
     dots: false,
     arrows: false,
     infinite: true,
@@ -156,7 +157,7 @@ const DetailPage = ({
             {tabs?.map((tab: TabType, index: number) => {
               return (
                 <div
-                  className={`rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px] `}
+                  className={`${selectedTab===tab?.key?"active":""}rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px]`}
                   onClick={() => {
                     handleTabClick(tab);
                   }}

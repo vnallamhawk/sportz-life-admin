@@ -42,7 +42,7 @@ const AllData = ({
             {title}
           </div>
           <div className=" hidden items-center lg:flex ">
-            <div className="relative">
+            {setFilterByName &&filterByName && <> <div className="relative">
               <Image
                 src={SearchIcon}
                 className="absolute right-3 top-2 z-10"
@@ -55,23 +55,23 @@ const AllData = ({
                 onChange={(e) => setFilterByName(e.target.value)}
                 value={filterByName}
               />
-            </div>
+            </div></>}
             {filter && <Filter />}
-            <Link href={addButtonUrl}>
+            {addButtonUrl && <Link href={addButtonUrl}>
               <button className="ml-3 rounded-lg bg-mandy-dark px-6 py-2.5 text-white">
                 {addButtonText}
               </button>
-            </Link>
+            </Link>}
           </div>
           <div className="flex items-center lg:hidden ">
-            <button className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-mandy-dark p-3">
+           { addButtonUrl && <button className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-mandy-dark p-3">
               <Image
                 src={Plus}
                 className=""
                 alt=""
                 onClick={() => router.push(addButtonUrl)}
               />
-            </button>
+            </button>}
 
             {Object.keys(dropdownItems).length > 0 && (
               <div className="dropdown">

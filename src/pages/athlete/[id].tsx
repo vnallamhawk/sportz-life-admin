@@ -1,8 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import Button from "~/components/Button";
-import Card from "~/components/Card";
-import TableListView from "~/common/TableListView";
-import CardTitle from "~/components/Card/CardTitle";
+
 import Image, { StaticImageData } from "next/image";
 import CoachImg from "../../images/CoachesImg.png";
 import Plus from "../../images/plus.svg";
@@ -54,9 +51,14 @@ import CenterDashAthleteTableBody from "~/components/CenterDashboardTables/Athle
 import CenterDashInventoryTableBody from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableBody";
 import { useRouter } from "next/router";
 import Slider from "react-slick";
-import Calendar from "react-calendar";
-import { BarChart } from "recharts";
+
 import DetailPage from "~/common/DetailPage";
+import AllData from "~/common/AllData";
+import { CENTER_DASH_BATCH_TABLE_HEADERS } from "~/constants/centerDashTables";
+import { PAYMENT_HISTORY_TABLE_HEADERS } from "~/constants/payment";
+import { ASSESSMENT_TABLE_HEADERS } from "~/constants/assessment";
+import { ATHLETE_MEDICAL_TABLE_HEADERS } from "~/constants/athleteConstants";
+import Attendance from "~/components/Attendance";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -77,32 +79,39 @@ export const getServerSideProps = async (
 
 const tabs = [
   {
-    label: "Coaches",
-    name: "coaches",
-    value: "05",
+    label: "Attendance",
+    name: "attendance",
+    value: "60%",
     image: CoachImg,
-    allLabel: "All Coaches",
+    allLabel: "ATTENDANCE",
   },
   {
     label: "Batches",
     name: "batches",
     value: "04",
     image: BatchImg,
-    allLabel: "All Batches",
+    allLabel: "BATCHES",
   },
   {
-    label: "Atheletes",
-    name: "athletes",
-    value: "66",
+    label: "Payemnt",
+    name: "payment_history",
+    value: "History",
     image: AtheleteImg,
-    allLabel: "All Athelte",
+    allLabel: "PAYMENT HISTORY",
   },
   {
-    label: "Inventories",
-    name: "inventories",
-    value: "15",
+    label: "Assessment",
+    name: "assessment_report",
+    value: "Report",
     image: InventoryImg,
-    allLabel: "All Inventory",
+    allLabel: "ASSESSMENT",
+  },
+  {
+    label: "Medical",
+    name: "medical_history",
+    value: "History",
+    image: InventoryImg,
+    allLabel: "MEDICAL HISTORY",
   },
 ];
 
@@ -124,6 +133,7 @@ export default function Page({ athlete }: { athlete: Athletes }) {
   const [displayAttendance, setDisplayAttendance] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
   const [value, onChange] = useState<Value>(new Date());
+  const [selectedComponent,setSelectedComponent]=useState()
 
   const handleCertificateClick = () =>
     setDisplayCertificate(!displayCertificate);
@@ -153,7 +163,7 @@ export default function Page({ athlete }: { athlete: Athletes }) {
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
-  const [selectedTab, setSelectedTab] = useState(tabs[1]);
+  const [selectedTab, setSelectedTab] = useState<string>(tabs[1]?.name);
   // const [selectedHeader, setSelectedHeader] = useState(
   //   CenterDashBatchTableHeader()
   // );
@@ -162,24 +172,36 @@ export default function Page({ athlete }: { athlete: Athletes }) {
   // );
 
   const handleClick = (tab: TabsType) => {
-    let header, body;
-    setSelectedTab(tab);
-    // if (tab?.name === "coaches") {
-    //   header = CenterDashCoachTableHeader();
-    //   body = CenterDashCoachTableBody();
-    // } else if (tab?.name === "batches") {
-    //   header = CenterDashBatchTableHeader();
+    let component
+    let TABLE_HEAD
+    let TABLE_ROWS=[]
+    if (tab?.name === "attendance") {
+      component=<Attendance/>
+      
+    } else{
+      if (tab?.name === "batches") {
+        TABLE_HEAD = CENTER_DASH_BATCH_TABLE_HEADERS
+  
+      } else if (tab?.name === "payment_history") {
+        TABLE_HEAD = PAYMENT_HISTORY_TABLE_HEADERS
+      } else if (tab?.name === "assessment_report") {
+        TABLE_HEAD = ASSESSMENT_TABLE_HEADERS
+      } 
+      else if (tab?.name === "medical_history") {
+        TABLE_HEAD = ATHLETE_MEDICAL_TABLE_HEADERS
+      } 
+      component= <AllData
+        title={tab?.allLabel}
+        dropdownItems={{}}
+        TABLE_HEAD={TABLE_HEAD}
+        TABLE_ROWS={TABLE_ROWS}
+        rowSelection={false}
+        showImage={false}
+      />
+    }
+   setSelectedComponent(component)
+   setSelectedTab(tab?.name);
 
-    //   body = CenterDashBatchTableBody(athlete?.Batches, athlete);
-    // } else if (tab?.name === "athletes") {
-    //   header = CenterDashAthleteTableHeader();
-    //   body = CenterDashAthleteTableBody();
-    // } else {
-    //   header = CenterDashInventoryTableHeader();
-    //   body = CenterDashInventoryTableBody(athlete?.CenterInventories);
-    // }
-    // setSelectedHeader(header);
-    // setSelectedBody(body);
   };
 
   return (
@@ -191,6 +213,8 @@ export default function Page({ athlete }: { athlete: Athletes }) {
         tabs={tabs}
         handleTabClick={handleClick}
         data={athlete}
+        selectedComponent={selectedComponent}
+        selectedTab={selectedTab}
       />
     </>
   );
