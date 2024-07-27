@@ -18,7 +18,10 @@ export const sportRouter = createTRPCRouter({
       about:z.string(),
       image: z.string(),
       subTitle:z.string(),
-      createdBy:z.number()
+      createdBy:z.number(),
+      createdAt:z.date(),
+      updatedAt:z.date()
+      
     })
   )
   .mutation(
@@ -27,7 +30,9 @@ export const sportRouter = createTRPCRouter({
         name,
         about,
         subTitle,
-        image,createdBy
+        image,createdBy,
+        createdAt,
+        updatedAt
       },
       ctx,
     }) => {
@@ -38,7 +43,9 @@ export const sportRouter = createTRPCRouter({
           subTitle,
           image: 'image',
           icon:"dscsd",
-          createdBy
+          createdBy,
+          createdAt,
+          updatedAt
         },
       });
       return response;

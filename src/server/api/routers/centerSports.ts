@@ -8,7 +8,8 @@ import {
 
 const centerSportSchema = z.object({
     centerId: z.number(),
-    sportId:z.number()
+    sportId:z.number(),
+    academyId:z.number()
   })
   
   // Now add this object into an array

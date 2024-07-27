@@ -5,6 +5,7 @@ import AddSportModal from "./AddSportModal";
 import { useSession } from "next-auth/react";
 import AddForm from "~/common/AddForm";
 import { SPORTS_TABLE_HEADERS } from "~/constants/sportConstants";
+import moment from "moment-timezone";
 const AddSports = () => {
   const [sports, setSports] = useState([]);
   const [finalOptions, setFinalOptions] = useState<any>([]);
@@ -62,11 +63,13 @@ const AddSports = () => {
 
   const addNewSport = (e: any) => {
     e.preventDefault();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     createMutate({
       ...sportDetails,
       image: "",
-      createdBy: sessionData ? sessionData?.token?.id : 1,
-      // createdBy: sessionData?.token?.id,
+      createdBy: sessionData?.token?.id,
+      createdAt:new Date(),
+      updatedAt:new Date()
     });
     setShowModal(false);
 

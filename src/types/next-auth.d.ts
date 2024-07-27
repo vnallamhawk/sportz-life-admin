@@ -3,6 +3,7 @@ import type { DefaultSession } from 'next-auth';
 
 export type TokenType={
     id:number
+    academyId:number
 }
 
 declare module 'next-auth' {

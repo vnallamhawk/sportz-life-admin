@@ -100,7 +100,10 @@ export const centerRouter = createTRPCRouter({
         image: z.string(),
         mobile: z.string(),
         address: z.string(),
-        createdBy:z.number()
+        createdBy:z.number(),
+        academyId:z.number(),
+        createdAt:z.date(),
+        updatedAt:z.date()
       })
     )
     .mutation(
@@ -111,7 +114,10 @@ export const centerRouter = createTRPCRouter({
           image,
           email,
           address,
-          createdBy
+          createdBy,
+          academyId,
+          createdAt,
+          updatedAt
         },
         ctx,
       }) => {
@@ -121,7 +127,10 @@ export const centerRouter = createTRPCRouter({
             email: email,
             mobile: mobile,
             address: address,
-            createdBy:createdBy
+            createdBy:createdBy,
+            academyId:academyId,
+            createdAt,
+            updatedAt
           },
         });
         return response;

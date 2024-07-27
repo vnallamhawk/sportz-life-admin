@@ -147,6 +147,7 @@ export default function AddCenterForm() {
       const finalCenterSports = formData?.sports?.map((v) => ({
         ...v,
         centerId,
+        academyId:sessionData?.token?.academyId
       }));
 
       createMutateCenterSports(finalCenterSports);
@@ -189,6 +190,9 @@ export default function AddCenterForm() {
         address: finalForm?.address,
         image: "",
         createdBy: sessionData?.token?.id,
+        academyId:sessionData?.token?.academyId,
+        createdAt:new Date(),
+        updatedAt:new Date()
       });
     }
   };

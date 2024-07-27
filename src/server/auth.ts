@@ -22,6 +22,7 @@ export const authOptions: AuthOptions = {
           return {
             id: user.id,
             email: user.email,
+            academyId:user.academyId
           };
         }
 
@@ -40,6 +41,7 @@ export const authOptions: AuthOptions = {
       const obj={...token?.token}
       if(!obj.id && token?.user?.id){
         obj.id=token?.user?.id
+        obj.academyId=token?.user?.academyId
       }
       return obj;
     },
@@ -48,6 +50,7 @@ export const authOptions: AuthOptions = {
       session.user = {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         id: token?.id,
+        academyId:token?.academyId
       };
       return session;
     },
