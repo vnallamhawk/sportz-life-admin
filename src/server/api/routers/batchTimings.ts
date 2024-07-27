@@ -5,8 +5,10 @@ import { z } from "zod";
 const batchTimingSchema = z.object({
   day:z.string(),                
   batchId:z.number(),                
-  startTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/),
-  endTime: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)$/),
+  startTime: z.string(),
+  endTime: z.string(),
+  createdAt:z.date(),
+  updatedAt:z.date(),
 })
 
 // Now add this object into an array

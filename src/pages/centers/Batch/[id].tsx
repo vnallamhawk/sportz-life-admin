@@ -38,6 +38,7 @@ import AddBatchTiming from "~/components/AddBatch/AddBatchTiming";
 import { GetServerSidePropsContext } from "next";
 import { prisma } from "~/server/db";
 import type { Centers } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 const multiFormData: MULTI_FORM_BATCH_TYPES = {
   // name: "",
@@ -114,6 +115,7 @@ export default function AddCoachMultiFormLayout({
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
   const [batchId, setBatchId] = useState<number>();
+  const { data: sessionData } = useSession();
 
   const formProviderData = {
     ...methods,
@@ -147,6 +149,8 @@ export default function AddCoachMultiFormLayout({
         ...v,
         batchId,
         centerId: center?.id,
+        createdAt:new Date(),
+        updatedAt:new Date(),
       }));
 
       createMutateBatchTimings(finalBatchTimings);
@@ -169,9 +173,14 @@ export default function AddCoachMultiFormLayout({
       createMutateBatch({
         ...finalForm,
         capacity: parseInt(finalForm?.capacity),
+        remainingSeat:parseInt(finalForm?.capacity),
         price: parseInt(finalForm?.price),
         sportId: parseInt(sportId),
         centerId: center?.id,
+        academyId:sessionData?.token?.academyId,
+        createdAt:new Date(),
+        updatedAt:new Date(),
+        occupiedSeat:0
       });
     }
   };

@@ -12,7 +12,12 @@ export const batchRouter = createTRPCRouter({
       capacity:z.number(),                
       price:z.number(),                   
       sportId:z.number(),                
-      centerId:z.number() 
+      centerId:z.number(),
+      remainingSeat:z.number(),        
+      academyId:z.number(),
+      createdAt:z.date(),
+      updatedAt:z.date(),
+      occupiedSeat:z.number()
     })
   )
   .mutation(
@@ -22,7 +27,12 @@ export const batchRouter = createTRPCRouter({
         capacity,
         price,
         sportId,
-        centerId
+        centerId,
+        remainingSeat,        
+        academyId,
+        createdAt,
+        updatedAt,
+        occupiedSeat
       },
       ctx,
     }) => {
@@ -32,7 +42,12 @@ export const batchRouter = createTRPCRouter({
           capacity:capacity,
           price: price,
           sportId: sportId,
-          centerId:centerId
+          centerId:centerId,
+          remainingSeat,        
+          academyId,
+          createdAt,
+          updatedAt,
+          occupiedSeat
         },
       });
       return response;

@@ -355,8 +355,8 @@ model BatchSchedules {
   id        Int                @id @unique(map: "id") @default(autoincrement())
   batchId   Int
   day       BatchSchedules_day
-  startTime DateTime           @db.Time(0)
-  endTime   DateTime           @db.Time(0)
+  startTime String           
+  endTime   String           
   status    Boolean?           @default(true)
   createdAt DateTime           @db.DateTime(0)
   updatedAt DateTime           @db.DateTime(0)

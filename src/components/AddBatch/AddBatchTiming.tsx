@@ -82,7 +82,7 @@ export default function AddBatchTiming(props: any) {
 
   const handleChangeBatch = (value: any, id: string | number) => {
     let batchDetails = { ...currentBatchDetail };
-    batchDetails[id] = value;
+    batchDetails[id] = value 
     setCurrentBatchDetail(batchDetails);
   };
 

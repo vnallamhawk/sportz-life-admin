@@ -165,9 +165,12 @@ export default function Page({ center }: { center: Centers }) {
   const handleClick = (tab: TabsType) => {
     let TABLE_HEAD;
     let TABLE_ROWS = [];
+    let tableProps
     if (tab?.name === "batches") {
       TABLE_HEAD = CENTER_DASH_BATCH_TABLE_HEADERS;
       TABLE_ROWS=center?.Batches
+      tableProps={ addButtonText:"Add Batch",
+      addButtonUrl:`/centers/Batch/${center?.id}`}
     } else if (tab?.name === "coaches") {
       TABLE_HEAD = CENTER_DASH_COACH_TABLE_HEADERS;
       TABLE_ROWS=center?.Coaches
@@ -188,6 +191,7 @@ export default function Page({ center }: { center: Centers }) {
     const component = (
       <AllData
         title={tab?.allLabel}
+       {...tableProps}
         dropdownItems={{}}
         TABLE_HEAD={TABLE_HEAD}
         TABLE_ROWS={TABLE_ROWS}

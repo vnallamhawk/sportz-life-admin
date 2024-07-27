@@ -18,12 +18,12 @@ export default function TimePickerWrapper({
   onChangeHandler?: (arg0: string) => void;
   value?: string;
 }) {
-  console.log(value, "ddsnmmnnf");
   return (
     <TimePicker
       onChange={(value) => onChangeHandler(value)}
       value={value}
-      format="hh:mm a"
+      
+      format="h:mm aaaa"
     />
   );
 }
