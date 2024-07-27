@@ -61,6 +61,8 @@ export const staffRouter = createTRPCRouter({
         payrollId: z.number(),
         centerId: z.number(),
         createdBy: z.number(),
+        createdAt:z.date(),
+        updatedAt:z.date()
       })
     )
     .mutation(
@@ -77,6 +79,8 @@ export const staffRouter = createTRPCRouter({
           payrollId,
           centerId,
           createdBy,
+          createdAt,
+          updatedAt
         },
         ctx,
       }) => {
@@ -92,6 +96,8 @@ export const staffRouter = createTRPCRouter({
             centerId:centerId,
             dateOfBirth: dateOfBirth,
             createdBy: createdBy,
+            createdAt,
+          updatedAt
           },
         });
         return response;

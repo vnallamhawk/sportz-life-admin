@@ -33,17 +33,17 @@ export const STAFF_DETAILS_CONSTANT: CENTER_DETAILS_CONSTANTS_TYPES[] = [
           },
         },
       },
-    {
-      label: "Tax Deduction",
-      id: "percentage",
-      type: "number",
-      rules: {
-        required: true,
-        maxLength: {
-          value: 25,
-          message: "Too Many Characters",
-        },
-      },
-    },
+    // {
+    //   label: "Tax Deduction",
+    //   id: "percentage",
+    //   type: "number",
+    //   rules: {
+    //     required: true,
+    //     maxLength: {
+    //       value: 25,
+    //       message: "Too Many Characters",
+    //     },
+    //   },
+    // },
    
   ];

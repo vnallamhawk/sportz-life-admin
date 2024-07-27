@@ -179,6 +179,8 @@ export default function AddStaffMultiFormLayout() {
         createdBy: sessionData?.token?.id,
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
         dateOfBirth: new Date(finalForm.dateOfBirth),
+        createdAt:new Date(),
+        updatedAt:new Date(),
       });
     }
   };
