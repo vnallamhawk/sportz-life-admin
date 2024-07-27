@@ -23,7 +23,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // createMutate({ email: "gamuaggarwal@gmail.com", password: "Gamini@123" });
+    // createMutate({ email: "gamuaggarwal@gmail.com", password: "Gamini@123",academyId:1 });
 
     const res = await signIn("credentials", {
       redirect: false,
