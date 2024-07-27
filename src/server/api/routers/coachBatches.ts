@@ -10,6 +10,8 @@ const coachBatchesSchema = z.object({
   coachId: z.number(),
   batchId:z.number(),
   centerId :z.number(),   
+  createdAt:z.date(),
+  updatedAt:z.date(),
   })
   
   // Now add this object into an array

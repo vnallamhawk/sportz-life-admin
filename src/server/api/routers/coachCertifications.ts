@@ -11,7 +11,9 @@ const coachCertificateSchema = z.object({
     certificateType:z.string(),
     startDate :z.date(),   
     endDate :z.date(),  
-    instituteName:z.string()    
+    instituteName:z.string(),  
+    createdAt:z.date(),
+    updatedAt :z.date()
   })
   
   // Now add this object into an array

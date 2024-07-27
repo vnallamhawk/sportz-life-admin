@@ -162,6 +162,8 @@ export default function AddCoachMultiFormLayout() {
         sportId: parseInt(v.value),
         ...v,
         coachId,
+        createdAt:new Date(),
+        updatedAt:new Date(),
       }));
 
       createMutateCoachSports(finalCoachSports);
@@ -171,14 +173,17 @@ export default function AddCoachMultiFormLayout() {
         startDate: new Date(v.startDate),
         endDate: new Date(v.endDate),
         coachId,
+        createdAt:new Date(),
+        updatedAt:new Date(),
       }));
       createMutateCoachCertificates(finalCertificates);
 
       const finalCenterBatches = formData?.coachBatches?.map((v) => ({
         ...v,
         centerId: v.center?.value,
-        batchId: v.batches?.value,
         coachId,
+        createdAt:new Date(),
+        updatedAt:new Date(),
       }));
       createMutateCoachBatches(finalCenterBatches);
     }
@@ -212,6 +217,10 @@ export default function AddCoachMultiFormLayout() {
         trainingLevel: finalForm.trainingLevel
           .value as (typeof TRAINING_LEVEL)[number],
         createdBy: sessionData?.token?.id,
+        createdAt:new Date(),
+        updatedAt:new Date(),
+        academyId: sessionData?.token?.academyId,
+
       });
     }
   };

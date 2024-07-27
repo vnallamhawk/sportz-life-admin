@@ -520,7 +520,7 @@ model Coaches {
   countryCode               String                      @default("+91") @db.VarChar(255)
   phone                     String?                     @unique(map: "phone") @db.VarChar(255)
   email                     String?                     @unique(map: "email") @db.VarChar(255)
-  about                     String                      @db.Text
+  about                     String?                      @db.Text
   payrollId                 Int?
   experienceLevel           Coaches_experienceLevel?
   centerId                  Int?
@@ -1086,7 +1086,7 @@ model CoachQualifications {
   instituteName   String                              @db.VarChar(255)
   fileUrl         String?                              @db.VarChar(255)
   fileName        String?                             @db.VarChar(255)
-  fileType        CoachQualifications_fileType
+  fileType        CoachQualifications_fileType?
   Coaches         Coaches                             @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "CoachQualifications_ibfk_1")
 
   @@index([coachId], map: "coachId")

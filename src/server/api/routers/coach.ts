@@ -96,7 +96,10 @@ export const coachRouter = createTRPCRouter({
         gender: z.enum(GENDER_VALUES),
         dateOfBirth: z.date(),
         trainingLevel: z.enum(TRAINING_LEVEL),
-        createdBy:z.number()
+        createdBy:z.number(),
+        createdAt:z.date(),
+        updatedAt:z.date(),
+        academyId:z.number()
 
       })
     )
@@ -110,7 +113,10 @@ export const coachRouter = createTRPCRouter({
           gender,
           dateOfBirth,
           trainingLevel,
-          createdBy
+          createdBy,
+          createdAt,
+          updatedAt,
+          academyId
         },
         ctx,
       }) => {
@@ -124,7 +130,10 @@ export const coachRouter = createTRPCRouter({
             gender: gender.toLowerCase(),            
             dateOfBirth: dateOfBirth,
             trainingLevel: trainingLevel.toLowerCase(),
-            createdBy
+            createdBy,
+            createdAt,
+            updatedAt,
+            academyId
           },
         });
         return response;

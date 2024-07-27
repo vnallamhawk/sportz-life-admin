@@ -166,17 +166,27 @@ export const COACH_CERTIFICATES_CONSTANTS = [
       {
         label: "Bachelor Certificate in Sports",
         id: "bachelorCertificate",
-        value: "bachelorCertificate",
+        value: "bachelor_degree_in_sports_or_fitness_training",
       },
       {
         label: "Masters Certificate in Sports",
         id: "mastersCertificate",
-        value: "mastersCertificate",
+        value: "masters_degree_in_sports_or_fitness_training",
       },
       {
         label: "Diploma in Sports Coaching",
         id: "diplomaSports",
-        value: "diplomaSports",
+        value: "diploma_in_sports_coaching_or_fitness_training",
+      },
+      {
+        label: "Coaching License",
+        id: "coaching_license",
+        value: "coaching_license",
+      },
+      {
+        label: "Certification in Sports Coaching or Fitness Training",
+        id: "certification_in_sports_coaching_or_fitness_training",
+        value: "certification_in_sports_coaching_or_fitness_training",
       },
     ],
   },{
