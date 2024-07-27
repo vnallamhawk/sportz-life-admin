@@ -32,7 +32,7 @@ const AllCenter = () => {
       const updatedCenters = centers.map((center) => {
         return {
           ...center,
-          // batches: center?.Batches?.length,
+          batches: center?.Batches?.length,
         };
       });
       setFinalData(updatedCenters);

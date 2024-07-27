@@ -83,7 +83,12 @@ export const centerRouter = createTRPCRouter({
         },
         include: {
           // Centers: true,
-          // Batches: true,
+          Batches: true,
+          CenterSports:{
+            include:{
+              Sports:true
+            }
+          }
           // sports: true,
           // batches: true,
           // centers: true,
