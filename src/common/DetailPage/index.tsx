@@ -114,7 +114,7 @@ const DetailPage = ({
               {/* {coach?.CoachSportsMaps?.map(
                 ({ sportId }) => sportsDictionary?.[sportId]
               ).join(" ,")} */}
-              {badgeData.map((ele: any, index: number) => (
+              {badgeData?.map((ele: any, index: number) => (
                 <div
                   className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm"
                   key={index}

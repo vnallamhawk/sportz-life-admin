@@ -81,6 +81,7 @@ export const getServerSideProps = async (
 
   return {
     props: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       center: JSON.parse(JSON.stringify(center)), // <== here is a solution
     },
   };

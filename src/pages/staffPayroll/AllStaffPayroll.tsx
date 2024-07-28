@@ -1,19 +1,10 @@
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import Button from "~/components/Button";
-import Card from "~/components/Card";
-import CardTitle from "~/components/Card/CardTitle";
-import CenterBatchTableBody from "~/components/CenterBatchTable/CenterBatchTableBody";
-import CenterBatchTableHeader from "~/components/CenterBatchTable/CenterBatchTableHeader";
-import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
-import StaffPayrollTableBody from "~/components/StaffPayroll/StaffPayrollTableBody";
-import StaffPayrollTableHeader from "~/components/StaffPayroll/StaffPayrollTableHeader";
-import Table from "~/components/Table";
-import Textbox from "~/components/Textbox";
 import { api } from "~/utils/api";
 import { STAFF_PAYROLL_TABLE_HEADERS } from "~/constants/staffPayroll";
 import AllData from "~/common/AllData";
 import moment from "moment-timezone";
+import type { StaffPayroll } from "@prisma/client";
 
 const AllStaffPayroll = () => {
   const router = useRouter();
@@ -22,7 +13,7 @@ const AllStaffPayroll = () => {
     setLoading(isLoading);
   };
 
-  const [finalData, setFinalData] = useState<any>([]);
+  const [finalData, setFinalData] = useState<StaffPayroll[]>([]);
 
   const { data: staffPayroll } = api.staffPayroll.getAllPayroll.useQuery();
 
@@ -37,13 +28,13 @@ const AllStaffPayroll = () => {
       });
       setFinalData(updatedStaffPayroll);
     }
-  }, [JSON.stringify(staffPayroll)]);
+  }, [staffPayroll]);
 
   const { mutate: deleteMutate } = api.staffPayroll.deletePayroll.useMutation({
     onSuccess: (response) => {
-      let arr = [...finalData];
+      const arr:StaffPayroll[] = [...finalData];
       const index = finalData?.findIndex(
-        (item: any) => item?.id == response?.id
+        (item: StaffPayroll) => item?.id == response?.id
       );
       if (index > -1) {
         arr.splice(index, 1);
@@ -69,8 +60,8 @@ const AllStaffPayroll = () => {
         TABLE_ROWS={finalData}
         rowSelection={false}
         showImage={false}
-        onEditClick={(id: any) => router.push(`/edit-staffPayroll-${id}`)}
-        onDeleteClick={(id: any) => deletePayroll(id)}
+        onEditClick={(id: number) => router.push(`/edit-staffPayroll-${id}`)}
+        onDeleteClick={(id: number) => deletePayroll(id)}
       />
     </>
   );

@@ -58,7 +58,6 @@ export const coachRouter = createTRPCRouter({
 
         return coaches;
       } catch (error) {
-        console.log("error are ", error);
       }
     }),
   getCoachesByName: publicProcedure
@@ -178,8 +177,6 @@ export const coachRouter = createTRPCRouter({
         },
         ctx,
       }) => {
-        const sportsId = sports.map(({ value }) => value);
-        //eslint-disable-next-line no-console
         const response = await ctx.prisma.coaches.update({
           where: {
             id: coachId,
