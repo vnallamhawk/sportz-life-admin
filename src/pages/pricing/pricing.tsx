@@ -19,6 +19,7 @@ import TableListView from "~/common/TableListView";
 import AllData from "~/common/AllData";
 import User from "../../images/user.png";
 import { useRouter } from "next/router";
+import Checkout from "./checkout";
 import {
   Tabs,
   TabsHeader,
@@ -80,6 +81,7 @@ export default function Pricing() {
 
   return (
     <>
+    <Checkout />
       <div className="bg-s-gray px-6 pb-7">
         <div className="rounded-2xl shadow-sm lg:bg-white lg:p-6">
           <Tabs value="free_plan">
@@ -515,7 +517,7 @@ export default function Pricing() {
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
         }}
-        className="pt-3 2xl:min-w-[847px] 2xl:max-w-[847px]"
+        className="pt-3 2xl:min-w-[556px] 2xl:max-w-[556px]"
       >
         <DialogHeader className="flex items-center justify-between px-6 pb-0">
           <div className="font-heading text-2xl font-medium uppercase">
@@ -548,7 +550,7 @@ export default function Pricing() {
                 </div>
               </div>
 
-              <div className="absolute right-0 top-0 shadow-lg">
+              <div className="absolute right-0 top-0 shadow-lg w-2/4">
                 <div className="rounded-t-lg bg-[#974062] px-7 py-3.5 text-center text-white">
                   <div className="font-heading text-2xl font-medium uppercase text-[#FF9678]">
                     BASIC PLAN
