@@ -16,3 +16,22 @@ export const FITNESS_DRILL_TABLE_HEADERS = [
     id: "action",
   },
 ];
+
+export const COACHING_DRILL_TABLE_HEADERS = [
+  {
+    label: "Drill Name",
+    id: "drillName",
+  },
+  {
+    label: "Sport",
+    id: "sport",
+  },
+  {
+    label: "Training Level",
+    id: "level",
+  },
+  {
+    label: "Action",
+    id: "action",
+  },
+];

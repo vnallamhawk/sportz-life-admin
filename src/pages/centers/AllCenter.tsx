@@ -74,6 +74,7 @@ const AllCenter = () => {
         onViewClick={(id: any) => router.push(`/centers/${id ?? ""}`)}
         onEditClick={(id: any) => router.push(`/edit-center-${id}`)}
         onDeleteClick={(id: any) => deleteCenter(id)}
+        drills={false}
       />
 
       {/* <Card className="h-full">
