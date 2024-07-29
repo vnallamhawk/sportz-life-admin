@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { ToastContext } from "~/contexts/Contexts";
 import { useSession } from "next-auth/react";
+import type { GENDER_VALUES } from "~/types/coach";
 
 const multiFormData = {
   name: "",
@@ -26,6 +27,7 @@ const multiFormData = {
   gender: "",
   payroll: "",
   center: "",
+  isEditMode:false
 };
 
 const defaultValues = {
@@ -70,11 +72,12 @@ export default function AddStaffMultiFormLayout() {
   useEffect(() => {
     if (id) {
       if (staff && !hasStaffUseEffectRun.current) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setFormData(staff);
         hasStaffUseEffectRun.current = true;
       }
     }
-  }, [id]);
+  }, [id, staff]);
 
   const formProviderData = {
     ...methods,
@@ -85,45 +88,27 @@ export default function AddStaffMultiFormLayout() {
   // create staff api method
   const { mutate: createMutate } = api.staff.createStaff.useMutation({
     onSuccess: (response) => {
-      console.log("response data is ", response);
       setOpenToast(true);
       setStaffId(response?.id);
       return response?.id;
     },
   });
 
-  const { mutate: createMutateStaffPayroll } =
-    api.staffPayroll.createStaffPayroll.useMutation({
-      onSuccess: (response) => {
-        console.log("response data is ", response);
-        router.push(`/staffs/${staffId ?? ""}`);
-
-        return response;
-      },
-    });
-  // doubt
-
-  // const { mutate: createMutateStaffCenters } =
-  //   api.cen.useMutation({
-  //     onSuccess: (response) => {
-  //       console.log("response data is ", response);
-  //       return response;
-  //     },
-  //   });
   const { mutate: createMutateStaffTimings } =
     api.staffTimings.createStaffTiming.useMutation({
       onSuccess: (response) => {
-        console.log("response data is ", response);
-        router.push(`/staff/${staffId}`);
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        void router.push(`/staff/${staffId}`);
         return response;
       },
     });
   const { mutate: editMutate } = api.staff.editStaff.useMutation({
     onSuccess: (response) => {
       setOpenToast(true);
-      router.push(`/staffs/${response?.id ?? ""}`);
+      void router.push(`/staffs/${response?.id ?? ""}`);
     },
   });
+  
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
     setPreview(
       acceptedFiles.map((upFile) =>
@@ -141,43 +126,57 @@ export default function AddStaffMultiFormLayout() {
       formData?.staffShiftDetails &&
       staffId
     ) {
-      const finalStaffTimings = formData?.staffShiftDetails?.map((v: any) => ({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+      const finalStaffTimings = formData?.staffShiftDetails?.map((v: unknown) => ({
         ...v,
         staffId: staffId,
       }));
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       createMutateStaffTimings(finalStaffTimings);
     }
-  }, [staffId, formData]);
+  }, [staffId, formData, createMutateStaffTimings]);
 
   //final Form
 
   //Todo APIs
-  const finalFormSubmissionHandler = async (
+  const finalFormSubmissionHandler =  (
     // finalForm: Required<MULTI_FORM_TYPES>
     finalForm: any
   ) => {
-    console.log(finalForm, "sdkjnfksdjf");
     if (formData.isEditMode) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       editMutate({
         ...finalForm,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         designationId: parseInt(finalForm?.designation?.value),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         centerId: parseInt(finalForm?.center?.value),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         payrollId: parseInt(finalForm?.payroll?.value),
         image: "",
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         dateOfBirth: new Date(finalForm.dateOfBirth),
       });
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       setFormData(finalForm);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       createMutate({
         ...finalForm,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         designationId: parseInt(finalForm?.designation?.value),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         centerId: parseInt(finalForm?.center?.value),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         payrollId: parseInt(finalForm?.payroll?.value),
         image: "",
         createdBy: sessionData?.token?.id,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         dateOfBirth: new Date(finalForm.dateOfBirth),
         createdAt:new Date(),
         updatedAt:new Date(),

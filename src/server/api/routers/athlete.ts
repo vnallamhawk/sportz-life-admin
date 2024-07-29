@@ -89,13 +89,7 @@ export const athleteRouter = createTRPCRouter({
           email,
           designation,
           gender,
-          certificates,
-          dateOfBirth,
-          sports,
-          trainingLevel,
-          experienceLevel,
-          batchIds,
-          centerIds,
+          dateOfBirth
         },
         ctx,
       }) => {
@@ -103,7 +97,7 @@ export const athleteRouter = createTRPCRouter({
           data: {
             name: name,
             about: about,
-            // contactNumber: contactNumber,
+            contactNumber: contactNumber,
             email: email,
             designation: designation,
             gender: gender.toLowerCase(),
@@ -176,8 +170,6 @@ export const athleteRouter = createTRPCRouter({
           // certificates,
           dateOfBirth,
           // sports,
-          trainingLevel,
-          experienceLevel,
           // batchIds,
           // centerIds,
           coachId,

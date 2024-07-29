@@ -3,16 +3,21 @@ import Logo from "../images/logo.svg";
 import LoginMobileImage from "../images/pngwing.svg";
 import Link from "next/link";
 import Image from "next/image";
-import { protectedProcedure } from "~/server/api/trpc";
 
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
-import { api } from "~/utils/api";
 
+interface LoginDetails {
+  email: string;
+  password: string;
+}
 export default function Login() {
   const router = useRouter();
-  const [loginDetails, setLoginDetails] = useState({});
+  const [loginDetails, setLoginDetails] = useState<LoginDetails>({
+    email: "",
+    password: "",
+  });
 
   // const { mutate: createMutate } = api.adminUser.createAdminUser.useMutation({
   //   onSuccess: (response) => {
@@ -20,7 +25,8 @@ export default function Login() {
   //   },
   // });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
 
     // createMutate({ email: "gamuaggarwal@gmail.com", password: "Gamini@123",academyId:1 });
@@ -33,12 +39,14 @@ export default function Login() {
     if (res?.error) {
       alert("Login failed");
     } else {
-      router.push("/dashboard");
+      void router.push("/dashboard");
     }
   };
 
-  const handleChange = async (e) => {
-    let obj = { ...loginDetails };
+  const handleChange = (e: {
+    target: { name: "email" | "password"; value: string };
+  }) => {
+    const obj: LoginDetails = { ...loginDetails };
     obj[e.target.name] = e.target.value;
     setLoginDetails(obj);
   };

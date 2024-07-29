@@ -30,7 +30,7 @@ export const sportRouter = createTRPCRouter({
         name,
         about,
         subTitle,
-        image,createdBy,
+        createdBy,
         createdAt,
         updatedAt
       },

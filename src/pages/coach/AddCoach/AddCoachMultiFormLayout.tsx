@@ -43,6 +43,7 @@ const multiFormData: MULTI_FORM_TYPES = {
   centerIds: [],
   isEditMode: false,
   coachId: undefined,
+  coachBatches:[]
 };
 
 const defaultValues = {

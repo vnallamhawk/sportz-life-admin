@@ -1,8 +1,6 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import Button from "~/components/Button";
-import Card from "~/components/Card";
-import CardTitle from "~/components/Card/CardTitle";
-import Image, { StaticImageData } from "next/image";
+import { useContext, useEffect, useState } from "react";
+
+import type { StaticImageData } from "next/image";
 import CoachImg from "../../images/CoachesImg.png";
 import BatchImg from "../../images/BatchesImg.png";
 import AtheleteImg from "../../images/AthelteImg.png";
@@ -10,34 +8,7 @@ import InventoryImg from "../../images/InventoryImg.png";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
 import type { Centers } from "@prisma/client";
-import { api } from "~/utils/api";
-
-// import { type Sports } from "@prisma/client";
-
-// import {
-//   type CoachWithRelations,
-//   ExperienceLevelEnum,
-//   TrainingLevelEnum,
-// } from "~/types/coach";
-import AddCenterSuccessToast from "~/components/AddCenter/AddCenterSuccessToast";
 import { ToastContext } from "~/contexts/Contexts";
-// import CoachCertificate from "~/components/Coach/Certificate/CoachCertificates";
-// import { dateFormat } from "~/helpers/date";
-// import CoachBatch from "~/components/Coach/Batch/CoachBatch";
-// import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
-import Table from "~/components/Table";
-import CoachTableHeader from "~/components/AllCoaches/CoachTableHeader";
-import CoachTableBody from "~/components/AllCoaches/CoachTableBody";
-import Search from "~/components/Search";
-import Filter from "~/components/Filter/Filter";
-import CenterDashCoachTableHeader from "~/components/CenterDashboardTables/Coach/CenterDashCoachTableHeader";
-import CenterDashBatchTableHeader from "~/components/CenterDashboardTables/Batch/CenterDashBatchTableHeader";
-import CenterDashAthleteTableHeader from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableHeader";
-import CenterDashInventoryTableHeader from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableHeader";
-import CenterDashBatchTableBody from "~/components/CenterDashboardTables/Batch/CenterDashBatchTableBody";
-import CenterDashCoachTableBody from "~/components/CenterDashboardTables/Coach/CenterDashCoachTableBody";
-import CenterDashAthleteTableBody from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableBody";
-import CenterDashInventoryTableBody from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableBody";
 import { useRouter } from "next/router";
 import DetailPage from "~/common/DetailPage";
 import AllData from "~/common/AllData";
@@ -132,8 +103,9 @@ export default function Page({ center }: { center: Centers }) {
   const [displayBatch, setDisplayBatch] = useState(false);
   const [displayAttendance, setDisplayAttendance] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
-  const [selectedTab, setSelectedTab] = useState<string>(tabs[1]?.name);
-  const [selectedComponent, setSelectedComponent] = useState();
+  const [selectedTab, setSelectedTab] = useState<string|undefined>(tabs[1]?.name);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const [selectedComponent, setSelectedComponent] = useState<any>();
 
   const handleCertificateClick = () =>
     setDisplayCertificate(!displayCertificate);
@@ -149,10 +121,12 @@ export default function Page({ center }: { center: Centers }) {
       const arr = [...finalTabs];
       const index = arr?.findIndex((item) => item?.name === "inventories");
       if (index > -1 && center?.CenterInventories) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         arr[index].value = center?.CenterInventories?.length;
       }
       const batchIndex = arr?.findIndex((item) => item?.name === "batches");
       if (batchIndex > -1 && center?.Batches) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         arr[batchIndex].value = center?.Batches?.length;
       }
       setFinalTabs(arr);
@@ -169,20 +143,24 @@ export default function Page({ center }: { center: Centers }) {
     let tableProps
     if (tab?.name === "batches") {
       TABLE_HEAD = CENTER_DASH_BATCH_TABLE_HEADERS;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       TABLE_ROWS=center?.Batches
       tableProps={ addButtonText:"Add Batch",
       addButtonUrl:`/centers/Batch/${center?.id}`}
     } else if (tab?.name === "coaches") {
       TABLE_HEAD = CENTER_DASH_COACH_TABLE_HEADERS;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       TABLE_ROWS=center?.Coaches
 
     } else if (tab?.name === "athletes") {
       TABLE_HEAD = CENTER_DASH_ATHLETE_TABLE_HEADERS;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       TABLE_ROWS=center?.Athletes
 
     } else {
       TABLE_HEAD = CENTER_DASH_INVENTORY_TABLE_HEADERS;
-      TABLE_ROWS=center?.CenterInventories.map((center) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+      TABLE_ROWS=center?.CenterInventories.map((center: { Inventories: { name: unknown; }; }) => {
         return {
           ...center,name:center?.Inventories?.name
            // batches: center?.Batches?.length,
@@ -195,6 +173,7 @@ export default function Page({ center }: { center: Centers }) {
        {...tableProps}
         dropdownItems={{}}
         TABLE_HEAD={TABLE_HEAD}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         TABLE_ROWS={TABLE_ROWS}
         rowSelection={false}
         showImage={false}
@@ -214,6 +193,7 @@ export default function Page({ center }: { center: Centers }) {
         tabs={tabs}
         handleTabClick={handleClick}
         data={center}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

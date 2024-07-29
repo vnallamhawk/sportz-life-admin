@@ -1,22 +1,11 @@
-import DashboardHeader from "~/components/DashboardHeader";
-import Filter from "~/components/Filter";
-// import Table from "../../components/CommonTable";
+
 import Modal from "../../components/Modal";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import SearchIcon from "../../images/search.png";
-import Plus from "../../images/plus.svg";
-import FilterIcon from "../../images/filter-icon.svg";
-import Dots from "../../images/dots.svg";
-// import List from "~/components/CommonList/list";
-import { Dropdown } from "flowbite-react";
-import Link from "next/link";
-import TableListView from "~/common/TableListView";
 import AllData from "~/common/AllData";
-import User from "../../images/user.png";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
+import type { Athletes } from "@prisma/client";
 
 const TABLE_HEAD = [
   { label: "Athlete Name", id: "name" },
@@ -30,7 +19,7 @@ const TABLE_HEAD = [
 export default function Athlete() {
   const [filterByName, setFilterByName] = useState("");
   const router = useRouter();
-  const [finalData, setFinalData] = useState<any>([]);
+  const [finalData, setFinalData] = useState<Athletes[]>([]);
 
   const { data: athletes } =
     filterByName == ""
@@ -48,9 +37,9 @@ export default function Athlete() {
 
   const { mutate: deleteMutate } = api.athlete.deleteAthlete.useMutation({
     onSuccess: (response) => {
-      let arr = [...finalData];
+      const arr :Athletes[]= [...finalData];
       const index = finalData?.findIndex(
-        (item: any) => item?.id == response?.id
+        (item: Athletes) => item?.id == response?.id
       );
       if (index > -1) {
         arr.splice(index, 1);
@@ -62,7 +51,7 @@ export default function Athlete() {
 
   useEffect(() => {
     if (athletes && athletes?.length > 0) {
-      const updatedAthletes: any = athletes.map((athlete) => {
+      const updatedAthletes: Athletes[] = athletes.map((athletes:Athletes) => {
         return {
           ...athletes,
           // status: athlete?.designation,
@@ -70,7 +59,7 @@ export default function Athlete() {
       });
       setFinalData(updatedAthletes);
     }
-  }, [JSON.stringify(athletes)]);
+  }, [athletes]);
 
   const deleteAthlete = (id: number) => {
     deleteMutate({ athleteId: id, deletedAt: moment().toISOString() });
@@ -87,9 +76,9 @@ export default function Athlete() {
         TABLE_ROWS={athletes}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
-        onViewClick={(id: any) => router.push(`/athlete/${id ?? ""}`)}
-        onEditClick={(id: any) => router.push(`/edit-athlete-${id}`)}
-        onDeleteClick={(id: any) => deleteAthlete(id)}
+        onViewClick={(id: number) => router.push(`/athlete/${id ?? ""}`)}
+        onEditClick={(id: number) => router.push(`/edit-athlete-${id}`)}
+        onDeleteClick={(id: number) => deleteAthlete(id)}
       />
       <Modal />
     </>

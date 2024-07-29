@@ -1,60 +1,21 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext,  useState } from "react";
 
-import Image, { StaticImageData } from "next/image";
+import type { StaticImageData } from "next/image";
 import CoachImg from "../../images/CoachesImg.png";
-import Plus from "../../images/plus.svg";
 import BatchImg from "../../images/BatchesImg.png";
-import Edit from "../../images/ic_fluent_edit_16_filled.svg";
-import SearchIcon from "../../images/search.png";
+
 import AtheleteImg from "../../images/AthelteImg.png";
 import InventoryImg from "../../images/InventoryImg.png";
-import ChevronDown from "../../images/chevron-down.svg";
-import AddBatchCenter from "../addBatchCenter";
-import BatchDetails from "../batchdetails";
+
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import type { Athletes, Centers } from "@prisma/client";
-import { centerWiseCountData } from "../../__stubs__/dashboardStubs";
-import { api } from "~/utils/api";
-import {
-  Tabs,
-  TabsHeader,
-  TabsBody,
-  Tab,
-  TabPanel,
-} from "@material-tailwind/react";
+import type { Athletes } from "@prisma/client";
 
-// import { type Sports } from "@prisma/client";
-
-// import {
-//   type CoachWithRelations,
-//   ExperienceLevelEnum,
-//   TrainingLevelEnum,
-// } from "~/types/coach";
-import AddCenterSuccessToast from "~/components/AddCenter/AddCenterSuccessToast";
 import { ToastContext } from "~/contexts/Contexts";
-// import CoachCertificate from "~/components/Coach/Certificate/CoachCertificates";
-// import { dateFormat } from "~/helpers/date";
-// import CoachBatch from "~/components/Coach/Batch/CoachBatch";
-// import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
-import CoachTableHeader from "~/components/AllCoaches/CoachTableHeader";
-import CoachTableBody from "~/components/AllCoaches/CoachTableBody";
-import Search from "~/components/Search";
-import Filter from "~/components/Filter/Filter";
-import CenterDashCoachTableHeader from "~/components/CenterDashboardTables/Coach/CenterDashCoachTableHeader";
-import CenterDashBatchTableHeader from "~/components/CenterDashboardTables/Batch/CenterDashBatchTableHeader";
-import CenterDashAthleteTableHeader from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableHeader";
-import CenterDashInventoryTableHeader from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableHeader";
-import CenterDashBatchTableBody from "~/components/CenterDashboardTables/Batch/CenterDashBatchTableBody";
-import CenterDashCoachTableBody from "~/components/CenterDashboardTables/Coach/CenterDashCoachTableBody";
-import CenterDashAthleteTableBody from "~/components/CenterDashboardTables/Athlete/CenterDashAthleteTableBody";
-import CenterDashInventoryTableBody from "~/components/CenterDashboardTables/Inventory/CenterDashInventoryTableBody";
 import { useRouter } from "next/router";
-import Slider from "react-slick";
 
 import DetailPage from "~/common/DetailPage";
 import AllData from "~/common/AllData";
-import { CENTER_DASH_BATCH_TABLE_HEADERS } from "~/constants/centerDashTables";
 import { PAYMENT_HISTORY_TABLE_HEADERS } from "~/constants/payment";
 import { ASSESSMENT_TABLE_HEADERS } from "~/constants/assessment";
 import { ATHLETE_BATCH_TABLE_HEADERS, ATHLETE_MEDICAL_TABLE_HEADERS } from "~/constants/athleteConstants";
@@ -72,6 +33,7 @@ export const getServerSideProps = async (
 
   return {
     props: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       athlete: JSON.parse(JSON.stringify(athlete)), // <== here is a solution
     },
   };
@@ -133,7 +95,8 @@ export default function Page({ athlete }: { athlete: Athletes }) {
   const [displayAttendance, setDisplayAttendance] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
   const [value, onChange] = useState<Value>(new Date());
-  const [selectedComponent,setSelectedComponent]=useState()
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const [selectedComponent,setSelectedComponent]=useState<any>()
 
   const handleCertificateClick = () =>
     setDisplayCertificate(!displayCertificate);
@@ -163,7 +126,7 @@ export default function Page({ athlete }: { athlete: Athletes }) {
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
-  const [selectedTab, setSelectedTab] = useState<string>(tabs[1]?.name);
+  const [selectedTab, setSelectedTab] = useState<string|undefined>(tabs[1]?.name);
   // const [selectedHeader, setSelectedHeader] = useState(
   //   CenterDashBatchTableHeader()
   // );
@@ -174,7 +137,7 @@ export default function Page({ athlete }: { athlete: Athletes }) {
   const handleClick = (tab: TabsType) => {
     let component
     let TABLE_HEAD
-    let TABLE_ROWS=[]
+    const TABLE_ROWS: never[]=[]
     if (tab?.name === "attendance") {
       component=<Attendance/>
       
@@ -213,6 +176,7 @@ export default function Page({ athlete }: { athlete: Athletes }) {
         tabs={tabs}
         handleTabClick={handleClick}
         data={athlete}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}
       />

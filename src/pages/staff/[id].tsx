@@ -1,9 +1,6 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import Button from "~/components/Button";
-import Card from "~/components/Card";
-import CardTitle from "~/components/Card/CardTitle";
+import { useContext, useState } from "react";
+
 import type { StaticImageData } from "next/image";
-import Image from "next/image";
 
 
 import staffCalendar from "../../images/Staff_calendar.png";
@@ -90,19 +87,6 @@ type TabsType = {
 
 export default function Page({ staff }: { staff: Staffs }) {
   const router = useRouter();
-  const [displayCertificate, setDisplayCertificate] = useState(false);
-  const [displayBatch, setDisplayBatch] = useState(false);
-  const [displayAttendance, setDisplayAttendance] = useState(false);
-  const { openToast, setOpenToast } = useContext(ToastContext);
-
-  const handleCertificateClick = () =>
-    setDisplayCertificate(!displayCertificate);
-  const handleBatchClick = () => setDisplayBatch(!displayBatch);
-  const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
-  const sportsArr: string[] = ["Rugby", "Baseball", "Tennis", "BasketBall"];
-  const [filterByName, setFilterByName] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [finalTabs, setFinalTabs] = useState(tabs);
   const [selectedComponent,setSelectedComponent]=useState()
 
   // useEffect(() => {
@@ -120,19 +104,9 @@ export default function Page({ staff }: { staff: Staffs }) {
   //   }
   // }, [center, finalTabs]);
 
-  const handleIsLoading = (isLoading: boolean) => {
-    setLoading(isLoading);
-  };
+ 
   const [selectedTab, setSelectedTab] = useState(tabs[1]);
-  const [selectedHeader, setSelectedHeader] = useState(
-    StaffDashCenterTableHeader()
-  );
-  const [selectedBody, setSelectedBody] = useState(
-    // CenterDashBatchTableBody(center?.Batches, center)
-    StaffDashCenterTableBody()
-    // { name: filterByName },
-    // handleIsLoading
-  );
+
   const handleClick = (tab: TabsType) => {
     let component
     let TABLE_HEAD
@@ -143,13 +117,16 @@ export default function Page({ staff }: { staff: Staffs }) {
     } else{
       if (tab?.name === "centers") {
         TABLE_HEAD = STAFF_DASH_CENTER_TABLE_HEADERS
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         TABLE_ROWS=staff?.Centers
       } else if (tab?.name === "payroll") {
         TABLE_HEAD = STAFF_DASH_PAYROLL_TABLE_HEADERS
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         TABLE_ROWS=staff?.StaffPayroll
 
       } else if (tab?.name === "dutyShift") {
         TABLE_HEAD = STAFF_DASH_DUTY_TABLE_HEADERS
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         TABLE_ROWS=staff?.StaffShifts
 
       } 
@@ -158,6 +135,7 @@ export default function Page({ staff }: { staff: Staffs }) {
         title={tab?.allLabel}
         dropdownItems={{}}
         TABLE_HEAD={TABLE_HEAD}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         TABLE_ROWS={TABLE_ROWS}
         rowSelection={false}
         showImage={false}
@@ -176,6 +154,7 @@ export default function Page({ staff }: { staff: Staffs }) {
         editText={"Edit Staff"}
         tabs={tabs}
         handleTabClick={handleClick}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         data={{...staff,description:staff?.StaffDesignation?.designation}}
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}

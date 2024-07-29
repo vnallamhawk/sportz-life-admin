@@ -18,11 +18,14 @@ export const authOptions: AuthOptions = {
         const user = await prisma.admin.findUnique({
           where: { email: credentials?.email },
         });
-        if (user && bcrypt.compareSync(credentials?.password||"", user.password)) {
+        if (
+          user &&
+          bcrypt.compareSync(credentials?.password || "", user.password)
+        ) {
           return {
             id: user.id,
             email: user.email,
-            academyId:user.academyId
+            academyId: user.academyId,
           };
         }
 
@@ -37,20 +40,27 @@ export const authOptions: AuthOptions = {
     secret: process.env.JWT_SECRET,
   },
   callbacks: {
-     jwt(token) {
-      const obj={...token?.token}
-      if(!obj.id && token?.user?.id){
-        obj.id=token?.user?.id
-        obj.academyId=token?.user?.academyId
+    jwt(token) {
+      const obj = { ...token?.token };
+      if (!obj.id && token?.user?.id) {
+        obj.id = token?.user?.id;
+        obj.academyId = token?.user?.academyId;
       }
       return obj;
     },
-     session(session: { user: { id: any; }; }, token: { id: any; }) {    
+    session(
+      session: { user: { id: number } },
+      token: {
+        academyId: number;
+        id: number;
+      }
+    ) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       session.user = {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         id: token?.id,
-        academyId:token?.academyId
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        academyId: token?.academyId,
       };
       return session;
     },

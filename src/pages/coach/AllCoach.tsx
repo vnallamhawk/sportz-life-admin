@@ -1,25 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Card from "~/components/Card/Card";
-import CardTitle from "~/components/Card/CardTitle";
-import Textbox from "~/components/Textbox/Textbox";
-import Button from "~/components/Button/Button";
-import Table from "~/components/Table/Table";
-import CoachTableHeader from "../../components/AllCoaches/CoachTableHeader";
-import CoachTableBody from "../../components/AllCoaches/CoachTableBody";
 import { useRouter } from "next/navigation";
-import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
-import DashboardHeader from "~/components/DashboardHeader";
 import AllData from "~/common/AllData";
 import { COACH_TABLE_HEADERS } from "~/constants/coachConstants";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
+import type { Coaches } from "@prisma/client";
 
 export default function AllCoach() {
   const router = useRouter();
 
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
-  const [finalData, setFinalData] = useState<any>([]);
+  const [finalData, setFinalData] = useState<Coaches[]>([]);
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
@@ -32,7 +24,7 @@ export default function AllCoach() {
 
   useEffect(() => {
     if (coaches && coaches?.length > 0) {
-      const updatedCoaches = coaches.map((coach) => {
+      const updatedCoaches:Coaches[] = coaches.map((coach:Coaches) => {
         return {
           ...coach,
           status: coach?.designation,
@@ -40,13 +32,13 @@ export default function AllCoach() {
       });
       setFinalData(updatedCoaches);
     }
-  }, [JSON.stringify(coaches)]);
+  }, [coaches]);
 
   const { mutate: deleteMutate } = api.coach.deleteCoach.useMutation({
     onSuccess: (response) => {
-      let arr = [...finalData];
+      const arr :Coaches[]= [...finalData];
       const index = finalData?.findIndex(
-        (item: any) => item?.id == response?.id
+        (item: Coaches) => item?.id == response?.id
       );
       if (index > -1) {
         arr.splice(index, 1);
@@ -97,9 +89,9 @@ export default function AllCoach() {
         filterByName={filterByName}
         rowSelection={true}
         showImage={false}
-        onViewClick={(id: any) => router.push(`/coach/${id ?? ""}`)}
-        onEditClick={(id: any) => router.push(`/edit-coach-${id}`)}
-        onDeleteClick={(id: any) => deleteCoach(id)}
+        onViewClick={(id: number) => router.push(`/coach/${id ?? ""}`)}
+        onEditClick={(id: number) => router.push(`/edit-coach-${id}`)}
+        onDeleteClick={(id: number) => deleteCoach(id)}
       />
     </>
   );

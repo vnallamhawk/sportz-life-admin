@@ -97,7 +97,7 @@ const AddForm = ({
     finalFormSubmissionHandler(finalFormData);
   };
 
-  const handleChangeTime = (value: string | boolean, name: string) => {
+  const handleChangeTime = (value: string | boolean|unknown, name: string) => {
     let obj: any = { ...formData };
     obj[name] = value;
     setFormData(obj);

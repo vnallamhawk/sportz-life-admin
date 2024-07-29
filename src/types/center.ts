@@ -12,7 +12,8 @@ export interface CENTER_DETAILS_CONSTANTS_TYPES {
     | "email"
     | "location"
     | "selectSports"
-    | "selectCoaches";
+    | "selectCoaches"
+    |"address";
   type: Type;
   placeHolder?: string;
   options?: MultiSelectOption[];
@@ -70,20 +71,20 @@ export interface MULTI_FORM_TYPES extends CENTER_TYPES {
   // centerIds?: number[];
   isEditMode: boolean;
   centerId?: number;
-  designationId?: any;
-  taxable?: any;
-  grossSalary?: any;
+  designationId?: number;
+  taxable?: boolean;
+  grossSalary?: number;
 }
 
 export interface InventoryData {
-  value?: any;
+  value?: string;
   name: string;
   quantity: number;
 }
 
 export interface SportsData {
   name: string;
-  value?: any;
+  value?: string;
 }
 
 // export interface MULTI_FORM_TYPES extends COACH_TYPES {
@@ -132,7 +133,7 @@ export interface MULTI_FORM_BATCH_TYPES {
   name?: string;
   selectSports: MultiSelectOption[];
   selectCoaches: MultiSelectOption[];
-  batchTimings?: any[];
+  batchTimings?: unknown[];
   isEditMode?: boolean;
   capacity: number;
   price: number;

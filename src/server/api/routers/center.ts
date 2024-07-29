@@ -116,7 +116,6 @@ export const centerRouter = createTRPCRouter({
         input: {
           name,
           mobile,
-          image,
           email,
           address,
           createdBy,
@@ -157,7 +156,6 @@ export const centerRouter = createTRPCRouter({
         input: {
           name,
           mobile,
-          image,
           email,
           address,
           centerId

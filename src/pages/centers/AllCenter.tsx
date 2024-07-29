@@ -1,16 +1,8 @@
+import type { Centers } from "@prisma/client";
 import moment from "moment";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import AllData from "~/common/AllData";
-import Button from "~/components/Button";
-import Card from "~/components/Card";
-import CardTitle from "~/components/Card/CardTitle";
-import CenterBatchTableBody from "~/components/CenterBatchTable/CenterBatchTableBody";
-import CenterBatchTableHeader from "~/components/CenterBatchTable/CenterBatchTableHeader";
-import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
-import Table from "~/components/Table";
-import Textbox from "~/components/Textbox";
 import { CENTER_BATCH_TABLE_HEADERS } from "~/constants/coachConstants";
 import { api } from "~/utils/api";
 
@@ -18,7 +10,7 @@ const AllCenter = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [filterByName, setFilterByName] = useState("");
-  const [finalData, setFinalData] = useState<any>([]);
+  const [finalData, setFinalData] = useState<Centers[]>([]);
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
@@ -37,13 +29,13 @@ const AllCenter = () => {
       });
       setFinalData(updatedCenters);
     }
-  }, [JSON.stringify(centers)]);
+  }, [centers]);
 
   const { mutate: deleteMutate } = api.center.deleteCenter.useMutation({
     onSuccess: (response) => {
-      let arr = [...finalData];
+      const arr:Centers[] = [...finalData];
       const index = finalData?.findIndex(
-        (item: any) => item?.id == response?.id
+        (item: Centers) => item?.id == response?.id
       );
       if (index > -1) {
         arr.splice(index, 1);
@@ -71,38 +63,10 @@ const AllCenter = () => {
         filterByName={filterByName}
         rowSelection={false}
         showImage={false}
-        onViewClick={(id: any) => router.push(`/centers/${id ?? ""}`)}
-        onEditClick={(id: any) => router.push(`/edit-center-${id}`)}
-        onDeleteClick={(id: any) => deleteCenter(id)}
+        onViewClick={(id: number) => router.push(`/centers/${id ?? ""}`)}
+        onEditClick={(id: number) => router.push(`/edit-center-${id}`)}
+        onDeleteClick={(id: number) => deleteCenter(id)}
       />
-
-      {/* <Card className="h-full">
-        <header className="flex justify-between p-2">
-          <CardTitle title="ALL CENTERS" />
-          <div>
-            <Textbox
-              value={filterByName}
-              setValue={setFilterByName}
-              placeHolder="Search by center,location ..."
-              className="w-80 p-1.5"
-            />
-            <Button
-              className="ml-3 bg-pink-700 p-2 text-white"
-              onClick={() => router.push("/centers/AddCenter")}
-            >
-              ADD NEW CENTER
-            </Button>
-          </div>
-        </header>
-        <Table
-          tableHeader={CenterBatchTableHeader()}
-          tableBody={CenterBatchTableBody(
-            { name: filterByName },
-            handleIsLoading
-          )}
-        />
-        {loading ? <LoadingSpinner /> : ""}
-      </Card> */}
     </>
   );
 };

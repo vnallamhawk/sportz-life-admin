@@ -3,7 +3,6 @@ import CardTitle from "~/components/Card/CardTitle";
 // import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
 import Textbox from "~/components/Textbox";
 import {
-  type CENTER_BATCH_TYPES,
   type BATCH_DETAILS_CONSTANTS_TYPES,
 } from "~/types/batch";
 import { FormContext } from "../../pages/centers/Batch/[id]";

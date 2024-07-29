@@ -15,12 +15,12 @@ export default function TimePickerWrapper({
 }: {
   className?: string;
   placeHolder?: string;
-  onChangeHandler?: (arg0: string) => void;
+  onChangeHandler: (arg0: unknown) => void;
   value?: string;
 }) {
   return (
     <TimePicker
-      onChange={(value) => onChangeHandler(value)}
+      onChange={(value:unknown) => onChangeHandler(value)}
       value={value}
       
       format="h:mm aaaa"

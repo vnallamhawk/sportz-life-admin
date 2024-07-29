@@ -91,7 +91,7 @@ export interface BatchData {
 }
 
 export interface MULTI_FORM_TYPES extends COACH_TYPES {
-  coachBatches: any;
+  coachBatches: unknown;
   certificates: COACH_CERTIFICATE_TABLE_TYPES[];
   batchTableData?: BatchTableData[];
   batchIds?: number[];

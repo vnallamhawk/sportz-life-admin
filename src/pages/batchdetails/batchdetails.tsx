@@ -3,9 +3,6 @@ import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
 import Image from "next/image";
 import User from "../../images/user.png";
-import CoachImg from "../../images/CoachesImg.png";
-import AtheleteImg from "../../images/AthelteImg.png";
-import BatchImg from "../../images/BatchesImg.png";
 import Edit from "../../images/ic_fluent_edit_16_filled.svg";
 import Search from "../../images/search.png";
 import Filter from "../../images/filter-icon.svg";
@@ -13,11 +10,10 @@ import Cross from "../../images/cross.svg";
 import Clock from "../../images/clock.svg";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Dialog, DialogBody, DialogHeader, Typography } from "@material-tailwind/react";
-import React from "react";
-import TableListView from "~/common/TableListView";
+import React, { useState } from "react";
 
-export default function addBatch() {
-    const [open, setOpen] = React.useState(false);
+export default function AddBatch() {
+    const [open, setOpen] = useState(false);
 
     const handleOpen = () => setOpen(!open);
     return (

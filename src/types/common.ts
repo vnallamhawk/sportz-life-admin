@@ -4,6 +4,7 @@ export type TabType = {
   value: string;
   image: string;
   allLabel: string;
+  key:string
 };
 
 export type TableHead = {

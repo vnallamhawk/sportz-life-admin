@@ -1,8 +1,5 @@
-import DashboardHeader from "~/components/DashboardHeader";
 import Filter from "~/components/Filter";
-// import Table from "../../components/CommonTable";
-import Modal from "../../components/Modal";
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import SearchIcon from "../../images/search.png";
 import Cross from "../../images/cross.svg";
@@ -10,15 +7,10 @@ import Plus from "../../images/plus.svg";
 import FilterIcon from "../../images/filter-icon.svg";
 import Download from "../../images/download-white.svg";
 import DownloadPink from "../../images/download-pink.svg";
-import Dots from "../../images/dots.svg";
 import Visa from "../../images/visa.svg";
-// import List from "~/components/CommonList/list";
-import { Dropdown, Radio, Textarea } from "flowbite-react";
+import {  Radio } from "flowbite-react";
 import Link from "next/link";
 import TableListView from "~/common/TableListView";
-import AllData from "~/common/AllData";
-import User from "../../images/user.png";
-import { useRouter } from "next/router";
 import Checkout from "./checkout";
 import {
   Tabs,
@@ -31,7 +23,6 @@ import {
   Dialog,
   DialogBody,
 } from "@material-tailwind/react";
-import Button from "~/components/Button";
 
 const TABLE_HEAD = [
   { label: "Fee Plan Name", id: "name" },
@@ -137,8 +128,10 @@ export default function Pricing() {
                   TABLE_ROWS={TABLE_ROWS}
                   rowSelection={true}
                   showImage={true}
-                  onViewClick={() => {}}
-                  onEditClick={() => {}}
+                  // eslint-disable-next-line @typescript-eslint/no-empty-function
+                  onViewClick={(id:number) => {}}
+                  // eslint-disable-next-line @typescript-eslint/no-empty-function
+                  onEditClick={(id:number) => {}}
                 />
               </TabPanel>
               <TabPanel value="pricing" className="px-2">

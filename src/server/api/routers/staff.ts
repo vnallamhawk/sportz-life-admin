@@ -42,7 +42,7 @@ export const staffRouter = createTRPCRouter({
           },
         },
         include: {
-          center: true,
+          Centers: true,
         },
       });
 
@@ -71,9 +71,7 @@ export const staffRouter = createTRPCRouter({
           name,
           designationId,
           phone,
-          status,
           dateOfBirth,
-          image,
           email,
           gender,
           payrollId,
@@ -127,12 +125,8 @@ export const staffRouter = createTRPCRouter({
           designation,
           mobile,
           status,
-          image,
           email,
           age,
-          gender,
-          payroll,
-          center,
           createdBy,
           staffId,
         },

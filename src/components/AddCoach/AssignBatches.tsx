@@ -32,10 +32,12 @@ export default function AssignBatches({
       batchName: undefined,
     },
   });
-  const [formConstantValues, setFormConstantValues] = useState(
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const [formConstantValues, setFormConstantValues] = useState<any>(
     COACH_BATCH_CONSTANTS
   );
-  const [tableData, setTableData] = useState<BatchTableData[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const [tableData, setTableData] = useState<any>([]);
   const [centerId, setCenterId] = useState<number>();
   const {
     stepData: { currentStep, setCurrentStep },
@@ -46,10 +48,13 @@ export default function AssignBatches({
   const { data: batches } = api.batches.getAllBatches.useQuery();
 
   useEffect(() => {
-    if (centers?.length && centers?.length! > 0) {
-      const updatedFormConstantValues: any = formConstantValues?.map(
-        (formConstant) => {
+    if (centers?.length && centers?.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+      const updatedFormConstantValues: unknown = formConstantValues?.map(
+        (formConstant:any) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           if (formConstant.id === "center") {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return {
               ...formConstant,
               options: centers?.map((center: { name: string; id: number }) => ({
@@ -58,6 +63,7 @@ export default function AssignBatches({
               })),
             };
           } else {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return formConstant;
           }
         }
@@ -69,10 +75,13 @@ export default function AssignBatches({
   useEffect(() => {
     if (centerId) {
       const center = centers?.find((item) => item?.id == centerId);
-      if (center?.Batches?.length && center?.Batches?.length! > 0) {
-        const updatedFormConstantValues: any = formConstantValues?.map(
-          (formConstant) => {
+      if (center?.Batches?.length && center?.Batches?.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        const updatedFormConstantValues: unknown = formConstantValues?.map(
+          (formConstant:any) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             if (formConstant.id === "batches") {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-return
               return {
                 ...formConstant,
                 options: center?.Batches.map(
@@ -83,39 +92,51 @@ export default function AssignBatches({
                 ),
               };
             } else {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-return
               return formConstant;
             }
           }
         );
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setFormConstantValues(updatedFormConstantValues);
       }
     }
   }, [centerId, centers, formConstantValues]);
 
   useEffect(() => {
-    if (formData?.coachBatches?.length) {
+    if ( formData && formData?.coachBatches) {
       setTableData(formData?.coachBatches);
     }
-  }, [formData?.coachBatches]);
+  }, [formData]);
 
   const submitCallback = (finalData: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const finalFormData = {
       ...finalData,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       coachBatches: tableData,
     };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     finalFormSubmissionHandler(finalFormData);
   };
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   const onAddBatchHandler = async (data: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const arr = [...tableData];
     const batches =
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
       data?.batches && data?.batches.length > 0 ? [...data?.batches] : [];
     for (let i = 0; i < batches.length; i++) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const obj = {
         ...data,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         centerId: parseInt(data?.center?.value),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         batchId: parseInt(data?.batches[i]?.value),
       };
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       arr.push(obj);
     }
 
@@ -127,6 +148,7 @@ export default function AssignBatches({
       <AddForm
         cardTitle="ADD COACH"
         cardSubTitle="ASSIGN BATCHES"
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formConstantValues={formConstantValues}
         buttonItems={{ prevFinish: true }}
         setFormData={setFormData}
@@ -142,12 +164,13 @@ export default function AssignBatches({
         ]}
         // tableFields={formConstantValues}
         tablekey="coachBatches"
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         tableData={tableData}
         isFormTable={true}
         addTableData={onAddBatchHandler}
         finalFormSubmissionHandler={submitCallback}
         dependentKey="center"
-        setDependentKey={(value: any) => setCenterId(value)}
+        setDependentKey={(value: number) => setCenterId(value)}
       />
     </div>
   );

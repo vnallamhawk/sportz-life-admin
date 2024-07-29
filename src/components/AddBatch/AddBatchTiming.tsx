@@ -86,7 +86,7 @@ export default function AddBatchTiming(props: any) {
     setCurrentBatchDetail(batchDetails);
   };
 
-  const getInputElement = (props: BATCH_DETAILS_CONSTANTS_TYPES) => {
+  const getInputElement = (props: any) => {
     const { type, rules, id, pattern, placeHolder } = props;
     switch (type) {
       case "select":

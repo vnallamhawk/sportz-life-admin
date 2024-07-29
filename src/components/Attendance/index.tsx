@@ -6,14 +6,14 @@ import { BarChart } from "recharts";
 import { Tabs } from "flowbite-react";
 import { TabsBody, TabsHeader } from "@material-tailwind/react";
 import { Tab, TabPanel } from "react-tabs";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { centerWiseCountData } from "../../__stubs__/dashboardStubs";
 
 const Attendance=()=>{
     const [selectedTab,setSelectedTab]=useState('attendance_for_month')
-    const [calendarValue,setCalendarValue]=useState()
+    const [calendarValue,setCalendarValue]=useState<any>()
 
-    const onChange=(value)=>{
+    const onChange=(value: any)=>{
         setCalendarValue(value)
 
     }

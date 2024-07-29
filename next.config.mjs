@@ -3,22 +3,29 @@
  * for Docker builds.
  */
 await import("./src/env.mjs");
-
-/** @type {import("next").NextConfig} */
-const config = {
-  reactStrictMode: true,
-
-  /**
-   * If you have `experimental: { appDir: true }` set, then you must comment the below `i18n` config
-   * out.
-   *
-   * @see https://github.com/vercel/next.js/issues/41980
-   */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  webpack: (config, options) => {
+    config.module.rules.push(
+      {
+        test: /\.svg$/,
+        include: /src\/app\/assets\/images/,
+        use: ['url-loader'],
+      },
+      {
+        test: /\.svg$/,
+        include: /src\/app\/assets\/icons/,
+        use: ['@svgr/webpack'],
+      }
+    );
+    return config;
+  },
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
   },
-  async rewrites() {
+  reactStrictMode: true,
+  async rewrites(){
     return [
       {
         source: "/edit-coach-:id",
@@ -39,10 +46,9 @@ const config = {
       {
         source: "/edit-staff-:id",
         destination: "/staff/AddStaff",
-      },
-      
-    ];
-  },
+      }
+    ]
+  }  
 };
 
-export default config;
+export default nextConfig;

@@ -16,7 +16,6 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from '~/server/auth';
-import { getToken, JWT } from 'next-auth/jwt';
 
 import { prisma } from "~/server/db";
 
