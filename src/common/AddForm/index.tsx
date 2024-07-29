@@ -6,7 +6,7 @@ import Timepicker from "~/components/TimePicker/TimePickerWrapper";
 import CardTitle from "~/components/Card/CardTitle";
 import Image from "next/image";
 import Plus from "../../images/plus.svg";
-import Remove from "../../images/remove.svg"
+import Remove from "../../images/remove.svg";
 import { Switch } from "@material-tailwind/react";
 
 import { Controller, useForm } from "react-hook-form";
@@ -14,6 +14,44 @@ import Select from "react-select";
 import Button from "~/components/Button";
 import { Textarea } from "flowbite-react";
 
+interface FormValues {
+  type: string;
+  rules: any;
+  id: string;
+  pattern: string;
+  placeHolder: string;
+  isMulti?: boolean;
+  options: { label: string; value: string | number }[];
+}
+interface AddForm {
+  cardTitle: string;
+  cardSubTitle: string;
+  formConstantValues: FormValues[];
+  imageTitle: string;
+  tableTitle?: string;
+  tableDescription?: string;
+  mobileAddButtonText?: string;
+  TableHeadings: { label: string; id: string }[];
+  addTableData?: any;
+  tableData?: any;
+  tablekey?: string;
+  buttonItems: { prevNext?: boolean; prevFinish?: boolean; next?: boolean };
+  setFormData: any;
+  formData: any;
+  setCurrentStep: any;
+  currentStep: number;
+  finalFormSubmissionHandler: any;
+  tableFields?: any;
+  addTableButtonText?: string;
+  addTableButton?: any;
+  onRemoveTableButton?: any;
+  isFormTable?: boolean;
+  prevButtonText?: string;
+  finishButtonText?: string;
+  prevButtonClick?: any;
+  dependentKey?: string;
+  setDependentKey?: any;
+}
 const AddForm = ({
   cardTitle,
   cardSubTitle,
@@ -41,8 +79,8 @@ const AddForm = ({
   finishButtonText = "Finish",
   prevButtonClick,
   dependentKey,
-  setDependentKey
-}: any) => {
+  setDependentKey,
+}: AddForm) => {
   let inputElement;
   const {
     control,
@@ -57,53 +95,75 @@ const AddForm = ({
   const nextClickHandler = async () => {
     const result = await trigger();
     if (result) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const currentFormValues = getValues();
-      let obj = { ...formData, ...currentFormValues };
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const obj = { ...formData, ...currentFormValues };
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (buttonItems?.prevNext) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         obj[tablekey] = tableData;
       }
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       setFormData && setFormData(obj);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       setCurrentStep && setCurrentStep(currentStep + 1);
     }
   };
 
   const prevClickHandler = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     setCurrentStep && setCurrentStep(currentStep - 1);
   };
 
-  const handleChangeCurrentData = (name: string, data: { label: string, value: string }, value: string | number) => {
+  const handleChangeCurrentData = (
+    name: string,
+    data: { label: string; value: string },
+    value: string | number
+  ) => {
     const obj: any = { ...currentTableData };
     if (data && Object.keys(data).length > 0 && data?.label && data?.value) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       obj[name] = data?.value;
-      obj['name'] = data?.label;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      obj["name"] = data?.label;
     } else {
-      obj[name] = value
-
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      obj[name] = value;
     }
 
     setCurrentTableData(obj);
   };
 
   const submitCallback = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const currentFormValues = getValues();
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const finalFormData = {
       ...formData,
-      ...currentFormValues
+      ...currentFormValues,
     };
     if (tablekey) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       finalFormData[tablekey] = tableData;
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     finalFormSubmissionHandler(finalFormData);
   };
 
-  const handleChangeTime = (value: string | boolean|unknown, name: string) => {
-    let obj: any = { ...formData };
+  const handleChangeTime = (
+    value: string | boolean | unknown,
+    name: string
+  ) => {
+    const obj: any = { ...formData };
     obj[name] = value;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     setFormData(obj);
   };
 
-  const getInputElement = (props: any) => {
+  const getInputElement = (props: FormValues) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { type, rules, id, pattern, placeHolder } = props;
     switch (type) {
       case "select":
@@ -112,20 +172,25 @@ const AddForm = ({
           <Controller
             control={control}
             name={id}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
             render={({ field: { onChange, value } }) => {
               return (
                 <Select
                   isMulti={props?.isMulti ?? false}
                   options={options}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   value={value}
                   placeholder={placeHolder}
                   className="border-1 c-select w-full border-gray-300"
                   classNamePrefix="react-select"
-                  onChange={(element) => {
+                  onChange={(element: {
+                    value: string | { label: string; value: string | number };
+                  }) => {
                     onChange(element);
                     if (dependentKey && dependentKey === id) {
-                      setDependentKey(element?.value)
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                      setDependentKey(element?.value);
                     }
                   }}
                 />
@@ -141,6 +206,7 @@ const AddForm = ({
             render={({ field: { onChange, value } }) => {
               return (
                 <Switch
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   value={value}
                   onChange={(e) =>
                     handleChangeTime(e.target.checked, "taxable")
@@ -149,6 +215,7 @@ const AddForm = ({
               );
             }}
             name={id}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
           />
         );
@@ -161,6 +228,7 @@ const AddForm = ({
               return (
                 <Timepicker
                   placeHolder={props.placeHolder}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                   value={formData[id] ? formData[id] : "10:00"}
                   className="h-12"
                   onChangeHandler={(value) => handleChangeTime(value, id)}
@@ -168,6 +236,7 @@ const AddForm = ({
               );
             }}
             name={id}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
           />
         );
@@ -187,6 +256,7 @@ const AddForm = ({
               );
             }}
             name={id}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
           />
         );
@@ -199,11 +269,12 @@ const AddForm = ({
             render={({ field: { onChange, value } }) => (
               <Textarea
                 className="h-12 w-full"
-                placeholder={props.label}
+                placeholder={props.placeHolder}
                 onChange={onChange}
                 value={value as string}
               />
             )}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
             {...(pattern ? { pattern } : {})}
           />
@@ -217,12 +288,13 @@ const AddForm = ({
             render={({ field: { onChange, value } }) => (
               <Textbox
                 className="h-12 w-full"
-                placeHolder={props.label}
+                placeHolder={props.placeHolder}
                 onChangeHandler={onChange}
                 // TODO: FIX THIS TS ERROR
                 value={value as string}
               />
             )}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
             {...(pattern ? { pattern } : {})}
           />
@@ -242,7 +314,7 @@ const AddForm = ({
       )}
       {formConstantValues && formConstantValues.length > 0 && (
         <div className="grid-col-1 mt-8 grid gap-x-8 gap-y-4 lg:grid-cols-2 lg:gap-y-8 ">
-          {formConstantValues?.map((formValues: any) => (
+          {formConstantValues?.map((formValues: FormValues) => (
             <div key={formValues.id}>
               {getInputElement(formValues)}
 
@@ -278,10 +350,10 @@ const AddForm = ({
 
       {tableData && TableHeadings && (
         <div className="">
-          <div className="text-lg text-gray-400 lg:block hidden font-medium">
+          <div className="hidden text-lg font-medium text-gray-400 lg:block">
             {tableDescription}
           </div>
-          <div className="flex justify-between items-center mb-10">
+          <div className="mb-10 flex items-center justify-between">
             <div className="text-center font-heading text-3xl font-medium uppercase lg:text-left">
               {tableTitle}
             </div>
@@ -289,7 +361,7 @@ const AddForm = ({
             {addTableButtonText && (
               <button
                 type="button"
-                className="cursor-pointer rounded-lg bg-[#F3476D] py-2 px-4 text-center text-white"
+                className="cursor-pointer rounded-lg bg-[#F3476D] px-4 py-2 text-center text-white"
                 onClick={addTableButton}
               >
                 {addTableButtonText}
@@ -306,7 +378,11 @@ const AddForm = ({
                       className="border-1 h-12 w-full grow rounded-lg border-gray-300 pl-5 focus:border-gray-600 focus:outline-none focus:ring-0 lg:h-20"
                       value={currentTableData[item?.name]}
                       onChange={(e) => {
-                        handleChangeCurrentData(item?.name, { label: "", value: "" }, e.target.value);
+                        handleChangeCurrentData(
+                          item?.name,
+                          { label: "", value: "" },
+                          e.target.value
+                        );
                       }}
                     />
                   ) : item?.type === "select" ? (
@@ -315,122 +391,146 @@ const AddForm = ({
                       options={item?.options}
                       value={currentTableData[item?.name]}
                       placeholder={item?.placeholder}
-                      className="border-1 c-select w-full border-gray-300 h-12"
+                      className="border-1 c-select h-12 w-full border-gray-300"
                       classNamePrefix="react-select"
                       onChange={(element) =>
                         handleChangeCurrentData(item?.name, element, "")
                       }
                     />
                   ) : (
-                    <div className="relative lg:mt-0 mt-3">
+                    <div className="relative mt-3 lg:mt-0">
                       <input
-                        className="border  lg:ml-7 text-center h-12 pr-9 p-2 w-34 lg:w-20 rounded-lg border-gray-300 focus:border-gray-600 focus:outline-none focus:ring-0"
+                        className="w-34  h-12 rounded-lg border border-gray-300 p-2 pr-9 text-center focus:border-gray-600 focus:outline-none focus:ring-0 lg:ml-7 lg:w-20"
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         value={currentTableData[item?.name]}
                         onChange={(e) => {
-                          handleChangeCurrentData(item?.name, { label: "", value: "" }, item?.type === "number" ? parseInt(e.target.value) : e.target.value);
+                          handleChangeCurrentData(
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+                            item?.name,
+                            { label: "", value: "" },
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                            item?.type === "number"
+                              ? parseInt(e.target.value)
+                              : e.target.value
+                          );
                         }}
                       />
-                      <span className="text-gray-400 absolute top-3.5 right-3 text-sm">Qty</span>
+                      <span className="absolute right-3 top-3.5 text-sm text-gray-400">
+                        Qty
+                      </span>
                     </div>
-
                   )}
                 </>
               );
             })}
             <Button
-              className="border-1 ml-7 hidden rounded-md border-blush-light px-8 py-3 font-bold text-lg text-[#FF9678] hover:border-blush-dark hover:text-blush-dark lg:block"
+              className="border-1 ml-7 hidden rounded-md border-blush-light px-8 py-3 text-lg font-bold text-[#FF9678] hover:border-blush-dark hover:text-blush-dark lg:block"
               type="button"
               onClick={(e) => {
-                addTableData(tableFields ? currentTableData : isFormTable ? getValues() : e);
+                addTableData(
+                  tableFields ? currentTableData : isFormTable ? getValues() : e
+                );
                 setCurrentTableData({});
               }}
             >
               Add
             </Button>
 
-            <button className="mt-5 flex items-center lg:hidden" >
+            <button className="mt-5 flex items-center lg:hidden">
               <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-black p-3">
                 <Image src={Plus} className="" alt="" />
               </div>
               <div className="ml-3">{mobileAddButtonText}</div>
             </button>
-         
           </div>
           <div className="scroll mt-5 hidden max-h-[370px] overflow-auto px-0 lg:block">
             <table className="common-table w-full min-w-max table-auto  border-separate border-spacing-y-3 text-left">
               <thead>
                 <tr>
-                  {TableHeadings?.map((head: { label: string, id: string }, index: number) => {
-                    return (
-                      <th
-                        className="w-20 pl-7 font-medium text-gray-400"
-                        key={index}
-                      >
-                        {head.label}
-                      </th>
-                    );
-                  })}
+                  {TableHeadings?.map(
+                    (head: { label: string; id: string }, index: number) => {
+                      return (
+                        <th
+                          className="w-20 pl-7 font-medium text-gray-400"
+                          key={index}
+                        >
+                          {head.label}
+                        </th>
+                      );
+                    }
+                  )}
                 </tr>
               </thead>
               <tbody>
                 {tableData?.map((data: any, dataIndex: number) => {
                   return (
                     <tr key={dataIndex}>
-                      {TableHeadings?.map((head: { label: string, id: string }, headIndex: number) => {
-                        return (
-                          <td key={headIndex}>
-                            {head?.id !== "action" ? (
-                              <span className="border-y-2 border-gray-100 p-4">
-                                {data[head?.id]}
-                              </span>
-                            ) : (
-                              <span
-                                className="border-y-2 border-gray-100 p-4 font-medium text-gray-400"
-                                onClick={() => onRemoveTableButton(dataIndex)}
-                              >
-                                Remove
-                              </span>
-                            )}
-                          </td>
-                        );
-                      })}
+                      {TableHeadings?.map(
+                        (
+                          head: { label: string; id: string },
+                          headIndex: number
+                        ) => {
+                          return (
+                            <td key={headIndex}>
+                              {head?.id !== "action" ? (
+                                <span className="border-y-2 border-gray-100 p-4">
+                                  {data[head?.id]}
+                                </span>
+                              ) : (
+                                <span
+                                  className="border-y-2 border-gray-100 p-4 font-medium text-gray-400"
+                                  onClick={() => onRemoveTableButton(dataIndex)}
+                                >
+                                  Remove
+                                </span>
+                              )}
+                            </td>
+                          );
+                        }
+                      )}
                     </tr>
                   );
                 })}
               </tbody>
             </table>
           </div>
-   {/* mobile view ------------------*/}
-   <div className="bg-[#FFE5DE] rounded-t-[40px] py-10 px-5 lg:hidden mt-10 relative invent-mobile">
-              <CardTitle title="INVENTORIES" />
-              <div className="max-h-[345px] overflow-auto">
-                <div className="flex justify-between bg-white rounded-lg p-3 mb-3">
-                  <div>
-                    <div className="text-base font-bold">Wristle</div>
-                    <div className="text-base">10 Pieces</div>
-                  </div>
-                  <button><Image src={Remove} className="" alt="" /></button>
+          {/* mobile view ------------------*/}
+          <div className="invent-mobile relative mt-10 rounded-t-[40px] bg-[#FFE5DE] px-5 py-10 lg:hidden">
+            <CardTitle title="INVENTORIES" />
+            <div className="max-h-[345px] overflow-auto">
+              <div className="mb-3 flex justify-between rounded-lg bg-white p-3">
+                <div>
+                  <div className="text-base font-bold">Wristle</div>
+                  <div className="text-base">10 Pieces</div>
                 </div>
-                <div className="flex justify-between bg-white rounded-lg p-3 mb-3">
-                  <div>
-                    <div className="text-base font-bold">Wristle</div>
-                    <div className="text-base">10 Pieces</div>
-                  </div>
-                  <button><Image src={Remove} className="" alt="" /></button>
+                <button>
+                  <Image src={Remove} className="" alt="" />
+                </button>
+              </div>
+              <div className="mb-3 flex justify-between rounded-lg bg-white p-3">
+                <div>
+                  <div className="text-base font-bold">Wristle</div>
+                  <div className="text-base">10 Pieces</div>
                 </div>
-                <div className="flex justify-between bg-white rounded-lg p-3 mb-3">
-                  <div>
-                    <div className="text-base font-bold">Wristle</div>
-                    <div className="text-base">10 Pieces</div>
-                  </div>
-                  <button><Image src={Remove} className="" alt="" /></button>
+                <button>
+                  <Image src={Remove} className="" alt="" />
+                </button>
+              </div>
+              <div className="mb-3 flex justify-between rounded-lg bg-white p-3">
+                <div>
+                  <div className="text-base font-bold">Wristle</div>
+                  <div className="text-base">10 Pieces</div>
                 </div>
+                <button>
+                  <Image src={Remove} className="" alt="" />
+                </button>
               </div>
             </div>
+          </div>
         </div>
       )}
       {buttonItems?.next && (
-        <div className="bottom-8 right-0 lg:mr-10 mt-10 flex justify-end lg:absolute mb-10 lg:mb-0">
+        <div className="bottom-8 right-0 mb-10 mt-10 flex justify-end lg:absolute lg:mb-0 lg:mr-10">
           <button
             className="w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
             type="button"
@@ -441,7 +541,7 @@ const AddForm = ({
         </div>
       )}
       {buttonItems?.prevNext && (
-        <div className="bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end absolute">
+        <div className="absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end">
           <Button
             type="button"
             className="w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
@@ -460,7 +560,7 @@ const AddForm = ({
       )}
 
       {buttonItems?.prevFinish && (
-        <div className="bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end absolute">
+        <div className="absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end">
           <Button
             type="button"
             className="w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"

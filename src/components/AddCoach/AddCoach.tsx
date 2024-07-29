@@ -41,7 +41,7 @@ export default function AddCoach() {
       });
       hasExecuted.current = false;
     }
-    if (staffPayroll?.length && staffPayroll?.length! > 0) {
+    if (staffPayroll?.length && staffPayroll?.length > 0) {
       updatedFormConstantValues = updatedFormConstantValues.map(
         (formConstant) => {
           if (formConstant.id === "payroll") {

@@ -46,7 +46,7 @@ export default function AddStaffShift({ finalFormSubmission }: any) {
   };
 
   const onAddStaffTiming = (currentStaffShift: any) => {
-    let arr: any = [...staffShiftDetails];
+    const arr: any = [...staffShiftDetails];
     arr.push({
       day: currentStaffShift?.day.value,
       shift: currentStaffShift?.shift.value,

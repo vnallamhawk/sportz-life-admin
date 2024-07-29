@@ -8,7 +8,7 @@ function AddSportModal({
   handleSport,
 }: any) {
   const handleSportChange = (name: string, value: string) => {
-    let obj: any = { ...sportDetails };
+    const obj: any = { ...sportDetails };
     obj[name] = value;
     setSportDetails(obj);
   };

@@ -15,7 +15,8 @@ export interface STAFF_DETAILS_CONSTANTS_TYPES {
     | "dateOfBirth"
     | "gender"
     | "payroll"
-    | "center";
+    | "center"
+    |"phone";
   type: Type;
   placeHolder?: string;
   options?: MultiSelectOption[];

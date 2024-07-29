@@ -50,7 +50,7 @@ export default function FitnessDrillTableBody(
   //   const deleteCenter = (id: number) => {
   //     deleteMutate({ centerId: id, deletedAt: moment().toISOString() });
   //   };
-  let tableData = [
+  const tableData = [
     {
       drillName: "name1",
       fitnessComp: "Agility",

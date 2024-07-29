@@ -1,4 +1,4 @@
-import { TableHead } from "~/types/common";
+import type { TableHead } from "~/types/common";
 import CommonList from "../CommonList/list";
 import CommonTable from "../CommonTable/table";
 

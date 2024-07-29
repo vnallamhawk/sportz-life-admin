@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import AddForm from "~/common/AddForm";
 import { ATHLETE_DETAILS_CONSTANTS } from "~/constants/athleteConstants";
 import { FormContext } from "~/pages/athlete/AddAthlete/AddAthleteMultiFormLayout";
-import { ATHLETE_TYPES } from "~/types/athlete";
+import type { ATHLETE_TYPES } from "~/types/athlete";
 import { api } from "~/utils/api";
 
 export default function AddCoach() {
@@ -63,8 +63,8 @@ export default function AddCoach() {
   //test commit
 
   const addTableData = (currentData: any) => {
-    let arr: any = [...medicalHistoryData];
-    let obj = { ...currentData, ["No."]: arr.length + 1 };
+    const arr: any = [...medicalHistoryData];
+    const obj = { ...currentData, ["No."]: arr.length + 1 };
     arr.push(obj);
     setMedicalHistoryData(arr);
   };

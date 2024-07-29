@@ -2,10 +2,10 @@ import React, { useEffect, useContext, useState, useRef } from "react";
 import CardTitle from "~/components/Card/CardTitle";
 import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
 import Textbox from "~/components/Textbox";
+import type {
+  CENTER_TYPES} from "~/types/coach";
 import {
-  type COACH_TYPES,
-  type COACH_DETAILS_CONSTANTS_TYPES,
-  CENTER_TYPES,
+  type COACH_TYPES
 } from "~/types/coach";
 import { FormContext } from "~/pages/staffPayroll/AddPayroll/AddPayrollForm";
 import Button from "../Button";
@@ -86,7 +86,7 @@ export default function AddPayroll(props: any) {
   }, [formConstantValues, designations, designations?.length]);
 
   const onSubmit = (data: any) => {
-    let obj = { ...data, taxable: formData?.taxable };
+    const obj = { ...data, taxable: formData?.taxable };
     obj.grossSalary = parseInt(data.grossSalary);
     obj.designationId = parseInt(data?.designationId?.value);
     if (obj && obj?.taxable) {

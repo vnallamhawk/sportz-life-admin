@@ -1,3 +1,5 @@
+import type { COACH_DETAILS_CONSTANTS_TYPES } from "~/types/coach";
+
 export const CENTER_DASH_BATCH_TABLE_HEADERS = [
   {
     label: "Batch Name",

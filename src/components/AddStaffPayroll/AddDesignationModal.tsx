@@ -8,7 +8,7 @@ function AddDesignationModal({
   designation,
 }: any) {
   const handleDesignationChange = (name: string, value: string) => {
-    let obj: any = { ...designation };
+    const obj: any = { ...designation };
     obj[name] = value;
     setDesignation(obj);
   };

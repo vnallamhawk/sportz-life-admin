@@ -8,7 +8,7 @@ function AddTaxSlabModal({
   taxSlab,
 }: any) {
   const handleDesignationChange = (name: string, value: string) => {
-    let obj: any = { ...taxSlab };
+    const obj: any = { ...taxSlab };
     obj[name] = value;
     setTaxSlab(obj);
   };

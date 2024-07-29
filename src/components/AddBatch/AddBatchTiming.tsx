@@ -81,7 +81,7 @@ export default function AddBatchTiming(props: any) {
   //test commit
 
   const handleChangeBatch = (value: any, id: string | number) => {
-    let batchDetails = { ...currentBatchDetail };
+    const batchDetails = { ...currentBatchDetail };
     batchDetails[id] = value 
     setCurrentBatchDetail(batchDetails);
   };
@@ -177,7 +177,7 @@ export default function AddBatchTiming(props: any) {
 
   const onAddBatchTiming = (e: any) => {
     e.preventDefault();
-    let arr: any = [...batchTimings];
+    const arr: any = [...batchTimings];
     arr.push(currentBatchDetail);
     setBatchTimings(arr);
     setCurrentBatchDetail({});

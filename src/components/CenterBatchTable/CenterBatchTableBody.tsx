@@ -37,7 +37,7 @@ export default function CenterBatchTableBody(
 
   const { mutate: deleteMutate } = api.center.deleteCenter.useMutation({
     onSuccess: (response) => {
-      let arr = [...tableData];
+      const arr = [...tableData];
       const index = tableData?.findIndex(
         (item: any) => item?.id == response?.id
       );

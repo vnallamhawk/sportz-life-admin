@@ -1,4 +1,4 @@
-import { MultiSelectOption } from "~/types/select";
+import type { MultiSelectOption } from "~/types/select";
 
 
 export const INVENTORY_TABLE_HEADERS = [

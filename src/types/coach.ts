@@ -27,7 +27,8 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
     | "gender"
     | "coachingSports"
     | "trainingLevel"
-    | "experienceLevel";
+    | "experienceLevel"
+    |"phone";
   type: Type;
   placeHolder?: string;
   options?: MultiSelectOption[];

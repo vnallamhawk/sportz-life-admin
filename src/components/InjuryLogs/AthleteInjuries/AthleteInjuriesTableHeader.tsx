@@ -1,7 +1,7 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 // import { ATHLETE_INJURY_LOGS_TABLE_HEADERS } from "~/constants/injuryLogsConstants";
-let ATHLETE_INJURY_LOGS_TABLE_HEADERS = [
+const ATHLETE_INJURY_LOGS_TABLE_HEADERS = [
   { id: "id1", label: "label1" },
   { id: "id2", label: "label2" },
   { id: "id3", label: "label3" },

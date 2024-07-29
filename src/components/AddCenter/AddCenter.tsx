@@ -2,10 +2,11 @@ import React, { useEffect, useContext, useState, useRef } from "react";
 import CardTitle from "~/components/Card/CardTitle";
 import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
 import Textbox from "~/components/Textbox";
+import type {
+  CENTER_TYPES} from "~/types/coach";
 import {
   type COACH_TYPES,
-  type COACH_DETAILS_CONSTANTS_TYPES,
-  CENTER_TYPES,
+  type COACH_DETAILS_CONSTANTS_TYPES
 } from "~/types/coach";
 import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
 import Button from "../Button";

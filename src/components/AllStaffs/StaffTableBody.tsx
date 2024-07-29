@@ -19,7 +19,7 @@ interface staffTableFilter {
   name: string;
 }
 
-let tableData = [
+const tableData = [
   {
     name: "staff1",
     designation: "desig1",

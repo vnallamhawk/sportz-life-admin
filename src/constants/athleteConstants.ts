@@ -1,4 +1,3 @@
-import { type COACH_DETAILS_CONSTANTS_TYPES } from "~/types/coach";
 
 export const ATHLETE_TABLE_HEADERS = [
   {

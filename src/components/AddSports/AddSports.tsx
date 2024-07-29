@@ -17,14 +17,14 @@ const AddSports = () => {
 
   const { mutate: createMutate } = api.sports.createSports.useMutation({
     onSuccess: (response) => {
-      let arr: any = [...finalOptions];
+      const arr: any = [...finalOptions];
       arr.push({ label: response?.name, value: response?.id });
       setFinalOptions(arr);
     },
   });
   useEffect(() => {
     if (allSports && allSports?.length > 0) {
-      let arr = [];
+      const arr = [];
       for (let i = 0; i < allSports.length; i++) {
         const index =
           sports && sports?.length > 0

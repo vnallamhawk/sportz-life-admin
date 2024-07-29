@@ -8,7 +8,7 @@ function AddInventoryModal({
   handleInventory,
 }: any) {
   const handleInventoryChange = (name: string, value: string) => {
-    let obj: any = { ...inventoryDetails };
+    const obj: any = { ...inventoryDetails };
     obj[name] = value;
     setInventoryDetails(obj);
   };

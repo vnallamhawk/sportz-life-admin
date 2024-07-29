@@ -107,11 +107,13 @@ export default function Login() {
       </div>
       <div className="flex items-center justify-end ">
         <Image
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           src={LoginImage}
           className="hidden max-h-[calc(100vh-30px)] w-full lg:block "
           alt=""
         />
         <Image
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           src={LoginMobileImage}
           className="mt-4 block max-h-[calc(100vh-30px)] w-full lg:hidden"
           alt=""
