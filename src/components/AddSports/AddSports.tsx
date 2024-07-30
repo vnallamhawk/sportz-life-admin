@@ -12,11 +12,19 @@ interface Options {
   label: string|undefined;
   value: string | number|undefined;
 }
+
+
+export interface SportDetails {
+  name: string;
+  subTitle: string ;
+  image?:any;
+  about?:string
+}
 const AddSports = () => {
   const [sports, setSports] = useState<{[key:string]:any}[]>([]);
   const [finalOptions, setFinalOptions] = useState<Options[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [sportDetails, setSportDetails] = useState<{[key:string]:any}>({});
+  const [sportDetails, setSportDetails] = useState<SportDetails>({name:"",subTitle:"",about:""});
   const { data: sessionData } = useSession();
 
   const { data: allSports } = api.sports.getAllSports.useQuery();
@@ -73,11 +81,13 @@ const AddSports = () => {
     e.preventDefault();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     createMutate({
-      ...sportDetails,
+      name:sportDetails.name,
+      about:sportDetails.name,
+      subTitle:sportDetails.subTitle,
       image: "",
       createdBy: sessionData?.token?.id,
-      createdAt:new Date(),
-      updatedAt:new Date()
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
     setShowModal(false);
 

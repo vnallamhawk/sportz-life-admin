@@ -7,7 +7,7 @@ import AtheleteImg from "../../images/AthelteImg.png";
 import InventoryImg from "../../images/InventoryImg.png";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import type { Centers } from "@prisma/client";
+import type { Athletes, BatchSchedules, Batches, CenterInventories, CenterSports, Centers, Coaches, Inventories, Sports } from "@prisma/client";
 import { ToastContext } from "~/contexts/Contexts";
 import { useRouter } from "next/router";
 import DetailPage from "~/common/DetailPage";
@@ -18,6 +18,7 @@ import {
   CENTER_DASH_COACH_TABLE_HEADERS,
   CENTER_DASH_INVENTORY_TABLE_HEADERS,
 } from "~/constants/centerDashTables";
+import type { TabType } from "~/types/common";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -35,7 +36,7 @@ export const getServerSideProps = async (
         },
       },
       Athletes:true,
-      // Coaches:true,
+      Coaches:true,
       CenterInventories: {
         include: {
           Inventories: true,
@@ -58,7 +59,7 @@ export const getServerSideProps = async (
   };
 };
 
-const tabs = [
+const tabs:TabType[] = [
   {
     label: "Coaches",
     name: "coaches",
@@ -89,23 +90,38 @@ const tabs = [
   },
 ];
 
-type TabsType = {
-  label: string;
-  name: string;
-  value: string;
-  image: StaticImageData;
-  allLabel: string;
-};
 
-export default function Page({ center }: { center: Centers }) {
+
+interface CenterSportsType extends CenterSports{
+  Sports?:Sports
+}
+
+interface CenterInventoriesType extends CenterInventories{
+  Inventories?:Inventories
+}
+interface BatchType extends Batches{
+  BatchSchedules?:BatchSchedules
+  Sports?:Sports
+
+}
+interface CenterDetails extends Centers{
+  CenterInventories?:CenterInventoriesType[],
+  Batches?:BatchType[]
+  CenterSports?:CenterSportsType[]
+  Athletes?:Athletes[]
+  Coaches?:Coaches[]
+}
+
+
+
+export default function Page({ center }: { center: CenterDetails }) {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
   const [displayBatch, setDisplayBatch] = useState(false);
   const [displayAttendance, setDisplayAttendance] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
-  const [selectedTab, setSelectedTab] = useState<string|undefined>(tabs[1]?.name);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const [selectedComponent, setSelectedComponent] = useState<any>();
+  const [selectedTab, setSelectedTab] = useState<string|undefined>(tabs[0]?.name);
+  const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>();
 
   const handleCertificateClick = () =>
     setDisplayCertificate(!displayCertificate);
@@ -114,20 +130,24 @@ export default function Page({ center }: { center: Centers }) {
   const sportsArr: string[] = ["Rugby", "Baseball", "Tennis", "BasketBall"];
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
-  const [finalTabs, setFinalTabs] = useState(tabs);
+  const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs);
 
   useEffect(() => {
     if (finalTabs && finalTabs.length > 0 && Object.keys(center).length > 0) {
-      const arr = [...finalTabs];
-      const index = arr?.findIndex((item) => item?.name === "inventories");
+      const arr:TabType[]= [...finalTabs];
+      const index = arr.findIndex((item:TabType) => item.name === "inventories");
       if (index > -1 && center?.CenterInventories) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        arr[index].value = center?.CenterInventories?.length;
+        const obj:TabType={...arr[index]}
+        obj.value =  center?.CenterInventories?center?.CenterInventories?.length:0;
+        arr[index]=obj
       }
-      const batchIndex = arr?.findIndex((item) => item?.name === "batches");
+      const batchIndex = arr.findIndex((item:TabType) => item.name === "batches");
       if (batchIndex > -1 && center?.Batches) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        arr[batchIndex].value = center?.Batches?.length;
+        const batchObj:TabType={...arr[batchIndex]}
+
+        batchObj.value = center?.Batches?center?.Batches?.length:0;
+        arr[batchIndex]=batchObj
+
       }
       setFinalTabs(arr);
     }
@@ -137,43 +157,38 @@ export default function Page({ center }: { center: Centers }) {
     setLoading(isLoading);
   };
 
-  const handleClick = (tab: TabsType) => {
+  const handleClick = (tab: TabType) => {
     let TABLE_HEAD;
     let TABLE_ROWS = [];
     let tableProps
     if (tab?.name === "batches") {
       TABLE_HEAD = CENTER_DASH_BATCH_TABLE_HEADERS;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      TABLE_ROWS=center?.Batches
+      TABLE_ROWS=center?.Batches?center?.Batches:[]
       tableProps={ addButtonText:"Add Batch",
       addButtonUrl:`/centers/Batch/${center?.id}`}
     } else if (tab?.name === "coaches") {
       TABLE_HEAD = CENTER_DASH_COACH_TABLE_HEADERS;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      TABLE_ROWS=center?.Coaches
+      TABLE_ROWS=center?.Coaches?center?.Coaches:[]
 
     } else if (tab?.name === "athletes") {
       TABLE_HEAD = CENTER_DASH_ATHLETE_TABLE_HEADERS;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      TABLE_ROWS=center?.Athletes
+      TABLE_ROWS=center?.Athletes?center?.Athletes:[]
 
     } else {
       TABLE_HEAD = CENTER_DASH_INVENTORY_TABLE_HEADERS;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-      TABLE_ROWS=center?.CenterInventories.map((center: { Inventories: { name: unknown; }; }) => {
+      TABLE_ROWS=center?.CenterInventories?center?.CenterInventories.map((data) => {
         return {
-          ...center,name:center?.Inventories?.name
+          ...center,name:data?.Inventories?.name
            // batches: center?.Batches?.length,
         };
-      });
+      }):[];
     }
     const component = (
       <AllData
-        title={tab?.allLabel}
+        title={tab?.allLabel?tab?.allLabel:""}
        {...tableProps}
         dropdownItems={{}}
         TABLE_HEAD={TABLE_HEAD}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         TABLE_ROWS={TABLE_ROWS}
         rowSelection={false}
         showImage={false}
@@ -188,22 +203,20 @@ export default function Page({ center }: { center: Centers }) {
     <>
       <DetailPage
         cardTitle="CENTER DETAILS"
-        editButtonClick={() => router.push(`/edit-center-${center?.id}`)}
+        editButtonClick={() => void router.push(`/edit-center-${center?.id}`)}
         editText={"Edit Center"}
         tabs={tabs}
         handleTabClick={handleClick}
         data={center}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        badgeData={center?.CenterSports}
+        badgeData={center?.CenterSports?center?.CenterSports:[]}
         details={[
           {
               items: [
                 { label: "Contact Number", value: center?.mobile },
                 { label: "Email", value: center?.email },
-                { lable: "Location", value: center?.address },
+                { label: "Location", value: center?.address },
               ],
             },
         ]}

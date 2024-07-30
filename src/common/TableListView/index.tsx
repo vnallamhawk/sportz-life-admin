@@ -13,11 +13,11 @@ const TableListView = ({
 }: {
   TABLE_HEAD: TableHead;
   // TABLE_ROWS: TableRows;
-  TABLE_ROWS:{[key:string]:any}[],
+  TABLE_ROWS:{[key:string]:any,id:number}[],
   rowSelection: boolean;
   showImage: boolean;
-  onViewClick: (id:number) => void;
-  onEditClick: (id:number) => void;
+  onViewClick?: (id:number) => void;
+  onEditClick?: (id:number) => void;
   onDeleteClick?: (id:number) => void;
 }) => {
   return (

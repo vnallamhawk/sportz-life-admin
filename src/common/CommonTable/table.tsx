@@ -5,22 +5,35 @@ import User from "../../images/user.png";
 
 import { Dropdown, DropdownHeader } from "flowbite-react";
 
-const CommonTable = (props: {
-  TABLE_HEAD: { label: string; id: string }[];
-  TABLE_ROWS:{[key:string]:any}[];
-  rowSelection: boolean;
-  showImage: boolean;
-  onViewClick: any;
-  onEditClick: any;
-  onDeleteClick: any;
-}) => {
+interface CommonTable{
+  
+    TABLE_HEAD: { label: string; id: string }[];
+    TABLE_ROWS:{[key:string]:any,id:number}[];
+    rowSelection: boolean;
+    showImage: boolean;
+    onViewClick?: (id:number)=>void;
+    onEditClick?: (id:number)=>void;
+    onDeleteClick?: (id:number)=>void;
+  
+}
+
+const CommonTable = ({
+  TABLE_HEAD,
+  TABLE_ROWS,
+  rowSelection,
+  showImage,
+  onViewClick,
+  onEditClick,
+  onDeleteClick,
+
+}:CommonTable) => {
   return (
     <>
       <div className="overflow-auto px-0">
         <table className="common-table w-full min-w-max table-auto border-separate border-spacing-y-3 text-left">
           <thead>
             <tr className="bg-gray-200 text-sm uppercase leading-normal text-gray-600">
-              {props?.rowSelection && (
+              {rowSelection && (
                 <th className="p-4 pb-2 pl-7">
                   <input
                     type="checkbox"
@@ -28,7 +41,7 @@ const CommonTable = (props: {
                   />
                 </th>
               )}
-              {props?.TABLE_HEAD?.map(
+              {TABLE_HEAD?.map(
                 (head: { label: string; id: string }, index: number) => (
                   <th key={index} className="px-6 py-3 text-left">
                     <Typography
@@ -43,15 +56,15 @@ const CommonTable = (props: {
             </tr>
           </thead>
           <tbody>
-            {props?.TABLE_ROWS?.map((data: any, index: number) => {
-              const isLast = index === props?.TABLE_ROWS.length - 1;
+            {TABLE_ROWS?.map((data: {[key:string]:any,id:number}, index: number) => {
+              const isLast = index === TABLE_ROWS.length - 1;
               const classes = isLast
                 ? "p-4 border-y-2 border-gray-100"
                 : "p-4 border-y-2 border-gray-100 ";
 
               return (
                 <tr key={index} className={``}>
-                  {props?.rowSelection && (
+                  {rowSelection && (
                     <td className={`pl-7 ${classes}`}>
                       {" "}
                       <input
@@ -60,7 +73,7 @@ const CommonTable = (props: {
                       />
                     </td>
                   )}
-                  {props?.TABLE_HEAD?.map(
+                  {TABLE_HEAD?.map(
                     (
                       head:{ label: string; id: string } ,
                       columnIndex: number
@@ -72,7 +85,7 @@ const CommonTable = (props: {
                               columnIndex == 0 &&
                               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                               data?.image &&
-                              props?.showImage ? (
+                              showImage ? (
                                 <div className="flex items-center gap-3">
                                   <Image
                                     src={User}
@@ -108,35 +121,32 @@ const CommonTable = (props: {
                               >
                                 <DropdownHeader>
                                   <div className="flex items-center">
-                                    <button
+                                    {onEditClick && <button
                                       className="mx-1 text-white"
                                       onClick={() =>
-                                        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-                                        props?.onEditClick(data?.id)
+                                          onEditClick(data?.id)
                                       }
                                     >
                                       Edit
-                                    </button>
-                                    {props?.onViewClick && (
+                                    </button>}
+                                    {onViewClick && (
                                       <button
                                         className="mx-1 text-white"
                                         onClick={() =>
-                                          // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-                                          props?.onViewClick(data?.id)
+                                          onViewClick(data?.id)
                                         }
                                       >
                                         View
                                       </button>
                                     )}
-                                    <button
+                                    {onDeleteClick && <button
                                       className="mx-1 text-white"
                                       onClick={() => {
-                                        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-                                        props.onDeleteClick(data?.id);
+                                        onDeleteClick(data?.id);
                                       }}
                                     >
                                       Delete
-                                    </button>
+                                    </button>}
                                   </div>
                                 </DropdownHeader>
                               </Dropdown>

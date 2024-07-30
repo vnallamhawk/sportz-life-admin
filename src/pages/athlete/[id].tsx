@@ -1,6 +1,5 @@
 import React, { useContext,  useState } from "react";
 
-import type { StaticImageData } from "next/image";
 import CoachImg from "../../images/CoachesImg.png";
 import BatchImg from "../../images/BatchesImg.png";
 
@@ -20,6 +19,7 @@ import { PAYMENT_HISTORY_TABLE_HEADERS } from "~/constants/payment";
 import { ASSESSMENT_TABLE_HEADERS } from "~/constants/assessment";
 import { ATHLETE_BATCH_TABLE_HEADERS, ATHLETE_MEDICAL_TABLE_HEADERS } from "~/constants/athleteConstants";
 import Attendance from "~/components/Attendance";
+import type { TabType, TableHead } from "~/types/common";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -39,13 +39,14 @@ export const getServerSideProps = async (
   };
 };
 
-const tabs = [
+const tabs :TabType[]= [
   {
     label: "Attendance",
     name: "attendance",
     value: "60%",
     image: CoachImg,
     allLabel: "ATTENDANCE",
+   
   },
   {
     label: "Batches",
@@ -77,13 +78,7 @@ const tabs = [
   },
 ];
 
-type TabsType = {
-  label: string;
-  name: string;
-  value: string;
-  image: StaticImageData;
-  allLabel: string;
-};
+
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -97,6 +92,7 @@ export default function Page({ athlete }: { athlete: Athletes }) {
   const [value, onChange] = useState<Value>(new Date());
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [selectedComponent,setSelectedComponent]=useState<any>()
+  const [selectedTab, setSelectedTab] = useState<string|undefined>(tabs[0]?.name);
 
   const handleCertificateClick = () =>
     setDisplayCertificate(!displayCertificate);
@@ -105,7 +101,6 @@ export default function Page({ athlete }: { athlete: Athletes }) {
   const sportsArr: string[] = ["Rugby", "Baseball", "Tennis", "BasketBall"];
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
-  const [finalTabs, setFinalTabs] = useState(tabs);
 
   // useEffect(()=>{
   //   if(finalTabs && finalTabs.length>0 && Object.keys(center).length>0 ){
@@ -126,17 +121,12 @@ export default function Page({ athlete }: { athlete: Athletes }) {
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
-  const [selectedTab, setSelectedTab] = useState<string|undefined>(tabs[1]?.name);
-  // const [selectedHeader, setSelectedHeader] = useState(
-  //   CenterDashBatchTableHeader()
-  // );
-  // const [selectedBody, setSelectedBody] = useState(
-  //   CenterDashBatchTableBody(athlete?.Batches, center)
-  // );
 
-  const handleClick = (tab: TabsType) => {
+ 
+
+  const handleClick = (tab: TabType) => {
     let component
-    let TABLE_HEAD
+    let TABLE_HEAD:TableHead=[]
     const TABLE_ROWS: never[]=[]
     if (tab?.name === "attendance") {
       component=<Attendance/>
@@ -154,13 +144,11 @@ export default function Page({ athlete }: { athlete: Athletes }) {
         TABLE_HEAD = ATHLETE_MEDICAL_TABLE_HEADERS
       } 
       component= <AllData
-        title={tab?.allLabel}
+        title={tab?.allLabel?tab?.allLabel:""}
         dropdownItems={{}}
         TABLE_HEAD={TABLE_HEAD}
         TABLE_ROWS={TABLE_ROWS}
-        rowSelection={false}
-        showImage={false}
-      />
+        rowSelection={false} />
     }
    setSelectedComponent(component)
    setSelectedTab(tab?.name);
@@ -171,15 +159,14 @@ export default function Page({ athlete }: { athlete: Athletes }) {
     <>
       <DetailPage
         cardTitle="ATHLETE DETAILS"
-        editButtonClick={() => router.push(`/edit-athlete-${athlete?.id}`)}
+        editButtonClick={() => void router.push(`/edit-athlete-${athlete?.id}`)}
         editText={"Edit Athlete"}
         tabs={tabs}
         handleTabClick={handleClick}
         data={athlete}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         selectedComponent={selectedComponent}
-        selectedTab={selectedTab}
-      />
+        selectedTab={selectedTab}       />
     </>
   );
 }

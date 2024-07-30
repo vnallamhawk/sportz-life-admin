@@ -17,24 +17,24 @@ import { useRouter } from "next/router";
 
 interface AllData{
   title:string,
-  addButtonText:string,
-  addButtonUrl:string,
+  addButtonText?:string,
+  addButtonUrl?:string,
   dropdownItems:{changeBatch?:boolean;delete?:boolean;attendance?:boolean;changeCenter?:boolean;reminder?:boolean;freeze?:boolean},
-  TABLE_ROWS:{[key:string]:any}[],
+  TABLE_ROWS:{[key:string]:any,id:number}[],
   TABLE_HEAD: { label: string; id: string }[],
-  filter:boolean,
-  filterByName:string,
-  setFilterByName:any,
+  filter?:boolean,
+  filterByName?:string,
+  setFilterByName?:any,
   rowSelection :boolean,
-  showImage :boolean,
-  onViewClick:(id:number)=>void,
-  onEditClick:(id:number)=>void,
-  onDeleteClick:(id:number)=>void,
-  drills:boolean,
-  setCoachingDrill:any,
+  showImage ?:boolean,
+  onViewClick?:(id:number)=>void,
+  onEditClick?:(id:number)=>void,
+  onDeleteClick?:(id:number)=>void,
+  drills?:boolean,
+  setCoachingDrill?:any,
 }
 
-const dropdownData={
+const dropdownData:{[key:string]:string}={
   changeBatch:"Change Batch",
   delete:"Delete",
   attendance:"Attendance",
@@ -77,12 +77,14 @@ const AllData = ({
               <div className="flex gap-2">
                 <p
                   className="cursor-pointer text-[1.6rem] font-bold text-[#F3476D] hover:border-b-4 hover:border-[#F3476D]"
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                   onClick={() => setCoachingDrill(false)}
                 >
                   FITNESS DRILL
                 </p>
                 <p
                   className=" cursor-pointer text-[1.6rem] font-bold hover:border-b-4 hover:border-[#F3476D] hover:text-[#F3476D]"
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                   onClick={() => setCoachingDrill(true)}
                 >
                   COACHING DRILL

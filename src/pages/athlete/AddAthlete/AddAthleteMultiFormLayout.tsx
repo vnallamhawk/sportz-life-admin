@@ -72,20 +72,6 @@ export default function AddAthleteMultiFormLayout() {
   );
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
-  const { data: sports } = api.sports.getAllSports.useQuery();
-  const { data: coach } = id && api.coach.getCoachById.useQuery({ id });
-
-  const sportsDictionary = getSportsDictionaryServices(sports);
-  // const { data: centers } = api.center.getAllCenters.useQuery();
-  const { data: batches } = api.batches.getAllBatches.useQuery();
-  const hasCoachUseEffectRun = useRef(false);
-
-  useEffect(() => {
-    if (coach && !hasCoachUseEffectRun.current) {
-      setFormData(coach);
-      hasCoachUseEffectRun.current = true;
-    }
-  }, [id, sportsDictionary, batches]);
 
   const formProviderData = {
     ...methods,
@@ -96,16 +82,11 @@ export default function AddAthleteMultiFormLayout() {
     onSuccess: (response) => {
       console.log("response data is ", response);
       setOpenToast(true);
-      void router.push(`/coach/${response?.id ?? ""}`);
+      void router.push(`/athlete/${response?.id ?? ""}`);
     },
   });
 
-  const { mutate: editMutate } = api.coach.editCoach.useMutation({
-    onSuccess: (response) => {
-      setOpenToast(true);
-      void router.push(`/coach/${response?.id ?? ""}`);
-    },
-  });
+
 
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
     setPreview(
@@ -121,28 +102,28 @@ export default function AddAthleteMultiFormLayout() {
     finalForm: Required<MULTI_FORM_TYPES>
   ) => {
     if (formData.isEditMode) {
-      editMutate({
-        name: finalForm.name,
-        about: finalForm.about,
-        contactNumber: finalForm.contactNumber,
-        email: finalForm.email,
-        designation: finalForm.designation,
-        gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-        certificates: finalForm.certificates.map((certificate) => ({
-          ...certificate,
-          startDate: new Date(certificate.startDate),
-          endDate: new Date(certificate.endDate),
-        })),
-        dateOfBirth: new Date(finalForm.dateOfBirth),
-        sports: finalForm.coachingSports,
-        trainingLevel: finalForm.trainingLevel
-          .value as (typeof TRAINING_LEVEL)[number],
-        experienceLevel: finalForm.experienceLevel
-          .value as (typeof EXPERIENCE_LEVEL)[number],
-        batchIds: finalForm.batchIds,
-        centerIds: finalForm.centerIds,
-        coachId: finalForm.coachId,
-      });
+      // editMutate({
+      //   name: finalForm.name,
+      //   about: finalForm.about,
+      //   contactNumber: finalForm.contactNumber,
+      //   email: finalForm.email,
+      //   designation: finalForm.designation,
+      //   gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+      //   certificates: finalForm.certificates.map((certificate) => ({
+      //     ...certificate,
+      //     startDate: new Date(certificate.startDate),
+      //     endDate: new Date(certificate.endDate),
+      //   })),
+      //   dateOfBirth: new Date(finalForm.dateOfBirth),
+      //   sports: finalForm.coachingSports,
+      //   trainingLevel: finalForm.trainingLevel
+      //     .value as (typeof TRAINING_LEVEL)[number],
+      //   experienceLevel: finalForm.experienceLevel
+      //     .value as (typeof EXPERIENCE_LEVEL)[number],
+      //   batchIds: finalForm.batchIds,
+      //   centerIds: finalForm.centerIds,
+      //   coachId: finalForm.coachId,
+      // });
     } else {
       // eslint-disable-next-line no-console
       console.log(finalForm);

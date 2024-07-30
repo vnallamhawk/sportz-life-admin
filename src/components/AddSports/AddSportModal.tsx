@@ -1,4 +1,5 @@
 import React from "react";
+import type { SportDetails } from "./AddSports";
 
 function AddSportModal({
   show,
@@ -6,7 +7,7 @@ function AddSportModal({
   sportDetails,
   setSportDetails,
   handleSport,
-}: {show:boolean;setShow:any;handleSport:any;setSportDetails:any;sportDetails:{[key:string]:string}}) {
+}: {show:boolean;setShow:any;handleSport:any;setSportDetails:any;sportDetails:SportDetails}) {
   const handleSportChange = (name: string, value: string) => {
     const obj: {[key:string]:string} = { ...sportDetails };
     obj[name] = value;

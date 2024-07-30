@@ -95,7 +95,7 @@ export const coachRouter = createTRPCRouter({
         gender: z.enum(GENDER_VALUES),
         dateOfBirth: z.date(),
         trainingLevel: z.enum(TRAINING_LEVEL),
-        createdBy:z.number(),
+        createdBy:z.number().optional().default(undefined),
         createdAt:z.date(),
         updatedAt:z.date(),
         academyId:z.number()

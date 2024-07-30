@@ -1,26 +1,39 @@
-
-
 import Image from "next/image";
 import User from "../../images/user.png";
 
-const CommonList= (props:any)=> {
-  return (
-    <>
-      <div className="flex justify-between items-center border border-gray-300 rounded-xl p-4 mb-3" onClick={()=>props?.onViewClick(props?.item?.id)}>
-        <div className="flex items-center">
-          <Image src={User} className="w-10 h-10 rounded" alt="" />
-          <div className="ml-3">
-            <div className="font-bold text-sm">{props?.item?.name}</div>
-            {props?.item?.t_level &&<div className="text-sm text-gray-400">{props?.item?.t_level}</div>}
-          </div>
-        </div>
-        {props?.item?.status && props?.item?.status!="1" && <div className="text-sm py-1 border-tertiary-700 bg-tertiary-200 text-tertiary-700 font-normal border px-3 rounded-full capitalize">{props?.item?.status}</div>}
-
-      </div>
-      
-
-    </>
-  )
+interface CommonList {
+  item: { id: number; [key: string]: any };
+  onViewClick?: (id: number) => void;
 }
 
-export default CommonList
+const CommonList = ({ item, onViewClick }: CommonList) => {
+  return (
+    <>
+      <div
+        className="mb-3 flex items-center justify-between rounded-xl border border-gray-300 p-4"
+        onClick={() => {
+          if (onViewClick) {
+            onViewClick(item?.id);
+          }
+        }}
+      >
+        <div className="flex items-center">
+          <Image src={User} className="h-10 w-10 rounded" alt="" />
+          <div className="ml-3">
+            <div className="text-sm font-bold">{item?.name}</div>
+            {item?.t_level && (
+              <div className="text-sm text-gray-400">{item?.t_level}</div>
+            )}
+          </div>
+        </div>
+        {item?.status && item?.status != "1" && (
+          <div className="rounded-full border border-tertiary-700 bg-tertiary-200 px-3 py-1 text-sm font-normal capitalize text-tertiary-700">
+            {item?.status}
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default CommonList;

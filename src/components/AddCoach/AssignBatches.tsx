@@ -4,8 +4,6 @@ import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import { type MULTI_FORM_TYPES } from "~/types/coach";
 import Table from "../Table";
-import CenterBatchTableHeader from "../CenterBatchTable/CenterBatchTableHeader";
-import CenterBatchTableBody from "../CenterBatchTable/CenterBatchTableBody";
 import Button from "../Button/Button";
 import CardTitle from "../Card/CardTitle";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";

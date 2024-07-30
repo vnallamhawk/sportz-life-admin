@@ -1,39 +1,45 @@
-import { useContext, useState } from "react";
-
-import type { StaticImageData } from "next/image";
-
-
+import {  useState } from "react";
 import staffCalendar from "../../images/Staff_calendar.png";
 import staffCenter from "../../images/Staff_center.png";
 import staffPayroll from "../../images/Staff_payroll.png";
 import staffShift from "../../images/Staff_shift.png";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import type {  Staffs } from "@prisma/client";
+import type {
+  Centers,
+  StaffDesignation,
+  StaffPayroll,
+  StaffShifts,
+  Staffs,
+} from "@prisma/client";
 
-import { ToastContext } from "~/contexts/Contexts";
 import { useRouter } from "next/router";
 
 import DetailPage from "~/common/DetailPage";
 import AllData from "~/common/AllData";
-import { STAFF_DASH_CENTER_TABLE_HEADERS, STAFF_DASH_DUTY_TABLE_HEADERS, STAFF_DASH_PAYROLL_TABLE_HEADERS } from "~/constants/staffConstants";
+import {
+  STAFF_DASH_CENTER_TABLE_HEADERS,
+  STAFF_DASH_DUTY_TABLE_HEADERS,
+  STAFF_DASH_PAYROLL_TABLE_HEADERS,
+} from "~/constants/staffConstants";
 import Attendance from "~/components/Attendance";
+import type { TabType, TableHead } from "~/types/common";
+import moment from "moment-timezone";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
   const id = context?.params?.id;
-  // const sports = await prisma.sports.findMany();
   const staff = await prisma.staffs.findUnique({
     where: {
       id: id ? Number(id) : undefined,
     },
-    include:{
-      StaffDesignation:true,
-      Centers:true,
-      StaffPayroll:true,
-      StaffShifts:true
-  }
+    include: {
+      StaffDesignation: true,
+      Centers: true,
+      StaffPayroll: true,
+      StaffShifts: true,
+    },
   });
 
   return {
@@ -75,101 +81,83 @@ const tabs = [
   },
 ];
 
-type TabsType = {
-  label: string;
-  name: string;
-  value: string;
-  image: StaticImageData;
-  allLabel: string;
-};
+interface StaffDetails extends Staffs {
+  StaffDesignation?: StaffDesignation;
+  Centers?: Centers;
+  StaffPayroll?: StaffPayroll;
+  StaffShifts?: StaffShifts[];
+}
 
-export default function Page({ staff }: { staff: Staffs }) {
+export default function Page({ staff }: { staff: StaffDetails }) {
   const router = useRouter();
-  const [selectedComponent,setSelectedComponent]=useState()
+  const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>();
 
-  // useEffect(() => {
-  //   if (finalTabs && finalTabs.length > 0 && Object.keys(center).length > 0) {
-  //     const arr = [...finalTabs];
-  //     const index = arr?.findIndex((item) => item?.name === "inventories");
-  //     if (index > -1 && center?.CenterInventories) {
-  //       arr[index].value = center?.CenterInventories?.length;
-  //     }
-  //     const batchIndex = arr?.findIndex((item) => item?.name === "batches");
-  //     if (batchIndex > -1 && center?.Batches) {
-  //       arr[batchIndex].value = center?.Batches?.length;
-  //     }
-  //     setFinalTabs(arr);
-  //   }
-  // }, [center, finalTabs]);
+  const [selectedTab, setSelectedTab] = useState<string | undefined>(
+    tabs[0]?.name
+  );
 
- 
-  const [selectedTab, setSelectedTab] = useState(tabs[1]);
-
-  const handleClick = (tab: TabsType) => {
-    let component
-    let TABLE_HEAD
-    let TABLE_ROWS=[]
+  const handleClick = (tab: TabType) => {
+    let component;
+    let TABLE_HEAD:TableHead=[];
+    let TABLE_ROWS: {[key:string]:any,id:number}[] =[];
     if (tab?.name === "attendance") {
-      component=<Attendance/>
-      
-    } else{
+      component = <Attendance />;
+    } else {
       if (tab?.name === "centers") {
-        TABLE_HEAD = STAFF_DASH_CENTER_TABLE_HEADERS
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        TABLE_ROWS=staff?.Centers
+        TABLE_HEAD = STAFF_DASH_CENTER_TABLE_HEADERS;
+        TABLE_ROWS = staff?.Centers ? [staff?.Centers] : [];
       } else if (tab?.name === "payroll") {
-        TABLE_HEAD = STAFF_DASH_PAYROLL_TABLE_HEADERS
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        TABLE_ROWS=staff?.StaffPayroll
-
+        TABLE_HEAD = STAFF_DASH_PAYROLL_TABLE_HEADERS;
+        TABLE_ROWS = staff?.StaffPayroll ? [staff?.StaffPayroll] : [];
       } else if (tab?.name === "dutyShift") {
-        TABLE_HEAD = STAFF_DASH_DUTY_TABLE_HEADERS
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        TABLE_ROWS=staff?.StaffShifts
+        TABLE_HEAD = STAFF_DASH_DUTY_TABLE_HEADERS;
+        TABLE_ROWS = staff?.StaffShifts ? staff?.StaffShifts : [];
+      }
 
-      } 
-      
-      component= <AllData
-        title={tab?.allLabel}
-        dropdownItems={{}}
-        TABLE_HEAD={TABLE_HEAD}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        TABLE_ROWS={TABLE_ROWS}
-        rowSelection={false}
-        showImage={false}
-      />
+      component = (
+        <AllData
+          title={tab?.allLabel ? tab?.allLabel : ""}
+          dropdownItems={{}}
+          TABLE_HEAD={TABLE_HEAD}
+          TABLE_ROWS={TABLE_ROWS}
+          rowSelection={false}
+          showImage={false}
+        />
+      );
     }
-   setSelectedComponent(component)
-   setSelectedTab(tab?.name);
-
+    setSelectedComponent(component);
+    setSelectedTab(tab?.name);
   };
 
   return (
     <>
-     <DetailPage
+      <DetailPage
         cardTitle="STAFF DETAILS"
-        editButtonClick={() => router.push(`/edit-staff-${staff?.id}`)}
+        editButtonClick={() => void router.push(`/edit-staff-${staff?.id}`)}
         editText={"Edit Staff"}
         tabs={tabs}
         handleTabClick={handleClick}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        data={{...staff,description:staff?.StaffDesignation?.designation}}
+        data={{ ...staff, description: staff?.StaffDesignation?.designation }}
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}
         details={[
           {
-              items: [
-                { label: "Contact Number", value: staff?.phone },
-                { label: "Email", value: staff?.email },
-                { lable: "DOB", value: staff?.dateOfBirth },
-                { lable: "Gender", value: staff?.gender },
-
-              ],
-            },
+            items: [
+              {
+                label: "Contact Number",
+                value: staff?.phone ? staff?.phone : "",
+              },
+              { label: "Email", value: staff?.email ? staff?.email : "" },
+              {
+                label: "DOB",
+                value: staff?.dateOfBirth ? moment(staff?.dateOfBirth).format("DD-MM-YYYY") : "",
+              },
+              { label: "Gender", value: staff?.gender ? staff?.gender : "" },
+            ],
+          },
         ]}
       />
     </>
-  
-    
   );
 }
