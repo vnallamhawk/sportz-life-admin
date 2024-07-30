@@ -18,29 +18,29 @@ interface FormValues {
   type: string;
   rules: any;
   id: string;
-  pattern: string;
-  placeHolder: string;
+  pattern?: string;
+  placeHolder?: string;
   isMulti?: boolean;
-  options: { label: string; value: string | number }[];
+  options?: { label: string; value: string | number }[];
 }
 interface AddForm {
-  cardTitle: string;
-  cardSubTitle: string;
-  formConstantValues: FormValues[];
-  imageTitle: string;
+  cardTitle?: string;
+  cardSubTitle?: string;
+  formConstantValues?: FormValues[];
+  imageTitle?: string;
   tableTitle?: string;
   tableDescription?: string;
   mobileAddButtonText?: string;
-  TableHeadings: { label: string; id: string }[];
+  TableHeadings?: { label: string; id: string }[];
   addTableData?: any;
   tableData?: any;
   tablekey?: string;
-  buttonItems: { prevNext?: boolean; prevFinish?: boolean; next?: boolean };
+  buttonItems?: { prevNext?: boolean; prevFinish?: boolean; next?: boolean };
   setFormData: any;
   formData: any;
   setCurrentStep: any;
   currentStep: number;
-  finalFormSubmissionHandler: any;
+  finalFormSubmissionHandler?: any;
   tableFields?: any;
   addTableButtonText?: string;
   addTableButton?: any;
@@ -102,7 +102,7 @@ const AddForm = ({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (buttonItems?.prevNext) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        obj[tablekey] = tableData;
+        tablekey && (obj[tablekey] = tableData);
       }
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       setFormData && setFormData(obj);

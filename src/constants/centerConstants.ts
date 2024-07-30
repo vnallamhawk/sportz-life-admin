@@ -1,5 +1,6 @@
 import { type CENTER_DETAILS_CONSTANTS_TYPES } from "~/types/center";
-export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
+// export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
+export const CENTER_DETAILS_CONSTANTS = [
   {
     label: "Center Name",
     id: "name",

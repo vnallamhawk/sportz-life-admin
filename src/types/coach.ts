@@ -28,7 +28,7 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
     | "coachingSports"
     | "trainingLevel"
     | "experienceLevel"
-    |"phone";
+    | "phone";
   type: Type;
   placeHolder?: string;
   options?: MultiSelectOption[];
@@ -92,7 +92,7 @@ export interface BatchData {
 }
 
 export interface MULTI_FORM_TYPES extends COACH_TYPES {
-  coachBatches: unknown;
+  coachBatches?: any;
   certificates: COACH_CERTIFICATE_TABLE_TYPES[];
   batchTableData?: BatchTableData[];
   batchIds?: number[];

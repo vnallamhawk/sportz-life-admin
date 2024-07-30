@@ -1,4 +1,3 @@
-
 export const ATHLETE_TABLE_HEADERS = [
   {
     id: "selectControl",
@@ -41,6 +40,8 @@ export const ATHLETE_DETAILS_CONSTANTS = [
   {
     label: "Athlete Name",
     id: "name",
+    pattern: "pattern",
+    placeHolder: "Athlete Name",
     type: "textbox",
     rules: {
       required: true,
@@ -54,6 +55,7 @@ export const ATHLETE_DETAILS_CONSTANTS = [
     label: "Date of Birth",
     id: "dob",
     type: "calendar",
+    pattern: "pattern",
     placeHolder: "Date of Birth",
     rules: {
       required: true,
@@ -67,6 +69,7 @@ export const ATHLETE_DETAILS_CONSTANTS = [
     label: "Gender",
     id: "gender",
     type: "select",
+    pattern: "pattern",
     placeHolder: "Gender",
     options: [
       { label: "Female", value: "female" },
@@ -80,6 +83,7 @@ export const ATHLETE_DETAILS_CONSTANTS = [
     label: "Height",
     id: "height",
     type: "number",
+    pattern: "pattern",
     placeHolder: "Height",
     rules: {
       required: true,
@@ -89,6 +93,7 @@ export const ATHLETE_DETAILS_CONSTANTS = [
     label: "Weight",
     id: "weight",
     type: "number",
+    pattern: "pattern",
     placeHolder: "Weight",
     rules: {
       required: true,
@@ -98,6 +103,7 @@ export const ATHLETE_DETAILS_CONSTANTS = [
     label: "Blood Group",
     id: "gender",
     type: "select",
+    pattern: "pattern",
     options: [
       { label: "A+", value: "APos" },
       { label: "B+", value: "BPos" },
@@ -113,7 +119,6 @@ export const ATHLETE_DETAILS_CONSTANTS = [
       required: true,
     },
   },
- 
 ];
 
 export const ATHLETE_GENRAL_CONSTANTS = [
@@ -121,8 +126,7 @@ export const ATHLETE_GENRAL_CONSTANTS = [
     label: "Center",
     id: "center",
     type: "select",
-    options: [
-    ],
+    options: [],
     placeHolder: "Center",
     rules: {
       required: true,
@@ -132,8 +136,7 @@ export const ATHLETE_GENRAL_CONSTANTS = [
     label: "Sport",
     id: "sport",
     type: "select",
-    options: [
-    ],
+    options: [],
     placeHolder: "Sport",
     rules: {
       required: true,
@@ -156,6 +159,7 @@ export const ATHLETE_GENRAL_CONSTANTS = [
     label: "Father's Name",
     id: "name",
     type: "textbox",
+    placeHolder: "Father's Name",
     rules: {
       required: true,
       maxLength: {
@@ -164,21 +168,18 @@ export const ATHLETE_GENRAL_CONSTANTS = [
       },
     },
   },
- 
+
   {
     label: "Batch",
     id: "batch",
     type: "select",
-    options: [
-     
-    ],
+    options: [],
     placeHolder: "Batch",
     rules: {
       required: true,
     },
   },
-  
-]
+];
 export const ATHLETE_CONTACT_CONSTANTS = [
   {
     label: "Email",
@@ -214,6 +215,7 @@ export const ATHLETE_CONTACT_CONSTANTS = [
     label: "Residential Address",
     id: "name",
     type: "textarea",
+    placeHolder: "Residential Address",
     rules: {
       required: true,
       maxLength: {
@@ -222,7 +224,7 @@ export const ATHLETE_CONTACT_CONSTANTS = [
       },
     },
   },
-]
+];
 
 export const COACH_CERTIFICATE_TABLE_HEADERS = [
   {
@@ -287,4 +289,3 @@ export const ATHLETE_MEDICAL_TABLE_HEADERS = [
     id: "action",
   },
 ];
-

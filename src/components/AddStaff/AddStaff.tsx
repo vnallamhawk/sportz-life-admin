@@ -24,7 +24,7 @@ const AddStaff = () => {
     STAFF_DETAILS_CONSTANTS
   );
   useEffect(() => {
-    let updatedFormConstantValues = formConstantValues;
+    let updatedFormConstantValues: any = formConstantValues;
     if (payroll && payroll?.length > 0) {
       updatedFormConstantValues = formConstantValues.map((formConstant) => {
         if (formConstant.id === "payroll") {
@@ -43,7 +43,7 @@ const AddStaff = () => {
     }
     if (designation && designation?.length > 0) {
       updatedFormConstantValues = updatedFormConstantValues.map(
-        (formConstant) => {
+        (formConstant: any) => {
           if (formConstant.id === "designation") {
             return {
               ...formConstant,
@@ -62,7 +62,7 @@ const AddStaff = () => {
     }
     if (centers && centers?.length > 0) {
       updatedFormConstantValues = updatedFormConstantValues.map(
-        (formConstant) => {
+        (formConstant: any) => {
           // Todo staff center
           if (formConstant.id === "center") {
             return {
