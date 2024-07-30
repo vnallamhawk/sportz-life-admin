@@ -2,7 +2,11 @@ import React from "react";
 // import type { InventoryData } from "~/types/center";
 // import {options} from "../../constants/inventoryConstant"
 
-export default function StaffShiftTableBody(data: any) {
+interface StaffShift{
+  day: string; shift: string; startTime: string; endTime: string
+}
+
+export default function StaffShiftTableBody(data: StaffShift[]) {
   return (
     <>
       {data?.map(
@@ -12,7 +16,7 @@ export default function StaffShiftTableBody(data: any) {
             shift,
             startTime,
             endTime,
-          }: { day: string; shift: string; startTime: string; endTime: string },
+          }:StaffShift,
           index: number
         ) => {
           return (

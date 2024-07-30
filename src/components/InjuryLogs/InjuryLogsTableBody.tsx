@@ -29,28 +29,24 @@ export default function CoachTableBody(
     filter.name == ""
       ? api.coach.getAllCoaches.useQuery()
       : api.coach.getCoachesByName.useQuery(filter);
-  const { data: sports, isLoading } = api.sports.getAllSports.useQuery();
+  // const { data: sports, isLoading } = api.sports.getAllSports.useQuery();
 
-  if (coaches && sports) {
+  if (coaches ) {
     tableData =
-      coaches &&
-      // coaches.map((coach: Coach) => {
-      coaches.map((coach: any) => {
+      coaches &&coaches.length>0 && 
+      coaches.map((coach: Coaches) => {
         return {
           ...coach,
-          sports: coach.CoachSportsMaps.length
-            ? coach?.CoachSportsMaps?.map(
-                (sport: any) =>
-                  sports.find((s) => s.id === sport?.sportId)?.name
-              )?.join(",")
-            : "",
+          // sports: coach.CoachSportsMaps.length
+          //   ? coach?.CoachSportsMaps?.map(
+          //       (sport: any) =>
+          //         sports.find((s) => s.id === sport?.sportId)?.name
+          //     )?.join(",")
+          //   : "",
         };
       });
   }
 
-  useEffect(() => {
-    handleIsLoading(isLoading);
-  }, [handleIsLoading, isLoading]);
 
   const onClickHandler = (id: number) => {
     void router.push(`/coach/${id ?? ""}`);
@@ -58,14 +54,13 @@ export default function CoachTableBody(
 
   return (
     <>
-      {tableData?.map(
+      {tableData && tableData.length>0 && tableData?.map(
         (
           {
             countryCode,
             name,
             dateOfBirth,
             designation,
-            sports,
             gender,
             phone,
             id,
@@ -93,9 +88,9 @@ export default function CoachTableBody(
             <td className="border-y-2 border-solid px-6 py-3 text-left">
               {designation}
             </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
+            {/* <td className="border-y-2 border-solid px-6 py-3 text-left">
               {sports ? sports : NO_DATA}
-            </td>
+            </td> */}
             <td className="border-y-2 border-solid px-6 py-3 text-left">
               {gender}
             </td>

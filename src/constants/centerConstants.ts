@@ -1,5 +1,5 @@
-import { type CENTER_DETAILS_CONSTANTS_TYPES } from "~/types/center";
-export const CENTER_DETAILS_CONSTANTS: CENTER_DETAILS_CONSTANTS_TYPES[] = [
+import type { FormValues } from "~/types/common";
+export const CENTER_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Center Name",
     id: "name",

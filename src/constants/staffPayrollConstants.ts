@@ -1,9 +1,11 @@
-export const STAFF_DETAILS_CONSTANT: CENTER_DETAILS_CONSTANTS_TYPES[] = [
+import type { FormValues } from "~/types/common";
+
+export const STAFF_DETAILS_CONSTANT: FormValues[] = [
     {
       label: "Designation",
       id: "designationId",
       type: "select",
-      placeholder:"Select Designation",
+      placeHolder:"Select Designation",
       rules: {
         required: true,
        

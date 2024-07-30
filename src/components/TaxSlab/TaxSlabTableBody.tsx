@@ -2,7 +2,14 @@ import React from "react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Dropdown, DropdownHeader } from "flowbite-react";
 
-export default function TaxSlabTableBody(tableData: any) {
+interface TaxSlab{
+  fromAmount: string | number;
+  toAmount: string | number;
+  percentage: number;
+  id: string
+}
+
+export default function TaxSlabTableBody(tableData:TaxSlab[]) {
   return (
     <>
       {tableData &&
@@ -14,12 +21,7 @@ export default function TaxSlabTableBody(tableData: any) {
               toAmount,
               percentage,
               id,
-            }: {
-              fromAmount: string | number;
-              toAmount: string | number;
-              percentage: any;
-              id: string;
-            },
+            }: TaxSlab,
             index: number
           ) => (
             <tr

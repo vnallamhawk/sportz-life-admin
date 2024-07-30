@@ -23,10 +23,12 @@ export const staffDesignationRouter = createTRPCRouter({
     .input(
       z.object({
         designation: z.string(),
-        createdBy: z.number(),
+        createdBy:z.number()
       })
     )
-    .mutation(async ({ input: { designation, createdBy }, ctx }) => {
+    .mutation(async ({ input: { designation,createdBy }, ctx }) => {
+      
+  
       const response = await ctx.prisma.staffDesignation.create({
         data: {
           designation,

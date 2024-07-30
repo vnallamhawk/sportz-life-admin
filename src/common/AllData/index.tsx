@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import Filter from "~/components/Filter";
 // import Table from "../../components/CommonTable";
 import Modal from "../../components/Modal";
@@ -12,6 +13,35 @@ import { Dropdown } from "flowbite-react";
 import Link from "next/link";
 import TableListView from "~/common/TableListView";
 import { useRouter } from "next/router";
+
+
+interface AllData{
+  title:string,
+  addButtonText:string,
+  addButtonUrl:string,
+  dropdownItems:{changeBatch?:boolean;delete?:boolean;attendance?:boolean;changeCenter?:boolean;reminder?:boolean;freeze?:boolean},
+  TABLE_ROWS:{[key:string]:any}[],
+  TABLE_HEAD: { label: string; id: string }[],
+  filter:boolean,
+  filterByName:string,
+  setFilterByName:any,
+  rowSelection :boolean,
+  showImage :boolean,
+  onViewClick:(id:number)=>void,
+  onEditClick:(id:number)=>void,
+  onDeleteClick:(id:number)=>void,
+  drills:boolean,
+  setCoachingDrill:any,
+}
+
+const dropdownData={
+  changeBatch:"Change Batch",
+  delete:"Delete",
+  attendance:"Attendance",
+  changeCenter:"Change Center",
+  reminder:"Send Reminder",
+  freeze:"Freeze"
+}
 
 const AllData = ({
   title,
@@ -30,7 +60,7 @@ const AllData = ({
   onDeleteClick,
   drills,
   setCoachingDrill,
-}: any) => {
+}: AllData) => {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
 
@@ -74,7 +104,9 @@ const AllData = ({
                     type="search"
                     className="relative w-full rounded-lg border-2 border-gray-200 bg-transparent py-2 pl-4 pr-12 text-base text-gray-700 placeholder-gray-300 focus:border-gray-400 focus:outline-none focus:ring-0 2xl:min-w-[450px]"
                     placeholder="Search by name"
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                     onChange={(e) => setFilterByName(e.target.value)}
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     value={filterByName}
                   />
                 </div>
@@ -82,6 +114,7 @@ const AllData = ({
             )}
             {filter && <Filter />}
             {addButtonUrl && (
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               <Link href={addButtonUrl}>
                 <button className="ml-3 rounded-lg bg-mandy-dark px-6 py-2.5 text-white">
                   {addButtonText}
@@ -96,7 +129,7 @@ const AllData = ({
                   src={Plus}
                   className=""
                   alt=""
-                  onClick={() => router.push(addButtonUrl)}
+                  onClick={() => void router.push(addButtonUrl)}
                 />
               </button>
             )}
@@ -117,36 +150,13 @@ const AllData = ({
                   )}
                   className="w-50 rounded-lg bg-black p-3 text-white"
                 >
-                  {dropdownItems?.attendance && (
-                    <Dropdown.Item className="text-white hover:bg-black focus:bg-black">
-                      Attendance
+                  {Object.keys(dropdownItems).map((item:string,index)=>{
+                    return(
+                      <Dropdown.Item className="text-white hover:bg-black focus:bg-black" key={index}>
+                      {dropdownData[item]}
                     </Dropdown.Item>
-                  )}
-                  {dropdownItems?.reminder && (
-                    <Dropdown.Item className="text-white hover:bg-black focus:bg-black">
-                      Send Reminder
-                    </Dropdown.Item>
-                  )}
-                  {dropdownItems?.freeze && (
-                    <Dropdown.Item className="text-white hover:bg-black focus:bg-black">
-                      Freeze
-                    </Dropdown.Item>
-                  )}
-                  {dropdownItems?.changeCenter && (
-                    <Dropdown.Item className="text-white hover:bg-black focus:bg-black">
-                      Change Center
-                    </Dropdown.Item>
-                  )}
-                  {dropdownItems?.changeBatch && (
-                    <Dropdown.Item className="text-white hover:bg-black focus:bg-black">
-                      Change Batch
-                    </Dropdown.Item>
-                  )}
-                  {dropdownItems?.delete && (
-                    <Dropdown.Item className="text-white hover:bg-black focus:bg-black">
-                      Delete
-                    </Dropdown.Item>
-                  )}
+                    )
+                  })}
                 </Dropdown>
               </div>
             )}
@@ -185,12 +195,12 @@ const AllData = ({
             )}
             {dropdownItems?.changeBatch && (
               <button className="font-400 ml-2 rounded border border-gray-300 bg-white px-4 py-0.5 text-black">
-                Change Batch
+                
               </button>
             )}
             {dropdownItems?.delete && (
               <button className="font-400 ml-2 rounded border border-gray-300 bg-white px-4 py-0.5 text-black">
-                Delete
+                
               </button>
             )}
           </div>

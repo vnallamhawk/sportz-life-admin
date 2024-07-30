@@ -6,15 +6,8 @@ import User from "../../images/user.png";
 import { Dropdown, DropdownHeader } from "flowbite-react";
 
 const CommonTable = (props: {
-  TABLE_HEAD: any[];
-  TABLE_ROWS: {
-    img: any;
-    name: any;
-    t_level: any;
-    center: any;
-    batch: any;
-    status: any;
-  }[];
+  TABLE_HEAD: { label: string; id: string }[];
+  TABLE_ROWS:{[key:string]:any}[];
   rowSelection: boolean;
   showImage: boolean;
   onViewClick: any;
@@ -69,7 +62,7 @@ const CommonTable = (props: {
                   )}
                   {props?.TABLE_HEAD?.map(
                     (
-                      head: { label: string; id: string },
+                      head:{ label: string; id: string } ,
                       columnIndex: number
                     ) => {
                       return (
@@ -77,6 +70,7 @@ const CommonTable = (props: {
                           {head?.id !== "status" ? (
                             head?.id !== "action" ? (
                               columnIndex == 0 &&
+                              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                               data?.image &&
                               props?.showImage ? (
                                 <div className="flex items-center gap-3">
@@ -117,6 +111,7 @@ const CommonTable = (props: {
                                     <button
                                       className="mx-1 text-white"
                                       onClick={() =>
+                                        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                                         props?.onEditClick(data?.id)
                                       }
                                     >
@@ -126,6 +121,7 @@ const CommonTable = (props: {
                                       <button
                                         className="mx-1 text-white"
                                         onClick={() =>
+                                          // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                                           props?.onViewClick(data?.id)
                                         }
                                       >
@@ -135,6 +131,7 @@ const CommonTable = (props: {
                                     <button
                                       className="mx-1 text-white"
                                       onClick={() => {
+                                        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                                         props.onDeleteClick(data?.id);
                                       }}
                                     >
@@ -149,6 +146,7 @@ const CommonTable = (props: {
                               <Chip
                                 size="sm"
                                 variant="ghost"
+                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                                 value={data?.status}
                                 className="rounded-full border border-tertiary-700 bg-tertiary-200 px-3 font-normal capitalize text-tertiary-700"
                               />

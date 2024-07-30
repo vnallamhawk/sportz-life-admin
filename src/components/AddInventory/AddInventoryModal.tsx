@@ -6,10 +6,11 @@ function AddInventoryModal({
   inventoryDetails,
   setInventoryDetails,
   handleInventory,
-}: any) {
+}: {show:boolean;setShow:any;handleInventory:any;setInventoryDetails:any;inventoryDetails:{[key:string]:string}}) {
   const handleInventoryChange = (name: string, value: string) => {
-    const obj: any = { ...inventoryDetails };
+    const obj: {[key:string]:string} = { ...inventoryDetails };
     obj[name] = value;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     setInventoryDetails(obj);
   };
 
@@ -32,7 +33,8 @@ function AddInventoryModal({
               <button
                 type="button"
                 className="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-                onClick={() => setShow(false)}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                onClick={() => void setShow(false)}
               >
                 <svg
                   className="h-3 w-3"
@@ -104,6 +106,7 @@ function AddInventoryModal({
                   <button
                     type="submit"
                     className=" w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                     onClick={(e) => handleInventory(e)}
                   >
                     Finish

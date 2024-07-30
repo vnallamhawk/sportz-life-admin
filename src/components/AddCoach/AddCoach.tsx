@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 
 import { api } from "~/utils/api";
 import AddForm from "~/common/AddForm";
+import type { FormValues } from "~/types/common";
 
 export default function AddCoach() {
   const {
@@ -19,7 +20,7 @@ export default function AddCoach() {
   const { data: sports } = api.sports.getAllSports.useQuery();
   const { data: staffPayroll } = api.staffPayroll.getAllPayroll.useQuery();
 
-  const [formConstantValues, setFormConstantValues] = useState(
+  const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     COACH_DETAILS_CONSTANTS
   );
 

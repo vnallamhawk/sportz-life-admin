@@ -44,17 +44,17 @@ export const getServerSideProps = async (
       id: id ? Number(id) : undefined,
     },
     include: {
+      CoachCentersBatches:true,
       // CoachSportsMaps: true,
-      // Centers: true,
+      Centers: true,
       // Batches: true,
       // Batches: true,
     },
   });
   
-  const centers = coach?.Centers;
-  const batches = coach?.Batches as Batches[];
   return {
     props: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       coach: JSON.parse(JSON.stringify(coach)), // <== here is a solution
     },
   };
@@ -148,7 +148,7 @@ export default function Page({
       <Card className="h-100 mx-5">
         <header className="flex justify-between">
           <CardTitle title="COACH DETAILS" />
-          <Button onClick={() =>  router.push(`/edit-coach-${coach.id}`)}>
+          <Button onClick={() =>  void router.push(`/edit-coach-${coach.id}`)}>
             Edit Coach
           </Button>
         </header>
