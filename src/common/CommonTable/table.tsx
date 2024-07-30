@@ -1,8 +1,4 @@
-import {
-  Typography,
-  Chip,
-  IconButton,
-} from "@material-tailwind/react";
+import { Typography, Chip, IconButton } from "@material-tailwind/react";
 import Image from "next/image";
 import Dots from "../../images/dots.svg";
 import User from "../../images/user.png";
@@ -23,14 +19,14 @@ const CommonTable = (props: {
   showImage: boolean;
   onViewClick: any;
   onEditClick: any;
-  onDeleteClick:any
+  onDeleteClick: any;
 }) => {
   return (
     <>
       <div className="overflow-auto px-0">
         <table className="common-table w-full min-w-max table-auto border-separate border-spacing-y-3 text-left">
           <thead>
-            <tr>
+            <tr className="bg-gray-200 text-sm uppercase leading-normal text-gray-600">
               {props?.rowSelection && (
                 <th className="p-4 pb-2 pl-7">
                   <input
@@ -41,10 +37,10 @@ const CommonTable = (props: {
               )}
               {props?.TABLE_HEAD?.map(
                 (head: { label: string; id: string }, index: number) => (
-                  <th key={index} className="p-4 pb-2">
+                  <th key={index} className="px-6 py-3 text-left">
                     <Typography
                       variant="small"
-                      className="font-normal leading-none opacity-70"
+                      className="font-bold leading-none "
                     >
                       {head?.label}
                     </Typography>
@@ -136,9 +132,12 @@ const CommonTable = (props: {
                                         View
                                       </button>
                                     )}
-                                   <button className="mx-1 text-white" onClick={()=>{
-                                    props.onDeleteClick(data?.id)
-                                   }}>
+                                    <button
+                                      className="mx-1 text-white"
+                                      onClick={() => {
+                                        props.onDeleteClick(data?.id);
+                                      }}
+                                    >
                                       Delete
                                     </button>
                                   </div>
