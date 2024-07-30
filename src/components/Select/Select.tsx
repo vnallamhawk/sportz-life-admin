@@ -7,11 +7,10 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import React, { useEffect, useState } from "react";
 import Button from "../Button/Button";
 import classNames from "classnames";
-import { MultiSelectOption } from "~/types/select";
 
 interface Options {
   label: string;
-  value?: string | number;
+  value: string | number;
 }
 
 const Select = ({
@@ -33,16 +32,17 @@ const Select = ({
   searchable: boolean;
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [finalOptions, setFinalOptions] = useState<any>([]);
+  const [finalOptions, setFinalOptions] = useState<Options[]>([]);
 
   useEffect(() => {
     if (searchable && searchTerm?.length > 0) {
       const filteredOptions =
         options &&
-        options?.length > 0 &&
-        options?.filter((option) =>
-          option?.label?.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        options?.length > 0 ?
+        options?.filter((option:Options) =>
+          option.label.toLowerCase().includes(searchTerm.toLowerCase())
+        ):[];
+        
       setFinalOptions(filteredOptions);
     } else {
       setFinalOptions(options);
@@ -106,7 +106,7 @@ const Select = ({
           <SelectPrimitive.Group>
             {finalOptions?.map(
               (
-                { label, value }: { label: string; value: string },
+                { label, value }: Options,
                 index: number
               ) => (
                 <SelectPrimitive.Item

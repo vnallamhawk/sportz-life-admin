@@ -13,16 +13,8 @@ import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import Button from "~/components/Button";
 import { Textarea } from "flowbite-react";
+import type { FormValues, TableFields } from "~/types/common";
 
-interface FormValues {
-  type: string;
-  rules: any;
-  id: string;
-  pattern?: string;
-  placeHolder?: string;
-  isMulti?: boolean;
-  options?: { label: string; value: string | number }[];
-}
 interface AddForm {
   cardTitle?: string;
   cardSubTitle?: string;
@@ -33,7 +25,7 @@ interface AddForm {
   mobileAddButtonText?: string;
   TableHeadings?: { label: string; id: string }[];
   addTableData?: any;
-  tableData?: any;
+  tableData?: { [key: string]: any }[];
   tablekey?: string;
   buttonItems?: { prevNext?: boolean; prevFinish?: boolean; next?: boolean };
   setFormData: any;
@@ -41,7 +33,8 @@ interface AddForm {
   setCurrentStep: any;
   currentStep: number;
   finalFormSubmissionHandler?: any;
-  tableFields?: any;
+  // tableFields?: any;
+  tableFields?: TableFields[];
   addTableButtonText?: string;
   addTableButton?: any;
   onRemoveTableButton?: any;
@@ -90,7 +83,10 @@ const AddForm = ({
     formState: { errors },
   } = useForm<any>({ mode: "onSubmit" });
 
-  const [currentTableData, setCurrentTableData] = useState<any>({});
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const [currentTableData, setCurrentTableData] = useState<{
+    [key: string]: any;
+  }>({});
 
   const nextClickHandler = async () => {
     const result = await trigger();
@@ -98,9 +94,9 @@ const AddForm = ({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const currentFormValues = getValues();
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const obj = { ...formData, ...currentFormValues };
+      const obj: any = { ...formData, ...currentFormValues };
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      if (buttonItems?.prevNext) {
+      if (buttonItems?.prevNext && tablekey) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         tablekey && (obj[tablekey] = tableData);
       }
@@ -121,7 +117,8 @@ const AddForm = ({
     data: { label: string; value: string },
     value: string | number
   ) => {
-    const obj: any = { ...currentTableData };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const obj: { [key: string]: string | number } = { ...currentTableData };
     if (data && Object.keys(data).length > 0 && data?.label && data?.value) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       obj[name] = data?.value;
@@ -156,7 +153,8 @@ const AddForm = ({
     value: string | boolean | unknown,
     name: string
   ) => {
-    const obj: any = { ...formData };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const obj: { [key: string]: string | boolean | unknown } = { ...formData };
     obj[name] = value;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     setFormData(obj);
@@ -362,6 +360,7 @@ const AddForm = ({
               <button
                 type="button"
                 className="cursor-pointer rounded-lg bg-[#F3476D] px-4 py-2 text-center text-white"
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 onClick={addTableButton}
               >
                 {addTableButtonText}
@@ -369,64 +368,70 @@ const AddForm = ({
             )}
           </div>
           <div className="mt-4 flex flex-col items-start lg:flex-row">
-            {tableFields?.map((item: any) => {
-              return (
-                <>
-                  {item?.type === "textarea" ? (
-                    <textarea
-                      placeholder={item?.placeholder}
-                      className="border-1 h-12 w-full grow rounded-lg border-gray-300 pl-5 focus:border-gray-600 focus:outline-none focus:ring-0 lg:h-20"
-                      value={currentTableData[item?.name]}
-                      onChange={(e) => {
-                        handleChangeCurrentData(
-                          item?.name,
-                          { label: "", value: "" },
-                          e.target.value
-                        );
-                      }}
-                    />
-                  ) : item?.type === "select" ? (
-                    <Select
-                      isMulti={item?.isMulti ?? false}
-                      options={item?.options}
-                      value={currentTableData[item?.name]}
-                      placeholder={item?.placeholder}
-                      className="border-1 c-select h-12 w-full border-gray-300"
-                      classNamePrefix="react-select"
-                      onChange={(element) =>
-                        handleChangeCurrentData(item?.name, element, "")
-                      }
-                    />
-                  ) : (
-                    <div className="relative mt-3 lg:mt-0">
-                      <input
-                        className="w-34  h-12 rounded-lg border border-gray-300 p-2 pr-9 text-center focus:border-gray-600 focus:outline-none focus:ring-0 lg:ml-7 lg:w-20"
+            {tableFields &&
+              tableFields.length > 0 &&
+              tableFields?.map((item: TableFields) => {
+                return (
+                  <>
+                    {item?.type === "textarea" ? (
+                      <textarea
+                        placeholder={item?.placeholder}
+                        className="border-1 h-12 w-full grow rounded-lg border-gray-300 pl-5 focus:border-gray-600 focus:outline-none focus:ring-0 lg:h-20"
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         value={currentTableData[item?.name]}
                         onChange={(e) => {
                           handleChangeCurrentData(
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
                             item?.name,
                             { label: "", value: "" },
-                            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                            item?.type === "number"
-                              ? parseInt(e.target.value)
-                              : e.target.value
+                            e.target.value
                           );
                         }}
                       />
-                      <span className="absolute right-3 top-3.5 text-sm text-gray-400">
-                        Qty
-                      </span>
-                    </div>
-                  )}
-                </>
-              );
-            })}
+                    ) : item?.type === "select" ? (
+                      <Select
+                        isMulti={item?.isMulti ?? false}
+                        options={item?.options}
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                        value={currentTableData[item?.name]}
+                        placeholder={item?.placeholder}
+                        className="border-1 c-select h-12 w-full border-gray-300"
+                        classNamePrefix="react-select"
+                        onChange={(element) =>
+                          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                          handleChangeCurrentData(item?.name, element, "")
+                        }
+                      />
+                    ) : (
+                      <div className="relative mt-3 lg:mt-0">
+                        <input
+                          className="w-34  h-12 rounded-lg border border-gray-300 p-2 pr-9 text-center focus:border-gray-600 focus:outline-none focus:ring-0 lg:ml-7 lg:w-20"
+                          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                          value={currentTableData[item?.name]}
+                          onChange={(e) => {
+                            handleChangeCurrentData(
+                              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+                              item?.name,
+                              { label: "", value: "" },
+                              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                              item?.type === "number"
+                                ? parseInt(e.target.value)
+                                : e.target.value
+                            );
+                          }}
+                        />
+                        <span className="absolute right-3 top-3.5 text-sm text-gray-400">
+                          Qty
+                        </span>
+                      </div>
+                    )}
+                  </>
+                );
+              })}
             <Button
               className="border-1 ml-7 hidden rounded-md border-blush-light px-8 py-3 text-lg font-bold text-[#FF9678] hover:border-blush-dark hover:text-blush-dark lg:block"
               type="button"
               onClick={(e) => {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 addTableData(
                   tableFields ? currentTableData : isFormTable ? getValues() : e
                 );
@@ -462,35 +467,42 @@ const AddForm = ({
                 </tr>
               </thead>
               <tbody>
-                {tableData?.map((data: any, dataIndex: number) => {
-                  return (
-                    <tr key={dataIndex}>
-                      {TableHeadings?.map(
-                        (
-                          head: { label: string; id: string },
-                          headIndex: number
-                        ) => {
-                          return (
-                            <td key={headIndex}>
-                              {head?.id !== "action" ? (
-                                <span className="border-y-2 border-gray-100 p-4">
-                                  {data[head?.id]}
-                                </span>
-                              ) : (
-                                <span
-                                  className="border-y-2 border-gray-100 p-4 font-medium text-gray-400"
-                                  onClick={() => onRemoveTableButton(dataIndex)}
-                                >
-                                  Remove
-                                </span>
-                              )}
-                            </td>
-                          );
-                        }
-                      )}
-                    </tr>
-                  );
-                })}
+                {tableData &&
+                  tableData.length > 0 &&
+                  tableData?.map(
+                    (data: { [key: string]: any }, dataIndex: number) => {
+                      return (
+                        <tr key={dataIndex}>
+                          {TableHeadings?.map(
+                            (
+                              head: { label: string; id: string },
+                              headIndex: number
+                            ) => {
+                              return (
+                                <td key={headIndex}>
+                                  {head?.id !== "action" ? (
+                                    <span className="border-y-2 border-gray-100 p-4">
+                                      {data[head?.id]}
+                                    </span>
+                                  ) : (
+                                    <span
+                                      className="border-y-2 border-gray-100 p-4 font-medium text-gray-400"
+                                      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+                                      onClick={() =>
+                                        onRemoveTableButton(dataIndex)
+                                      }
+                                    >
+                                      Remove
+                                    </span>
+                                  )}
+                                </td>
+                              );
+                            }
+                          )}
+                        </tr>
+                      );
+                    }
+                  )}
               </tbody>
             </table>
           </div>
@@ -534,6 +546,7 @@ const AddForm = ({
           <button
             className="w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
             type="button"
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onClick={nextClickHandler}
           >
             Next
@@ -552,6 +565,7 @@ const AddForm = ({
           <Button
             type="button"
             className="ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onClick={nextClickHandler}
           >
             Next
@@ -564,6 +578,7 @@ const AddForm = ({
           <Button
             type="button"
             className="w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             onClick={prevButtonClick ? prevButtonClick : prevClickHandler}
           >
             {prevButtonText}

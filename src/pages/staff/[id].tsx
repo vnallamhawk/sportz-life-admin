@@ -13,8 +13,6 @@ import type {  Staffs } from "@prisma/client";
 
 import { ToastContext } from "~/contexts/Contexts";
 import { useRouter } from "next/router";
-import StaffDashCenterTableHeader from "~/components/StaffDashboardTables/Centers/StaffDashCenterTableHeader";
-import StaffDashCenterTableBody from "~/components/StaffDashboardTables/Centers/StaffDashCenterTableBody";
 
 import DetailPage from "~/common/DetailPage";
 import AllData from "~/common/AllData";

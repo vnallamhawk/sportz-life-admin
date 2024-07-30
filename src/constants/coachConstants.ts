@@ -1,4 +1,5 @@
 import { type COACH_DETAILS_CONSTANTS_TYPES } from "~/types/coach";
+import type { FormValues } from "~/types/common";
 
 export const COACH_TABLE_HEADERS = [
   {
@@ -36,8 +37,7 @@ export const COACH_TABLE_HEADERS = [
   },
 ];
 
-// export const COACH_DETAILS_CONSTANTS: COACH_DETAILS_CONSTANTS_TYPES[] = [
-export const COACH_DETAILS_CONSTANTS = [
+export const COACH_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Coach Name",
     id: "name",

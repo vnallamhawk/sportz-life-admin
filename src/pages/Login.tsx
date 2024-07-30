@@ -98,7 +98,7 @@ export default function Login() {
             <button
               type="submit"
               className="w-full rounded-lg bg-blue-700 bg-theme-light p-2 text-white hover:bg-theme-dark"
-              onClick={handleSubmit}
+              onClick={(e)=> void handleSubmit(e)}
             >
               Sign In
             </button>

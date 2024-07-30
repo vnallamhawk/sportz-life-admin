@@ -1,21 +1,15 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
-import CardTitle from "~/components/Card/CardTitle";
 import {
   ATHLETE_CONTACT_CONSTANTS,
   ATHLETE_GENRAL_CONSTANTS,
 } from "~/constants/athleteConstants";
-import Textbox from "~/components/Textbox";
-import {
-  type COACH_TYPES,
-  type COACH_DETAILS_CONSTANTS_TYPES,
-} from "~/types/coach";
+
 import { FormContext } from "~/pages/athlete/AddAthlete/AddAthleteMultiFormLayout";
-import Button from "../Button";
-import { Controller, useForm } from "react-hook-form";
-import Datepicker from "~/components/DatePicker/DatePickerWrapper";
+import {  useForm } from "react-hook-form";
 import { api } from "~/utils/api";
-import Select from "react-select";
 import AddForm from "~/common/AddForm";
+import type { FormValues } from "~/types/common";
+import { Centers, Sports } from "@prisma/client";
 
 export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
   const {
@@ -34,18 +28,18 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
   const { data: centers } = api.center.getAllCenters.useQuery();
   const [centerId, setCenterId] = useState<number>();
 
-  const [formConstantValues, setFormConstantValues] = useState(
+  const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     ATHLETE_GENRAL_CONSTANTS
   );
 
-  const [formConstantValues1, setFormConstantValues1] = useState(
+  const [formConstantValues1, setFormConstantValues1] = useState<FormValues[]>(
     ATHLETE_CONTACT_CONSTANTS
   );
 
   useEffect(() => {
     if (centers?.length) {
-      const updatedFormConstantValues: any = formConstantValues?.map(
-        (formConstant) => {
+      const updatedFormConstantValues: FormValues[] = formConstantValues?.map(
+        (formConstant:FormValues) => {
           if (formConstant.id === "center") {
             return {
               ...formConstant,
@@ -64,15 +58,15 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
   }, [formConstantValues, centers, centers?.length]);
 
   useEffect(() => {
-    if (centerId) {
+    if (centerId && formConstantValues && formConstantValues.length>0) {
       const center = centers?.find((item) => item?.id == centerId);
-      let updatedFormConstantValues: any;
-      if (center?.CenterSports?.length) {
-        updatedFormConstantValues = formConstantValues?.map((formConstant) => {
-          if (formConstant.id === "sport") {
+      let updatedFormConstantValues: FormValues[]=formConstantValues;
+      if (center?.CenterSports && center?.CenterSports?.length>0) {
+        updatedFormConstantValues = formConstantValues?.map((formConstant:FormValues) => {
+          if (formConstant.id === "sport" ) {
             return {
               ...formConstant,
-              options: center?.CenterSports?.map((CenterSport) => ({
+              options: center.CenterSports.map((CenterSport) => ({
                 label: CenterSport?.Sports?.name,
                 value: CenterSport?.Sports?.id.toString(),
               })),
@@ -82,9 +76,9 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
           }
         });
       }
-      if (center?.CenterSports?.length) {
+      if (center?.CenterSports &&  center.CenterSports.length>0) {
         updatedFormConstantValues = updatedFormConstantValues?.map(
-          (formConstant: any) => {
+          (formConstant: FormValues) => {
             if (formConstant.id === "batch") {
               return {
                 ...formConstant,
@@ -128,7 +122,8 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
         dependentKey="center"
-        setDependentKey={(value: any) => setCenterId(value)}
+        setDependentKey={(value: number) => setCenterId(value)}
+        buttonItems={{}}
       />
 
       <AddForm
@@ -139,8 +134,8 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
         buttonItems={{ prevFinish: true }}
-        finalFormSubmissionHandler={finalFormSubmissionHandler}
-      />
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        finalFormSubmissionHandler={finalFormSubmissionHandler}      />
     </>
   );
 }

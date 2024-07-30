@@ -2,10 +2,6 @@ import React, { useEffect, useContext, useState, useRef } from "react";
 import CardTitle from "~/components/Card/CardTitle";
 // import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
 import Textbox from "~/components/Textbox";
-import {
-  type CENTER_BATCH_TYPES,
-  type BATCH_DETAILS_CONSTANTS_TYPES,
-} from "~/types/batch";
 import { FormContext } from "../../pages/centers/Batch/[id]";
 import Button from "../Button";
 import { Controller, useForm } from "react-hook-form";
@@ -19,6 +15,7 @@ import {
 import Table from "../Table";
 import BatchTimeTableHeader from "../BatchTiming/BatchTimingTableHeader";
 import BatchTimeTableBody from "../BatchTiming/BatchTimingTableBody";
+import type { FormValues } from "~/types/common";
 
 export default function AddBatchTiming(props: any) {
   let inputElement;
@@ -36,15 +33,14 @@ export default function AddBatchTiming(props: any) {
   } = useForm<any>({ mode: "onSubmit" });
 
   // useForm<CENTER_BATCH_TYPES>({ mode: "onSubmit" });
-  const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
-  const [currentBatchDetail, setCurrentBatchDetail] = useState<any>({});
+  const [currentBatchDetail, setCurrentBatchDetail] = useState<{[key:string]:any}>({});
 
   const [formConstantValues, setFormConstantValues] =
-    useState(BATCH_DETAILS_TIMING);
+    useState<FormValues[]>(BATCH_DETAILS_TIMING);
 
-  const [batchTimings, setBatchTimings] = useState([]);
+  const [batchTimings, setBatchTimings] = useState<{[key:string]:any}[]>([]);
 
   // useEffect(() => {
   //   if (sports?.length && hasExecuted.current) {
@@ -81,12 +77,14 @@ export default function AddBatchTiming(props: any) {
   //test commit
 
   const handleChangeBatch = (value: any, id: string | number) => {
-    const batchDetails = { ...currentBatchDetail };
+    const batchDetails :{[key:string]:any}= { ...currentBatchDetail };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     batchDetails[id] = value 
     setCurrentBatchDetail(batchDetails);
   };
 
-  const getInputElement = (props: any) => {
+  const getInputElement = (props: FormValues) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { type, rules, id, pattern, placeHolder } = props;
     switch (type) {
       case "select":
@@ -95,16 +93,19 @@ export default function AddBatchTiming(props: any) {
           <Controller
             control={control}
             name={id}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
             render={({ field: { onChange, value } }) => {
               return (
                 <Select
                   isMulti={props?.isMulti ?? false}
                   options={options}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   value={value}
                   placeholder={placeHolder}
                   className="w-full"
                   onChange={(element) => {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                     handleChangeBatch(element?.value, id);
                   }}
                 />
@@ -122,6 +123,7 @@ export default function AddBatchTiming(props: any) {
                 <Timepicker
                   placeHolder={props.placeHolder}
                   value={
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     currentBatchDetail[id] ? currentBatchDetail[id] : "10:00"
                   }
                   className="h-12"
@@ -130,6 +132,7 @@ export default function AddBatchTiming(props: any) {
               );
             }}
             name={id}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
           />
         );
@@ -148,12 +151,14 @@ export default function AddBatchTiming(props: any) {
                 //   handleChangeBatch(e.target.value, id)
                 // }
                 onChangeHandler={(e: any) =>
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                   handleChangeBatch(e.target.value, id)
                 }
                 // TODO: FIX THIS TS ERROR
                 value={value as string}
               />
             )}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
             {...(pattern ? { pattern } : {})}
           />
@@ -172,12 +177,14 @@ export default function AddBatchTiming(props: any) {
       ...formData,
       batchTimings,
     };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     props?.finalFormSubmissionHandler(finalFormData);
   };
 
   const onAddBatchTiming = (e: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
-    const arr: any = [...batchTimings];
+    const arr: {[key:string]:any}[] = [...batchTimings];
     arr.push(currentBatchDetail);
     setBatchTimings(arr);
     setCurrentBatchDetail({});
@@ -188,7 +195,7 @@ export default function AddBatchTiming(props: any) {
       <CardTitle title="ADD BATCH" />
       <div className="text-lg font-bold">BATCH TIMINGS</div>
       <div className="mt-10 grid grid-cols-3 gap-x-10 gap-y-12">
-        {formConstantValues.map((props) => (
+        {formConstantValues.map((props:FormValues) => (
           <div key={props.id}>
             {getInputElement(props)}
 

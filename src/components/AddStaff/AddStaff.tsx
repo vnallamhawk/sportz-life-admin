@@ -6,10 +6,12 @@ import { FormContext } from "~/pages/staff/AddStaff/AddStaffMultiFormLayout";
 import { api } from "~/utils/api";
 
 import AddForm from "~/common/AddForm";
+import type { FormValues } from "~/types/common";
 
 const AddStaff = () => {
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
@@ -20,13 +22,13 @@ const AddStaff = () => {
     api.staffDesignation.getAllDesignation.useQuery();
   const { data: centers } = api.center.getAllCenters.useQuery();
 
-  const [formConstantValues, setFormConstantValues] = useState(
+  const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     STAFF_DETAILS_CONSTANTS
   );
   useEffect(() => {
     let updatedFormConstantValues: any = formConstantValues;
     if (payroll && payroll?.length > 0) {
-      updatedFormConstantValues = formConstantValues.map((formConstant) => {
+      updatedFormConstantValues = formConstantValues.map((formConstant:FormValues) => {
         if (formConstant.id === "payroll") {
           // console.log("payroll", payroll);
           return {
@@ -100,7 +102,9 @@ const AddStaff = () => {
         formConstantValues={formConstantValues}
         imageTitle="Staff Image"
         buttonItems={{ next: true }}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}

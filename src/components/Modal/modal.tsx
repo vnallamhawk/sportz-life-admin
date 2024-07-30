@@ -13,10 +13,10 @@ import { Dropdown } from "flowbite-react";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
-export default function () {
+const Modal =()=> {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
-  const [startDate, setStartDate] = useState<any>(new Date());
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
 
   const [value, onChange] = useState<Value>(new Date());
   const customTheme = {
@@ -190,3 +190,5 @@ export default function () {
     </>
   );
 }
+
+export default Modal

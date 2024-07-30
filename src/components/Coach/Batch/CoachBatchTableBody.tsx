@@ -1,4 +1,3 @@
-import { type CoachWithRelations } from "~/types/coach";
 
 export default function CoachCertificateTableBody({
   coach,

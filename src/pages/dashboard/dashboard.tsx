@@ -6,12 +6,10 @@ import LineChart from "~/components/LineChart";
 import Image from "next/image";
 import LittleBoy from "../../images/little-boy.svg";
 import ShortGirl from "../../images/short-girl.svg";
-import ArrowRight from "../../images/Vector.png";
 import { useState } from 'react';
 import Calendar from 'react-calendar';
 import Bollyball from "../../images/bollyball.svg";
 import ArrowLeft from "../../images/arrow-left-gray.svg"
-import DashboardHeader from "~/components/DashboardHeader";
 
 import {
   ageWiseCountData,
@@ -23,7 +21,7 @@ type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-export default function dashboard() {
+export default function Dashboard() {
   const [value, onChange] = useState<Value>(new Date());
 
   return (

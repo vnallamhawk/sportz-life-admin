@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
@@ -7,10 +8,9 @@ import { useSession } from "next-auth/react";
 import AddForm from "~/common/AddForm";
 import { INVENTORY_TABLE_HEADERS } from "~/constants/inventoryConstant";
 import type { MultiSelectOption } from "~/types/select";
-import type { Inventories } from "@prisma/client";
 
 const AddInventory = (props: any) => {
-  const [inventories, setInventories] = useState([]);
+  const [inventories, setInventories] = useState<{[key:string]:any}[]>([]);
   const [finalOptions, setFinalOptions] = useState<MultiSelectOption[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [inventoryDetails, setInventoryDetails] = useState({
@@ -35,7 +35,7 @@ const AddInventory = (props: any) => {
         const index =
           inventories && inventories.length > 0
             ? inventories?.findIndex(
-                (item: Inventories) => item?.name === finalOptions[i]?.value
+                (item) => item.name === finalOptions[i]?.value
               )
             : -1;
         if (index === -1) {
@@ -60,13 +60,15 @@ const AddInventory = (props: any) => {
       ...formData,
       inventories,
     };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     props?.finalFormSubmissionHandler(finalFormData);
   };
 
   const onSaveInventories = (selectedInventory: any) => {
-    const arr: any = [...inventories];
+    const arr: {[key:string]:any}[] = [...inventories];
     arr.push({
       ...selectedInventory,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       inventoryId: parseInt(selectedInventory?.value),
     });
     setInventories(arr);
@@ -79,6 +81,7 @@ const AddInventory = (props: any) => {
   };
 
   const addNewInventory = (e: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
     createMutate({
       ...inventoryDetails,

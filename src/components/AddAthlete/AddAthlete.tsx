@@ -4,6 +4,7 @@ import AddForm from "~/common/AddForm";
 import { ATHLETE_DETAILS_CONSTANTS } from "~/constants/athleteConstants";
 import { FormContext } from "~/pages/athlete/AddAthlete/AddAthleteMultiFormLayout";
 import type { ATHLETE_TYPES } from "~/types/athlete";
+import type { FormValues } from "~/types/common";
 import { api } from "~/utils/api";
 
 export default function AddCoach() {
@@ -25,14 +26,14 @@ export default function AddCoach() {
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
 
-  const [formConstantValues, setFormConstantValues] = useState(
+  const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     ATHLETE_DETAILS_CONSTANTS
   );
 
   useEffect(() => {
     if (sports?.length && hasExecuted.current) {
-      const updatedFormConstantValues: any = formConstantValues.map(
-        (formConstant: any) => {
+      const updatedFormConstantValues: FormValues[] = formConstantValues.map(
+        (formConstant: FormValues) => {
           if (formConstant.id === "coachingSports") {
             return {
               ...formConstant,
@@ -47,6 +48,7 @@ export default function AddCoach() {
         }
       );
       hasExecuted.current = false;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       setFormConstantValues(updatedFormConstantValues);
     }
   }, [formConstantValues, sports, sports?.length]);
@@ -64,8 +66,11 @@ export default function AddCoach() {
 
   const addTableData = (currentData: any) => {
     const arr: any = [...medicalHistoryData];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/restrict-plus-operands, @typescript-eslint/no-unsafe-member-access
     const obj = { ...currentData, ["No."]: arr.length + 1 };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     arr.push(obj);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     setMedicalHistoryData(arr);
   };
 

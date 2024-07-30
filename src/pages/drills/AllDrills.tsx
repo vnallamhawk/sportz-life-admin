@@ -22,7 +22,7 @@ const AllDrills = () => {
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
-  const [finalData, setFinalData] = useState<any>([]);
+  const [finalData, setFinalData] = useState<{[key:string]:any}[]>([]);
 
   const deleteDrills = (id: number) => {
     // deleteMutate({ centerId: id, deletedAt: moment().toISOString() });
@@ -47,9 +47,9 @@ const AllDrills = () => {
         filterByName={filterByName}
         rowSelection={false}
         showImage={false}
-        onViewClick={(id: any) => router.push(`/drills/${id ?? ""}`)}
-        onEditClick={(id: any) => router.push(`/edit-drills-${id}`)}
-        onDeleteClick={(id: any) => deleteDrills(id)}
+        onViewClick={(id: number) => router.push(`/drills/${id ?? ""}`)}
+        onEditClick={(id: number) => router.push(`/edit-drills-${id}`)}
+        onDeleteClick={(id: number) => deleteDrills(id)}
         drills={true}
         setCoachingDrill={setCoachingDrill}
       />

@@ -29,7 +29,6 @@ export default function AddBatch() {
   } = useForm<any>({ mode: "onSubmit" });
 
   // useForm<CENTER_BATCH_TYPES>({ mode: "onSubmit" });
-  const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
 
@@ -74,6 +73,7 @@ export default function AddBatch() {
                 <Select
                   isMulti={props?.isMulti ?? false}
                   options={options}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   value={value}
                   placeholder={placeHolder}
                   className="w-full"
@@ -132,7 +132,9 @@ export default function AddBatch() {
   const nextClickHandler = async () => {
     const result = await trigger();
     if (result) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const currentFormValues = getValues();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       setFormData && setFormData({ ...formData, ...currentFormValues });
       setCurrentStep && setCurrentStep(currentStep + 1);
     }

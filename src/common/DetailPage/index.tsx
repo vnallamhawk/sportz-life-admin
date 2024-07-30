@@ -16,6 +16,23 @@ type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
+interface Detail{
+  cardTitle:string;
+  editButtonClick?:any,
+  editText?:string,
+  data:{[key:string]:any},
+  details:{items:{label:string,value:string|number}}[],
+  tabs: {label: string,
+  name:string,
+  value: string|number,
+  image: React.ReactNode,
+  allLabel: string},
+  handleTabClick:any,
+  selectedComponent:any,
+  selectedTab:string,
+  badgeData:any
+}
+
 const DetailPage = ({
   cardTitle,
   editButtonClick,
@@ -27,7 +44,7 @@ const DetailPage = ({
   selectedComponent,
   selectedTab,
   badgeData
-}: any) => {
+}: Detail) => {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
   const [displayBatch, setDisplayBatch] = useState(false);
@@ -114,7 +131,7 @@ const DetailPage = ({
               {/* {coach?.CoachSportsMaps?.map(
                 ({ sportId }) => sportsDictionary?.[sportId]
               ).join(" ,")} */}
-              {badgeData?.map((ele: any, index: number) => (
+              {badgeData && badgeData.length>0 && badgeData?.map((ele: any, index: number) => (
                 <div
                   className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm"
                   key={index}

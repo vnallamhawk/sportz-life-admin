@@ -1,20 +1,13 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useContext, useEffect, useState } from "react";
-import Select from "~/components/Select";
 import { COACH_CERTIFICATES_CONSTANTS } from "~/constants/coachConstants";
-import Textbox from "~/components/Textbox/Textbox";
-import Datepicker from "~/components/DatePicker/DatePickerWrapper";
-import Button from "~/components/Button/Button";
-import { Controller, useForm } from "react-hook-form";
-import Table from "~/components/Table";
+import { useForm } from "react-hook-form";
 import { type COACH_CERTIFICATE_TABLE_TYPES } from "~/types/coach";
-import CertificateTableHeader from "../CertificateTable/CertificateTableHeader";
-import CertificateTableBody from "../CertificateTable/CertificateTableBody";
+
 import {
   FormContext,
   type FormContextTypes,
 } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
-import CardTitle from "../Card/CardTitle";
 import { dateFormat } from "~/helpers/date";
 import AddForm from "~/common/AddForm";
 
@@ -47,12 +40,16 @@ export default function AddCoachCertificates({}) {
   );
 
   const onAddHandler = (data: any) => {
-    const arr: any = [...certificates];
+    const arr:COACH_CERTIFICATE_TABLE_TYPES[]  = [...certificates];
 
-    const obj: unknown = {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const obj: COACH_CERTIFICATE_TABLE_TYPES = {
       ...data,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
       startDate: dateFormat(new Date(data.startDate)),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
       endDate: dateFormat(new Date(data.endDate)),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       certificateType: data?.certificates?.value,
     };
     arr.push(obj);

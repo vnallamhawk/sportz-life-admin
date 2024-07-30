@@ -6,30 +6,36 @@ import { useSession } from "next-auth/react";
 import AddForm from "~/common/AddForm";
 import { SPORTS_TABLE_HEADERS } from "~/constants/sportConstants";
 import moment from "moment-timezone";
+import type { Sports } from "@prisma/client";
+
+interface Options {
+  label: string|undefined;
+  value: string | number|undefined;
+}
 const AddSports = () => {
-  const [sports, setSports] = useState([]);
-  const [finalOptions, setFinalOptions] = useState<any>([]);
+  const [sports, setSports] = useState<{[key:string]:any}[]>([]);
+  const [finalOptions, setFinalOptions] = useState<Options[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [sportDetails, setSportDetails] = useState<any>({});
+  const [sportDetails, setSportDetails] = useState<{[key:string]:any}>({});
   const { data: sessionData } = useSession();
 
   const { data: allSports } = api.sports.getAllSports.useQuery();
 
   const { mutate: createMutate } = api.sports.createSports.useMutation({
     onSuccess: (response) => {
-      const arr: any = [...finalOptions];
+      const arr: Options[] = [...finalOptions];
       arr.push({ label: response?.name, value: response?.id });
       setFinalOptions(arr);
     },
   });
   useEffect(() => {
     if (allSports && allSports?.length > 0) {
-      const arr = [];
+      const arr:Options[] = [];
       for (let i = 0; i < allSports.length; i++) {
         const index =
           sports && sports?.length > 0
             ? sports?.findIndex(
-                (item: any) => item?.name === finalOptions[i]?.value
+                (item: {[key:string]:any}) => item?.name === finalOptions[i]?.value
               )
             : -1;
         if (index === -1) {
@@ -39,17 +45,18 @@ const AddSports = () => {
 
       setFinalOptions(arr);
     }
-  }, [sports, allSports]);
+  }, [sports, allSports,finalOptions]);
 
   const {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
-  const onSaveSports = (currentSportData: any) => {
-    const arr: any = [...sports];
+  const onSaveSports = (currentSportData: {[key:string]:any}) => {
+    const arr: {[key:string]:any}[] = [...sports];
     arr.push({
       ...currentSportData,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       sportId: parseInt(currentSportData?.value),
     });
     setSports(arr);
@@ -62,6 +69,7 @@ const AddSports = () => {
   };
 
   const addNewSport = (e: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     createMutate({

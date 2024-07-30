@@ -1,29 +1,21 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
-import CardTitle from "~/components/Card/CardTitle";
-import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
-import Textbox from "~/components/Textbox";
 import type {
   CENTER_TYPES} from "~/types/coach";
-import {
-  type COACH_TYPES
-} from "~/types/coach";
+
 import { FormContext } from "~/pages/staffPayroll/AddPayroll/AddPayrollForm";
-import Button from "../Button";
-import { Controller, useForm } from "react-hook-form";
-import Datepicker from "~/components/DatePicker/DatePickerWrapper";
+import {  useForm } from "react-hook-form";
 import { api } from "~/utils/api";
-import Select from "react-select";
 import { STAFF_DETAILS_CONSTANT } from "~/constants/staffPayrollConstants";
 import { useRouter } from "next/router";
-import { Switch } from "@material-tailwind/react";
 import AddDesignationModal from "./AddDesignationModal";
 import { useSession } from "next-auth/react";
 import AddForm from "~/common/AddForm";
+import type { StaffDesignation, TaxSlabs } from "@prisma/client";
 
 export default function AddPayroll(props: any) {
-  let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
   const router = useRouter();
@@ -38,11 +30,11 @@ export default function AddPayroll(props: any) {
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const [showDesignationModal, setShowDesignationModal] = useState(false);
-  const [designation, setDesignation] = useState<any>({});
+  const [designation, setDesignation] = useState<string>('');
   const { data: sessionData, status } = useSession();
   const { data: staffDesignation } =
     api.staffDesignation.getAllDesignation.useQuery();
-  const [designations, setDesignations] = useState<any>([]);
+  const [designations, setDesignations] = useState<StaffDesignation[]>([]);
 
   const [formConstantValues, setFormConstantValues] = useState(
     STAFF_DETAILS_CONSTANT
@@ -85,33 +77,42 @@ export default function AddPayroll(props: any) {
     }
   }, [formConstantValues, designations, designations?.length]);
 
-  const onSubmit = (data: any) => {
-    const obj = { ...data, taxable: formData?.taxable };
+  const onSubmit = (data: {[key:string]:any}) => {
+    const obj:{[key:string]:any} = { ...data, taxable: formData?.taxable };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     obj.grossSalary = parseInt(data.grossSalary);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
     obj.designationId = parseInt(data?.designationId?.value);
     if (obj && obj?.taxable) {
       if (obj?.taxable && obj.grossSalary) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         const tax = props?.taxslabs?.find(
-          (item: any) =>
+          (item: TaxSlabs) =>
             obj.grossSalary >= item?.fromAmount &&
             obj.grossSalary <= item?.toAmount
         );
         if (tax) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
           obj.tax_percent = tax.percentage;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           obj.tax = (tax.percentage * obj.grossSalary) / 100;
           obj.netSalary = obj.grossSalary - obj.tax;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
           obj.slabId = tax.id;
         }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         setFormData(obj);
       }
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     props?.finalFormSubmissionHandler(obj);
   };
 
   const submitDesignation = (e: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
     createMutate({
-      ...designation,
+      designation: designation,
       createdBy: sessionData?.token?.id,
     });
   };
@@ -131,6 +132,7 @@ export default function AddPayroll(props: any) {
         cardTitle="ADD PAYROLL"
         cardSubTitle="PAYROLL DETAILS"
         formConstantValues={formConstantValues}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         setFormData={setFormData}
         formData={formData}
         buttonItems={{ prevFinish: true }}
@@ -139,7 +141,7 @@ export default function AddPayroll(props: any) {
         prevButtonText={"Add New Designation"}
         finishButtonText={"Add Payroll"}
         prevButtonClick={() => setShowDesignationModal(!showDesignationModal)}
-        finalFormSubmissionHandler={(data: any) => onSubmit(data)}
+        finalFormSubmissionHandler={(data: {[key:string]:any}) => onSubmit(data)}
       />
     </>
   );

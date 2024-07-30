@@ -2,7 +2,15 @@ import React from "react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Dropdown, DropdownHeader } from "flowbite-react";
 
-export default function StaffPayrollTableBody(tableData: any) {
+interface StaffPayroll{
+  StaffDesignation: {designation:string};
+              grossSalary: number;
+              tax: number | string;
+              netSalary: number;
+              id: number;
+}
+
+export default function StaffPayrollTableBody(tableData: StaffPayroll[]) {
   return (
     <>
       {tableData &&
@@ -15,13 +23,7 @@ export default function StaffPayrollTableBody(tableData: any) {
               tax,
               netSalary,
               id,
-            }: {
-              StaffDesignation: any;
-              grossSalary: number;
-              tax: number | string;
-              netSalary: number;
-              id: number;
-            },
+            }: StaffPayroll,
             index: number
           ) => (
             <tr

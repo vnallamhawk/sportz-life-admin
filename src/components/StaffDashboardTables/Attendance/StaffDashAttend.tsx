@@ -1,5 +1,4 @@
 import Card from "~/components/Card";
-import DatePickerWrapper from "~/components/DatePicker/DatePickerWrapper";
 
 const tabs = [
   {
@@ -35,7 +34,6 @@ const tabs = [
 ];
 
 const StaffDashAttend = () => {
-  const handleClick = () => {};
   return (
     <>
       <Card>
@@ -47,7 +45,6 @@ const StaffDashAttend = () => {
               return (
                 <div
                   className={`mr-3 flex w-[10rem] gap-3 rounded-xl p-3 bg-[${tab.bgColor}] `}
-                  onClick={handleClick}
                   key={index}
                 >
                   <div>

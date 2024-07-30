@@ -13,12 +13,12 @@ const TableListView = ({
 }: {
   TABLE_HEAD: TableHead;
   // TABLE_ROWS: TableRows;
-  TABLE_ROWS: any;
+  TABLE_ROWS:{[key:string]:any}[],
   rowSelection: boolean;
   showImage: boolean;
-  onViewClick: () => void;
-  onEditClick: () => void;
-  onDeleteClick?: () => void;
+  onViewClick: (id:number) => void;
+  onEditClick: (id:number) => void;
+  onDeleteClick?: (id:number) => void;
 }) => {
   return (
     <>
@@ -35,7 +35,9 @@ const TableListView = ({
       </div>
       <div className="block lg:hidden">
         {TABLE_ROWS &&
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           TABLE_ROWS.length > 0 &&
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
           TABLE_ROWS.map((item: any, index: number) => {
             return (
               <CommonList item={item} key={index} onViewClick={onViewClick} />

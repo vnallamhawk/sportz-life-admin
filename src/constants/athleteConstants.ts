@@ -1,3 +1,5 @@
+import type { FormValues } from "~/types/common";
+
 export const ATHLETE_TABLE_HEADERS = [
   {
     id: "selectControl",
@@ -36,7 +38,7 @@ export const ATHLETE_TABLE_HEADERS = [
   },
 ];
 
-export const ATHLETE_DETAILS_CONSTANTS = [
+export const ATHLETE_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Athlete Name",
     id: "name",

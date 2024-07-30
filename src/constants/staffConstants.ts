@@ -1,3 +1,4 @@
+import type { FormValues } from "~/types/common";
 import { type STAFF_DETAILS_CONSTANTS_TYPES } from "~/types/staff";
 
 export const STAFF_TABLE_HEADERS = [
@@ -96,8 +97,7 @@ export const STAFF_DASH_DUTY_TABLE_HEADERS = [
     id: "end_time",
   },
 ];
-// export const STAFF_DETAILS_CONSTANTS: STAFF_DETAILS_CONSTANTS_TYPES[] = [
-export const STAFF_DETAILS_CONSTANTS = [
+export const STAFF_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Staff Name",
     id: "name",

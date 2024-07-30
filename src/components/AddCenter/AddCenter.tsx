@@ -1,26 +1,17 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
-import CardTitle from "~/components/Card/CardTitle";
-import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
-import Textbox from "~/components/Textbox";
+
 import type {
   CENTER_TYPES} from "~/types/coach";
-import {
-  type COACH_TYPES,
-  type COACH_DETAILS_CONSTANTS_TYPES
-} from "~/types/coach";
+
 import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
-import Button from "../Button";
-import { Controller, useForm } from "react-hook-form";
-import Datepicker from "~/components/DatePicker/DatePickerWrapper";
+import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
-import Select from "react-select";
 import { CENTER_DETAILS_CONSTANTS } from "~/constants/centerConstants";
-import { CENTER_DETAILS_CONSTANTS_TYPES } from "~/types/center";
-import { getSportsDictionaryServices } from "~/services/sportServices";
+
 import AddForm from "~/common/AddForm";
+import type { FormValues } from "~/types/common";
 
 export default function AddCenter() {
-  let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
@@ -39,7 +30,7 @@ export default function AddCenter() {
  
   const { data: coaches } = api.coach.getAllCoaches.useQuery()
 
-  const [formConstantValues, setFormConstantValues] = useState(
+  const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     CENTER_DETAILS_CONSTANTS
   );
 
