@@ -5,9 +5,9 @@ import classNames from "classnames";
 export default function Search({ pos = "left" }) {
   return (
     <div className="relative">
-      <Image fill
+      <Image width={0} height={0}
         src={SearchIcon}
-        className={`absolute ${pos}-3 top-2 z-10 `}
+        className={`absolute ${pos}-3 top-2 z-10 w-auto h-auto `}
         alt=""
       />
       <input

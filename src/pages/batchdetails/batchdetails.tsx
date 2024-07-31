@@ -24,8 +24,8 @@ export default function AddBatch() {
                         <header className="lg:flex justify-between items-start mb-0 hidden ">
                             <CardTitle title="ALL BATCHES" />
                             <div>
-                                <button><Image fill src={Filter} className="mr-2" alt="" /></button>
-                                <button><Image fill src={Search} className="mr-2" alt="" /></button>
+                                <button><Image width={0} height={0} src={Filter} className="mr-2 w-auto h-auto" alt="" /></button>
+                                <button><Image width={0} height={0} src={Search} className="mr-2 w-auto h-auto" alt="" /></button>
                             </div>
                         </header>
                     </Card>
@@ -64,12 +64,12 @@ export default function AddBatch() {
                         <header className="lg:flex justify-between items-start mb-2 hidden ">
                             <CardTitle title="BATCH DETAILS" />
                             <Button>
-                                <Image fill src={Edit} className="mr-2" alt="" />Edit Batch
+                                <Image width={0} height={0} src={Edit} className="mr-2 w-auto h-auto" alt="" />Edit Batch
                             </Button>
                         </header>
                         <div className="">
                             {/* <div>
-                            <Image fill
+                            <Image 
                                 className="h-[150px] w-[150px] rounded-full object-cover"
                                 src={"/images/rugby.jpg"}
                                 alt=""
@@ -102,7 +102,7 @@ export default function AddBatch() {
                                             <div>
                                                 <div className="text-sm text-gray-400 mb-2">Coach</div>
                                                 <div className="flex items-center">
-                                                    <Image fill src={User} className="mr-2 w-9 h-9 rounded-full" alt="" />
+                                                    <Image width={0} height={0} src={User} className="w-auto h-auto mr-2 w-9 h-9 rounded-full" alt="" />
                                                     <div>
                                                         <div className="font-bold text-gray-600">Andrew Martin (Ass. C)</div>
                                                         <div className="text-[#FF9678] text-sm">Volley, Tennis, Basket</div>
@@ -161,7 +161,7 @@ export default function AddBatch() {
                                 <div className="text-[#A0A0A0] text-sm mb-2">Batch Times</div>
                                 <div className="flex items-center bg-white p-3 text-black rounded-lg border border-[#F6EAEF]">
                                     <div className="w-12 h-12 rounded-lg bg-[#F9F9FB] flex justify-center items-center">
-                                        <Image fill src={Clock} alt="" />
+                                        <Image width={0} height={0} src={Clock} alt="" className="w-auto h-auto" />
                                     </div>
                                     <div className="ml-2">
                                         <div className="text-sm text-[#A7AAC9]">Mondey</div>
@@ -179,7 +179,7 @@ export default function AddBatch() {
                                 </div>
                                 <div className="flex items-center bg-white p-3 text-black rounded-lg border border-[#F6EAEF]">
                                     <div className="w-12 h-12 rounded-lg bg-[#F9F9FB] flex justify-center items-center">
-                                        <Image fill src={Clock} alt="" />
+                                        <Image width={0} height={0} src={Clock} alt="" className="w-auto h-auto" />
                                     </div>
                                     <div className="ml-2">
                                         <div className="text-sm text-[#A7AAC9]">Mondey</div>
@@ -207,7 +207,7 @@ export default function AddBatch() {
                 >
                   <div className="flex items-center">
                     <div>
-                      <Image fill
+                      <Image
                         className="h-[56px] w-[56px] rounded-lg"
                         src={tab?.image}
                         alt={`${tab?.name}_img`}

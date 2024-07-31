@@ -34,7 +34,7 @@ export default function CardStats({
         <div className="flex justify-between">
           <div className="text-xs text-gray-500">MONTH OVER MONTH {percentChange}%</div>
           <div className="">
-            <Image fill src={ArrowUp} alt="arrow" />
+            <Image width={0} height={0} src={ArrowUp} alt="arrow" className="w-auto h-auto" />
           </div>
         </div>
       </Card>

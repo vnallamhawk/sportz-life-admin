@@ -14,7 +14,7 @@ export default function DashboardHeader() {
       <div className="flex items-center justify-between">
         <div className="flex">
           <div className="mr-3 block lg:hidden">
-            <Image fill src={Toggle} className="" alt="" />
+            <Image width={0} height={0} src={Toggle} className="w-auto h-auto" alt="" />
           </div>
           <h2 className="font-heading text-xl font-medium md:text-3xl">
             DASHBOARD
@@ -28,7 +28,7 @@ export default function DashboardHeader() {
             <ThemeButton />
           </button>
           <button className="relative ml-4 hidden rounded-lg bg-white px-3 py-2 md:block">
-            <Image fill src={Bell} alt="" className="relative" />
+            <Image width={0} height={0} src={Bell} alt="" className="relative w-auto h-auto" />
             <div className="absolute right-3 top-2.5 h-2 w-2 rounded border border-white bg-red-500 "></div>
           </button>
           <button className="ml-2 rounded-lg bg-white px-1 py-1 md:ml-4 md:px-3 md:py-2">
@@ -40,7 +40,7 @@ export default function DashboardHeader() {
             renderTrigger={() => (
               <button className="ml-2 flex items-center md:ml-8">
                 <div className="flex items-center">
-                  <Image fill
+                  <Image width={0} height={0}
                     src={User}
                     alt=""
                     className="h-6 w-6 rounded md:h-10 md:w-10"

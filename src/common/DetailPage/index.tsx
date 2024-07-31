@@ -95,7 +95,7 @@ const DetailPage = ({
         <header className="mb-5 hidden items-start  justify-between lg:flex ">
           <CardTitle title={cardTitle} />
           <Button onClick={() => editButtonClick()}>
-            <Image fill src={Edit} className="mr-2" alt="" />
+            <Image width={0} height={0} src={Edit} className="mr-2 w-auto h-auto" alt="" />
             {editText}
           </Button>
         </header>

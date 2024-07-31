@@ -97,9 +97,9 @@ const AllData = ({
               <>
                 {" "}
                 <div className="relative">
-                  <Image fill
+                  <Image width={0} height={0}
                     src={SearchIcon}
-                    className="absolute right-3 top-2 z-10"
+                    className="absolute right-3 top-2 z-10 w-auto h-auto"
                     alt=""
                   />
                   <input
@@ -127,9 +127,9 @@ const AllData = ({
           <div className="flex items-center lg:hidden ">
             {addButtonUrl && (
               <button className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-mandy-dark p-3">
-                <Image fill
+                <Image width={0} height={0}
                   src={Plus}
-                  className=""
+                  className="w-auto h-auto"
                   alt=""
                   onClick={() => void router.push(addButtonUrl)}
                 />
@@ -143,9 +143,9 @@ const AllData = ({
                   dismissOnClick={false}
                   renderTrigger={() => (
                     <button className="max-w-10 ml-3 inline-flex h-10 !w-auto w-10 items-center justify-center rounded-full bg-gray-300 p-3 px-2.5">
-                      <Image fill
+                      <Image width={0} height={0}
                         src={Dots}
-                        className="rotate-90 transform"
+                        className="rotate-90 transform w-auto h-auto"
                         alt=""
                       />
                     </button>
@@ -167,7 +167,7 @@ const AllData = ({
                 className="fixed bottom-24 right-10 inline-flex h-20 w-20 items-center justify-center rounded-full bg-black p-3 lg:hidden"
                 onClick={() => handleOpen}
               >
-                <Image fill src={FilterIcon} className="filter-icon  " alt="" />
+                <Image width={0} height={0} src={FilterIcon} className="filter-icon w-auto h-auto " alt="" />
               </button>
             )}
           </div>

@@ -9,7 +9,7 @@ export default function Checkout() {
                 <div className="px-0 font-heading text-3xl font-medium uppercase mb-5">check out</div>
                 <div className="grid grid-cols-12 gap-6">
                     <div className="col-span-8">
-                        <div className="mb-5 rounded-lg border border-gray-300 p-4 h-full">
+                        <div className="mb-5 rounded-lg border border-gray-300 p-6 h-full">
                             <div className="font-heading text-2xl font-medium mb-5">Payment Details</div>
                             <div className="grid grid-cols-12 gap-7">
                                 <div className="col-span-12">
@@ -34,7 +34,7 @@ export default function Checkout() {
                                 </div>
                                 <div className="col-span-12">
                                     <div className="flex justify-center">
-                                        <Image fill src={CardInfo} alt="" className="text-center" />
+                                        <Image width={0} height={0} src={CardInfo} alt="" className="text-center w-auto h-auto" />
                                     </div>
 
                                 </div>
@@ -49,7 +49,7 @@ export default function Checkout() {
                         <div className="bg-[#F7F7FB] rounded-b-xl relative">
                             <div className="flex items-center bg-white shadow mx-6 p-4 rounded-lg transform  -translate-y-8">
                                 <div>
-                                    <Image fill src={BasicPlan} alt="" className="w-14 h-14 rounded-xl" />
+                                    <Image width={0} height={0} src={BasicPlan} alt="" className="w-14 h-14 rounded-xl" />
                                 </div>
                                 <div className="pl-4">
                                     <div className=" text-lg">Basic Plan</div>

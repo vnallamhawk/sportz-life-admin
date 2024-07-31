@@ -54,9 +54,9 @@ export default function Login() {
     <div className="grid h-screen gap-2 p-5 lg:grid-cols-2 lg:p-3">
       <div className="items-center justify-center lg:flex">
         <div className="text-center">
-          <Image fill
+          <Image width={0} height={0}
             src={Logo}
-            className="max-w-3 left-1.5 top-1.5 mx-auto mb-10 text-center sm:mb-16 md:mb-20 lg:absolute lg:max-w-xs"
+            className="w-auto h-auto max-w-3 left-1.5 top-1.5 mx-auto mb-10 text-center sm:mb-16 md:mb-20 lg:absolute lg:max-w-xs"
             alt=""
           />
         </div>
@@ -106,16 +106,16 @@ export default function Login() {
         </div>
       </div>
       <div className="flex items-center justify-end ">
-        <Image fill
+        <Image width={0} height={0}
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           src={LoginImage}
-          className="hidden max-h-[calc(100vh-30px)] w-full lg:block "
+          className="hidden max-h-[calc(100vh-30px)] w-full lg:block h-auto"
           alt=""
         />
-        <Image fill
+        <Image width={0} height={0}
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           src={LoginMobileImage}
-          className="mt-4 block max-h-[calc(100vh-30px)] w-full lg:hidden"
+          className="mt-4 block max-h-[calc(100vh-30px)] w-full lg:hidden h-auto"
           alt=""
         />
       </div>

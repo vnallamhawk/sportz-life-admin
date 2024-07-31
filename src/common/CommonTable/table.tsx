@@ -87,7 +87,7 @@ const CommonTable = ({
                               data?.image &&
                               showImage ? (
                                 <div className="flex items-center gap-3">
-                                  <Image fill
+                                  <Image width={0} height={0}
                                     src={User}
                                     alt=""
                                     className="h-6 w-6 rounded md:h-8 md:w-8"
@@ -112,10 +112,10 @@ const CommonTable = ({
                                 label=""
                                 dismissOnClick={false}
                                 placement="top"
-                                className="view-drop rounded-lg bg-black"
+                                className="view-drop rounded-lg bg-black w-auto h-auto"
                                 renderTrigger={() => (
                                   <button className="py-2">
-                                    <Image fill src={Dots} alt="" />
+                                    <Image width={0} height={0} src={Dots} alt=""  />
                                   </button>
                                 )}
                               >

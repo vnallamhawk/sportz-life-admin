@@ -38,7 +38,7 @@ const StaffChangeCenterModal = ({
             Change Center
           </div>
           <button onClick={handleOpen}>
-            <Image fill src={Cross} alt="" />
+            <Image width={0} height={0} className="w-auto h-auto" src={Cross} alt="" />
           </button>
         </DialogHeader>
         <DialogBody className="px-0">

@@ -4,9 +4,9 @@ import FilterIcon from "../../images/FilterIcon.svg";
 export default function FilterTextBox() {
   return (
     <div className="relative">
-      <Image fill
+      <Image width={0} height={0}
         src={FilterIcon}
-        className={`absolute left-[7rem] top-2 z-10  `}
+        className={`absolute left-[7rem] top-2 z-10 w-auto h-auto`}
         alt=""
       />
       <input

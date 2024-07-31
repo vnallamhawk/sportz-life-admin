@@ -68,11 +68,11 @@ export default function Pricing() {
   const [modalOpen, setModalOpen] = React.useState(false);
   const modalHandleOpen = () => setModalOpen(!modalOpen);
   const [renewOpen, setRenewOpen] = React.useState(false);
-  const renewHandleOpen = () => setRenewOpen(!modalOpen);
+  const renewHandleOpen = () => setRenewOpen(!renewOpen);
 
   return (
     <>
-    <Checkout />
+    {/* <Checkout /> */}
       <div className="bg-s-gray px-6 pb-7">
         <div className="rounded-2xl shadow-sm lg:bg-white lg:p-6">
           <Tabs value="free_plan">
@@ -101,9 +101,9 @@ export default function Pricing() {
               </TabsHeader>
               <div className=" hidden items-center lg:flex ">
                 <div className="relative">
-                  <Image fill
+                  <Image width={0} height={0}
                     src={SearchIcon}
-                    className="absolute right-3 top-2 z-10"
+                    className="w-auto h-auto absolute right-3 top-2 z-10"
                     alt=""
                   />
                   <input
@@ -272,7 +272,7 @@ export default function Pricing() {
                         </div>
                         <div className="scroll max-h-[225px] overflow-auto">
                           <div className="mb-3 flex items-center rounded-lg bg-[#F9F9FB] px-5 py-3">
-                            <Image fill src={Visa} alt="" />
+                            <Image width={0} height={0} src={Visa} alt="" className="w-auto h-auto" />
                             <div className="ml-3">
                               <div className="text-base text-lg">
                                 Visa ending in **4567
@@ -283,7 +283,7 @@ export default function Pricing() {
                             </div>
                           </div>
                           <div className="mb-3 flex items-center rounded-lg bg-[#F9F9FB] px-5 py-3">
-                            <Image fill src={Visa} alt="" />
+                            <Image width={0} height={0} src={Visa} alt="" className="w-auto h-auto" />
                             <div className="ml-3">
                               <div className="text-base text-lg">
                                 Visa ending in **4567
@@ -308,7 +308,7 @@ export default function Pricing() {
                       </div>
                       <button className="mr-5 flex items-center rounded-lg bg-[#F3476D] px-6 py-2 text-white">
                         {" "}
-                        <Image fill src={Download} alt="" className="mr-2" />
+                        <Image width={0} height={0} src={Download} alt="" className="w-auto h-auto mr-2" />
                         Download
                       </button>
                     </div>
@@ -350,10 +350,10 @@ export default function Pricing() {
                             <td className="p-4 pb-2 pl-7 text-end">
                               <button className="flex items-center rounded-lg border border-[#F3476D] px-6 py-2 text-[#F3476D]">
                                 {" "}
-                                <Image fill
+                                <Image width={0} height={0}
                                   src={DownloadPink}
                                   alt=""
-                                  className="mr-2"
+                                  className="w-auto h-auto mr-2"
                                 />
                                 Download
                               </button>
@@ -370,14 +370,14 @@ export default function Pricing() {
 
           <div className="flex items-center lg:hidden ">
             <button className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-mandy-dark p-3">
-              <Image fill src={Plus} className="" alt="" />
+              <Image width={0} height={0} src={Plus} className="w-auto h-auto" alt="" />
             </button>
 
             <button
               className="fixed bottom-24 right-10 inline-flex h-20 w-20 items-center justify-center rounded-full bg-black p-3 lg:hidden"
               onClick={() => handleOpen}
             >
-              <Image fill src={FilterIcon} className="filter-icon  " alt="" />
+              <Image width={0} height={0} src={FilterIcon} className="filter-icon  w-auto h-auto" alt="" />
             </button>
           </div>
         </div>
@@ -396,7 +396,7 @@ export default function Pricing() {
             Add Ons
           </div>
           <button onClick={modalHandleOpen}>
-            <Image fill src={Cross} alt="" />
+            <Image width={0} height={0} src={Cross} alt="" className="w-auto h-auto" />
           </button>
         </DialogHeader>
         <DialogBody className="p-0">
@@ -517,7 +517,7 @@ export default function Pricing() {
             Pricing Plan Structure
           </div>
           <button onClick={renewHandleOpen}>
-            <Image fill src={Cross} alt="" />
+            <Image width={0} height={0} src={Cross} alt="" className="w-auto h-auto" />
           </button>
         </DialogHeader>
         <DialogBody className="p-0 pb-32">
