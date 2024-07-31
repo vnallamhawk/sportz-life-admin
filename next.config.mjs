@@ -4,25 +4,26 @@
  */
 await import("./src/env.mjs");
 
-import withImages from 'next-images';
-
+import withImages from "next-images";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withImages({
   images: {
-    disableStaticImages: true
+    disableStaticImages: true,
   },
-  webpack: (/** @type {{ module: { rules: { test: RegExp; include: RegExp; use: string[]; }[]; }; }} */ config) => {
+  webpack: (
+    /** @type {{ module: { rules: { test: RegExp; include: RegExp; use: string[]; }[]; }; }} */ config
+  ) => {
     config.module.rules.push(
       {
         test: /\.svg$/,
         include: /src\/app\/assets\/images/,
-        use: ['url-loader'],
+        use: ["url-loader"],
       },
       {
         test: /\.svg$/,
         include: /src\/app\/assets\/icons/,
-        use: ['@svgr/webpack'],
+        use: ["@svgr/webpack"],
       }
     );
     return config;
@@ -32,22 +33,22 @@ const nextConfig = withImages({
     defaultLocale: "en",
   },
   fileExtensions: [
-    'jpg',
-    'jpeg',
-    'svg',
-    'png',
-    'gif',
-    'ico',
-    'webp',
-    'jp2',
-    'avif',
-    'woff',
-    'woff2',
-    'otf',
-    'ttf',
+    "jpg",
+    "jpeg",
+    "svg",
+    "png",
+    "gif",
+    "ico",
+    "webp",
+    "jp2",
+    "avif",
+    "woff",
+    "woff2",
+    "otf",
+    "ttf",
   ],
   reactStrictMode: true,
-  async rewrites(){
+  async rewrites() {
     return [
       {
         source: "/edit-coach-:id",
@@ -68,9 +69,9 @@ const nextConfig = withImages({
       {
         source: "/edit-staff-:id",
         destination: "/staff/AddStaff",
-      }
-    ]
-  }  
+      },
+    ];
+  },
 });
 
 export default nextConfig;
