@@ -16,7 +16,7 @@ const SiteLogoIcon = () => (
   <pattern id="pattern0_1091_7347" patternContentUnits="objectBoundingBox" width="1" height="1">
   <use  transform="matrix(0.002 0 0 0.0038022 0 -0.450549)"/>
   </pattern>
-  <image id="image0_1091_7347" width="500" height="500" />
+  <Image id="image0_1091_7347" width="500" height="500" />
   </defs>
   </svg>
 

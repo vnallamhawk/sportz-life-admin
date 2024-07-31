@@ -2,7 +2,11 @@ import React from "react";
 // import type { InventoryData } from "~/types/center";
 // import {options} from "../../constants/inventoryConstant"
 
-export default function BatchTimeTableBody(data: any) {
+interface BatchTime{
+  [key:string]:string
+}
+
+export default function BatchTimeTableBody(data: BatchTime[]) {
   return (
     <>
       {data?.map(
@@ -11,15 +15,12 @@ export default function BatchTimeTableBody(data: any) {
             day,
             startTime,
             endTime,
-          }: {
-            day: string;
-            startTime: string;
-            endTime: string;
-          },
+          }: BatchTime,
           index: number
         ) => {
           return (
             <tr
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
               key={`${day}-${index}`}
               className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
             >

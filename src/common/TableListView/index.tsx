@@ -13,11 +13,11 @@ const TableListView = ({
 }: {
   TABLE_HEAD: TableHead;
   // TABLE_ROWS: TableRows;
-  TABLE_ROWS:{[key:string]:any}[],
+  TABLE_ROWS:{[key:string]:any,id:number}[],
   rowSelection: boolean;
   showImage: boolean;
-  onViewClick: (id:number) => void;
-  onEditClick: (id:number) => void;
+  onViewClick?: (id:number) => void;
+  onEditClick?: (id:number) => void;
   onDeleteClick?: (id:number) => void;
 }) => {
   return (
@@ -38,7 +38,7 @@ const TableListView = ({
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           TABLE_ROWS.length > 0 &&
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-          TABLE_ROWS.map((item: any, index: number) => {
+          TABLE_ROWS.map((item: {[key:string]:any,id:number}, index: number) => {
             return (
               <CommonList item={item} key={index} onViewClick={onViewClick} />
             );

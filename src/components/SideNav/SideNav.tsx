@@ -32,7 +32,7 @@ export default function SideNav({ className }: { className: string }) {
           orientation="horizontal"
         >
           <div className="mb-7 mt-5 flex items-center justify-center space-x-1">
-            <Image src={LogoWhite} alt="logo" />
+            <Image fill src={LogoWhite} alt="logo" />
             {/* <SiteLogoIcon /> */}
             {/* <span className="font-heading text-white">SPORTZ TRACK</span> */}
           </div>

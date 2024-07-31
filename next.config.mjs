@@ -3,9 +3,16 @@
  * for Docker builds.
  */
 await import("./src/env.mjs");
+
+import withImages from 'next-images';
+
+
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  webpack: (config, options) => {
+const nextConfig = withImages({
+  images: {
+    disableStaticImages: true
+  },
+  webpack: (/** @type {{ module: { rules: { test: RegExp; include: RegExp; use: string[]; }[]; }; }} */ config) => {
     config.module.rules.push(
       {
         test: /\.svg$/,
@@ -24,6 +31,21 @@ const nextConfig = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  fileExtensions: [
+    'jpg',
+    'jpeg',
+    'svg',
+    'png',
+    'gif',
+    'ico',
+    'webp',
+    'jp2',
+    'avif',
+    'woff',
+    'woff2',
+    'otf',
+    'ttf',
+  ],
   reactStrictMode: true,
   async rewrites(){
     return [
@@ -49,6 +71,6 @@ const nextConfig = {
       }
     ]
   }  
-};
+});
 
 export default nextConfig;

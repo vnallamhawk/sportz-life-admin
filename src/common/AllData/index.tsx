@@ -17,24 +17,24 @@ import { useRouter } from "next/router";
 
 interface AllData{
   title:string,
-  addButtonText:string,
-  addButtonUrl:string,
+  addButtonText?:string,
+  addButtonUrl?:string,
   dropdownItems:{changeBatch?:boolean;delete?:boolean;attendance?:boolean;changeCenter?:boolean;reminder?:boolean;freeze?:boolean},
-  TABLE_ROWS:{[key:string]:any}[],
+  TABLE_ROWS:{[key:string]:any,id:number}[],
   TABLE_HEAD: { label: string; id: string }[],
-  filter:boolean,
-  filterByName:string,
-  setFilterByName:any,
+  filter?:boolean,
+  filterByName?:string,
+  setFilterByName?:any,
   rowSelection :boolean,
-  showImage :boolean,
-  onViewClick:(id:number)=>void,
-  onEditClick:(id:number)=>void,
-  onDeleteClick:(id:number)=>void,
-  drills:boolean,
-  setCoachingDrill:any,
+  showImage ?:boolean,
+  onViewClick?:(id:number)=>void,
+  onEditClick?:(id:number)=>void,
+  onDeleteClick?:(id:number)=>void,
+  drills?:boolean,
+  setCoachingDrill?:any,
 }
 
-const dropdownData={
+const dropdownData:{[key:string]:string}={
   changeBatch:"Change Batch",
   delete:"Delete",
   attendance:"Attendance",
@@ -77,12 +77,14 @@ const AllData = ({
               <div className="flex gap-2">
                 <p
                   className="cursor-pointer text-[1.6rem] font-bold text-[#F3476D] hover:border-b-4 hover:border-[#F3476D]"
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                   onClick={() => setCoachingDrill(false)}
                 >
                   FITNESS DRILL
                 </p>
                 <p
                   className=" cursor-pointer text-[1.6rem] font-bold hover:border-b-4 hover:border-[#F3476D] hover:text-[#F3476D]"
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                   onClick={() => setCoachingDrill(true)}
                 >
                   COACHING DRILL
@@ -95,7 +97,7 @@ const AllData = ({
               <>
                 {" "}
                 <div className="relative">
-                  <Image
+                  <Image fill
                     src={SearchIcon}
                     className="absolute right-3 top-2 z-10"
                     alt=""
@@ -125,7 +127,7 @@ const AllData = ({
           <div className="flex items-center lg:hidden ">
             {addButtonUrl && (
               <button className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-mandy-dark p-3">
-                <Image
+                <Image fill
                   src={Plus}
                   className=""
                   alt=""
@@ -141,7 +143,7 @@ const AllData = ({
                   dismissOnClick={false}
                   renderTrigger={() => (
                     <button className="max-w-10 ml-3 inline-flex h-10 !w-auto w-10 items-center justify-center rounded-full bg-gray-300 p-3 px-2.5">
-                      <Image
+                      <Image fill
                         src={Dots}
                         className="rotate-90 transform"
                         alt=""
@@ -165,7 +167,7 @@ const AllData = ({
                 className="fixed bottom-24 right-10 inline-flex h-20 w-20 items-center justify-center rounded-full bg-black p-3 lg:hidden"
                 onClick={() => handleOpen}
               >
-                <Image src={FilterIcon} className="filter-icon  " alt="" />
+                <Image fill src={FilterIcon} className="filter-icon  " alt="" />
               </button>
             )}
           </div>

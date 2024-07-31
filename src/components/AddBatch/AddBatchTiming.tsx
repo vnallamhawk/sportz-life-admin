@@ -9,13 +9,17 @@ import Timepicker from "~/components/TimePicker/TimePickerWrapper";
 import { api } from "~/utils/api";
 import Select from "react-select";
 import {
-  BATCH_DETAILS_CONSTANTS,
   BATCH_DETAILS_TIMING,
 } from "~/constants/batchConstant";
 import Table from "../Table";
 import BatchTimeTableHeader from "../BatchTiming/BatchTimingTableHeader";
 import BatchTimeTableBody from "../BatchTiming/BatchTimingTableBody";
 import type { FormValues } from "~/types/common";
+
+
+interface BatchTimeData{
+  [key:string]:string
+}
 
 export default function AddBatchTiming(props: any) {
   let inputElement;
@@ -35,12 +39,14 @@ export default function AddBatchTiming(props: any) {
   // useForm<CENTER_BATCH_TYPES>({ mode: "onSubmit" });
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
-  const [currentBatchDetail, setCurrentBatchDetail] = useState<{[key:string]:any}>({});
+  const [currentBatchDetail, setCurrentBatchDetail] = useState<BatchTimeData>({day:"",
+    startTime:"",
+    endTime:""});
 
   const [formConstantValues, setFormConstantValues] =
     useState<FormValues[]>(BATCH_DETAILS_TIMING);
 
-  const [batchTimings, setBatchTimings] = useState<{[key:string]:any}[]>([]);
+  const [batchTimings, setBatchTimings] = useState<BatchTimeData[]>([]);
 
   // useEffect(() => {
   //   if (sports?.length && hasExecuted.current) {
@@ -76,8 +82,8 @@ export default function AddBatchTiming(props: any) {
   // }, [formData]);
   //test commit
 
-  const handleChangeBatch = (value: any, id: string | number) => {
-    const batchDetails :{[key:string]:any}= { ...currentBatchDetail };
+  const handleChangeBatch = (value: any, id: string ) => {
+    const batchDetails:BatchTimeData= { ...currentBatchDetail };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     batchDetails[id] = value 
     setCurrentBatchDetail(batchDetails);
@@ -184,7 +190,7 @@ export default function AddBatchTiming(props: any) {
   const onAddBatchTiming = (e: any) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
-    const arr: {[key:string]:any}[] = [...batchTimings];
+    const arr: BatchTimeData[] = [...batchTimings];
     arr.push(currentBatchDetail);
     setBatchTimings(arr);
     setCurrentBatchDetail({});

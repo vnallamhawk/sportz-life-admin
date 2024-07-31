@@ -18,7 +18,7 @@ export const sportRouter = createTRPCRouter({
       about:z.string(),
       image: z.string(),
       subTitle:z.string(),
-      createdBy:z.number(),
+      createdBy:z.number().optional().default(undefined),
       createdAt:z.date(),
       updatedAt:z.date()
       

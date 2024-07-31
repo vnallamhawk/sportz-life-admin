@@ -76,7 +76,7 @@ export default function Dashboard() {
                 className="border-1 mx-3 bg-pink-600 hover:bg-pink-800 p-4 rounded-full"
                 type="button"
               >
-                <Image src={ArrowRight} className="" alt="" />
+                <Image fill src={ArrowRight} className="" alt="" />
               </button> */}
             </div>
 
@@ -85,14 +85,14 @@ export default function Dashboard() {
             <div className="flex items-center ">
               <div className="text-2xl font-medium font-heading lg:block hidden lg:mr-5">GENDER RATIO</div>
               <div className="flex relative grow lg:ml-10 ml-0">
-                <Image src={LittleBoy} className="absolute -bottom-[16px] lg:-bottom-[24px] left-0 lg:w-auto lg:max-w-none max-w-[85px]" alt="" />
+                <Image fill src={LittleBoy} className="absolute -bottom-[16px] lg:-bottom-[24px] left-0 lg:w-auto lg:max-w-none max-w-[85px]" alt="" />
                 <div className="lg:pl-36 pl-24 lg:text-left text-center">
                   <div className="text-lg lg:text-3xl font-normal font-heading text-white" >70%</div>
                   <div className="text-xs lg:text-base text-blush-light">125 - Male</div>
                 </div>
               </div>
               <div className="flex relative grow lg:ml-2">
-                <Image src={ShortGirl} className="absolute -bottom-[16px] lg:-bottom-[24px] left-0 transform lg:scale-x-[1] scale-x-[-1] lg:w-auto lg:max-w-none max-w-[85px]" alt="" />
+                <Image fill src={ShortGirl} className="absolute -bottom-[16px] lg:-bottom-[24px] left-0 transform lg:scale-x-[1] scale-x-[-1] lg:w-auto lg:max-w-none max-w-[85px]" alt="" />
                 <div className="lg:pl-36 pl-24 lg:text-left text-center">
                   <div className="text-lg lg:text-3xl font-normal font-heading text-white" >30%</div>
                   <div className="text-xs lg:text-base text-pink-600">97-Female</div>
@@ -103,7 +103,7 @@ export default function Dashboard() {
                   className="border-1 mx-3 bg-pink-600 hover:bg-pink-800 p-4 rounded-full"
                   type="button"
                 >
-                  <Image src={ArrowRight} className="" alt="" />
+                  <Image fill src={ArrowRight} className="" alt="" />
                 </button>
               </div> */}
             </div>
@@ -336,15 +336,15 @@ export default function Dashboard() {
           <Card className="bg-white h-fit relative" title="UPCOMING TOURNAMENT">
             <div className="absolute top-7 right-4">
               <button className="">
-                <Image src={ArrowLeft} className="filter  contrast-0 " alt="" />
+                <Image fill src={ArrowLeft} className="filter  contrast-0 " alt="" />
               </button>
               <button className="ml-1 rotate-180">
-                <Image src={ArrowLeft} className="text-black filter brightness-200 contrast-200" alt="" />
+                <Image fill src={ArrowLeft} className="text-black filter brightness-200 contrast-200" alt="" />
               </button>
             </div>
             <div className="flex items-center">
               <div className="bg-purple-900 w-[95px] h-[185px] relative rounded-lg">
-                <Image src={Bollyball} alt="" className="absolute min-w-[95px] top-2/4 -right-7 -translate-y-1/2" />
+                <Image fill src={Bollyball} alt="" className="absolute min-w-[95px] top-2/4 -right-7 -translate-y-1/2" />
               </div>
               <div className="ml-8 ">
                 <div className="text-xl font-heading font-medium leading-5">Annual Volleyball League2023</div>

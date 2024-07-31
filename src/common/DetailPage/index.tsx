@@ -16,21 +16,20 @@ type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-interface Detail{
-  cardTitle:string;
-  editButtonClick?:any,
-  editText?:string,
-  data:{[key:string]:any},
-  details:{items:{label:string,value:string|number}}[],
-  tabs: {label: string,
-  name:string,
-  value: string|number,
-  image: React.ReactNode,
-  allLabel: string},
-  handleTabClick:any,
-  selectedComponent:any,
-  selectedTab:string,
-  badgeData:any
+interface Detail {
+  cardTitle: string;
+  editButtonClick: () => void;
+  editText?: string;
+  data: { [key: string]: any };
+  details?: { items: { label: string; value: string | number }[] }[];
+  tabs: TabType[];
+  handleTabClick: any;
+  selectedComponent: any;
+  selectedTab: string | undefined;
+  badgeData?: {
+    [key: string]: any;
+    Sports?: { name: string; [key: string]: any };
+  }[];
 }
 
 const DetailPage = ({
@@ -43,7 +42,7 @@ const DetailPage = ({
   handleTabClick,
   selectedComponent,
   selectedTab,
-  badgeData
+  badgeData,
 }: Detail) => {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
@@ -66,8 +65,8 @@ const DetailPage = ({
     arrows: false,
     infinite: true,
     speed: 500,
-    slidesToShow:tabs?.length>4? 4.5:4,
-    slidesToScroll: tabs?.length>4? 4.5:4,
+    slidesToShow: tabs?.length > 4 ? 4.5 : 4,
+    slidesToScroll: tabs?.length > 4 ? 4.5 : 4,
     responsive: [
       {
         breakpoint: 1200,
@@ -95,8 +94,8 @@ const DetailPage = ({
       <Card className="h-100 mx-5 bg-gradient-to-r from-[#2D323D] to-[#141720] md:bg-white md:bg-none">
         <header className="mb-5 hidden items-start  justify-between lg:flex ">
           <CardTitle title={cardTitle} />
-          <Button onClick={editButtonClick}>
-            <Image src={Edit} className="mr-2" alt="" />
+          <Button onClick={() => editButtonClick()}>
+            <Image fill src={Edit} className="mr-2" alt="" />
             {editText}
           </Button>
         </header>
@@ -128,17 +127,20 @@ const DetailPage = ({
               {data?.name}
             </div>
             <div className="flex justify-start">
-              {/* {coach?.CoachSportsMaps?.map(
-                ({ sportId }) => sportsDictionary?.[sportId]
-              ).join(" ,")} */}
-              {badgeData && badgeData.length>0 && badgeData?.map((ele: any, index: number) => (
-                <div
-                  className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm"
-                  key={index}
-                >
-                  <p className="text-pink-500">{ele?.Sports?.name}</p>
-                </div>
-              ))}
+              {badgeData &&
+                badgeData.length > 0 &&
+                badgeData?.map(
+                  (ele, index: number) => {
+                    return (
+                      <div
+                        className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm"
+                        key={index}
+                      >
+                        <p className="text-pink-500">{ele?.Sports?.name}</p>
+                      </div>
+                    );
+                  }
+                )}
             </div>
             <div className="text-center text-base text-white md:text-blush-dark lg:text-start">
               {data?.description}
@@ -159,27 +161,35 @@ const DetailPage = ({
             )}
 
             <div className="mt-5 grid grid-cols-3 md:gap-4">
-              {details?.map((row: any, rowIndex: number) => {
-                return (
-                  <div className="col-span-12 md:col-span-1" key={rowIndex}>
-                    {row?.items?.map((item: any, index: number) => {
-                      return (
-                        <div className="contact mt-4" key={index}>
-                          <div className="line block bg-[#974062] md:hidden "></div>
-                          <div>
-                            <div className="mb-1 text-sm text-gray-400">
-                              {item?.label}{" "}
-                            </div>
-                            <div className="font-bold text-gray-600">
-                              {item?.value}{" "}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })}
+              {details &&
+                details.length > 0 &&
+                details.map((row, rowIndex: number) => {
+                  return (
+                    <div className="col-span-12 md:col-span-1" key={rowIndex}>
+                      {row?.items.length > 0 &&
+                        row.items?.map(
+                          (
+                            item: { label: string; value: string | number },
+                            index: number
+                          ) => {
+                            return (
+                              <div className="contact mt-4" key={index}>
+                                <div className="line block bg-[#974062] md:hidden "></div>
+                                <div>
+                                  <div className="mb-1 text-sm text-gray-400">
+                                    {item?.label}
+                                  </div>
+                                  <div className="font-bold text-gray-600">
+                                    {item?.value}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          }
+                        )}
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>
@@ -188,8 +198,11 @@ const DetailPage = ({
             {tabs?.map((tab: TabType, index: number) => {
               return (
                 <div
-                  className={`${selectedTab===tab?.key?"active":""}rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px]`}
+                  className={`${
+                    selectedTab === tab?.key ? "active" : ""
+                  }rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px]`}
                   onClick={() => {
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                     handleTabClick(tab);
                   }}
                   key={index}
@@ -198,8 +211,8 @@ const DetailPage = ({
                     <div>
                       <Image
                         className="h-[56px] w-[56px] rounded-lg"
-                        src={tab?.image}
-                        alt={`${tab?.name}_img`}
+                        src={tab?.image ? tab?.image : ""}
+                        alt={`${tab?.name ? tab?.name : ""}_img`}
                         width={56}
                         height={56}
                       />
@@ -225,6 +238,7 @@ const DetailPage = ({
             <div
               className={`rounded-xl bg-[#EAEAEA] `}
               onClick={() => {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 handleTabClick(tab);
               }}
               key={index}

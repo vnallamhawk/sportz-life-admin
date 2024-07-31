@@ -443,7 +443,7 @@ const AddForm = ({
 
             <button className="mt-5 flex items-center lg:hidden">
               <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-black p-3">
-                <Image src={Plus} className="" alt="" />
+                <Image fill src={Plus} className="" alt="" />
               </div>
               <div className="ml-3">{mobileAddButtonText}</div>
             </button>
@@ -516,7 +516,7 @@ const AddForm = ({
                   <div className="text-base">10 Pieces</div>
                 </div>
                 <button>
-                  <Image src={Remove} className="" alt="" />
+                  <Image fill src={Remove} className="" alt="" />
                 </button>
               </div>
               <div className="mb-3 flex justify-between rounded-lg bg-white p-3">
@@ -525,7 +525,7 @@ const AddForm = ({
                   <div className="text-base">10 Pieces</div>
                 </div>
                 <button>
-                  <Image src={Remove} className="" alt="" />
+                  <Image fill src={Remove} className="" alt="" />
                 </button>
               </div>
               <div className="mb-3 flex justify-between rounded-lg bg-white p-3">
@@ -534,7 +534,7 @@ const AddForm = ({
                   <div className="text-base">10 Pieces</div>
                 </div>
                 <button>
-                  <Image src={Remove} className="" alt="" />
+                  <Image fill src={Remove} className="" alt="" />
                 </button>
               </div>
             </div>

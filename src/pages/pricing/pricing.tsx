@@ -101,7 +101,7 @@ export default function Pricing() {
               </TabsHeader>
               <div className=" hidden items-center lg:flex ">
                 <div className="relative">
-                  <Image
+                  <Image fill
                     src={SearchIcon}
                     className="absolute right-3 top-2 z-10"
                     alt=""
@@ -272,7 +272,7 @@ export default function Pricing() {
                         </div>
                         <div className="scroll max-h-[225px] overflow-auto">
                           <div className="mb-3 flex items-center rounded-lg bg-[#F9F9FB] px-5 py-3">
-                            <Image src={Visa} alt="" />
+                            <Image fill src={Visa} alt="" />
                             <div className="ml-3">
                               <div className="text-base text-lg">
                                 Visa ending in **4567
@@ -283,7 +283,7 @@ export default function Pricing() {
                             </div>
                           </div>
                           <div className="mb-3 flex items-center rounded-lg bg-[#F9F9FB] px-5 py-3">
-                            <Image src={Visa} alt="" />
+                            <Image fill src={Visa} alt="" />
                             <div className="ml-3">
                               <div className="text-base text-lg">
                                 Visa ending in **4567
@@ -308,7 +308,7 @@ export default function Pricing() {
                       </div>
                       <button className="mr-5 flex items-center rounded-lg bg-[#F3476D] px-6 py-2 text-white">
                         {" "}
-                        <Image src={Download} alt="" className="mr-2" />
+                        <Image fill src={Download} alt="" className="mr-2" />
                         Download
                       </button>
                     </div>
@@ -350,7 +350,7 @@ export default function Pricing() {
                             <td className="p-4 pb-2 pl-7 text-end">
                               <button className="flex items-center rounded-lg border border-[#F3476D] px-6 py-2 text-[#F3476D]">
                                 {" "}
-                                <Image
+                                <Image fill
                                   src={DownloadPink}
                                   alt=""
                                   className="mr-2"
@@ -370,14 +370,14 @@ export default function Pricing() {
 
           <div className="flex items-center lg:hidden ">
             <button className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-mandy-dark p-3">
-              <Image src={Plus} className="" alt="" />
+              <Image fill src={Plus} className="" alt="" />
             </button>
 
             <button
               className="fixed bottom-24 right-10 inline-flex h-20 w-20 items-center justify-center rounded-full bg-black p-3 lg:hidden"
               onClick={() => handleOpen}
             >
-              <Image src={FilterIcon} className="filter-icon  " alt="" />
+              <Image fill src={FilterIcon} className="filter-icon  " alt="" />
             </button>
           </div>
         </div>
@@ -396,7 +396,7 @@ export default function Pricing() {
             Add Ons
           </div>
           <button onClick={modalHandleOpen}>
-            <Image src={Cross} alt="" />
+            <Image fill src={Cross} alt="" />
           </button>
         </DialogHeader>
         <DialogBody className="p-0">
@@ -517,7 +517,7 @@ export default function Pricing() {
             Pricing Plan Structure
           </div>
           <button onClick={renewHandleOpen}>
-            <Image src={Cross} alt="" />
+            <Image fill src={Cross} alt="" />
           </button>
         </DialogHeader>
         <DialogBody className="p-0 pb-32">

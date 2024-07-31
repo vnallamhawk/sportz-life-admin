@@ -44,7 +44,7 @@ const Modal =()=> {
         {/* Attendee----------------------------------------------------------------------- */}
         {/* <DialogHeader className="flex justify-between items-center pb-0 px-0">
                     <div className="text-2xl font-medium font-heading uppercase">Attendance</div>
-                    <button onClick={handleOpen}><Image src={Cross} alt="" /></button>
+                    <button onClick={handleOpen}><Image fill src={Cross} alt="" /></button>
                 </DialogHeader>
                 <DialogBody className="px-0 pt-2">
                     <div>
@@ -92,7 +92,7 @@ const Modal =()=> {
         {/* send reminder----------------------------------------------------------------------- */}
         {/* <DialogHeader className="flex justify-between items-center pb-0 px-0">
                     <div className="text-2xl font-medium font-heading uppercase">Send Reminder</div>
-                    <button onClick={handleOpen}><Image src={Cross} alt="" /></button>
+                    <button onClick={handleOpen}><Image fill src={Cross} alt="" /></button>
                 </DialogHeader>
                 <DialogBody className="px-0">
                     <div>
@@ -110,7 +110,7 @@ const Modal =()=> {
         {/* send reminder----------------------------------------------------------------------- */}
         {/* <DialogHeader className="flex justify-between items-center pb-0 px-0">
                     <div className="text-2xl font-medium font-heading uppercase">Change Center</div>
-                    <button onClick={handleOpen}><Image src={Cross} alt="" /></button>
+                    <button onClick={handleOpen}><Image fill src={Cross} alt="" /></button>
                 </DialogHeader>
                 <DialogBody className="px-0">
                     <div>
@@ -146,7 +146,7 @@ const Modal =()=> {
             Freeze
           </div>
           <button onClick={handleOpen}>
-            <Image src={Cross} alt="" />
+            <Image fill src={Cross} alt="" />
           </button>
         </DialogHeader>
         <DialogBody className="px-0">

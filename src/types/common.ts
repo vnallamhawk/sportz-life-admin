@@ -1,10 +1,12 @@
+import type { StaticImageData } from "next/image";
+
 export type TabType = {
-  label: string;
-  name: string;
-  value: string;
-  image: string;
-  allLabel: string;
-  key:string
+  label?: string|undefined;
+  name?: string|undefined;
+  value?: string|number|undefined;
+  image?: StaticImageData|undefined;
+  allLabel?: string|undefined;
+  key?:string|undefined
 };
 
 export type TableHead = {
@@ -29,6 +31,8 @@ export interface TableFields {
   options?: { label: string|undefined; value: string | number|undefined }[];
   isMulti?:boolean
 }
+
+
 
 
 // export type TableRows = {
