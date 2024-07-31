@@ -12,8 +12,12 @@ export const staffRouter = createTRPCRouter({
     const allStaffs = ctx?.prisma?.staffs?.findMany({
       where:{
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        createdBy:ctx?.session?.token.id
-
+        createdBy:ctx?.session?.token.id,
+      },
+      include: {
+        StaffDesignation:true,
+        Centers:true
+     
       },
     });
     return allStaffs;
@@ -24,6 +28,10 @@ export const staffRouter = createTRPCRouter({
       const staff = await opts.ctx?.prisma?.staffs?.findUnique({
         where: {
           id: opts.input.id,
+        },
+        include: {
+          StaffDesignation:true
+       
         },
       });
       return staff;
@@ -42,7 +50,9 @@ export const staffRouter = createTRPCRouter({
           },
         },
         include: {
-          Centers: true,
+          StaffDesignation:true,
+          Centers:true
+       
         },
       });
 

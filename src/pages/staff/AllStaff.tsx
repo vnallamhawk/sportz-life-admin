@@ -5,12 +5,17 @@ import AllData from "~/common/AllData";
 import { STAFF_TABLE_HEADERS } from "~/constants/staffConstants";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
-import type { Staffs } from "@prisma/client";
+import type { Staffs,StaffDesignation, Centers } from "@prisma/client";
 
-export default function AllCoach() {
+interface StaffType extends Staffs{
+  StaffDesignation?:StaffDesignation
+  Centers?:Centers
+}
+
+export default function AllStaff() {
   const router = useRouter();
 
-  const [finalData, setFinalData] = useState<Staffs[]>([]);
+  const [finalData, setFinalData] = useState<StaffType[]>([]);
   const [filterByName, setFilterByName] = useState("");
   const { data: staffs } =
     filterByName == ""
@@ -19,9 +24,12 @@ export default function AllCoach() {
 
   useEffect(() => {
     if (staffs && staffs?.length > 0) {
-      const updatedStaffs = staffs.map((staff) => {
+      const updatedStaffs = staffs.map((staff:StaffType) => {
         return {
           ...staff,
+          designation:staff.StaffDesignation?staff.StaffDesignation.designation:"",
+          center:staff.Centers?staff.Centers?.name:""
+
         };
       });
       setFinalData(updatedStaffs);
