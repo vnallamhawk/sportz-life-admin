@@ -25,6 +25,7 @@ import AddAthlete from "../../../components/AddAthlete/AddAthlete";
 import DashboardHeader from "~/components/DashboardHeader";
 import AddGeneralDetails from "~/components/AddAthlete/AddGeneralDetails";
 
+// const multiFormData: MULTI_FORM_TYPES = {
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: "",
   name: "",

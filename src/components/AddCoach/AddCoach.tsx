@@ -25,7 +25,7 @@ export default function AddCoach() {
   );
 
   useEffect(() => {
-    let updatedFormConstantValues = formConstantValues;
+    let updatedFormConstantValues: any = formConstantValues;
     if (sports?.length) {
       updatedFormConstantValues = formConstantValues.map((formConstant) => {
         if (formConstant.id === "coachingSports") {
@@ -44,7 +44,7 @@ export default function AddCoach() {
     }
     if (staffPayroll?.length && staffPayroll?.length > 0) {
       updatedFormConstantValues = updatedFormConstantValues.map(
-        (formConstant) => {
+        (formConstant: any) => {
           if (formConstant.id === "payroll") {
             // console.log("payroll", payroll);
             return {

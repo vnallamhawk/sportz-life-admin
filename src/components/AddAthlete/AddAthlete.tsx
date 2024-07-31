@@ -33,7 +33,7 @@ export default function AddCoach() {
   useEffect(() => {
     if (sports?.length && hasExecuted.current) {
       const updatedFormConstantValues: FormValues[] = formConstantValues.map(
-        (formConstant:FormValues) => {
+        (formConstant: FormValues) => {
           if (formConstant.id === "coachingSports") {
             return {
               ...formConstant,

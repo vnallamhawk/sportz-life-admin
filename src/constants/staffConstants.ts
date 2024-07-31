@@ -26,7 +26,6 @@ export const STAFF_TABLE_HEADERS = [
     label: "Contact No",
     id: "phone",
   },
-
 ];
 export const STAFF_DASH_CENTER_TABLE_HEADERS = [
   {
@@ -207,15 +206,15 @@ export const STAFF_SHIFT_CONSTANTS = [
     label: "Day",
     id: "day",
     type: "select",
-    placeHolder:"Select Day",
-    options:[
-      {label:"Monday",value:"Monday"},
-      {label:"Tuesday",value:"Tuesday"},
-      {label:"Wednesday",value:"Wednesday"},
-      {label:"Thursday",value:"Thursday"},
-      {label:"Friday",value:"Friday"},
-      {label:"Saturday",value:"Saturday"},
-      {label:"Sunday",value:"Sunday"},
+    placeHolder: "Select Day",
+    options: [
+      { label: "Monday", value: "Monday" },
+      { label: "Tuesday", value: "Tuesday" },
+      { label: "Wednesday", value: "Wednesday" },
+      { label: "Thursday", value: "Thursday" },
+      { label: "Friday", value: "Friday" },
+      { label: "Saturday", value: "Saturday" },
+      { label: "Sunday", value: "Sunday" },
     ],
     rules: {
       required: true,
@@ -240,7 +239,6 @@ export const STAFF_SHIFT_CONSTANTS = [
     type: "time",
     rules: {
       required: true,
-      
     },
   },
   {
@@ -249,8 +247,6 @@ export const STAFF_SHIFT_CONSTANTS = [
     type: "time",
     rules: {
       required: true,
-      
     },
   },
-
 ];

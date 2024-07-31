@@ -2,7 +2,6 @@ import { type COACH_DETAILS_CONSTANTS_TYPES } from "~/types/coach";
 import type { FormValues } from "~/types/common";
 
 export const COACH_TABLE_HEADERS = [
- 
   {
     label: "Coach Name",
     id: "name",
@@ -34,7 +33,7 @@ export const COACH_TABLE_HEADERS = [
   },
   {
     id: "action",
-    label:"Action"
+    label: "Action",
   },
 ];
 
@@ -55,18 +54,19 @@ export const COACH_DETAILS_CONSTANTS: FormValues[] = [
     label: "Designation",
     id: "designation",
     type: "select",
-    options:[
+    options: [
       {
-        label:"Technical Director",value:"technical_director"
+        label: "Technical Director",
+        value: "technical_director",
       },
-      {label:"Head Coach",value:"head_coach"},
-      {label:"Coach",value:"coach"},
-      {label:"Assistant Coach",value:"assistant_coach"},
-      {label:"Trainee Coach",value:"trainee_coach"}
+      { label: "Head Coach", value: "head_coach" },
+      { label: "Coach", value: "coach" },
+      { label: "Assistant Coach", value: "assistant_coach" },
+      { label: "Trainee Coach", value: "trainee_coach" },
     ],
     placeHolder: "Select Designation",
     rules: {
-      required: true
+      required: true,
     },
   },
   {
@@ -126,13 +126,13 @@ export const COACH_DETAILS_CONSTANTS: FormValues[] = [
     placeHolder: "Select Payroll",
     rules: {
       required: true,
-    }, 
+    },
   },
   {
     label: "Coaching Sports",
     id: "coachingSports",
     type: "select",
-    isMulti:true,
+    isMulti: true,
     placeHolder: "Coaching Sports",
     rules: {
       required: true,
@@ -159,7 +159,7 @@ export const COACH_CERTIFICATES_CONSTANTS = [
   {
     placeHolder: "Select Coach Certificates",
     id: "certificates",
-    type:"select",
+    type: "select",
     rules: {
       required: true,
     },
@@ -190,7 +190,8 @@ export const COACH_CERTIFICATES_CONSTANTS = [
         value: "certification_in_sports_coaching_or_fitness_training",
       },
     ],
-  },{
+  },
+  {
     label: "Institute Name",
     id: "instituteName",
     placeHolder: "Institute Name",
@@ -227,23 +228,22 @@ export const COACH_BATCH_CONSTANTS = [
   {
     placeHolder: "Select Center",
     id: "center",
-    type:"select",
-    options: [
-    ],
+    type: "select",
+    options: [],
     rules: {
       required: true,
-    }
-  },{
+    },
+  },
+  {
     placeHolder: "Select Batches",
     id: "batches",
-    isMulti:true,
-    type:"select",
-    options: [
-    ],
+    isMulti: true,
+    type: "select",
+    options: [],
     rules: {
       required: true,
-    }
-  }
+    },
+  },
 ];
 
 export const COACH_CERTIFICATE_TABLE_HEADERS = [
