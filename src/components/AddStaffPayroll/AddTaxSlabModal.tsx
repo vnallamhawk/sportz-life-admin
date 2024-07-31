@@ -1,15 +1,21 @@
 import React from "react";
 
+export type TaxSlab={
+  fromAmount:string|number;toAmount:string|number,percentage:string|number
+}
+
 function AddTaxSlabModal({
   show,
   setShow,
   submitTaxSlab,
   setTaxSlab,
   taxSlab,
-}: any) {
-  const handleDesignationChange = (name: string, value: string) => {
-    const obj: any = { ...taxSlab };
+}: {show:boolean;setShow:any;submitTaxSlab:any;setTaxSlab:any;taxSlab:TaxSlab}) {
+  
+  const handleDesignationChange = (name: "fromAmount"|"toAmount"|"percentage", value: string) => {
+    const obj: TaxSlab = { ...taxSlab };
     obj[name] = value;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     setTaxSlab(obj);
   };
 
@@ -32,7 +38,8 @@ function AddTaxSlabModal({
               <button
                 type="button"
                 className="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-                onClick={() => setShow(false)}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                onClick={() => void setShow(false)}
               >
                 <svg
                   className="h-3 w-3"
@@ -109,6 +116,7 @@ function AddTaxSlabModal({
                   <button
                     type="submit"
                     className=" w-full rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                     onClick={(e) => submitTaxSlab(e)}
                   >
                     Add Tax Slab

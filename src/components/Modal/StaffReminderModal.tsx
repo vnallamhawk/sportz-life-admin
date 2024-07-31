@@ -34,7 +34,7 @@ const StaffReminderModal = ({
             Send Reminder
           </div>
           <button onClick={handleOpen}>
-            <Image src={Cross} alt="" />
+            <Image fill src={Cross} alt="" />
           </button>
         </DialogHeader>
         <DialogBody className="px-0">

@@ -5,7 +5,7 @@ import classNames from "classnames";
 export default function Search({ pos = "left" }) {
   return (
     <div className="relative">
-      <Image
+      <Image fill
         src={SearchIcon}
         className={`absolute ${pos}-3 top-2 z-10 `}
         alt=""

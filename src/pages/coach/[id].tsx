@@ -153,7 +153,7 @@ export default function Page({
           </Button>
         </header>
         <div className="flex">
-          <Image
+          <Image fill
             className="h-40 w-40 rounded-full"
             src={"/images/rugby.jpg"}
             alt=""

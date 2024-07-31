@@ -97,7 +97,7 @@ const AllData = ({
               <>
                 {" "}
                 <div className="relative">
-                  <Image
+                  <Image fill
                     src={SearchIcon}
                     className="absolute right-3 top-2 z-10"
                     alt=""
@@ -127,7 +127,7 @@ const AllData = ({
           <div className="flex items-center lg:hidden ">
             {addButtonUrl && (
               <button className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-mandy-dark p-3">
-                <Image
+                <Image fill
                   src={Plus}
                   className=""
                   alt=""
@@ -143,7 +143,7 @@ const AllData = ({
                   dismissOnClick={false}
                   renderTrigger={() => (
                     <button className="max-w-10 ml-3 inline-flex h-10 !w-auto w-10 items-center justify-center rounded-full bg-gray-300 p-3 px-2.5">
-                      <Image
+                      <Image fill
                         src={Dots}
                         className="rotate-90 transform"
                         alt=""
@@ -167,7 +167,7 @@ const AllData = ({
                 className="fixed bottom-24 right-10 inline-flex h-20 w-20 items-center justify-center rounded-full bg-black p-3 lg:hidden"
                 onClick={() => handleOpen}
               >
-                <Image src={FilterIcon} className="filter-icon  " alt="" />
+                <Image fill src={FilterIcon} className="filter-icon  " alt="" />
               </button>
             )}
           </div>

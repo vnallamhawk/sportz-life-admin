@@ -14,7 +14,7 @@ export default function DashboardHeader() {
       <div className="flex items-center justify-between">
         <div className="flex">
           <div className="mr-3 block lg:hidden">
-            <Image src={Toggle} className="" alt="" />
+            <Image fill src={Toggle} className="" alt="" />
           </div>
           <h2 className="font-heading text-xl font-medium md:text-3xl">
             DASHBOARD
@@ -28,11 +28,11 @@ export default function DashboardHeader() {
             <ThemeButton />
           </button>
           <button className="relative ml-4 hidden rounded-lg bg-white px-3 py-2 md:block">
-            <Image src={Bell} alt="" className="relative" />
+            <Image fill src={Bell} alt="" className="relative" />
             <div className="absolute right-3 top-2.5 h-2 w-2 rounded border border-white bg-red-500 "></div>
           </button>
           <button className="ml-2 rounded-lg bg-white px-1 py-1 md:ml-4 md:px-3 md:py-2">
-            <Image src={Theme} alt="" width="20" className="w-4 md:w-full" />
+            <Image src={Theme} alt="" width="20" height="20" className="w-4 md:w-full" />
           </button>
           <Dropdown
             label="Dropdown button"
@@ -40,7 +40,7 @@ export default function DashboardHeader() {
             renderTrigger={() => (
               <button className="ml-2 flex items-center md:ml-8">
                 <div className="flex items-center">
-                  <Image
+                  <Image fill
                     src={User}
                     alt=""
                     className="h-6 w-6 rounded md:h-10 md:w-10"
@@ -74,6 +74,7 @@ export default function DashboardHeader() {
           >
             <Dropdown.Item
               className="rounded-lg py-3 shadow-xl shadow-slate-100"
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
               onClick={() => signOut({ callbackUrl: "/" })}
             >
               Logout

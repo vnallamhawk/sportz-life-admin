@@ -18,7 +18,7 @@ const CommonList = ({ item, onViewClick }: CommonList) => {
         }}
       >
         <div className="flex items-center">
-          <Image src={User} className="h-10 w-10 rounded" alt="" />
+          <Image fill src={User} className="h-10 w-10 rounded" alt="" />
           <div className="ml-3">
             <div className="text-sm font-bold">{item?.name}</div>
             {item?.t_level && (

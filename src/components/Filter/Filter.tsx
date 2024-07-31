@@ -34,13 +34,13 @@ export default function Filter() {
     return (
         <>
             <div >
-                <button className="lg:block hidden ml-3 border-gray-200 focus:ring-0 relative text-gray-700 bg-white pl-4 pr-20 py-2.5 border-2  focus:outline-none rounded-lg text-sm">Filter <Image src={FilterIcon} alt="" className="absolute right-2 top-1.5" /></button>
+                <button className="lg:block hidden ml-3 border-gray-200 focus:ring-0 relative text-gray-700 bg-white pl-4 pr-20 py-2.5 border-2  focus:outline-none rounded-lg text-sm">Filter <Image fill src={FilterIcon} alt="" className="absolute right-2 top-1.5" /></button>
                 <div className="relative lg:fixed left-0 right-0 top-0 bottom-0 min-h-screen w-full z-20 transition-all ease-in duration-300 hidden">
                             <div className="f-overlay bg-black bg-opacity-30 w-full h-full hidden"></div>
                             <div className="bg-white min-w-[355px] max-w-[355px] min-h-screen overflow-auto scroll fixed top-0 bottom-0 f-screen -right-[355px] p-6 pr-7 transition-all ease-in duration-300">
                                 <div className="flex justify-between items-center mb-5">
                                     <div className="font-heading font-medium text-2xl">Filter</div>
-                                    <button><Image src={Cross} alt="" /></button>
+                                    <button><Image fill src={Cross} alt="" /></button>
                                 </div>
                                 <Accordion open={openAcc1}>
                                     <AccordionHeader className="accordion text-base border-0 pb-0 flex justify-between" onClick={handleOpenAcc1}>
@@ -237,7 +237,7 @@ export default function Filter() {
                         <div className="flex flex-col h-full">
                             <div className="flex justify-between items-center mb-5 ps-6">
                                 <div className="font-heading font-medium text-2xl">Filter</div>
-                                <button><Image src={Cross} alt="" /></button>
+                                <button><Image fill src={Cross} alt="" /></button>
                             </div>
                             <div className="flex justify-between items-center mb-5 ps-6">
                                 <div className="font-heading font-medium text-2xl">Filter</div>

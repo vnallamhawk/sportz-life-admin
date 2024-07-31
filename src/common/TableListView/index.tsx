@@ -38,7 +38,7 @@ const TableListView = ({
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           TABLE_ROWS.length > 0 &&
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-          TABLE_ROWS.map((item: any, index: number) => {
+          TABLE_ROWS.map((item: {[key:string]:any,id:number}, index: number) => {
             return (
               <CommonList item={item} key={index} onViewClick={onViewClick} />
             );

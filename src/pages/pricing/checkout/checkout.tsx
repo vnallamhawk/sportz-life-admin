@@ -34,7 +34,7 @@ export default function Checkout() {
                                 </div>
                                 <div className="col-span-12">
                                     <div className="flex justify-center">
-                                        <Image src={CardInfo} alt="" className="text-center" />
+                                        <Image fill src={CardInfo} alt="" className="text-center" />
                                     </div>
 
                                 </div>
@@ -49,7 +49,7 @@ export default function Checkout() {
                         <div className="bg-[#F7F7FB] rounded-b-xl relative">
                             <div className="flex items-center bg-white shadow mx-6 p-4 rounded-lg transform  -translate-y-8">
                                 <div>
-                                    <Image src={BasicPlan} alt="" className="w-14 h-14 rounded-xl" />
+                                    <Image fill src={BasicPlan} alt="" className="w-14 h-14 rounded-xl" />
                                 </div>
                                 <div className="pl-4">
                                     <div className=" text-lg">Basic Plan</div>
