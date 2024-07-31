@@ -10,7 +10,7 @@ export default function Pricing() {
     <>
       {/* <Checkout /> */}
       <MultiTabComp
-        tab1label="Free Plan"
+        tab1label="Fee Plan"
         tab2label="Pricing"
         addButtonText="Add Fee Plan"
         addButtonUrl="/pricing/AddPlans"
@@ -23,9 +23,9 @@ export default function Pricing() {
         TABLE2_ROWS={[]}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
-        onViewClick={(id: number) => {}}
-        onEditClick={(id: number) => {}}
-        onDeleteClick={(id: number) => {}}
+        // onViewClick={(id: number) => {}}
+        // onEditClick={(id: number) => {}}
+        // onDeleteClick={(id: number) => {}}
       />
     </>
   );

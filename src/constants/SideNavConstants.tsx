@@ -3,7 +3,7 @@ import AssessmentsIcon from "~/components/Icons/AssessmentsIcon";
 import AtheleteIcon from "~/components/Icons/AtheleteIcon";
 import CentersIcon from "~/components/Icons/CentersIcon";
 import CoachIcon from "~/components/Icons/CoachIcon";
-// import CompetitionsIcon from "~/components/Icons/CompetitionsIcon";
+import CompetitionsIcon from "~/components/Icons/CompetitionsIcon";
 import DashboardIcon from "~/components/Icons/DashboardIcon";
 import PlanAndPricingIcon from "~/components/Icons/PlanAndPricingIcon";
 import PostIcon from "~/components/Icons/PostIcon";
@@ -64,11 +64,11 @@ export const SIDE_NAV_ITEMS = [
   //   route: "/plans",
   //   icon: <TrainingPlanIcon />,
   // },
-  // {
-  //   label: "Competitions",
-  //   route: "/competitions",
-  //   icon: <CompetitionsIcon />,
-  // },
+  {
+    label: "Competitions",
+    route: "/competitions",
+    icon: <CompetitionsIcon />,
+  },
   {
     label: "Support",
     route: "/support",
