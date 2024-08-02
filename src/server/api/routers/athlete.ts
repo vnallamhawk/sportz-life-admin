@@ -4,9 +4,10 @@ import {
   publicProcedure,
   // protectedProcedure,
 } from "~/server/api/trpc";
-import { EXPERIENCE_LEVEL, GENDER_VALUES, TRAINING_LEVEL } from "~/types/coach";
+import { BLOOD_GROUPS, EXPERIENCE_LEVEL, GENDER_VALUES, TRAINING_LEVEL } from "~/types/coach";
 
 // Now add this object into an array
+
 
 export const athleteRouter = createTRPCRouter({
   getAllAthletes: publicProcedure.query(({ ctx }) => {
@@ -64,74 +65,51 @@ export const athleteRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        about: z.string(),
-        contactNumber: z.string(),
+        phone: z.string(),
         email: z.string(),
-        designation: z.string(),
+        bloodGroup: z.enum(BLOOD_GROUPS),
         gender: z.enum(GENDER_VALUES),
-        dateOfBirth: z.date(),
-        trainingLevel: z.enum(TRAINING_LEVEL),
-        experienceLevel: z.enum(EXPERIENCE_LEVEL),
-        batchIds: z.array(z.number()),
-        centerIds: z.array(z.number()),
+        dob: z.date(),
+        height: z.number(),
+        weight: z.number(),
+        address:z.string(),
+        centerId: z.number(),
+        medicalHistory:z.array(z.object({message:z.string()})),
+        fatherName:z.string()
       })
     )
     .mutation(
       async ({
         input: {
           name,
-          about,
-          contactNumber,
+          phone,
           email,
-          designation,
+          bloodGroup,
           gender,
-          dateOfBirth
+          dob,
+          height,
+          weight,
+          centerId,
+          medicalHistory,
+          address,
+          fatherName
         },
         ctx,
       }) => {
         const response = await ctx.prisma.athletes.create({
           data: {
             name: name,
-            about: about,
-            contactNumber: contactNumber,
+            phone: phone,
             email: email,
-            designation: designation,
-            gender: gender.toLowerCase(),
-            // certificates: {
-            //   create: certificates,
-            // },
-            // sports: {
-            //   create: sportsId.map((id) => ({
-            //     sport: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            centerId: 1,
-            // centers: {
-            //   create: centerIds.map((id) => ({
-            //     center: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            // batches: {
-            //   create: batchIds.map((id) => ({
-            //     batch: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            experience: "",
-            dateOfBirth: dateOfBirth,
-            trainingLevel: "advanced",
-            experienceLevel: "two_five",
+            bloodGroup: bloodGroup,
+            gender: gender,
+            height:height,
+            weight:weight,
+            medicalHistory,
+            centerId: centerId,
+            dob: dob,
+            address,
+            fatherName
           },
         });
         return response;

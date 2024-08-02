@@ -103,7 +103,7 @@ export const ATHLETE_DETAILS_CONSTANTS: FormValues[] = [
   },
   {
     label: "Blood Group",
-    id: "gender",
+    id: "bloodGroup",
     type: "select",
     pattern: "pattern",
     options: [
@@ -149,8 +149,10 @@ export const ATHLETE_GENRAL_CONSTANTS = [
     id: "training_level",
     type: "select",
     options: [
-      { label: "A+", value: "A+" },
-      { label: "B+", value: "B+" },
+      { label: "Beginner", value: "beginner" },
+      { label: "Developer", value: "developer" },
+      { label: "Intermediate Level", value: "intermediate" },
+      { label: "Advanced Level", value: "advanced" },
     ],
     placeHolder: "Training Level",
     rules: {
@@ -159,7 +161,7 @@ export const ATHLETE_GENRAL_CONSTANTS = [
   },
   {
     label: "Father's Name",
-    id: "name",
+    id: "fatherName",
     type: "textbox",
     placeHolder: "Father's Name",
     rules: {

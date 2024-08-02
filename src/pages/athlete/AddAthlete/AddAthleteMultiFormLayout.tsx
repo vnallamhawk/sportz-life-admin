@@ -26,18 +26,18 @@ import DashboardHeader from "~/components/DashboardHeader";
 import AddGeneralDetails from "~/components/AddAthlete/AddGeneralDetails";
 
 // const multiFormData: MULTI_FORM_TYPES = {
-const multiFormData: MULTI_FORM_TYPES = {
-  contactNumber: "",
+const multiFormData = {
+  phone: "",
   name: "",
-  designation: "",
+  bloodGroup: "",
   email: "",
   about: "",
-  dateOfBirth: undefined,
+  dob: undefined,
   payroll: "",
   coachingSports: [],
   certificates: [],
   batchIds: [],
-  centerIds: [],
+  centerId: undefined,
   isEditMode: false,
   coachId: undefined,
 };
@@ -56,8 +56,8 @@ export interface FormContextTypes {
     setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
   };
   multiFormData: {
-    formData: MULTI_FORM_TYPES;
-    setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>;
+    formData: any;
+    setFormData?: React.Dispatch<React.SetStateAction<any>>;
   };
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
@@ -68,7 +68,7 @@ export default function AddAthleteMultiFormLayout() {
 
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
+  const [formData, setFormData] = useState<any>(
     defaultValues.multiFormData.formData
   );
   const { setOpenToast } = useContext(ToastContext);
@@ -100,7 +100,7 @@ export default function AddAthleteMultiFormLayout() {
   }, []);
 
   const finalFormSubmissionHandler = (
-    finalForm: Required<MULTI_FORM_TYPES>
+    finalForm:any
   ) => {
     if (formData.isEditMode) {
       // editMutate({
@@ -132,24 +132,17 @@ export default function AddAthleteMultiFormLayout() {
       console.log(finalForm, "djbsdbfn");
       createMutate({
         name: finalForm.name,
-        about: finalForm.about,
-        contactNumber: finalForm.contactNumber,
+        phone: finalForm.phone,
         email: finalForm.email,
-        designation: finalForm.designation,
+        bloodGroup: finalForm.bloodGroup,
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-        // certificates: finalForm.certificates.map((certificate) => ({
-        //   ...certificate,
-        //   startDate: new Date(certificate.startDate),
-        //   endDate: new Date(certificate.endDate),
-        // })),
-        dateOfBirth: new Date(finalForm.dateOfBirth),
-        // sports: finalForm.coachingSports,
-        trainingLevel: finalForm.trainingLevel
-          .value as (typeof TRAINING_LEVEL)[number],
-        experienceLevel: finalForm.experienceLevel
-          .value as (typeof EXPERIENCE_LEVEL)[number],
-        batchIds: finalForm.batchIds,
-        centerIds: finalForm.centerIds,
+        dob: new Date(finalForm.dob),
+        height:finalForm.height,
+        weight:finalForm.weight,
+        address:finalForm.address,
+        medicalHistory:finalForm.medicalHistory,
+        centerId: finalForm.centerId,
+        fatherName:finalForm.fatherName
       });
     }
   };

@@ -50,7 +50,16 @@ export interface ASSIGN_BATCHES_TYPES {
   batchName: MultiSelectOption[];
 }
 
-export const GENDER_VALUES = ["MALE", "FEMALE"] as const;
+export const GENDER_VALUES = ["male", "female"] as const;
+export const BLOOD_GROUPS = [ "APos",
+  "ANeg" , 
+  "BPos", 
+  "BNeg",  
+  "ABPos" ,
+  "ABNeg" ,
+  "OPos",  
+  "ONeg" ] as const;
+
 export const TRAINING_LEVEL = [
   "beginner",
   "intermediate",
