@@ -13,7 +13,6 @@ export const athleteRouter = createTRPCRouter({
     const allAthletes = ctx?.prisma.athletes?.findMany({
       where: {
         deletedAt: null,
-        createdBy: ctx?.session?.token?.id,
       },
     });
     return allAthletes;
@@ -56,9 +55,6 @@ export const athleteRouter = createTRPCRouter({
         },
         include: {
           Centers: true,
-          // sports: true,
-          // batches: true,
-          // centers: true,
         },
       });
 

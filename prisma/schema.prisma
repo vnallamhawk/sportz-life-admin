@@ -312,7 +312,7 @@ model Athletes {
   status                     Int?                         @default(1) @db.TinyInt
   createdAt                  DateTime                     @db.DateTime(0)
   updatedAt                  DateTime                     @db.DateTime(0)
-  deletedAt              DateTime?                @db.DateTime(0)
+  deletedAt                  DateTime?                @db.DateTime(0)
   AssessmentAssignedAthletes AssessmentAssignedAthletes[]
   AssessmentResults          AssessmentResults[]
   AthleteAttendances         AthleteAttendances[]
@@ -326,6 +326,7 @@ model Athletes {
   TicketMessages             TicketMessages[]
   Tickets                    Tickets[]
   Centers                    Centers                    @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "AthletesCenters_ibfk_1")
+
 
  @@index([centerId], map: "centerId")
 
@@ -467,7 +468,6 @@ model Admin {
   deletedAt              DateTime?                @db.DateTime(0)
   Centers                Centers[]
   Inventories           Inventories[]
-  Coaches               Coaches[]
   Sports                Sports[]
   TaxSlabs              TaxSlabs[]
   Staffs              Staffs[]
@@ -544,9 +544,7 @@ model Coaches {
   ScheduledPlans            ScheduledPlans[]
   TrainingDrills            TrainingDrills[]
   TrainingPlans             TrainingPlans[]
-  createdBy              Int
-  Admin            Admin   @relation(fields: [createdBy], references: [id], map: "CoachesAdmin_ibfk_1")
-  @@index([createdBy], map: "createdBy")
+
   @@index([academyId], map: "academyId")
   @@index([centerId], map: "centerId")
 }

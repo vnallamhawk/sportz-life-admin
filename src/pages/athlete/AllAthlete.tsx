@@ -76,8 +76,8 @@ export default function Athlete() {
         TABLE_ROWS={athletes}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
-        onViewClick={(id: number) => router.push(`/athlete/${id ?? ""}`)}
-        onEditClick={(id: number) => router.push(`/edit-athlete-${id}`)}
+        onViewClick={(id: number) => void router.push(`/athlete/${id ?? ""}`)}
+        onEditClick={(id: number) => void router.push(`/edit-athlete-${id}`)}
         onDeleteClick={(id: number) => deleteAthlete(id)}
       />
       <Modal />
