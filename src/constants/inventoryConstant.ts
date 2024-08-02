@@ -1,10 +1,23 @@
 import type { MultiSelectOption } from "~/types/select";
 
-
 export const INVENTORY_TABLE_HEADERS = [
   {
     id: "name",
     label: "Inventory",
+  },
+  {
+    label: "Qty",
+    id: "quantity",
+  },
+  {
+    label: "Action",
+    id: "action",
+  },
+];
+export const DRILL_INVENTORY_TABLE_HEADERS = [
+  {
+    id: "name",
+    label: "Equipment",
   },
   {
     label: "Qty",

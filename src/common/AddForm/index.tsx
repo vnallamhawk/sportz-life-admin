@@ -161,6 +161,7 @@ const AddForm = ({
   };
 
   const getInputElement = (props: FormValues) => {
+    console.log("dataaadsjds", props);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { type, rules, id, pattern, placeHolder } = props;
     switch (type) {
@@ -266,8 +267,8 @@ const AddForm = ({
             name={id}
             render={({ field: { onChange, value } }) => (
               <Textarea
-                className="h-12 w-full"
-                placeholder={props.placeHolder}
+                className="h-20 w-full"
+                placeholder={placeHolder}
                 onChange={onChange}
                 value={value as string}
               />
@@ -286,7 +287,7 @@ const AddForm = ({
             render={({ field: { onChange, value } }) => (
               <Textbox
                 className="h-12 w-full"
-                placeHolder={props.placeHolder}
+                placeHolder={placeHolder}
                 onChangeHandler={onChange}
                 // TODO: FIX THIS TS ERROR
                 value={value as string}
@@ -311,7 +312,10 @@ const AddForm = ({
         </div>
       )}
       {formConstantValues && formConstantValues.length > 0 && (
-        <div className="grid-col-1 mt-8 grid gap-x-8 gap-y-4 lg:grid-cols-2 lg:gap-y-8 ">
+        <div
+          className={`grid-col-1 mt-8 grid gap-x-8 gap-y-4 lg:grid-cols-2
+          lg:gap-y-8 `}
+        >
           {formConstantValues?.map((formValues: FormValues) => (
             <div key={formValues.id}>
               {getInputElement(formValues)}
@@ -443,7 +447,13 @@ const AddForm = ({
 
             <button className="mt-5 flex items-center lg:hidden">
               <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-black p-3">
-                <Image width={0} height={0} src={Plus} className="w-auto h-auto" alt="" />
+                <Image
+                  width={0}
+                  height={0}
+                  src={Plus}
+                  className="h-auto w-auto"
+                  alt=""
+                />
               </div>
               <div className="ml-3">{mobileAddButtonText}</div>
             </button>
@@ -516,7 +526,13 @@ const AddForm = ({
                   <div className="text-base">10 Pieces</div>
                 </div>
                 <button>
-                  <Image width={0} height={0} src={Remove} className="w-auto h-auto" alt="" />
+                  <Image
+                    width={0}
+                    height={0}
+                    src={Remove}
+                    className="h-auto w-auto"
+                    alt=""
+                  />
                 </button>
               </div>
               <div className="mb-3 flex justify-between rounded-lg bg-white p-3">
@@ -525,7 +541,13 @@ const AddForm = ({
                   <div className="text-base">10 Pieces</div>
                 </div>
                 <button>
-                  <Image width={0} height={0} src={Remove} className="w-auto h-auto" alt="" />
+                  <Image
+                    width={0}
+                    height={0}
+                    src={Remove}
+                    className="h-auto w-auto"
+                    alt=""
+                  />
                 </button>
               </div>
               <div className="mb-3 flex justify-between rounded-lg bg-white p-3">
@@ -534,7 +556,13 @@ const AddForm = ({
                   <div className="text-base">10 Pieces</div>
                 </div>
                 <button>
-                  <Image width={0} height={0} src={Remove} className="w-auto h-auto" alt="" />
+                  <Image
+                    width={0}
+                    height={0}
+                    src={Remove}
+                    className="h-auto w-auto"
+                    alt=""
+                  />
                 </button>
               </div>
             </div>
