@@ -80,6 +80,7 @@ interface MultiTabCompProps {
   onViewClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
   onDeleteClick?: (id: number) => void;
+  filter?:boolean
 }
 const MultiTabComp = ({
   tab1label,
@@ -94,6 +95,7 @@ const MultiTabComp = ({
   TABLE2_ROWS,
   setFilterByName,
   filterByName,
+  filter=true,
   onViewClick,
   onEditClick,
   onDeleteClick,
@@ -159,7 +161,7 @@ const MultiTabComp = ({
                     onChange={(e: any) => setFilterByName(e.target.value)}
                   />
                 </div>
-                <Filter />
+                {filter && <Filter />}
                 <Link href={addButtonUrl!}>
                   <button className="ml-3 rounded-lg bg-mandy-dark px-6 py-2.5 text-white">
                     {addButtonText}

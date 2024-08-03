@@ -9,6 +9,8 @@ import CoachTableBody from "../../components/AllCoaches/CoachTableBody";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
 import TabsComponent from "~/components/Tabs";
+import MultiTabComp from "~/common/MultiTabComp";
+import { INJURY_ATHLETE_TABLE_HEADER, INJURY_COACH_TABLE_HEADER } from "~/constants/injuryLog";
 
 export default function AllInjuryLogs() {
   const router = useRouter();
@@ -21,58 +23,26 @@ export default function AllInjuryLogs() {
   };
 
   return (
-    <>
-      <Card className="h-full">
-        <header className="flex justify-between p-2">
-          <CardTitle title="ALL Injuries" />
-          <div>
-            <Textbox
-              value={filterByName}
-              setValue={setFilterByName}
-              placeHolder="Search By Name"
-            />
-            <Button
-              className="ml-3 bg-pink-700 p-2"
-              onClick={() => router.push("/coach/AddCoach")}
-            >
-              ADD Injury
-            </Button>
-          </div>
-        </header>
-        <TabsComponent
-          tabs={[
-            {
-              name: "ATHLETE INJURIES",
-              component: (
-                <Table
-                  tableHeader={CoachTableHeader()}
-                  tableBody={CoachTableBody(
-                    { name: filterByName },
-                    handleIsLoading
-                  )}
-                />
-              ),
-            },
-            {
-              name: "COACH INJURIES",
-              component: (
-                <Table
-                  tableHeader={CoachTableHeader()}
-                  tableBody={CoachTableBody(
-                    { name: filterByName },
-                    handleIsLoading
-                  )}
-                />
-              ),
-            },
-          ]}
-        />
-        {/* <Table
-          tableHeader={CoachTableHeader()}
-          tableBody={CoachTableBody({ name: filterByName }, handleIsLoading)}
-        /> */}
-        {loading ? <LoadingSpinner /> : ""}
-      </Card>
-    </>
+   <>
+     {/* <Checkout /> */}
+     <MultiTabComp
+        tab1label="ATHLETE INJURIES"
+        tab2label="COACH INJURIES"
+        addButtonText="Add Injury"
+        addButtonUrl="/injurylog/AddInjury"
+        dropdownItems={{}}
+        table1show={true}
+        table2show={true}
+        TABLE1_HEAD={INJURY_ATHLETE_TABLE_HEADER}
+        TABLE1_ROWS={[]}
+        TABLE2_HEAD={INJURY_COACH_TABLE_HEADER}
+        TABLE2_ROWS={[]}
+        setFilterByName={setFilterByName}
+        filterByName={filterByName}
+        // onViewClick={(id: number) => {}}
+        // onEditClick={(id: number) => {}}
+        // onDeleteClick={(id: number) => {}}
+      />
+   </>
   );
 }
