@@ -2,9 +2,7 @@ import React, { useEffect, useContext, useState, useRef } from "react";
 import CardTitle from "~/components/Card/CardTitle";
 // import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
 import Textbox from "~/components/Textbox";
-import {
-  type BATCH_DETAILS_CONSTANTS_TYPES,
-} from "~/types/batch";
+import { type BATCH_DETAILS_CONSTANTS_TYPES } from "~/types/batch";
 import { FormContext } from "../../pages/centers/Batch/[id]";
 import Button from "../Button";
 import { Controller, useForm } from "react-hook-form";
@@ -12,6 +10,8 @@ import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import { api } from "~/utils/api";
 import Select from "react-select";
 import { BATCH_DETAILS_CONSTANTS } from "~/constants/batchConstant";
+import AddForm from "~/common/AddForm";
+import { FormValues } from "~/types/common";
 
 export default function AddBatch() {
   let inputElement;
@@ -32,7 +32,7 @@ export default function AddBatch() {
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
 
-  const [formConstantValues, setFormConstantValues] = useState(
+  const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     BATCH_DETAILS_CONSTANTS
   );
 
@@ -58,91 +58,91 @@ export default function AddBatch() {
     }
   }, [formConstantValues, sports, sports?.length]);
 
-  const getInputElement = (props: BATCH_DETAILS_CONSTANTS_TYPES) => {
-    const { type, rules, id, pattern, placeHolder } = props;
-    switch (type) {
-      case "select":
-        const { options } = props;
-        inputElement = (
-          <Controller
-            control={control}
-            name={id}
-            rules={rules}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <Select
-                  isMulti={props?.isMulti ?? false}
-                  options={options}
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  value={value}
-                  placeholder={placeHolder}
-                  className="w-full"
-                  onChange={(element) => {
-                    onChange(element);
-                  }}
-                />
-              );
-            }}
-          />
-        );
-        break;
-      case "calendar":
-        inputElement = (
-          <Controller
-            control={control}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <Datepicker
-                  placeHolder={props.placeHolder}
-                  value={new Date(value as string)}
-                  className="h-12"
-                  onChangeHandler={onChange}
-                />
-              );
-            }}
-            name={id}
-            rules={rules}
-          />
-        );
-        break;
-      default:
-        inputElement = (
-          <Controller
-            control={control}
-            name={id}
-            render={({ field: { onChange, value } }) => (
-              <Textbox
-                className="h-12 w-full"
-                placeHolder={props.label}
-                type={type === "number" ? "number" : "text"}
-                onChangeHandler={onChange}
-                // TODO: FIX THIS TS ERROR
-                value={value as string | number}
-              />
-            )}
-            rules={rules}
-            {...(pattern ? { pattern } : {})}
-          />
-        );
-    }
+  // const getInputElement = (props: BATCH_DETAILS_CONSTANTS_TYPES) => {
+  //   const { type, rules, id, pattern, placeHolder } = props;
+  //   switch (type) {
+  //     case "select":
+  //       const { options } = props;
+  //       inputElement = (
+  //         <Controller
+  //           control={control}
+  //           name={id}
+  //           rules={rules}
+  //           render={({ field: { onChange, value } }) => {
+  //             return (
+  //               <Select
+  //                 isMulti={props?.isMulti ?? false}
+  //                 options={options}
+  //                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  //                 value={value}
+  //                 placeholder={placeHolder}
+  //                 className="w-full"
+  //                 onChange={(element) => {
+  //                   onChange(element);
+  //                 }}
+  //               />
+  //             );
+  //           }}
+  //         />
+  //       );
+  //       break;
+  //     case "calendar":
+  //       inputElement = (
+  //         <Controller
+  //           control={control}
+  //           render={({ field: { onChange, value } }) => {
+  //             return (
+  //               <Datepicker
+  //                 placeHolder={props.placeHolder}
+  //                 value={new Date(value as string)}
+  //                 className="h-12"
+  //                 onChangeHandler={onChange}
+  //               />
+  //             );
+  //           }}
+  //           name={id}
+  //           rules={rules}
+  //         />
+  //       );
+  //       break;
+  //     default:
+  //       inputElement = (
+  //         <Controller
+  //           control={control}
+  //           name={id}
+  //           render={({ field: { onChange, value } }) => (
+  //             <Textbox
+  //               className="h-12 w-full"
+  //               placeHolder={props.label}
+  //               type={type === "number" ? "number" : "text"}
+  //               onChangeHandler={onChange}
+  //               // TODO: FIX THIS TS ERROR
+  //               value={value as string | number}
+  //             />
+  //           )}
+  //           rules={rules}
+  //           {...(pattern ? { pattern } : {})}
+  //         />
+  //       );
+  //   }
 
-    return inputElement;
-  };
+  //   return inputElement;
+  // };
 
-  const nextClickHandler = async () => {
-    const result = await trigger();
-    if (result) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const currentFormValues = getValues();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      setFormData && setFormData({ ...formData, ...currentFormValues });
-      setCurrentStep && setCurrentStep(currentStep + 1);
-    }
-  };
+  // const nextClickHandler = async () => {
+  //   const result = await trigger();
+  //   if (result) {
+  //     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  //     const currentFormValues = getValues();
+  //     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  //     setFormData && setFormData({ ...formData, ...currentFormValues });
+  //     setCurrentStep && setCurrentStep(currentStep + 1);
+  //   }
+  // };
 
   return (
     <>
-      <CardTitle title="ADD BATCH" />
+      {/* <CardTitle title="ADD BATCH" />
       <div className="text-lg font-bold">BATCH DETAILS</div>
       <div className="mt-10 grid grid-cols-2 gap-x-10 gap-y-12">
         {formConstantValues.map((props) => (
@@ -171,7 +171,19 @@ export default function AddBatch() {
         >
           Next
         </Button>
-      </div>
+      </div> */}
+
+      <AddForm
+        cardTitle="ADD BATCH"
+        cardSubTitle="BATCH DETAILS"
+        formConstantValues={formConstantValues}
+        imageTitle="Center Image"
+        buttonItems={{ next: true }}
+        setFormData={setFormData}
+        formData={formData}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+      />
     </>
   );
 }

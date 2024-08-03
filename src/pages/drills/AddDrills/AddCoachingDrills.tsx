@@ -1,12 +1,15 @@
+import { useParams, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import AddDrillDetails from "~/components/AddDrillDetails/AddDrillDetails";
+import AddCoachingDrillDetails from "~/components/AddDrillDetails/AddCoachingDrillDetails";
+import AddFitnessDrillDetails from "~/components/AddDrillDetails/AddDrillDetails";
+import AddFitnessDrillInventory from "~/components/AddDrillInventory/AddDrillInventory";
 import AddDrillInventory from "~/components/AddDrillInventory/AddDrillInventory";
 import AddInventory from "~/components/AddInventory/AddInventory";
 import Card from "~/components/Card";
 
 const multiFormData = {
-  selectFitnessComponent: [],
+  selectSport: [],
   drillName: "",
   drillDescription: "",
   coahingPoints: "",
@@ -39,7 +42,7 @@ export interface FormContextTypes {
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 
-const AddDrills = () => {
+const AddCoachingDrills = () => {
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<any>(
@@ -55,9 +58,9 @@ const AddDrills = () => {
       <div className="bg-s-gray lg:px-6 lg:pb-7">
         <div className="grid grid-cols-6 grid-rows-1">
           <Card className="relative col-span-12 h-full min-h-[535px] !rounded-r-none rounded-l-xl p-0 pb-0 pt-10 lg:col-span-4 lg:bg-white lg:pb-6 ">
-            {currentStep === 1 && <AddDrillDetails />}
+            {currentStep === 1 && <AddCoachingDrillDetails />}
             {currentStep === 2 && (
-              <AddDrillInventory
+              <AddFitnessDrillInventory
               // finalFormSubmissionHandler={finalFormSubmissionHandler}
               />
             )}
@@ -68,4 +71,4 @@ const AddDrills = () => {
   );
 };
 
-export default AddDrills;
+export default AddCoachingDrills;

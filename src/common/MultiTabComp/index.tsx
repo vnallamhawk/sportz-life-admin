@@ -23,6 +23,7 @@ import {
   Dialog,
   DialogBody,
 } from "@material-tailwind/react";
+import { useRouter } from "next/navigation";
 
 const TABLE_HEAD = [
   { label: "Fee Plan Name", id: "name" },
@@ -77,6 +78,8 @@ interface MultiTabCompProps {
   TABLE2_ROWS?: { [key: string]: any; id: number }[];
   setFilterByName?: any;
   filterByName?: string;
+  fitnessDrill?: boolean;
+  setFitnessDrill?: any;
   onViewClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
   onDeleteClick?: (id: number) => void;
@@ -104,6 +107,7 @@ const MultiTabComp = ({
   activeKey,
   setActiveKey
 }: MultiTabCompProps) => {
+  const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
   const [modalOpen, setModalOpen] = React.useState(false);
