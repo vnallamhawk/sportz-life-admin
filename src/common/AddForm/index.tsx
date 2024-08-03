@@ -246,7 +246,7 @@ const AddForm = ({
                   placeHolder={props.placeHolder}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
                   value={formData[id] ? formData[id] : "10:00"}
-                  className="h-12"
+                  className="h-12 "
                   onChangeHandler={(value) => handleChangeTime(value, id)}
                 />
               );

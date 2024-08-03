@@ -174,6 +174,39 @@
   .renew-plan-bg {
     background-image: radial-gradient(circle at 80% 0%, #41160A 8%, #0C0D0E 100%);
   }
+  .injured-part{
+    visibility: hidden;
+  }
+  .injured-body{
+    display: inline-block;
+  }
+  .injured-body:hover .injured-part{
+      visibility: visible;
+  }
+  .injured-part::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #fff;
+    font-size: 0;
+    line-height: 0;
+    float: left;
+    position: absolute;
+    top: 25px;
+    left: -10px;
+  }
+  .react-time-picker{
+    width: 100%;
+    height: 48px;
+  }
+  
+}
+.react-time-picker__wrapper{
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db!important;
 }
 
 @layer base {

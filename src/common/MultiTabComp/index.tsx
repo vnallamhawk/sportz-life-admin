@@ -132,14 +132,14 @@ const MultiTabComp = ({
                 <Tab
                   value={tab1value}
                   activeClassName="active"
-                  className="text-nowrap w-20 px-0 font-heading text-2xl font-medium uppercase"
+                  className="text-nowrap w-auto px-0 font-heading text-2xl font-medium uppercase"
                 >
                   {tab1label}
                 </Tab>
                 <Tab
                   value={tab2value}
                   activeClassName="active"
-                  className="text-nowrap ml-5 w-20 px-0 font-heading text-2xl font-medium uppercase"
+                  className="text-nowrap ml-5 w-auto px-0 font-heading text-2xl font-medium uppercase"
                 >
                   {tab2label}
                 </Tab>
