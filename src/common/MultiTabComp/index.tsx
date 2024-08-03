@@ -80,6 +80,8 @@ interface MultiTabCompProps {
   onViewClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
   onDeleteClick?: (id: number) => void;
+  activeKey:string
+  setActiveKey:any
   filter?:boolean
 }
 const MultiTabComp = ({
@@ -99,6 +101,8 @@ const MultiTabComp = ({
   onViewClick,
   onEditClick,
   onDeleteClick,
+  activeKey,
+  setActiveKey
 }: MultiTabCompProps) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
@@ -120,7 +124,7 @@ const MultiTabComp = ({
       {/* <Checkout /> */}
       <div className="bg-s-gray px-6 pb-7">
         <div className="rounded-2xl shadow-sm lg:bg-white lg:p-6">
-          <Tabs value={tab1value}>
+          <Tabs value={tab1value} activeKey={activeKey}>
             <div className="pricing-tabs mb-6 flex items-center justify-between">
               <TabsHeader
                 className="pricing-tabs"
@@ -131,15 +135,22 @@ const MultiTabComp = ({
               >
                 <Tab
                   value={tab1value}
-                  activeClassName="active"
-                  className="text-nowrap w-20 px-0 font-heading text-2xl font-medium uppercase"
+                  // activeClassName="active"
+                  className={`${activeKey==="0"?"active":""} text-nowrap w-20 px-0 font-heading text-2xl font-medium uppercase`}
+                  key={"0"}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+                  onClick={()=>setActiveKey("0")}
                 >
                   {tab1label}
                 </Tab>
                 <Tab
                   value={tab2value}
-                  activeClassName="active"
-                  className="text-nowrap ml-5 w-20 px-0 font-heading text-2xl font-medium uppercase"
+                  // activeClassName="active"
+                  className={`${activeKey==="0"?"active":""} text-nowrap w-20 px-0 font-heading text-2xl font-medium uppercase`}
+                  key={"1"}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+                  onClick={()=>setActiveKey("1")}
+
                 >
                   {tab2label}
                 </Tab>

@@ -12,8 +12,9 @@ import TabsComponent from "~/components/Tabs";
 import MultiTabComp from "~/common/MultiTabComp";
 import { INJURY_ATHLETE_TABLE_HEADER, INJURY_COACH_TABLE_HEADER } from "~/constants/injuryLog";
 
-export default function AllInjuryLogs() {
+export default function AllTrainingPlans() {
   const router = useRouter();
+
   const [activeKey,setActiveKey]=useState("0")
 
   const [filterByName, setFilterByName] = useState("");
@@ -27,9 +28,10 @@ export default function AllInjuryLogs() {
    <>
      {/* <Checkout /> */}
      <MultiTabComp
-        tab1label="ATHLETE INJURIES"
-        tab2label="COACH INJURIES"
-        addButtonText="Add Injury"
+        tab1label="FITNESS PLAN"
+        tab2label="COACHING PLAN"
+        addButtonText="Add Plan"
+        setActiveKey={(key:string)=>setActiveKey(key)}              activeKey={activeKey}
         addButtonUrl="/injurylog/AddInjury"
         dropdownItems={{}}
         table1show={true}
@@ -40,8 +42,7 @@ export default function AllInjuryLogs() {
         TABLE2_ROWS={[]}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
-        setActiveKey={(key:string)=>setActiveKey(key)}              
-        activeKey={activeKey}
+
         // onViewClick={(id: number) => {}}
         // onEditClick={(id: number) => {}}
         // onDeleteClick={(id: number) => {}}

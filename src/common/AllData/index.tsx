@@ -2,7 +2,7 @@
 import Filter from "~/components/Filter";
 // import Table from "../../components/CommonTable";
 import Modal from "../../components/Modal";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import SearchIcon from "../../images/search.png";
 import Plus from "../../images/plus.svg";
@@ -13,6 +13,10 @@ import { Dropdown } from "flowbite-react";
 import Link from "next/link";
 import TableListView from "~/common/TableListView";
 import { useRouter } from "next/router";
+import FreezeModal from "~/components/Modal/FreezeModal";
+import SendReminderModal from "~/components/Modal/SendReminderModal";
+import AttendanceModal from "~/components/Modal/AttendanceModal";
+import ChangeCenterModal from "~/components/Modal/ChangeCenterModal";
 
 
 interface AllData{
@@ -30,9 +34,10 @@ interface AllData{
   onViewClick?:(id:number)=>void,
   onEditClick?:(id:number)=>void,
   onDeleteClick?:(id:number)=>void,
-  drills?:boolean,
-  setCoachingDrill?:any,
+
 }
+
+
 
 const dropdownData:{[key:string]:string}={
   changeBatch:"Change Batch",
@@ -58,39 +63,22 @@ const AllData = ({
   onViewClick,
   onEditClick,
   onDeleteClick,
-  drills,
-  setCoachingDrill,
+ 
 }: AllData) => {
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [selectedComponent,setSelectedComponent]=useState<string>("")
 
   const handleOpen = () => setOpen(!open);
 
+  
+
   return (
+    <>
     <div className="bg-s-gray px-6 pb-7">
       <div className="rounded-2xl shadow-sm lg:bg-white lg:p-6">
         <div className="mb-6 flex items-center justify-between ">
           <div className="font-heading text-2xl font-medium uppercase">
-            {!drills ? (
-              title
-            ) : (
-              <div className="flex gap-2">
-                <p
-                  className="cursor-pointer text-[1.6rem] font-bold text-[#F3476D] hover:border-b-4 hover:border-[#F3476D]"
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-                  onClick={() => setCoachingDrill(false)}
-                >
-                  FITNESS DRILL
-                </p>
-                <p
-                  className=" cursor-pointer text-[1.6rem] font-bold hover:border-b-4 hover:border-[#F3476D] hover:text-[#F3476D]"
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-                  onClick={() => setCoachingDrill(true)}
-                >
-                  COACHING DRILL
-                </p>
-              </div>
-            )}
           </div>
           <div className="hidden items-center lg:flex ">
             {setFilterByName && filterByName && (
@@ -114,7 +102,7 @@ const AllData = ({
                 </div>
               </>
             )}
-            {filter && <Filter />}
+            {filter && <Filter open={open}/>}
             {addButtonUrl && (
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               <Link href={addButtonUrl}>
@@ -154,7 +142,7 @@ const AllData = ({
                 >
                   {Object.keys(dropdownItems).map((item:string,index)=>{
                     return(
-                      <Dropdown.Item className="text-white hover:bg-black focus:bg-black" key={index}>
+                      <Dropdown.Item className="text-white hover:bg-black focus:bg-black" key={index} onClick={()=>setSelectedComponent(item)}>
                       {dropdownData[item]}
                     </Dropdown.Item>
                     )
@@ -165,7 +153,7 @@ const AllData = ({
             {filter && (
               <button
                 className="fixed bottom-24 right-10 inline-flex h-20 w-20 items-center justify-center rounded-full bg-black p-3 lg:hidden"
-                onClick={() => handleOpen}
+                onClick={() => handleOpen()}
               >
                 <Image width={0} height={0} src={FilterIcon} className="filter-icon w-auto h-auto " alt="" />
               </button>
@@ -175,36 +163,15 @@ const AllData = ({
 
         {Object.keys(dropdownItems).length > 0 && (
           <div className="mb-3 hidden  lg:flex">
-            {dropdownItems?.attendance && (
-              <button className="font-400 rounded bg-gray-500 px-4 py-0.5 text-white">
-                Attendance
+           {Object.keys(dropdownItems).map((item:string,index)=>{
+                    return(
+                      // eslint-disable-next-line react/jsx-key
+                      <button className="font-400 rounded bg-gray-500 px-4 py-0.5 text-white" onClick={()=>setSelectedComponent(item)}>
+                {dropdownData[item]}
               </button>
-            )}
-            {dropdownItems?.reminder && (
-              <button className="font-400 ml-2 rounded border border-gray-300 bg-white px-4 py-0.5 text-black">
-                Reminder
-              </button>
-            )}
-            {dropdownItems?.freeze && (
-              <button className="font-400 ml-2 rounded border border-gray-300 bg-white px-4 py-0.5 text-black">
-                Freeze
-              </button>
-            )}
-            {dropdownItems?.changeCenter && (
-              <button className="font-400 ml-2 rounded border border-gray-300 bg-white px-4 py-0.5 text-black">
-                Change Center
-              </button>
-            )}
-            {dropdownItems?.changeBatch && (
-              <button className="font-400 ml-2 rounded border border-gray-300 bg-white px-4 py-0.5 text-black">
-                
-              </button>
-            )}
-            {dropdownItems?.delete && (
-              <button className="font-400 ml-2 rounded border border-gray-300 bg-white px-4 py-0.5 text-black">
-                
-              </button>
-            )}
+                    
+                    )
+                  })}
           </div>
         )}
         <TableListView
@@ -218,6 +185,11 @@ const AllData = ({
         />
       </div>
     </div>
+    <FreezeModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent}/>
+    <SendReminderModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent}/>
+<ChangeCenterModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent}/>
+<AttendanceModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent}/>
+    </>
   );
 };
 

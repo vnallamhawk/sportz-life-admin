@@ -66,7 +66,6 @@ const AllCenter = () => {
         onViewClick={(id: number) => router.push(`/centers/${id ?? ""}`)}
         onEditClick={(id: number) => router.push(`/edit-center-${id}`)}
         onDeleteClick={(id: number) => deleteCenter(id)}
-        drills={false}
       />
     </>
   );

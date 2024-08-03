@@ -20,6 +20,8 @@ const AllDrills = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [filterByName, setFilterByName] = useState("");
+  const [activeKey,setActiveKey]=useState("0")
+
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
@@ -32,29 +34,6 @@ const AllDrills = () => {
   const [coachingDrill, setCoachingDrill] = useState(false);
   return (
     <>
-      {/* <AllData
-        title="ALL CENTERS"
-        addButtonText="Add Drill"
-        addButtonUrl="/drills/AddDrills"
-        dropdownItems={{}}
-        filter={true}
-        TABLE_HEAD={
-          coachingDrill
-            ? COACHING_DRILL_TABLE_HEADERS
-            : FITNESS_DRILL_TABLE_HEADERS
-        }
-        TABLE_ROWS={finalData}
-        setFilterByName={setFilterByName}
-        filterByName={filterByName}
-        rowSelection={false}
-        showImage={false}
-        onViewClick={(id: number) => router.push(`/drills/${id ?? ""}`)}
-        onEditClick={(id: number) => router.push(`/edit-drills-${id}`)}
-        onDeleteClick={(id: number) => deleteDrills(id)}
-        drills={true}
-        setCoachingDrill={setCoachingDrill}
-      /> */}
-
       <MultiTabComp
         tab1label="FITNESS DRILL"
         tab2label="COACHING DRILL"
@@ -71,8 +50,9 @@ const AllDrills = () => {
         filterByName={filterByName}
         onViewClick={(id: number) => router.push(`/drills/${id ?? ""}`)}
         onEditClick={(id: number) => router.push(`/edit-drills-${id}`)}
-        onDeleteClick={(id: number) => deleteDrills(id)}
-      />
+        onDeleteClick={(id: number) => deleteDrills(id)} 
+        activeKey={activeKey} 
+        setActiveKey={(key:string)=>setActiveKey(key)}      />
     </>
   );
 };

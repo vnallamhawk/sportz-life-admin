@@ -4,25 +4,25 @@ import Image from "next/image";
 import React from "react";
 import Cross from "../../images/cross.svg";
 
-const StaffReminderModal = ({
-  open,
-  setShow,
+const SendReminderModal = ({
+  selectedComponent,
+  setSelectedComponent,
 }: {
-  open: boolean;
-  setShow: (value: boolean) => void;
+  selectedComponent: string;
+  setSelectedComponent: (value: string) => void;
 }) => {
   const customTheme = {
     inlineWrapper:
       "text-gray-500 font-medium text-lg bg-white border-gray-200 border w-full  focus:outline-none  font-medium rounded-lg  px-5 py-2.5 justify-between inline-flex items-center ",
   };
-  const handleOpen = () => {
-    setShow(false);
+  const handleClose = () => {
+    setSelectedComponent("");
   };
   return (
     <>
       <Dialog
-        open={open}
-        handler={handleOpen}
+        open={selectedComponent==="reminder"}
+        handler={handleClose}
         animate={{
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
@@ -33,7 +33,7 @@ const StaffReminderModal = ({
           <div className="font-heading text-2xl font-medium uppercase">
             Send Reminder
           </div>
-          <button onClick={handleOpen}>
+          <button onClick={handleClose}>
             <Image width={0} height={0} className="w-auto h-auto" src={Cross} alt="" />
           </button>
         </DialogHeader>
@@ -61,4 +61,4 @@ const StaffReminderModal = ({
   );
 };
 
-export default StaffReminderModal;
+export default SendReminderModal;
