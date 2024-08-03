@@ -17,6 +17,7 @@ import FreezeModal from "~/components/Modal/FreezeModal";
 import SendReminderModal from "~/components/Modal/SendReminderModal";
 import AttendanceModal from "~/components/Modal/AttendanceModal";
 import ChangeCenterModal from "~/components/Modal/ChangeCenterModal";
+import ChangeBatchModal from "~/components/Modal/ChangeBatchModal";
 
 
 interface AllData{
@@ -188,6 +189,7 @@ const AllData = ({
     <FreezeModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent}/>
     <SendReminderModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent}/>
 <ChangeCenterModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent}/>
+<ChangeBatchModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent}/>
 <AttendanceModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent}/>
     </>
   );

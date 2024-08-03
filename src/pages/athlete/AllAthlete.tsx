@@ -26,8 +26,8 @@ export default function Athlete() {
       : api.athlete.getAthleteByName.useQuery({ name: filterByName });
 
   const dropdownObj = {
-    center: true,
-    batch: true,
+    changeCenter: true,
+    changeBatch: true,
     delete: true,
     attendance: true,
     reminder: true,
