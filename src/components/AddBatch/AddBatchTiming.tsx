@@ -8,17 +8,14 @@ import { Controller, useForm } from "react-hook-form";
 import Timepicker from "~/components/TimePicker/TimePickerWrapper";
 import { api } from "~/utils/api";
 import Select from "react-select";
-import {
-  BATCH_DETAILS_TIMING,
-} from "~/constants/batchConstant";
+import { BATCH_DETAILS_TIMING } from "~/constants/batchConstant";
 import Table from "../Table";
 import BatchTimeTableHeader from "../BatchTiming/BatchTimingTableHeader";
 import BatchTimeTableBody from "../BatchTiming/BatchTimingTableBody";
 import type { FormValues } from "~/types/common";
 
-
-interface BatchTimeData{
-  [key:string]:string
+interface BatchTimeData {
+  [key: string]: string;
 }
 
 export default function AddBatchTiming(props: any) {
@@ -39,9 +36,11 @@ export default function AddBatchTiming(props: any) {
   // useForm<CENTER_BATCH_TYPES>({ mode: "onSubmit" });
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
-  const [currentBatchDetail, setCurrentBatchDetail] = useState<BatchTimeData>({day:"",
-    startTime:"",
-    endTime:""});
+  const [currentBatchDetail, setCurrentBatchDetail] = useState<BatchTimeData>({
+    day: "",
+    startTime: "",
+    endTime: "",
+  });
 
   const [formConstantValues, setFormConstantValues] =
     useState<FormValues[]>(BATCH_DETAILS_TIMING);
@@ -82,10 +81,10 @@ export default function AddBatchTiming(props: any) {
   // }, [formData]);
   //test commit
 
-  const handleChangeBatch = (value: any, id: string ) => {
-    const batchDetails:BatchTimeData= { ...currentBatchDetail };
+  const handleChangeBatch = (value: any, id: string) => {
+    const batchDetails: BatchTimeData = { ...currentBatchDetail };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    batchDetails[id] = value 
+    batchDetails[id] = value;
     setCurrentBatchDetail(batchDetails);
   };
 
@@ -201,7 +200,7 @@ export default function AddBatchTiming(props: any) {
       <CardTitle title="ADD BATCH" />
       <div className="text-lg font-bold">BATCH TIMINGS</div>
       <div className="mt-10 grid grid-cols-3 gap-x-10 gap-y-12">
-        {formConstantValues.map((props:FormValues) => (
+        {formConstantValues.map((props: FormValues) => (
           <div key={props.id}>
             {getInputElement(props)}
 
@@ -248,6 +247,27 @@ export default function AddBatchTiming(props: any) {
           Finish
         </Button>
       </div>
+
+      {/* <AddForm
+        cardTitle="ADD STAFF"
+        cardSubTitle="DUTY SHIFT"
+        formConstantValues={formConstantValues}
+        buttonItems={{ prevFinish: true }}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        formData={formData}
+        currentStep={currentStep}
+        setCurrentStep={setCurrentStep}
+        tableTitle="SHIFTS"
+        mobileAddButtonText="Add another shift"
+        TableHeadings={STAFF_TIMINGS_TABLE_HEADERS}
+        //  tableFields={STAFF_SHIFT_CONSTANTS}
+        tablekey="staffShiftDetails"
+        tableData={staffShiftDetails}
+        addTableData={onAddStaffTiming}
+        finalFormSubmissionHandler={submitCallback}
+        isFormTable={true}/> */}
     </>
   );
 }

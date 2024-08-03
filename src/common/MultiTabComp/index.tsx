@@ -23,6 +23,7 @@ import {
   Dialog,
   DialogBody,
 } from "@material-tailwind/react";
+import { useRouter } from "next/navigation";
 
 const TABLE_HEAD = [
   { label: "Fee Plan Name", id: "name" },
@@ -77,6 +78,8 @@ interface MultiTabCompProps {
   TABLE2_ROWS?: { [key: string]: any; id: number }[];
   setFilterByName?: any;
   filterByName?: string;
+  fitnessDrill?: boolean;
+  setFitnessDrill?: any;
   onViewClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
   onDeleteClick?: (id: number) => void;
@@ -95,11 +98,17 @@ const MultiTabComp = ({
   TABLE2_ROWS,
   setFilterByName,
   filterByName,
+<<<<<<< Updated upstream
   filter=true,
+=======
+  fitnessDrill,
+  setFitnessDrill,
+>>>>>>> Stashed changes
   onViewClick,
   onEditClick,
   onDeleteClick,
 }: MultiTabCompProps) => {
+  const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(!open);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -132,14 +141,16 @@ const MultiTabComp = ({
                 <Tab
                   value={tab1value}
                   activeClassName="active"
-                  className="text-nowrap w-20 px-0 font-heading text-2xl font-medium uppercase"
+                  className="text-nowrap w-30 px-0 font-heading text-2xl font-medium uppercase"
+                  onClick={() => setFitnessDrill(true)}
                 >
                   {tab1label}
                 </Tab>
                 <Tab
                   value={tab2value}
                   activeClassName="active"
-                  className="text-nowrap ml-5 w-20 px-0 font-heading text-2xl font-medium uppercase"
+                  className="text-nowrap w-30 ml-5 px-0 font-heading text-2xl font-medium uppercase"
+                  onClick={() => setFitnessDrill(false)}
                 >
                   {tab2label}
                 </Tab>
