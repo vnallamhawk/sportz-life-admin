@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import React, { useEffect, useContext, useState, useRef, useCallback } from "react";
 
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import Textbox from "~/components/Textbox";
@@ -44,6 +44,8 @@ interface AddForm {
   prevButtonClick?: any;
   dependentKey?: string;
   setDependentKey?: any;
+  dependentKey1?: string;
+  setDependentKey1?: any;
 }
 const AddForm = ({
   cardTitle,
@@ -73,6 +75,8 @@ const AddForm = ({
   prevButtonClick,
   dependentKey,
   setDependentKey,
+  dependentKey1,
+  setDependentKey1
 }: AddForm) => {
   let inputElement;
   const {
@@ -88,7 +92,7 @@ const AddForm = ({
     [key: string]: any;
   }>({});
 
-  const nextClickHandler = async () => {
+  const nextClickHandler = useCallback(async () => {
     const result = await trigger();
     if (result) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -96,7 +100,7 @@ const AddForm = ({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const obj: any = { ...formData, ...currentFormValues };
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      if (buttonItems?.prevNext && tablekey) {
+      if ((buttonItems?.prevNext||buttonItems?.next) && tablekey) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         tablekey && (obj[tablekey] = tableData);
       }
@@ -105,8 +109,18 @@ const AddForm = ({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       setCurrentStep && setCurrentStep(currentStep + 1);
     }
-  };
+  },[buttonItems?.next, buttonItems?.prevNext, currentStep, formData, getValues, setCurrentStep, setFormData, tableData, tablekey, trigger]);
 
+  useEffect(()=>{
+    if(buttonItems && Object.keys(buttonItems).length===0){
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const currentFormValues = getValues();
+      const obj: unknown = { ...formData, ...currentFormValues };
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      setFormData && setFormData(obj);
+        }
+
+  },[buttonItems, formData, getValues, nextClickHandler, setFormData])
   const prevClickHandler = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     setCurrentStep && setCurrentStep(currentStep - 1);
@@ -161,7 +175,6 @@ const AddForm = ({
   };
 
   const getInputElement = (props: FormValues) => {
-    console.log("dataaadsjds", props);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { type, rules, id, pattern, placeHolder } = props;
     switch (type) {
@@ -190,6 +203,10 @@ const AddForm = ({
                     if (dependentKey && dependentKey === id) {
                       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                       setDependentKey(element?.value);
+                    }
+                    if (dependentKey1 && dependentKey1 === id) {
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                      setDependentKey1(element?.value);
                     }
                   }}
                 />
@@ -499,6 +516,7 @@ const AddForm = ({
                                       className="border-y-2 border-gray-100 p-4 font-medium text-gray-400"
                                       // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                                       onClick={() =>
+                                        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                                         onRemoveTableButton(dataIndex)
                                       }
                                     >

@@ -11,6 +11,7 @@ export default function AddCoach() {
   let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
   const [medicalHistoryData, setMedicalHistoryData] = useState([]);
@@ -53,16 +54,7 @@ export default function AddCoach() {
     }
   }, [formConstantValues, sports, sports?.length]);
 
-  useEffect(() => {
-    // if (!isEditMode) {
-    reset({
-      ...currentFormValues,
-      ...formData,
-    });
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
-  //test commit
+
 
   const addTableData = (currentData: any) => {
     const arr: any = [...medicalHistoryData];
@@ -88,13 +80,13 @@ export default function AddCoach() {
         mobileAddButtonText="Add another medical history"
         TableHeadings={[
           { label: "#", id: "No." },
-          { label: "Medical History", id: "medicalHistory" },
+          { label: "Medical History", id: "message" },
           { label: "Action", id: "action" },
         ]}
         tableFields={[
           {
             type: "textarea",
-            name: "medicalHistory",
+            name: "message",
             placeholder: "Medical Pre-History 1",
           },
         ]}
@@ -103,6 +95,7 @@ export default function AddCoach() {
         addTableData={addTableData}
         buttonItems={{ next: true }}
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}

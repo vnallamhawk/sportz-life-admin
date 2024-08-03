@@ -19,6 +19,8 @@ import { athleteRouter } from "./routers/athlete";
 import { coachCertificateRouter } from "./routers/coachCertifications";
 import { coachBatchesRouter } from "./routers/coachBatches";
 import { coachSportsRouter } from "./routers/coachSports";
+import { athleteSportsRouter } from "./routers/athleteSports";
+import { athleteBatchesRouter } from "./routers/athleteBatches";
 
 /**
  * This is the primary router for your server.
@@ -44,7 +46,9 @@ export const appRouter = createTRPCRouter({
   athlete:athleteRouter,
   coachCertificate:coachCertificateRouter,
   coachBatches:coachBatchesRouter,
-  coachSports:coachSportsRouter
+  coachSports:coachSportsRouter,
+  athleteSports:athleteSportsRouter,
+  athleteBatches:athleteBatchesRouter
 });
 
 // export type definition of API

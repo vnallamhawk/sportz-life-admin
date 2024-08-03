@@ -126,7 +126,7 @@ export const ATHLETE_DETAILS_CONSTANTS: FormValues[] = [
 export const ATHLETE_GENRAL_CONSTANTS = [
   {
     label: "Center",
-    id: "center",
+    id: "centerId",
     type: "select",
     options: [],
     placeHolder: "Center",
@@ -136,7 +136,7 @@ export const ATHLETE_GENRAL_CONSTANTS = [
   },
   {
     label: "Sport",
-    id: "sport",
+    id: "sportId",
     type: "select",
     options: [],
     placeHolder: "Sport",
@@ -217,7 +217,7 @@ export const ATHLETE_CONTACT_CONSTANTS = [
   },
   {
     label: "Residential Address",
-    id: "name",
+    id: "address",
     type: "textarea",
     placeHolder: "Residential Address",
     rules: {

@@ -98,7 +98,7 @@ export const coachRouter = createTRPCRouter({
         createdBy:z.number().optional().default(undefined),
         createdAt:z.date(),
         updatedAt:z.date(),
-        academyId:z.number()
+        academyId:z.number().optional().default(undefined)
 
       })
     )

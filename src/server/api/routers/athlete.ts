@@ -75,7 +75,12 @@ export const athleteRouter = createTRPCRouter({
         address:z.string(),
         centerId: z.number(),
         medicalHistory:z.array(z.object({message:z.string()})),
-        fatherName:z.string()
+        fatherName:z.string(),
+        heightUnit:z.string(),
+        weightUnit:z.string(),
+        createdAt:z.date(),
+        updatedAt:z.date(),
+        academyCode:z.number().optional().default(undefined)
       })
     )
     .mutation(
@@ -92,7 +97,11 @@ export const athleteRouter = createTRPCRouter({
           centerId,
           medicalHistory,
           address,
-          fatherName
+          fatherName,
+          createdAt,
+          updatedAt,
+          academyCode
+        
         },
         ctx,
       }) => {
@@ -109,7 +118,12 @@ export const athleteRouter = createTRPCRouter({
             centerId: centerId,
             dob: dob,
             address,
-            fatherName
+            fatherName,
+            heightUnit:"cm",
+            weightUnit:"kg",
+            createdAt,
+            updatedAt,
+            academyCode
           },
         });
         return response;

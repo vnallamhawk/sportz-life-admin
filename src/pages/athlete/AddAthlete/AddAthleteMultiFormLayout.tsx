@@ -24,6 +24,7 @@ import { getSportsDictionaryServices } from "~/services/sportServices";
 import AddAthlete from "../../../components/AddAthlete/AddAthlete";
 import DashboardHeader from "~/components/DashboardHeader";
 import AddGeneralDetails from "~/components/AddAthlete/AddGeneralDetails";
+import { useSession } from "next-auth/react";
 
 // const multiFormData: MULTI_FORM_TYPES = {
 const multiFormData = {
@@ -71,6 +72,9 @@ export default function AddAthleteMultiFormLayout() {
   const [formData, setFormData] = useState<any>(
     defaultValues.multiFormData.formData
   );
+  const { data: sessionData } = useSession();
+  const [athleteId, setAthleteId] = useState<number>();
+
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
 
@@ -83,11 +87,28 @@ export default function AddAthleteMultiFormLayout() {
     onSuccess: (response) => {
       console.log("response data is ", response);
       setOpenToast(true);
-      void router.push(`/athlete/${response?.id ?? ""}`);
+      setAthleteId(response?.id)
+      return response
     },
   });
 
+  const { mutate: createMutateAthleteSports } =
+    api.athleteSports.createAthleteSports.useMutation({
+      onSuccess: (response) => {
+        console.log("response data is ", response);
 
+        return response;
+      },
+    });
+    const { mutate: createMutateAthleteBatches } =
+    api.athleteBatches.createAthletebatches.useMutation({
+      onSuccess: (response) => {
+        console.log("response data is ", response);
+        router.push(`/athlete/${athleteId ?? ""}`);
+
+        return response;
+      },
+    });
 
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
     setPreview(
@@ -99,6 +120,31 @@ export default function AddAthleteMultiFormLayout() {
     );
   }, []);
 
+
+  useEffect(() => {
+    if (
+      formData &&
+      Object.keys(formData)?.length > 0 &&
+      formData?.sportId &&
+      formData?.batch &&
+      athleteId
+    ) {
+
+      const finalCoachSports = formData?.batch?.map((v:any) => ({
+        sportId: parseInt(v.sportId),
+        batchId:v.id,
+        athleteId,
+        centerId: parseInt(formData.center?.value),
+        createdAt:new Date(),
+        updatedAt:new Date(),
+      }));
+
+      createMutateAthleteSports(finalCoachSports);
+
+      createMutateAthleteBatches(finalCoachSports);
+    }
+  }, [athleteId, formData]);
+  
   const finalFormSubmissionHandler = (
     finalForm:any
   ) => {
@@ -134,15 +180,21 @@ export default function AddAthleteMultiFormLayout() {
         name: finalForm.name,
         phone: finalForm.phone,
         email: finalForm.email,
-        bloodGroup: finalForm.bloodGroup,
+        bloodGroup: finalForm.bloodGroup.value,
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
         dob: new Date(finalForm.dob),
-        height:finalForm.height,
-        weight:finalForm.weight,
+        height:parseInt(finalForm.height),
+        weight:parseInt(finalForm.weight),
         address:finalForm.address,
         medicalHistory:finalForm.medicalHistory,
-        centerId: finalForm.centerId,
-        fatherName:finalForm.fatherName
+        centerId: parseInt(finalForm.centerId.value),
+        fatherName:finalForm.fatherName,
+        heightUnit:"cm",
+        weightUnit:"kg",
+        createdAt:new Date(),
+        updatedAt:new Date(),
+        academyCode: sessionData?.token?.academyId,
+
       });
     }
   };
