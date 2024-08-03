@@ -139,7 +139,6 @@ const MultiTabComp = ({
               >
                 <Tab
                   value={tab1value}
-                  // activeClassName="active"
                   className={`${activeKey==="0"?"active":""} text-nowrap w-auto px-0 font-heading text-2xl font-medium uppercase`}
                   key={"0"}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
@@ -149,8 +148,7 @@ const MultiTabComp = ({
                 </Tab>
                 <Tab
                   value={tab2value}
-                  // activeClassName="active"
-                  className={`${activeKey==="0"?"active":""} text-nowrap w-auto px-0 font-heading text-2xl font-medium uppercase`}
+                  className={`${activeKey==="1"?"active":""} text-nowrap w-auto px-0 font-heading text-2xl font-medium uppercase`}
                   key={"1"}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                   onClick={()=>setActiveKey("1")}

@@ -84,22 +84,34 @@ export const ATHLETE_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Height",
     id: "height",
-    type: "number",
+    type: "inputDropdown",
     pattern: "pattern",
     placeHolder: "Height",
+    dropdownKey:"heightUnit",
+    dropdownLabel:"CM",
     rules: {
       required: true,
     },
+    options:[
+      {label:"CM",value:"cm"},
+      {label:"Feet",value:"feet"}
+    ]
   },
   {
     label: "Weight",
     id: "weight",
-    type: "number",
+    type: "inputDropdown",
     pattern: "pattern",
+    dropdownKey:"weightUnit",
+    dropdownLabel:"KG",
     placeHolder: "Weight",
     rules: {
       required: true,
     },
+    options:[
+      {label:"KG",value:"kg"},
+      {label:"Pounds",value:"pounds"}
+    ]
   },
   {
     label: "Blood Group",

@@ -46,7 +46,7 @@ const ChangeBatchModal = (
         <DialogBody className="px-0">
           <div>
             <Dropdown
-              label="Centers"
+              label="Batches"
               inline={true}
               theme={Theme}
               dismissOnClick={false}

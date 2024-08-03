@@ -97,15 +97,7 @@ export default function AddInjury() {
               className="min-h-[117px] w-full resize-y rounded-lg border border-solid border-gray-300 px-5 py-2 text-lg focus:ring-0"
               placeholder="Injury Description"
             ></textarea>
-            <div className="mt-4 relative">
-              <input type="text" placeholder="Height" className="pl-5 rounded-lg border border-gray-300 h-12 w-full focus:border-gray-300 focus:outline-none focus:ring-0" />
-              <div className="dropdown absolute top-0.5 right-0.5">
-                <Dropdown label="CM" inline={true} theme={customTheme} dismissOnClick={false} className="text-black">
-                  <Dropdown.Item>CM</Dropdown.Item>
-                  <Dropdown.Item>INCH</Dropdown.Item>
-                </Dropdown>
-              </div>
-            </div>
+            
             <div className="border border-solid border-gray-300 pl-5 pr-3 py-3 mt-3 rounded-lg flex items-center justify-between">
               <div className="text-[#5A5A5A] font-medium">Upload Image of Affected Part</div>
               <label>

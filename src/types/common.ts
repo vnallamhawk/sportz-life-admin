@@ -23,6 +23,8 @@ export interface FormValues {
   placeHolder?: string;
   isMulti?: boolean;
   options?: { label: string|undefined; value: string | number|undefined }[];
+  dropdownLabel?:string|undefined
+  dropdownKey?:string|undefined
 }
 export interface TableFields {
   type: string;

@@ -175,7 +175,6 @@ export default function AddAthleteMultiFormLayout() {
       // eslint-disable-next-line no-console
       console.log(finalForm);
       // eslint-disable-next-line no-console
-      console.log(finalForm, "djbsdbfn");
       createMutate({
         name: finalForm.name,
         phone: finalForm.phone,

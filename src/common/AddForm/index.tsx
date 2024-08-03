@@ -1,4 +1,10 @@
-import React, { useEffect, useContext, useState, useRef, useCallback } from "react";
+import React, {
+  useEffect,
+  useContext,
+  useState,
+  useRef,
+  useCallback,
+} from "react";
 
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import Textbox from "~/components/Textbox";
@@ -12,7 +18,7 @@ import { Switch } from "@material-tailwind/react";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import Button from "~/components/Button";
-import { Textarea } from "flowbite-react";
+import { Dropdown, Textarea } from "flowbite-react";
 import type { FormValues, TableFields } from "~/types/common";
 
 interface AddForm {
@@ -76,7 +82,7 @@ const AddForm = ({
   dependentKey,
   setDependentKey,
   dependentKey1,
-  setDependentKey1
+  setDependentKey1,
 }: AddForm) => {
   let inputElement;
   const {
@@ -100,7 +106,7 @@ const AddForm = ({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const obj: any = { ...formData, ...currentFormValues };
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      if ((buttonItems?.prevNext||buttonItems?.next) && tablekey) {
+      if ((buttonItems?.prevNext || buttonItems?.next) && tablekey) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         tablekey && (obj[tablekey] = tableData);
       }
@@ -109,18 +115,28 @@ const AddForm = ({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       setCurrentStep && setCurrentStep(currentStep + 1);
     }
-  },[buttonItems?.next, buttonItems?.prevNext, currentStep, formData, getValues, setCurrentStep, setFormData, tableData, tablekey, trigger]);
+  }, [
+    buttonItems?.next,
+    buttonItems?.prevNext,
+    currentStep,
+    formData,
+    getValues,
+    setCurrentStep,
+    setFormData,
+    tableData,
+    tablekey,
+    trigger,
+  ]);
 
-  useEffect(()=>{
-    if(buttonItems && Object.keys(buttonItems).length===0){
+  useEffect(() => {
+    if (buttonItems && Object.keys(buttonItems).length === 0) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const currentFormValues = getValues();
       const obj: unknown = { ...formData, ...currentFormValues };
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       setFormData && setFormData(obj);
-        }
-
-  },[buttonItems, formData, getValues, nextClickHandler, setFormData])
+    }
+  }, [buttonItems, formData, getValues, nextClickHandler, setFormData]);
   const prevClickHandler = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     setCurrentStep && setCurrentStep(currentStep - 1);
@@ -176,10 +192,20 @@ const AddForm = ({
 
   const getInputElement = (props: FormValues) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { type, rules, id, pattern, placeHolder } = props;
+    const {
+      type,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      rules,
+      id,
+      pattern,
+      placeHolder,
+      dropdownKey,
+      dropdownLabel,
+      options,
+    } = props;
+
     switch (type) {
       case "select":
-        const { options } = props;
         inputElement = (
           <Controller
             control={control}
@@ -212,6 +238,53 @@ const AddForm = ({
                 />
               );
             }}
+          />
+        );
+        break;
+
+      case "inputDropdown":
+        inputElement = (
+          <Controller
+            control={control}
+            render={({ field: { onChange, value } }) => {
+              return (
+                <div className="relative mt-4">
+                  <Textbox
+                    className="h-12 w-full"
+                    placeHolder={placeHolder}
+                    onChangeHandler={onChange}
+                    // TODO: FIX THIS TS ERROR
+                    value={value as string}
+                  />
+                  <div className="dropdown absolute right-0.5 top-0.5">
+                    <Dropdown
+                      label={dropdownLabel}
+                      inline={true}
+                      dismissOnClick={false}
+                      className="text-black"
+                    >
+                      {dropdownKey &&
+                        options?.map((item) => {
+                          // eslint-disable-next-line react/jsx-key
+                          return (
+                            // eslint-disable-next-line react/jsx-key
+                            <Dropdown.Item
+                              onClick={() =>
+                                handleChangeTime(item.value, dropdownKey)
+                              }
+                            >
+                              {item.label}
+                            </Dropdown.Item>
+                          );
+                        })}
+                    </Dropdown>
+                  </div>
+                </div>
+              );
+            }}
+            name={id}
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            rules={rules}
           />
         );
         break;
