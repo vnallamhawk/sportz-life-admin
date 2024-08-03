@@ -1,1 +1,1 @@
-export { default } from "./AddDrills";
+export { default } from "./AddFitnessDrills";

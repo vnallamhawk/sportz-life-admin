@@ -1,5 +1,4 @@
 
-import Modal from "../../components/Modal";
 import React, { useEffect, useState } from "react";
 import AllData from "~/common/AllData";
 import { useRouter } from "next/router";
@@ -27,8 +26,8 @@ export default function Athlete() {
       : api.athlete.getAthleteByName.useQuery({ name: filterByName });
 
   const dropdownObj = {
-    center: true,
-    batch: true,
+    changeCenter: true,
+    changeBatch: true,
     delete: true,
     attendance: true,
     reminder: true,
@@ -80,7 +79,6 @@ export default function Athlete() {
         onEditClick={(id: number) => void router.push(`/edit-athlete-${id}`)}
         onDeleteClick={(id: number) => deleteAthlete(id)}
       />
-      <Modal />
     </>
   );
 }

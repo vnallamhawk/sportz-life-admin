@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FormContext } from "~/pages/drills/AddDrills/AddFitnessDrills";
+import { FormContext } from "~/pages/drills/AddDrills/AddCoachingDrills";
 // import AddInventoryModal from "./AddInventoryModal";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
@@ -9,7 +9,7 @@ import AddForm from "~/common/AddForm";
 import { DRILL_INVENTORY_TABLE_HEADERS } from "~/constants/inventoryConstant";
 import type { MultiSelectOption } from "~/types/select";
 
-const AddFitnessDrillInventory = (props: any) => {
+const AddCoachingDrillInventory = (props: any) => {
   const [inventories, setInventories] = useState<{ [key: string]: any }[]>([]);
   const [finalOptions, setFinalOptions] = useState<MultiSelectOption[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -108,7 +108,7 @@ const AddFitnessDrillInventory = (props: any) => {
         />
       )} */}
       <AddForm
-        cardTitle="ADD FITNESS DRILL"
+        cardTitle="ADD COACHING DRILL"
         tableTitle="ADD EQUIPMENT"
         tableDescription={""}
         tableFields={[
@@ -141,4 +141,4 @@ const AddFitnessDrillInventory = (props: any) => {
   );
 };
 
-export default AddFitnessDrillInventory;
+export default AddCoachingDrillInventory;

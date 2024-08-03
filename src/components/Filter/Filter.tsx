@@ -1,7 +1,7 @@
 import Image from "next/image";
 import FilterIcon from "../../images/filter-icon.svg";
 import Cross from "../../images/cross.svg";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Accordion,
     AccordionHeader,
@@ -15,8 +15,17 @@ import {
     Tab,
     TabPanel,
 } from "@material-tailwind/react";
+import { boolean } from "zod";
 
-export default function Filter() {
+export default function Filter({open}:{open:boolean}) {
+    const [filter,setFilter]=useState<boolean>(false)
+
+
+    useEffect(()=>{
+        setFilter(open)
+
+    },[open])
+    console.log(open,"hbddnsbnffbn",filter)
 
     const [openAcc1, setOpenAcc1] = React.useState(true);
     const [openAcc2, setOpenAcc2] = React.useState(true);
@@ -34,13 +43,13 @@ export default function Filter() {
     return (
         <>
             <div >
-                <button className="lg:block hidden ml-3 border-gray-200 focus:ring-0 relative text-gray-700 bg-white pl-4 pr-20 py-2.5 border-2  focus:outline-none rounded-lg text-sm">Filter <Image width={0} height={0} src={FilterIcon} alt="" className="absolute right-2 top-1.5 w-auto h-auto" /></button>
-                <div className="relative lg:fixed left-0 right-0 top-0 bottom-0 min-h-screen w-full z-20 transition-all ease-in duration-300 hidden">
+                <button className="lg:block hidden ml-3 border-gray-200 focus:ring-0 relative text-gray-700 bg-white pl-4 pr-20 py-2.5 border-2  focus:outline-none rounded-lg text-sm" onClick={()=>setFilter(!filter)}>Filter <Image width={0} height={0} src={FilterIcon} alt="" className="absolute right-2 top-1.5 w-auto h-auto"  /></button>
+                <div className={`relative lg:fixed left-0 right-0 top-0 bottom-0 min-h-screen w-full z-20 transition-all ease-in duration-300 ${filter?"filter-visible":"hidden"}`}>
                             <div className="f-overlay bg-black bg-opacity-30 w-full h-full hidden"></div>
                             <div className="bg-white min-w-[355px] max-w-[355px] min-h-screen overflow-auto scroll fixed top-0 bottom-0 f-screen -right-[355px] p-6 pr-7 transition-all ease-in duration-300">
                                 <div className="flex justify-between items-center mb-5">
                                     <div className="font-heading font-medium text-2xl">Filter</div>
-                                    <button><Image width={0} height={0} src={Cross} alt="" className="w-auto h-auto"/></button>
+                                    <button onClick={()=>setFilter(false)}><Image width={0} height={0} src={Cross} alt="" className="w-auto h-auto"/></button>
                                 </div>
                                 <Accordion open={openAcc1}>
                                     <AccordionHeader className="accordion text-base border-0 pb-0 flex justify-between" onClick={handleOpenAcc1}>
@@ -231,13 +240,13 @@ export default function Filter() {
 
 
                 {/* mobile responsive */}
-                {/* <div className="relative lg:fixed left-0 right-0 top-0 bottom-0 min-h-screen w-full z-20 transition-all ease-in duration-300  filter-visible">
+                <div className={`relative lg:fixed left-0 right-0 top-0 bottom-0 min-h-screen w-full z-20 transition-all ease-in duration-300 ${filter?"filter-visible":"hidden"}`}>
                     <div className="f-overlay bg-black bg-opacity-30 w-full h-full hidden"></div>
                     <div className="bg-white w-full min-h-screen overflow-auto scroll fixed top-0 bottom-0 f-screen -right-[355px] p-6 pe-7 ps-0 transition-all ease-in duration-300">
                         <div className="flex flex-col h-full">
                             <div className="flex justify-between items-center mb-5 ps-6">
                                 <div className="font-heading font-medium text-2xl">Filter</div>
-                                <button><Image width={0} height={0} src={Cross} alt="" className="w-auto h-auto" /></button>
+                                <button onClick={()=>setFilter(false)}><Image width={0} height={0} src={Cross} alt="" className="w-auto h-auto" /></button>
                             </div>
                             <div className="flex justify-between items-center mb-5 ps-6">
                                 <div className="font-heading font-medium text-2xl">Filter</div>
@@ -355,7 +364,7 @@ export default function Filter() {
                             </div>
                         </div>
                     </div>
-                </div> */}
+                </div>
             </div>
 
         </>

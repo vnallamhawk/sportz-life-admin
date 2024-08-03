@@ -1,5 +1,6 @@
-import { type BATCH_DETAILS_CONSTANTS_TYPES } from "~/types/batch";
-export const BATCH_DETAILS_CONSTANTS: BATCH_DETAILS_CONSTANTS_TYPES[] = [
+//  import { type BATCH_DETAILS_CONSTANTS_TYPES } from "~/types/batch";
+import { FormValues } from "~/types/common";
+export const BATCH_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Batch Name",
     id: "name",
@@ -115,7 +116,6 @@ export const BATCH_DETAILS_TIMING = [
     },
   },
 ];
-
 
 export const BATCH_TIMING_TABLE_HEADERS = [
   {
