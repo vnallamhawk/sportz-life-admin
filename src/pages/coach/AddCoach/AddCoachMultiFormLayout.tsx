@@ -60,8 +60,8 @@ export interface FormContextTypes {
     setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
   };
   multiFormData: {
-    formData: MULTI_FORM_TYPES;
-    setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>;
+    formData: any;
+    setFormData?: React.Dispatch<React.SetStateAction<any>>;
   };
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
@@ -72,7 +72,7 @@ export default function AddCoachMultiFormLayout() {
 
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
+  const [formData, setFormData] = useState<any>(
     defaultValues.multiFormData.formData
   );
   const { setOpenToast } = useContext(ToastContext);
@@ -80,17 +80,22 @@ export default function AddCoachMultiFormLayout() {
 
   const [coachId, setCoachId] = useState<number>();
 
-  const { data: coach } = id && api.coach.getCoachById.useQuery({ id });
 
   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCoachUseEffectRun = useRef(false);
   const { data: sessionData } = useSession();
 
   useEffect(() => {
-    if (coach && !hasCoachUseEffectRun.current) {
-      setFormData(coach);
-      hasCoachUseEffectRun.current = true;
+    if(id){
+      const { data: coach } =  api.coach.getCoachById.useQuery({ id });
+      if (coach && !hasCoachUseEffectRun.current) {
+
+        setFormData(coach);
+        hasCoachUseEffectRun.current = true;
+      }
+
     }
+    
   }, [id, batches]);
 
   const formProviderData = {
@@ -159,7 +164,7 @@ export default function AddCoachMultiFormLayout() {
       formData?.coachBatches &&
       coachId
     ) {
-      const finalCoachSports = formData?.coachingSports?.map((v) => ({
+      const finalCoachSports = formData?.coachingSports?.map((v:any) => ({
         sportId: parseInt(v.value),
         ...v,
         coachId,
@@ -169,7 +174,7 @@ export default function AddCoachMultiFormLayout() {
 
       createMutateCoachSports(finalCoachSports);
 
-      const finalCertificates = formData?.certificates?.map((v) => ({
+      const finalCertificates = formData?.certificates?.map((v:any) => ({
         ...v,
         startDate: new Date(v.startDate),
         endDate: new Date(v.endDate),
@@ -179,7 +184,7 @@ export default function AddCoachMultiFormLayout() {
       }));
       createMutateCoachCertificates(finalCertificates);
 
-      const finalCenterBatches = formData?.coachBatches?.map((v) => ({
+      const finalCenterBatches = formData?.coachBatches?.map((v:any) => ({
         ...v,
         centerId: v.center?.value,
         coachId,
@@ -191,20 +196,20 @@ export default function AddCoachMultiFormLayout() {
   }, [coachId, formData]);
 
   const finalFormSubmissionHandler = (
-    finalForm: Required<MULTI_FORM_TYPES>
+    finalForm: any
   ) => {
     if (formData.isEditMode) {
-      editMutate({
-        name: finalForm.name,
-        phone: finalForm.phone,
-        email: finalForm.email,
-        designation: finalForm.designation?.value,
-        gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-        dateOfBirth: new Date(finalForm.dateOfBirth),
-        trainingLevel: finalForm.trainingLevel
-          .value as (typeof TRAINING_LEVEL)[number],
-        coachId: finalForm.coachId,
-      });
+      // editMutate({
+      //   name: finalForm.name,
+      //   phone: finalForm.phone,
+      //   email: finalForm.email,
+      //   designation: finalForm.designation?.value,
+      //   gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+      //   dateOfBirth: new Date(finalForm.dateOfBirth),
+      //   trainingLevel: finalForm.trainingLevel
+      //     .value as (typeof TRAINING_LEVEL)[number],
+      //   coachId: finalForm.coachId,
+      // });
     } else {
       setFormData({...finalForm})
 

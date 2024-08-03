@@ -25,7 +25,6 @@ export default function Filter({open}:{open:boolean}) {
         setFilter(open)
 
     },[open])
-    console.log(open,"hbddnsbnffbn",filter)
 
     const [openAcc1, setOpenAcc1] = React.useState(true);
     const [openAcc2, setOpenAcc2] = React.useState(true);

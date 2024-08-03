@@ -1,4 +1,4 @@
-import { FormValues } from "~/types/common";
+import type { FormValues } from "~/types/common";
 
 export const FITNESS_DRILL_TABLE_HEADERS = [
   {

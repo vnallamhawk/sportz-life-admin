@@ -5,13 +5,17 @@ import { COACH_TABLE_HEADERS } from "~/constants/coachConstants";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
 import type { Coaches } from "@prisma/client";
+type Modify<T, R> = Omit<T, keyof R> & R;
+
+
+type CoachesType = Modify<Coaches, { status: string }>;
 
 export default function AllCoach() {
   const router = useRouter();
 
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
-  const [finalData, setFinalData] = useState<Coaches[]>([]);
+  const [finalData, setFinalData] = useState<CoachesType[]>([]);
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
@@ -24,7 +28,7 @@ export default function AllCoach() {
 
   useEffect(() => {
     if (coaches && coaches?.length > 0) {
-      const updatedCoaches:Coaches[] = coaches.map((coach:Coaches) => {
+      const updatedCoaches = coaches.map((coach:Coaches) => {
         return {
           ...coach,
           status: coach?.designation,
@@ -36,9 +40,9 @@ export default function AllCoach() {
 
   const { mutate: deleteMutate } = api.coach.deleteCoach.useMutation({
     onSuccess: (response) => {
-      const arr :Coaches[]= [...finalData];
+      const arr :CoachesType[]= [...finalData];
       const index = finalData?.findIndex(
-        (item: Coaches) => item?.id == response?.id
+        (item: CoachesType) => item?.id == response?.id
       );
       if (index > -1) {
         arr.splice(index, 1);

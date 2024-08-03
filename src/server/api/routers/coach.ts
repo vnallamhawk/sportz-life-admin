@@ -95,10 +95,10 @@ export const coachRouter = createTRPCRouter({
         gender: z.enum(GENDER_VALUES),
         dateOfBirth: z.date(),
         trainingLevel: z.enum(TRAINING_LEVEL),
-        createdBy:z.number().optional().default(undefined),
+        createdBy:z.number(),
         createdAt:z.date(),
         updatedAt:z.date(),
-        academyId:z.number().optional().default(undefined)
+        academyId:z.number()
 
       })
     )
@@ -143,7 +143,7 @@ export const coachRouter = createTRPCRouter({
       z.object({
         name: z.string(),
         about: z.string(),
-        contactNumber: z.string(),
+        phone: z.string(),
         email: z.string(),
         designation: z.string(),
         gender: z.enum(GENDER_VALUES),
@@ -162,7 +162,7 @@ export const coachRouter = createTRPCRouter({
         input: {
           name,
           about,
-          contactNumber,
+          phone,
           email,
           designation,
           gender,
@@ -180,7 +180,7 @@ export const coachRouter = createTRPCRouter({
           data: {
             name: name,
             about: about,
-            contactNumber: contactNumber,
+            phone: phone,
             email: email,
             designation: designation,
             gender: gender.toLowerCase(),

@@ -57,7 +57,8 @@ export default function AddStaffMultiFormLayout() {
   const id = Number(router?.query?.id);
   const { data: sessionData } = useSession();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState(
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const [formData, setFormData] = useState<any>(
     defaultValues.multiFormData.formData
   );
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
@@ -67,21 +68,23 @@ export default function AddStaffMultiFormLayout() {
   const { setOpenToast } = useContext(ToastContext);
 
   const hasStaffUseEffectRun = useRef(false);
-  const { data: staff } = id && api.staff.getStaffById.useQuery({ id });
 
   useEffect(() => {
     if (id) {
+      const { data: staff } =   api.staff.getStaffById.useQuery({ id });
+
       if (staff && !hasStaffUseEffectRun.current) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+
         setFormData(staff);
         hasStaffUseEffectRun.current = true;
       }
     }
-  }, [id, staff]);
+  }, [id]);
 
   const formProviderData = {
     ...methods,
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   };
 
@@ -122,12 +125,14 @@ export default function AddStaffMultiFormLayout() {
   useEffect(() => {
     if (
       formData &&
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       Object.keys(formData)?.length > 0 &&
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       formData?.staffShiftDetails &&
       staffId
     ) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-      const finalStaffTimings = formData?.staffShiftDetails?.map((v: unknown) => ({
+      const finalStaffTimings = formData?.staffShiftDetails?.map((v: any) => ({
         ...v,
         staffId: staffId,
       }));
@@ -144,6 +149,7 @@ export default function AddStaffMultiFormLayout() {
     // finalForm: Required<MULTI_FORM_TYPES>
     finalForm: any
   ) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (formData.isEditMode) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       editMutate({

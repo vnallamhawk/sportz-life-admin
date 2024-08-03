@@ -37,7 +37,7 @@ import AddBatch from "~/components/AddBatch/AddBatch";
 import AddBatchTiming from "~/components/AddBatch/AddBatchTiming";
 import { GetServerSidePropsContext } from "next";
 import { prisma } from "~/server/db";
-import type { Centers } from "@prisma/client";
+import type { CenterInventories, CenterSports, Centers } from "@prisma/client";
 import { useSession } from "next-auth/react";
 
 const multiFormData: MULTI_FORM_BATCH_TYPES = {
@@ -99,10 +99,15 @@ export const getServerSideProps = async (
   };
 };
 
+ interface CenterType extends Centers{
+  CenterSports?:CenterSports[],
+  CenterInventories?:CenterInventories[]
+}
+
 export default function AddCoachMultiFormLayout({
   center,
 }: {
-  center: Centers;
+  center: CenterType;
 }) {
   const router = useRouter();
   const id = Number(router?.query?.id);
@@ -158,13 +163,13 @@ export default function AddCoachMultiFormLayout({
   }, [batchId, formData]);
 
   const finalFormSubmissionHandler = async (
-    finalForm: Required<MULTI_FORM_TYPES>
+    finalForm: any
   ) => {
     const sportId = finalForm?.selectSports?.value;
     if (formData.isEditMode) {
-      editMutate({
-        ...finalForm,
-      });
+      // editMutate({
+      //   ...finalForm,
+      // });
     } else {
       setFormData({
         ...finalForm,

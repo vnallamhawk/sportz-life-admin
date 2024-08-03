@@ -105,7 +105,7 @@ export const centerRouter = createTRPCRouter({
         image: z.string(),
         mobile: z.string(),
         address: z.string(),
-        createdBy:z.number().optional().default(undefined),
+        createdBy:z.number(),
         academyId:z.number(),
         createdAt:z.date(),
         updatedAt:z.date()

@@ -72,13 +72,12 @@ export default function Athlete() {
         addButtonUrl="/athlete/AddAthlete"
         dropdownItems={dropdownObj}
         TABLE_HEAD={TABLE_HEAD}
-        TABLE_ROWS={athletes}
+        TABLE_ROWS={finalData}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
         onViewClick={(id: number) => void router.push(`/athlete/${id ?? ""}`)}
         onEditClick={(id: number) => void router.push(`/edit-athlete-${id}`)}
-        onDeleteClick={(id: number) => deleteAthlete(id)}
-      />
+        onDeleteClick={(id: number) => deleteAthlete(id)} rowSelection={true}      />
     </>
   );
 }

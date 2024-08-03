@@ -80,7 +80,7 @@ export const athleteRouter = createTRPCRouter({
         weightUnit:z.string(),
         createdAt:z.date(),
         updatedAt:z.date(),
-        academyCode:z.number().optional().default(undefined)
+        academyCode:z.number()
       })
     )
     .mutation(

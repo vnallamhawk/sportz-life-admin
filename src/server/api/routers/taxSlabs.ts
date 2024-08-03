@@ -25,7 +25,7 @@ export const taxSlabRouter = createTRPCRouter({
         fromAmount:z.number(),
         toAmount:z.number(),
         percentage:z.number(),
-        createdBy:z.number().optional().default(undefined)
+        createdBy:z.number()
       })
     )
     .mutation(

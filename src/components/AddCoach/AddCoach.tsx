@@ -25,9 +25,9 @@ export default function AddCoach() {
   );
 
   useEffect(() => {
-    let updatedFormConstantValues: any = formConstantValues;
+    let updatedFormConstantValues: FormValues[] = formConstantValues;
     if (sports?.length) {
-      updatedFormConstantValues = formConstantValues.map((formConstant) => {
+      updatedFormConstantValues = formConstantValues.map((formConstant:FormValues) => {
         if (formConstant.id === "coachingSports") {
           return {
             ...formConstant,
@@ -44,7 +44,7 @@ export default function AddCoach() {
     }
     if (staffPayroll?.length && staffPayroll?.length > 0) {
       updatedFormConstantValues = updatedFormConstantValues.map(
-        (formConstant: any) => {
+        (formConstant: FormValues) => {
           if (formConstant.id === "payroll") {
             // console.log("payroll", payroll);
             return {
@@ -61,7 +61,7 @@ export default function AddCoach() {
       );
     }
     setFormConstantValues(updatedFormConstantValues);
-  }, [formConstantValues, sports, sports?.length]);
+  }, [formConstantValues, sports, sports?.length,staffPayroll]);
 
   useEffect(() => {
     // if (!isEditMode) {

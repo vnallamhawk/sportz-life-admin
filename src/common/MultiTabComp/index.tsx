@@ -1,5 +1,5 @@
 import Filter from "~/components/Filter";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import SearchIcon from "../../images/search.png";
 import Cross from "../../images/cross.svg";
@@ -108,12 +108,14 @@ const MultiTabComp = ({
   setActiveKey
 }: MultiTabCompProps) => {
   const router = useRouter();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const [modalOpen, setModalOpen] = React.useState(false);
   const modalHandleOpen = () => setModalOpen(!modalOpen);
   const [renewOpen, setRenewOpen] = React.useState(false);
   const renewHandleOpen = () => setRenewOpen(!renewOpen);
+
+
   const GiveTabValue = (val: string) => {
     return val
       .split(" ")
@@ -171,10 +173,11 @@ const MultiTabComp = ({
                     className="relative w-full rounded-lg border-2 border-gray-200 bg-transparent py-2 pl-4 pr-12 text-base text-gray-700 placeholder-gray-300 focus:border-gray-400 focus:outline-none focus:ring-0 2xl:min-w-[450px]"
                     placeholder="Search by name"
                     value={filterByName}
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
                     onChange={(e: any) => setFilterByName(e.target.value)}
                   />
                 </div>
-                {filter && <Filter />}
+                {filter && <Filter open={open}/>}
                 <Link href={addButtonUrl!}>
                   <button className="ml-3 rounded-lg bg-mandy-dark px-6 py-2.5 text-white">
                     {addButtonText}

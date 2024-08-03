@@ -1,5 +1,5 @@
 //  import { type BATCH_DETAILS_CONSTANTS_TYPES } from "~/types/batch";
-import { FormValues } from "~/types/common";
+import type { FormValues } from "~/types/common";
 export const BATCH_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Batch Name",

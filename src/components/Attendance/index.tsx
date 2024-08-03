@@ -11,9 +11,10 @@ import { centerWiseCountData } from "../../__stubs__/dashboardStubs";
 
 const Attendance=()=>{
     const [selectedTab,setSelectedTab]=useState('attendance_for_month')
-    const [calendarValue,setCalendarValue]=useState<any>()
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const [calendarValue,setCalendarValue]=useState<string | Date | null>()
 
-    const onChange=(value: any)=>{
+    const onChange=(value: string | Date | null)=>{
         setCalendarValue(value)
 
     }
@@ -76,7 +77,7 @@ const Attendance=()=>{
                 title="Calendar View"
                 className="border border-gray-200 uppercase"
               >
-                <Calendar onChange={onChange} value={calendarValue} />
+                <Calendar  value={calendarValue} />
               </Card>
             </div>
             <div className="col-span-12 md:col-span-7">
@@ -84,6 +85,7 @@ const Attendance=()=>{
                 <Tabs key={selectedTab}>
                   <TabsHeader className="graph-tab">
                     <Tab
+                    
                       value={"attn"}
                       key='attendance_for_month'
                       color="red-500"

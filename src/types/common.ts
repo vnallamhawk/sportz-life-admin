@@ -4,7 +4,7 @@ export type TabType = {
   label?: string|undefined;
   name?: string|undefined;
   value?: string|number|undefined;
-  image?: StaticImageData|undefined;
+  image?: StaticImageData|undefined|string;
   allLabel?: string|undefined;
   key?:string|undefined
 };

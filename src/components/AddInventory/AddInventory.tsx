@@ -85,7 +85,7 @@ const AddInventory = (props: any) => {
     e.preventDefault();
     createMutate({
       ...inventoryDetails,
-      createdBy: sessionData ? sessionData.token.id : 1,
+      createdBy:  sessionData?.token?.id,
     });
 
     setShowModal(false);

@@ -4,13 +4,12 @@ import LoginMobileImage from "../images/pngwing.svg";
 import Link from "next/link";
 import Image from "next/image";
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 
 interface LoginDetails {
-  email: string;
-  password: string;
+  [key:string]:string
 }
 export default function Login() {
   const router = useRouter();
@@ -43,11 +42,10 @@ export default function Login() {
     }
   };
 
-  const handleChange = (e: {
-    target: { name: "email" | "password"; value: string };
-  }) => {
+  const handleChange = (e:any) => {
     const obj: LoginDetails = { ...loginDetails };
-    obj[e.target.name] = e.target.value;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      obj[e.target.name] = e.target.value;
     setLoginDetails(obj);
   };
   return (

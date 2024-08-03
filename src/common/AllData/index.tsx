@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import Filter from "~/components/Filter";
 // import Table from "../../components/CommonTable";
-import Modal from "../../components/Modal";
 import React, { useState } from "react";
 import Image from "next/image";
 import SearchIcon from "../../images/search.png";

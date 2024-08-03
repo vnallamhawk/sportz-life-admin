@@ -52,6 +52,7 @@ const AddCoachingDrillInventory = (props: any) => {
 
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
@@ -91,10 +92,10 @@ const AddCoachingDrillInventory = (props: any) => {
   //     setShowModal(false);
   //   };
 
-  const onSaveInventories = () => {};
-  const removeInventory = () => {};
-  const addNewInventory = () => {};
-  const submitCallback = () => {};
+  // const onSaveInventories = () => {};
+  // const removeInventory = () => {};
+  // const addNewInventory = () => {};
+  // const submitCallback = () => {};
 
   return (
     <>
@@ -123,9 +124,10 @@ const AddCoachingDrillInventory = (props: any) => {
         TableHeadings={DRILL_INVENTORY_TABLE_HEADERS}
         tablekey="drill_inventory"
         tableData={inventories}
-        addTableData={onSaveInventories}
+        // addTableData={onSaveInventories}
         buttonItems={{ prevFinish: true }}
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
@@ -134,8 +136,8 @@ const AddCoachingDrillInventory = (props: any) => {
           setShowModal(!showModal);
         }}
         mobileAddButtonText="Add"
-        onRemoveTableButton={removeInventory}
-        finalFormSubmissionHandler={submitCallback}
+        // onRemoveTableButton={removeInventory}
+        // finalFormSubmissionHandler={submitCallback}
       />
     </>
   );

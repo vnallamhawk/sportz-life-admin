@@ -6,7 +6,7 @@ import { differenceInYears } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { NO_DATA } from "~/globals/globals";
-import type { Coaches } from "@prisma/client";
+import type { Coaches, Sports } from "@prisma/client";
 import type { CoachSportsMaps } from "@prisma/client";
 
 interface coachTableFilter {
@@ -14,14 +14,15 @@ interface coachTableFilter {
 }
 
 type Coach = Coaches & {
-  CoachSportsMaps: CoachSportsMaps[];
+  CoachSportsMaps?: CoachSportsMaps[];
+  sports?:string
 };
 
 export default function CoachTableBody(
   filter: coachTableFilter,
   handleIsLoading: (isLoading: boolean) => void
 ) {
-  let tableData;
+  let tableData:Coach[]=[]
   const router = useRouter();
 
   const { data: coaches } =
@@ -31,19 +32,18 @@ export default function CoachTableBody(
   const { data: sports, isLoading } = api.sports.getAllSports.useQuery();
 
   if (coaches && sports) {
-    tableData =
-      coaches &&
-      // coaches.map((coach: Coach) => {
-      coaches.map((coach: any) => {
+    tableData=
+      coaches && coaches.length>0 ?
+       coaches.map((coach: Coach) => {
         return {
           ...coach,
           sports: coach?.CoachSportsMaps?.length
             ? coach?.CoachSportsMaps?.map(
-                (sport: any) => sports.find((s) => s.id === sport.sportId)?.name
+                (sport: CoachSportsMaps) => sports.find((s:Sports) => s.id === sport.sportId)?.name
               )?.join(",")
             : "",
         };
-      });
+      }):[];
   }
 
   useEffect(() => {
@@ -56,24 +56,11 @@ export default function CoachTableBody(
 
   return (
     <>
-      {tableData?.map(
-        (
-          {
-            countryCode,
-            name,
-            dateOfBirth,
-            designation,
-            sports,
-            gender,
-            phone,
-            id,
-          },
-          index
-        ) => (
+      {tableData?.map((data,index) => (
           <tr
-            key={`${name}-${index}`}
+            key={`${data?.name}-${index}`}
             className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
-            onClick={() => onClickHandler(id)}
+            onClick={() => onClickHandler(data?.id)}
           >
             <td className="rounded-l-lg border-y-2 border-l-2 border-solid pl-5">
               <Checkbox.Root className="CheckboxRoot" defaultChecked id="c1">
@@ -83,23 +70,23 @@ export default function CoachTableBody(
               </Checkbox.Root>
             </td>
             <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
-              {name}
+              {data?.name}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {differenceInYears(new Date(), new Date(dateOfBirth))}
+              {differenceInYears(new Date(), new Date(data?.dateOfBirth))}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {designation}
+              {data?.designation}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {sports ? sports : NO_DATA}
+              {data.sports ? data.sports : NO_DATA}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {gender}
+              {data?.gender}
             </td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">{`batch`}</td>
             <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {`${countryCode}${phone as string}`}
+              {`${data?.countryCode}${data?.phone as string}`}
             </td>
             <td className="rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left">
               <DropdownMenu.Root>

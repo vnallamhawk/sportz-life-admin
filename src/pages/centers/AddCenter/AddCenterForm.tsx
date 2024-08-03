@@ -31,13 +31,14 @@ import AddInventory from "~/components/AddInventory/AddInventory";
 import AddStaff from "~/components/AddStaff/AddStaff";
 import AddSports from "~/components/AddSports/AddSports";
 import { useSession } from "next-auth/react";
-const multiFormData: MULTI_FORM_TYPES = {
+import { Centers } from "@prisma/client";
+const multiFormData = {
   name: "",
   image: "",
   phoneNumber: "",
   email: "",
   address: "",
-  selectSports: [],
+  sports: [],
   isEditMode: false,
 };
 
@@ -55,8 +56,8 @@ export interface FormContextTypes {
     setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
   };
   multiFormData: {
-    formData: MULTI_FORM_TYPES;
-    setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>;
+    formData: any;
+    setFormData?: React.Dispatch<React.SetStateAction<any>>;
   };
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
@@ -68,9 +69,10 @@ export default function AddCenterForm() {
 
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
+  const [formData, setFormData] = useState<any>(
     defaultValues.multiFormData.formData
   );
+  const [center,setCenter]=useState<Centers>()
   const [centerId, setCenterId] = useState<number>();
 
   const { setOpenToast } = useContext(ToastContext);
@@ -78,10 +80,11 @@ export default function AddCenterForm() {
 
   //   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCenterUseEffectRun = useRef(false);
-  const { data: center } = id && api.center.getCenterById.useQuery({ id });
 
   useEffect(() => {
     if (id) {
+      const { data: center } = api.center.getCenterById.useQuery({ id });
+
       if (center && !hasCenterUseEffectRun.current) {
         setFormData(center);
         hasCenterUseEffectRun.current = true;
@@ -144,7 +147,7 @@ export default function AddCenterForm() {
       formData?.inventories &&
       centerId
     ) {
-      const finalCenterSports = formData?.sports?.map((v) => ({
+      const finalCenterSports = formData?.sports?.map((v:any) => ({
         ...v,
         centerId,
         academyId:sessionData?.token?.academyId
@@ -152,7 +155,7 @@ export default function AddCenterForm() {
 
       createMutateCenterSports(finalCenterSports);
 
-      const finalInventories = formData?.inventories?.map((v) => ({
+      const finalInventories = formData?.inventories?.map((v:any) => ({
         ...v,
         centerId,
       }));
@@ -161,20 +164,22 @@ export default function AddCenterForm() {
   }, [centerId, formData]);
 
   const finalFormSubmissionHandler = async (
-    finalForm: Required<MULTI_FORM_TYPES>
+    finalForm:any
   ) => {
     if (formData?.isEditMode) {
       editMutate({
         ...finalForm,
         mobile: finalForm?.phoneNumber,
         address: finalForm?.location,
+        name: "",
+        image: ""
       });
     } else {
       // eslint-disable-next-line no-console
       console.log(finalForm);
       // eslint-disable-next-line no-console
       console.log(finalForm, "djbsdbfn");
-      const sportsId = finalForm?.selectSports?.map(function (obj) {
+      const sportsId = finalForm?.selectSports?.map(function (obj: { value: any; }) {
         return Number(obj.value);
       });
       setFormData({

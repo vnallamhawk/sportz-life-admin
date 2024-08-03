@@ -47,7 +47,7 @@ export const staffPayrollRouter = createTRPCRouter({
         designationId:z.number(),
         tax_percent:z.number(),
         netSalary:z.number(),
-        createdBy:z.number().optional().default(undefined)
+        createdBy:z.number()
       })
     )
     .mutation(

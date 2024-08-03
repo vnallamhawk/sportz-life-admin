@@ -16,7 +16,7 @@ export const inventoryRouter = createTRPCRouter({
     z.object({
       name: z.string(),
       category:z.string(),
-      createdBy:z.number().optional().default(undefined)
+      createdBy:z.number()
     })
   )
   .mutation(

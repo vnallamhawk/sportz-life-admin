@@ -23,7 +23,7 @@ export const staffDesignationRouter = createTRPCRouter({
     .input(
       z.object({
         designation: z.string(),
-        createdBy:z.number().optional().default(undefined)
+        createdBy:z.number()
       })
     )
     .mutation(async ({ input: { designation,createdBy }, ctx }) => {

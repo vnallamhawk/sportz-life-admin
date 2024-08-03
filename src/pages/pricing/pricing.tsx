@@ -5,6 +5,8 @@ import { PRICING_TABLE_HEADER } from "~/constants/pricingConstant";
 
 export default function Pricing() {
   const [filterByName, setFilterByName] = useState("");
+  const [activeKey,setActiveKey]=useState("0")
+
   const router = useRouter();
   return (
     <>
@@ -22,8 +24,9 @@ export default function Pricing() {
         TABLE2_HEAD={[]}
         TABLE2_ROWS={[]}
         setFilterByName={setFilterByName}
-        filterByName={filterByName}
-        // onViewClick={(id: number) => {}}
+        filterByName={filterByName} 
+        activeKey={activeKey} 
+        setActiveKey={(value:string)=>setActiveKey(value)}        // onViewClick={(id: number) => {}}
         // onEditClick={(id: number) => {}}
         // onDeleteClick={(id: number) => {}}
       />

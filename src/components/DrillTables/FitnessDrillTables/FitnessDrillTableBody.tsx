@@ -102,21 +102,21 @@ export default function FitnessDrillTableBody(
                     <button
                       className="mx-1 text-white"
                       //   onClick={() => router.push(`/edit-center-${id}`)}
-                      onClick={() => {}}
+                      // onClick={() => {}}
                     >
                       Edit
                     </button>
                     <button
                       className="mx-1 text-white"
                       //   onClick={() => router.push(`/centers/${id ?? ""}`)}
-                      onClick={() => {}}
+                      // onClick={() => {}}
                     >
                       View
                     </button>
                     <button
                       className="mx-1 text-white"
                       //   onClick={() => deleteCenter(id)}
-                      onClick={() => {}}
+                      // onClick={() => {}}
                     >
                       Delete
                     </button>

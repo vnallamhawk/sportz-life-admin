@@ -9,6 +9,8 @@ import { usePathname } from "next/navigation";
 import ThemeContextProvider from "~/contexts/useThemeContext";
 import 'react-time-picker/dist/TimePicker.css';
 import 'react-clock/dist/Clock.css';
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -17,6 +19,18 @@ const MyApp: AppType<{ session: Session | null }> = ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
   const AnyComponent = Component as any;
   const pathname = usePathname();
+  const router=useRouter()
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const session = await getSession();
+      if (!session) {
+        void router.push('/Login');
+      }
+    };
+
+    void checkSession();
+  }, [router]);
   return (
     <SessionProvider session={session}>
       <ThemeContextProvider>

@@ -2,18 +2,15 @@ import React from "react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { Dropdown, DropdownHeader } from "flowbite-react";
 
-interface TaxSlab{
-  fromAmount: string | number;
-  toAmount: string | number;
-  percentage: number;
-  id: string
-}
 
-export default function TaxSlabTableBody(tableData:TaxSlab[]) {
+
+export default function TaxSlabTableBody(tableData:any) {
   return (
     <>
       {tableData &&
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         tableData.length > 0 &&
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         tableData?.map(
           (
             {
@@ -21,10 +18,11 @@ export default function TaxSlabTableBody(tableData:TaxSlab[]) {
               toAmount,
               percentage,
               id,
-            }: TaxSlab,
+            }:any,
             index: number
           ) => (
             <tr
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
               key={`${id}-${index}`}
               className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
             >

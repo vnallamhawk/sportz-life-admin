@@ -45,12 +45,14 @@ export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 const AddCoachingDrills = () => {
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [formData, setFormData] = useState<any>(
     defaultValues.multiFormData.formData
   );
   const formProviderData = {
     ...methods,
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   };
   return (

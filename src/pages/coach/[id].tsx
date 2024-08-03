@@ -22,7 +22,6 @@ import // DATE_TIME_FORMAT,
 // } from "~/types/coach";
 import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
 import { ToastContext } from "~/contexts/Contexts";
-// import CoachCertificate from "~/components/Coach/Certificate/CoachCertificates";
 // import { dateFormat } from "~/helpers/date";
 // import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 // import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
@@ -255,9 +254,6 @@ export default function Page({
           setOpen={setOpenToast}
         ></AddCoachSuccessToast>
       </Card>
-      {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
-      <CoachBatch coach={coach} displayBatch={displayBatch} />
-      <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
     </>
   );
 }

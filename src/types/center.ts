@@ -65,6 +65,8 @@ export interface CENTER_TYPES {
   selectSports: MultiSelectOption;
 }
 export interface MULTI_FORM_TYPES extends CENTER_TYPES {
+  sports: boolean;
+  inventories: any;
   // certificates: COACH_CERTIFICATE_TABLE_TYPES[];
   // batchTableData?: BatchTableData[];
   batchIds?: number[];

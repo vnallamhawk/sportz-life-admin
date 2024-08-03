@@ -10,6 +10,7 @@ const AddFitnessDrillDetails = () => {
   );
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
   return (
@@ -21,6 +22,7 @@ const AddFitnessDrillDetails = () => {
         imageTitle=""
         buttonItems={{ next: true }}
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}

@@ -11,7 +11,7 @@ import { api } from "~/utils/api";
 import Select from "react-select";
 import { BATCH_DETAILS_CONSTANTS } from "~/constants/batchConstant";
 import AddForm from "~/common/AddForm";
-import { FormValues } from "~/types/common";
+import type { FormValues } from "~/types/common";
 
 export default function AddBatch() {
   let inputElement;

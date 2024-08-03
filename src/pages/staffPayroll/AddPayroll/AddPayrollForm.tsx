@@ -9,7 +9,6 @@ import React, {
 import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { useForm } from "react-hook-form";
-import Addcenter from "../../../components/Addcenter/Addcenter";
 // import AddcenterCertificates from "~/components/Addcenter/AddcenterCertificates";
 // import AssignBatches from "~/components/Addcenter/AssignBatches";
 // import {
@@ -84,6 +83,9 @@ export default function AddCenterForm() {
   const [showTabSlabModal, setShowTabSlabModal] = useState(false);
   const [taxSlab, setTaxSlab] = useState<any>({});
   const { data: sessionData, status } = useSession();
+  const [createdBy,setCreatedBy]=useState<number>()
+
+
 
   const { mutate: createMutateTaxSlab } = api.tabSlab.createTaxSlab.useMutation(
     {
@@ -92,6 +94,15 @@ export default function AddCenterForm() {
       },
     }
   );
+
+  useEffect(()=>{
+    if(sessionData && sessionData.token && sessionData.token.id){
+      setCreatedBy(sessionData.token.id)
+    }else{
+      router.push("/Login")
+    }
+
+  },[sessionData])
   // useEffect(() => {
   //   if (id) {
   //     if (center && !hasCenterUseEffectRun.current) {
@@ -136,7 +147,13 @@ export default function AddCenterForm() {
       });
       createMutate({
         ...finalForm,
-        createdBy: sessionData?.token?.id,
+        createdBy,
+        designationId: 0,
+        taxable: false,
+        grossSalary: 0,
+        slabId: 0,
+        tax_percent: 0,
+        netSalary: 0
       });
     }
   };
@@ -147,7 +164,7 @@ export default function AddCenterForm() {
       fromAmount: parseInt(taxSlab?.fromAmount),
       toAmount: parseInt(taxSlab?.toAmount),
       percentage: parseInt(taxSlab?.percentage),
-      createdBy: sessionData ? sessionData?.token?.id : 1,
+      createdBy
     });
   };
   return (
