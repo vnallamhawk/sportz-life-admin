@@ -1,4 +1,5 @@
 import type { DefaultSession } from 'next-auth';
+import NextAuth from "next-auth";
 
 
 export type TokenType={
@@ -6,8 +7,20 @@ export type TokenType={
     academyId:number
 }
 
-declare module 'next-auth' {
+declare module "next-auth" {
+  interface User {
+    id: string;
+    academyId: string;
+  }
+
   interface Session extends DefaultSession {
+    user: User;
     token:TokenType
+
+  }
+
+  interface JWT {
+    id: string;
+    academyId: string;
   }
 }

@@ -1,6 +1,6 @@
-import type { AuthOptions } from "next-auth";
+import type { AuthOptions, User } from "next-auth";
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 
@@ -8,25 +8,27 @@ const prisma = new PrismaClient();
 
 export const authOptions: AuthOptions = {
   providers: [
-    Providers({
+    CredentialsProvider({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
         const user = await prisma.admin.findUnique({
-          where: { email: credentials?.email },
+          where: { email: credentials.email },
         });
-        if (
-          user &&
-          bcrypt.compareSync(credentials?.password || "", user.password)
-        ) {
+
+        if (user && bcrypt.compareSync(credentials.password, user.password)) {
           return {
-            id: user.id,
+            id: user.id.toString(), // Convert id to string
             email: user.email,
-            academyId: user.academyId,
-          };
+            academyId: user.academyId.toString(), // Convert academyId to string
+          } as User; // Cast to User type
         }
 
         return null;
@@ -40,33 +42,25 @@ export const authOptions: AuthOptions = {
     secret: process.env.JWT_SECRET,
   },
   callbacks: {
-    jwt(token) {
-      const obj = { ...token?.token };
-      if (!obj.id && token?.user?.id) {
-        obj.id = token?.user?.id;
-        obj.academyId = token?.user?.academyId;
+    // eslint-disable-next-line @typescript-eslint/require-await
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+        token.academyId = user.academyId;
       }
-      return obj;
+      return token;
     },
-    session(
-      session: { user: { id: number } },
-      token: {
-        academyId: number;
-        id: number;
+    // eslint-disable-next-line @typescript-eslint/require-await
+    session: async ({ session, token }) => {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.academyId = token.academyId as string;
       }
-    ) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      session.user = {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        id: token?.id,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        academyId: token?.academyId,
-      };
       return session;
     },
   },
   pages: {
-    signIn: "/",
+    signIn: "/Login",
   },
 };
 
