@@ -11,6 +11,7 @@ import type { FormValues } from "~/types/common";
 export default function AddCoach() {
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
@@ -63,17 +64,7 @@ export default function AddCoach() {
     setFormConstantValues(updatedFormConstantValues);
   }, [formConstantValues, sports, sports?.length,staffPayroll]);
 
-  useEffect(() => {
-    // if (!isEditMode) {
-    // eslint-disable-next-line no-console
-    reset({
-      ...currentFormValues,
-      ...formData,
-    });
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
-  //test commit
+
   return (
     <>
       <AddForm
@@ -83,6 +74,7 @@ export default function AddCoach() {
         imageTitle="Coach Image"
         buttonItems={{ next: true }}
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}

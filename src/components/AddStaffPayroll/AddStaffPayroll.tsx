@@ -40,6 +40,17 @@ export default function AddPayroll(props: any) {
     STAFF_DETAILS_CONSTANT
   );
 
+  const  createdBy= sessionData?.token?.id
+  const  academyId= sessionData?.token?.academyId
+
+  useEffect(()=>{
+
+    if(!sessionData){
+      void router.push("/Login")
+    }
+
+  },[router, sessionData])
+
   const { mutate: createMutate } =
     api.staffDesignation.createStaffDesignation.useMutation({
       onSuccess: (response) => {
@@ -111,10 +122,13 @@ export default function AddPayroll(props: any) {
   const submitDesignation = (e: any) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
-    createMutate({
-      designation: designation,
-      createdBy: sessionData?.token?.id,
-    });
+    if(createdBy){
+      createMutate({
+        designation: designation,
+        createdBy
+      });
+    }
+   
   };
 
   return (

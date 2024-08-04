@@ -10,6 +10,7 @@ import { INVENTORY_TABLE_HEADERS } from "~/constants/inventoryConstant";
 import type { MultiSelectOption } from "~/types/select";
 
 const AddInventory = (props: any) => {
+  const router=useRouter()
   const [inventories, setInventories] = useState<{[key:string]:any}[]>([]);
   const [finalOptions, setFinalOptions] = useState<MultiSelectOption[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -18,8 +19,17 @@ const AddInventory = (props: any) => {
     category: "",
   });
   const { data: allInventories } = api.inventory.getAllInventories.useQuery();
-  const { data: sessionData } = useSession();
+  const { data: sessionData } = useSession();  
+  const  createdBy= sessionData?.token?.id
+  const  academyId= sessionData?.token?.academyId
 
+  useEffect(()=>{
+
+    if(!sessionData){
+      router.push("/Login")
+    }
+
+  },[router, sessionData])
   const { mutate: createMutate } = api.inventory.createInventory.useMutation({
     onSuccess: (response) => {
       const arr: MultiSelectOption[] = [...finalOptions];
@@ -52,10 +62,12 @@ const AddInventory = (props: any) => {
 
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
   const submitCallback = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const finalFormData = {
       ...formData,
       inventories,
@@ -83,10 +95,13 @@ const AddInventory = (props: any) => {
   const addNewInventory = (e: any) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
-    createMutate({
-      ...inventoryDetails,
-      createdBy:  sessionData?.token?.id,
-    });
+    if(createdBy){
+      createMutate({
+        ...inventoryDetails,
+        createdBy,
+      });
+    }
+   
 
     setShowModal(false);
   };
@@ -121,6 +136,7 @@ const AddInventory = (props: any) => {
         addTableData={onSaveInventories}
         buttonItems={{ prevFinish: true }}
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}

@@ -7,6 +7,7 @@ import AddForm from "~/common/AddForm";
 import { SPORTS_TABLE_HEADERS } from "~/constants/sportConstants";
 import moment from "moment-timezone";
 import type { Sports } from "@prisma/client";
+import { useRouter } from "next/router";
 
 interface Options {
   label: string|undefined;
@@ -21,11 +22,23 @@ export interface SportDetails {
   about?:string
 }
 const AddSports = () => {
+  const router=useRouter()
   const [sports, setSports] = useState<{[key:string]:any}[]>([]);
   const [finalOptions, setFinalOptions] = useState<Options[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [sportDetails, setSportDetails] = useState<SportDetails>({name:"",subTitle:"",about:""});
   const { data: sessionData } = useSession();
+
+  const  createdBy= sessionData?.token?.id
+  const  academyId= sessionData?.token?.academyId
+
+  useEffect(()=>{
+
+    if(!sessionData){
+      void router.push("/Login")
+    }
+
+  },[router, sessionData])
 
   const { data: allSports } = api.sports.getAllSports.useQuery();
 
@@ -57,6 +70,7 @@ const AddSports = () => {
 
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
@@ -80,16 +94,19 @@ const AddSports = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    createMutate({
-      name:sportDetails.name,
-      about:sportDetails.name,
-      subTitle:sportDetails.subTitle,
-      image: "",
-      createdBy: sessionData?.token?.id,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-    setShowModal(false);
+    if(createdBy){
+      createMutate({
+        name:sportDetails.name,
+        about:sportDetails.name,
+        subTitle:sportDetails.subTitle,
+        image: "",
+        createdBy,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      setShowModal(false);
+    }
+
 
     // api for create sport
   };
@@ -124,6 +141,7 @@ const AddSports = () => {
         addTableData={onSaveSports}
         buttonItems={{ prevNext: true }}
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}

@@ -256,9 +256,7 @@ const DetailPage = ({
         })}
       </Slider>
       {selectedComponent}
-      {/* <CoachCertificate coach={coach} displayCertificate={displayCertificate} />
-      <CoachBatch coach={coach} displayBatch={displayBatch} />
-      <CoachAttendance coach={coach} displayAttendance={displayAttendance} /> */}
+     
     </>
   );
 };

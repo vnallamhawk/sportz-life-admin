@@ -137,35 +137,41 @@ export default function AddCenterForm() {
     // finalForm: Required<MULTI_FORM_TYPES>
     finalForm: Required<any>
   ) => {
-    if (formData.isEditMode) {
-      // editMutate({
-      //   ...finalForm,
-      // });
-    } else {
-      setFormData({
-        ...finalForm,
-      });
-      createMutate({
-        ...finalForm,
-        createdBy,
-        designationId: 0,
-        taxable: false,
-        grossSalary: 0,
-        slabId: 0,
-        tax_percent: 0,
-        netSalary: 0
-      });
+    if(createdBy){
+      if (formData.isEditMode) {
+        // editMutate({
+        //   ...finalForm,
+        // });
+      } else {
+        setFormData({
+          ...finalForm,
+        });
+        createMutate({
+          ...finalForm,
+          createdBy,
+          designationId: 0,
+          taxable: false,
+          grossSalary: 0,
+          slabId: 0,
+          tax_percent: 0,
+          netSalary: 0
+        });
+      }
     }
+  
   };
 
   const submitTaxSlab = (e: any) => {
     e.preventDefault();
-    createMutateTaxSlab({
-      fromAmount: parseInt(taxSlab?.fromAmount),
-      toAmount: parseInt(taxSlab?.toAmount),
-      percentage: parseInt(taxSlab?.percentage),
-      createdBy
-    });
+    if(createdBy){
+      createMutateTaxSlab({
+        fromAmount: parseInt(taxSlab?.fromAmount),
+        toAmount: parseInt(taxSlab?.toAmount),
+        percentage: parseInt(taxSlab?.percentage),
+        createdBy
+      });
+    }
+  
   };
   return (
     <>

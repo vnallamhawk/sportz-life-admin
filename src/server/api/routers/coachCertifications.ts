@@ -8,7 +8,11 @@ import {
 
 const coachCertificateSchema = z.object({
     coachId: z.number(),
-    certificateType:z.string(),
+    certificateType:z.enum(["masters_degree_in_sports_or_fitness_training",        
+      "bachelor_degree_in_sports_or_fitness_training" ,       
+      "diploma_in_sports_coaching_or_fitness_training",     
+      "coaching_license" ,                                   
+      "certification_in_sports_coaching_or_fitness_training"]),
     startDate :z.date(),   
     endDate :z.date(),  
     instituteName:z.string(),  

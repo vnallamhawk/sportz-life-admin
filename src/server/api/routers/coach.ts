@@ -30,8 +30,6 @@ export const coachRouter = createTRPCRouter({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       where:{
         deletedAt:null,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        createdBy:ctx?.session?.token?.id
       },
     });
     return allCoaches;
@@ -112,7 +110,6 @@ export const coachRouter = createTRPCRouter({
           gender,
           dateOfBirth,
           trainingLevel,
-          createdBy,
           createdAt,
           updatedAt,
           academyId
@@ -126,10 +123,9 @@ export const coachRouter = createTRPCRouter({
              phone: phone,
             email: email,
             designation: designation,
-            gender: gender.toLowerCase(),            
+            gender: gender,            
             dateOfBirth: dateOfBirth,
-            trainingLevel: trainingLevel.toLowerCase(),
-            createdBy,
+            trainingLevel: trainingLevel,
             createdAt,
             updatedAt,
             academyId
@@ -183,7 +179,7 @@ export const coachRouter = createTRPCRouter({
             phone: phone,
             email: email,
             designation: designation,
-            gender: gender.toLowerCase(),
+            gender: gender,
             // certificates: {
             //   create: certificates,
             // },

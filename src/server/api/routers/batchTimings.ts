@@ -3,7 +3,13 @@ import { z } from "zod";
 
 
 const batchTimingSchema = z.object({
-  day:z.string(),                
+  day:z.enum(["mon",
+    "tue",
+    "wed",
+    "thu",
+    "fri",
+    "sat",
+    "sun"]),                
   batchId:z.number(),                
   startTime: z.string(),
   endTime: z.string(),

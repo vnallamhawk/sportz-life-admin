@@ -133,14 +133,10 @@ export const athleteRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        about: z.string(),
-        contactNumber: z.string(),
+        phone: z.string(),
         email: z.string(),
-        designation: z.string(),
         gender: z.enum(GENDER_VALUES),
-        dateOfBirth: z.date(),
-        trainingLevel: z.enum(TRAINING_LEVEL),
-        experienceLevel: z.enum(EXPERIENCE_LEVEL),
+        dob: z.date(),
         batchIds: z.array(z.number()),
         centerIds: z.array(z.number()),
         coachId: z.number(),
@@ -150,13 +146,11 @@ export const athleteRouter = createTRPCRouter({
       async ({
         input: {
           name,
-          about,
-          contactNumber,
+          phone,
           email,
-          designation,
           gender,
           // certificates,
-          dateOfBirth,
+          dob,
           // sports,
           // batchIds,
           // centerIds,
@@ -172,11 +166,9 @@ export const athleteRouter = createTRPCRouter({
           },
           data: {
             name: name,
-            about: about,
-            contactNumber: contactNumber,
+            phone: phone,
             email: email,
-            designation: designation,
-            gender: gender.toLowerCase(),
+            gender: gender,
             // certificates: {
             //   create: certificates,
             // },
@@ -207,9 +199,8 @@ export const athleteRouter = createTRPCRouter({
             //     },
             //   })),
             // },
-            dateOfBirth: dateOfBirth,
-            trainingLevel: "advanced",
-            experienceLevel: "two_five",
+            dob: dob,
+
           },
         });
 

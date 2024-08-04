@@ -77,6 +77,16 @@ export default function AddAthleteMultiFormLayout() {
 
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
+  const  createdBy= sessionData?.token?.id
+  const  academyId= sessionData?.token?.academyId
+
+  useEffect(()=>{
+
+    if(!sessionData){
+      router.push("/Login")
+    }
+
+  },[sessionData])
 
   const formProviderData = {
     ...methods,
@@ -148,54 +158,57 @@ export default function AddAthleteMultiFormLayout() {
   const finalFormSubmissionHandler = (
     finalForm:any
   ) => {
-    if (formData.isEditMode) {
-      // editMutate({
-      //   name: finalForm.name,
-      //   about: finalForm.about,
-      //   contactNumber: finalForm.contactNumber,
-      //   email: finalForm.email,
-      //   designation: finalForm.designation,
-      //   gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-      //   certificates: finalForm.certificates.map((certificate) => ({
-      //     ...certificate,
-      //     startDate: new Date(certificate.startDate),
-      //     endDate: new Date(certificate.endDate),
-      //   })),
-      //   dateOfBirth: new Date(finalForm.dateOfBirth),
-      //   sports: finalForm.coachingSports,
-      //   trainingLevel: finalForm.trainingLevel
-      //     .value as (typeof TRAINING_LEVEL)[number],
-      //   experienceLevel: finalForm.experienceLevel
-      //     .value as (typeof EXPERIENCE_LEVEL)[number],
-      //   batchIds: finalForm.batchIds,
-      //   centerIds: finalForm.centerIds,
-      //   coachId: finalForm.coachId,
-      // });
-    } else {
-      // eslint-disable-next-line no-console
-      console.log(finalForm);
-      // eslint-disable-next-line no-console
-      createMutate({
-        name: finalForm.name,
-        phone: finalForm.phone,
-        email: finalForm.email,
-        bloodGroup: finalForm.bloodGroup.value,
-        gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-        dob: new Date(finalForm.dob),
-        height:parseInt(finalForm.height),
-        weight:parseInt(finalForm.weight),
-        address:finalForm.address,
-        medicalHistory:finalForm.medicalHistory,
-        centerId: parseInt(finalForm.centerId.value),
-        fatherName:finalForm.fatherName,
-        heightUnit:"cm",
-        weightUnit:"kg",
-        createdAt:new Date(),
-        updatedAt:new Date(),
-        academyCode: sessionData?.token?.academyId,
-
-      });
+    if(academyId){
+      if (formData.isEditMode) {
+        // editMutate({
+        //   name: finalForm.name,
+        //   about: finalForm.about,
+        //   contactNumber: finalForm.contactNumber,
+        //   email: finalForm.email,
+        //   designation: finalForm.designation,
+        //   gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+        //   certificates: finalForm.certificates.map((certificate) => ({
+        //     ...certificate,
+        //     startDate: new Date(certificate.startDate),
+        //     endDate: new Date(certificate.endDate),
+        //   })),
+        //   dateOfBirth: new Date(finalForm.dateOfBirth),
+        //   sports: finalForm.coachingSports,
+        //   trainingLevel: finalForm.trainingLevel
+        //     .value as (typeof TRAINING_LEVEL)[number],
+        //   experienceLevel: finalForm.experienceLevel
+        //     .value as (typeof EXPERIENCE_LEVEL)[number],
+        //   batchIds: finalForm.batchIds,
+        //   centerIds: finalForm.centerIds,
+        //   coachId: finalForm.coachId,
+        // });
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(finalForm);
+        // eslint-disable-next-line no-console
+        createMutate({
+          name: finalForm.name,
+          phone: finalForm.phone,
+          email: finalForm.email,
+          bloodGroup: finalForm.bloodGroup.value,
+          gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+          dob: new Date(finalForm.dob),
+          height:parseInt(finalForm.height),
+          weight:parseInt(finalForm.weight),
+          address:finalForm.address,
+          medicalHistory:finalForm.medicalHistory,
+          centerId: parseInt(finalForm.centerId.value),
+          fatherName:finalForm.fatherName,
+          heightUnit:"cm",
+          weightUnit:"kg",
+          createdAt:new Date(),
+          updatedAt:new Date(),
+          academyCode: academyId,
+  
+        });
+      }
     }
+  
   };
 
   return (

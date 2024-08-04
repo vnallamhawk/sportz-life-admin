@@ -14,6 +14,7 @@ import { Centers, Sports } from "@prisma/client";
 export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
@@ -99,17 +100,6 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
     }
   }, [centers, centerId, formConstantValues]);
 
-  useEffect(() => {
-    // if (!isEditMode) {
-    // eslint-disable-next-line no-console
-    reset({
-      ...currentFormValues,
-      ...formData,
-    });
-    // }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
-  //test commit
 
   return (
     <>
@@ -118,6 +108,7 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
         cardSubTitle="Athlete General Details"
         formConstantValues={formConstantValues}
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
@@ -130,6 +121,7 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
         cardSubTitle="Contact Details"
         formConstantValues={formConstantValues1}
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}

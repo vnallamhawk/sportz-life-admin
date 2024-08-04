@@ -84,6 +84,17 @@ export default function AddCoachMultiFormLayout() {
   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCoachUseEffectRun = useRef(false);
   const { data: sessionData } = useSession();
+  const  createdBy= sessionData?.token?.id
+  const  academyId= sessionData?.token?.academyId
+
+  useEffect(()=>{
+
+    if(!sessionData){
+      router.push("/Login")
+    }
+
+  },[sessionData])
+
 
   useEffect(() => {
     if(id){
@@ -198,37 +209,40 @@ export default function AddCoachMultiFormLayout() {
   const finalFormSubmissionHandler = (
     finalForm: any
   ) => {
-    if (formData.isEditMode) {
-      // editMutate({
-      //   name: finalForm.name,
-      //   phone: finalForm.phone,
-      //   email: finalForm.email,
-      //   designation: finalForm.designation?.value,
-      //   gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-      //   dateOfBirth: new Date(finalForm.dateOfBirth),
-      //   trainingLevel: finalForm.trainingLevel
-      //     .value as (typeof TRAINING_LEVEL)[number],
-      //   coachId: finalForm.coachId,
-      // });
-    } else {
-      setFormData({...finalForm})
-
-      createMutate({
-        name: finalForm.name,
-        phone: finalForm.phone,
-        email: finalForm.email,
-        designation: finalForm.designation?.value,
-        gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-        dateOfBirth: new Date(finalForm.dateOfBirth),
-        trainingLevel: finalForm.trainingLevel
-          .value as (typeof TRAINING_LEVEL)[number],
-        createdBy: sessionData?.token?.id,
-        createdAt:new Date(),
-        updatedAt:new Date(),
-        academyId: sessionData?.token?.academyId,
-
-      });
+    if(createdBy && academyId){
+      if (formData.isEditMode) {
+        // editMutate({
+        //   name: finalForm.name,
+        //   phone: finalForm.phone,
+        //   email: finalForm.email,
+        //   designation: finalForm.designation?.value,
+        //   gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+        //   dateOfBirth: new Date(finalForm.dateOfBirth),
+        //   trainingLevel: finalForm.trainingLevel
+        //     .value as (typeof TRAINING_LEVEL)[number],
+        //   coachId: finalForm.coachId,
+        // });
+      } else {
+        setFormData({...finalForm})
+  
+        createMutate({
+          name: finalForm.name,
+          phone: finalForm.phone,
+          email: finalForm.email,
+          designation: finalForm.designation?.value,
+          gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+          dateOfBirth: new Date(finalForm.dateOfBirth),
+          trainingLevel: finalForm.trainingLevel
+            .value as (typeof TRAINING_LEVEL)[number],
+          createdBy: sessionData?.token?.id,
+          createdAt:new Date(),
+          updatedAt:new Date(),
+          academyId: sessionData?.token?.academyId,
+  
+        });
+      }
     }
+   
   };
 
   return (

@@ -4,6 +4,7 @@ import {
   publicProcedure,
   // protectedProcedure,
 } from "~/server/api/trpc";
+import { GENDER_VALUES } from "~/types/coach";
 
 // Now add this object into an array
 
@@ -66,7 +67,7 @@ export const staffRouter = createTRPCRouter({
         phone: z.string(),
         email: z.string(),
         dateOfBirth: z.date(),
-        gender: z.string(),
+        gender: z.enum(GENDER_VALUES),
         image: z.string(),
         payrollId: z.number(),
         centerId: z.number(),
@@ -99,7 +100,7 @@ export const staffRouter = createTRPCRouter({
             designationId: designationId,
             email: email,
             phone: phone,
-            gender:gender.toLowerCase(),
+            gender:gender,
             payrollId:payrollId,
             centerId:centerId,
             dateOfBirth: dateOfBirth,
@@ -149,11 +150,11 @@ export const staffRouter = createTRPCRouter({
           data: {
             name: name,
             image: "img1",
-            designation: designation,
+            // designation: designation,
             email: email,
             phone: mobile,
             status: status,
-            age: age,
+            // age: age,
             createdBy: createdBy,
           },
         });

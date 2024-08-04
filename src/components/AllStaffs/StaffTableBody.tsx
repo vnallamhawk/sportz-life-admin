@@ -71,7 +71,6 @@ export default function StaffTableBody(
       : api.staff.getAllStaffsByName.useQuery(filter);
   // const centerDictionary = centerDictionaryServices(centers);
 
-  console.log("data is ", staffs);
 
   useEffect(() => {
     if (staffs && staffs.length > 0) {
@@ -117,7 +116,7 @@ export default function StaffTableBody(
               key={`${name}-${index}`}
               className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
               // onClick={() => onClickHandler(id)}
-              onClick={() => {}}
+              // onClick={() => {}}
             >
               <td className="rounded-l-lg border-y-2 border-l-2 border-solid pl-5">
                 <Checkbox.Root className="CheckboxRoot" defaultChecked id="c1">
@@ -180,21 +179,21 @@ export default function StaffTableBody(
                       <button
                         className="mx-1 text-white"
                         // onClick={() => router.push(`/edit-staff-${id}`)}
-                        onClick={() => {}}
+                        // onClick={() => {}}
                       >
                         Edit
                       </button>
                       <button
                         className="mx-1 text-white"
                         // onClick={() => router.push(`/staffs/${id ?? ""}`)}
-                        onClick={() => {}}
+                        // onClick={() => {}}
                       >
                         View
                       </button>
                       <button
                         className="mx-1 text-white"
                         // onClick={() => deleteStaff(id)}
-                        onClick={() => {}}
+                        // onClick={() => {}}
                       >
                         Delete
                       </button>
