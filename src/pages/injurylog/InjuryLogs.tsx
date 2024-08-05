@@ -27,8 +27,8 @@ export default function AllInjuryLogs() {
    <>
      {/* <Checkout /> */}
      <MultiTabComp
-        tab1label="ATHLETE INJURIES"
-        tab2label="COACH INJURIES"
+        tab1label="Athlete Injuries"
+        tab2label="Coach Injuries"
         addButtonText="Add Injury"
         addButtonUrl="/injurylog/AddInjury"
         dropdownItems={{}}
