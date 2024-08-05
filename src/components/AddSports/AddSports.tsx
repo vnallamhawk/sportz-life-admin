@@ -32,13 +32,7 @@ const AddSports = () => {
   const  createdBy= sessionData?.token?.id
   const  academyId= sessionData?.token?.academyId
 
-  useEffect(()=>{
 
-    if(!sessionData){
-      void router.push("/Login")
-    }
-
-  },[router, sessionData])
 
   const { data: allSports } = api.sports.getAllSports.useQuery();
 

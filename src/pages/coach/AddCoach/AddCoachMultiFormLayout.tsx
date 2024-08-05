@@ -87,14 +87,6 @@ export default function AddCoachMultiFormLayout() {
   const  createdBy= sessionData?.token?.id
   const  academyId= sessionData?.token?.academyId
 
-  useEffect(()=>{
-
-    if(!sessionData){
-      router.push("/Login")
-    }
-
-  },[sessionData])
-
 
   useEffect(() => {
     if(id){

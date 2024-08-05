@@ -43,13 +43,7 @@ export default function AddPayroll(props: any) {
   const  createdBy= sessionData?.token?.id
   const  academyId= sessionData?.token?.academyId
 
-  useEffect(()=>{
 
-    if(!sessionData){
-      void router.push("/Login")
-    }
-
-  },[router, sessionData])
 
   const { mutate: createMutate } =
     api.staffDesignation.createStaffDesignation.useMutation({

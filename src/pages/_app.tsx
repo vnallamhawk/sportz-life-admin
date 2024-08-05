@@ -34,7 +34,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <ThemeContextProvider>
-        {pathname !== "/" ? (
+        {pathname !== "/Login" ? (
           <Layout>
             <AnyComponent {...pageProps} />
           </Layout>

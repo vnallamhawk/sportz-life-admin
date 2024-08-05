@@ -23,13 +23,7 @@ const AddInventory = (props: any) => {
   const  createdBy= sessionData?.token?.id
   const  academyId= sessionData?.token?.academyId
 
-  useEffect(()=>{
 
-    if(!sessionData){
-      router.push("/Login")
-    }
-
-  },[router, sessionData])
   const { mutate: createMutate } = api.inventory.createInventory.useMutation({
     onSuccess: (response) => {
       const arr: MultiSelectOption[] = [...finalOptions];
