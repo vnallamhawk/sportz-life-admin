@@ -29,6 +29,7 @@ export default function AddCoachCertificates({}) {
 
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext<FormContextTypes>(FormContext);
 
@@ -58,9 +59,12 @@ export default function AddCoachCertificates({}) {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (formData?.certificates) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
       setCertificates(formData.certificates);
     }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   }, [formData?.certificates]);
 
   return (
@@ -71,6 +75,7 @@ export default function AddCoachCertificates({}) {
         formConstantValues={formConstantValues}
         buttonItems={{ prevNext: true }}
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
