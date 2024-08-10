@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import AllData from "~/common/AllData";
-import { STAFF_TABLE_HEADERS } from "~/constants/staffConstants";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
 import type { Staffs,StaffDesignation, Centers } from "@prisma/client";
+import { COMPETITION_TABLE_HEADERS } from "~/constants/competitionConstants";
 
 
 
@@ -62,7 +62,7 @@ export default function AllCompetition() {
         addButtonUrl="/competitions/AddCompetitions"
         dropdownItems={{}}
         filter={true}
-        TABLE_HEAD={STAFF_TABLE_HEADERS}
+        TABLE_HEAD={COMPETITION_TABLE_HEADERS}
         TABLE_ROWS={finalData}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
