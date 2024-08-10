@@ -17,7 +17,6 @@ const AllDrills = () => {
   };
   const [finalData, setFinalData] = useState<{ [key: string]: any }[]>([]);
 
-  const [fitnessDrill, setFitnessDrill] = useState<boolean>(true);
 
   const deleteDrills = (id: number) => {
     // deleteMutate({ centerId: id, deletedAt: moment().toISOString() });
@@ -30,7 +29,7 @@ const AllDrills = () => {
         tab2label="COACHING DRILL"
         addButtonText="Add Drill"
         addButtonUrl={
-          fitnessDrill
+          activeKey==="0"
             ? "/drills/AddDrills/AddFitnessDrills"
             : "/drills/AddDrills/AddCoachingDrills"
         }
@@ -43,8 +42,6 @@ const AllDrills = () => {
         TABLE2_ROWS={[]}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
-        fitnessDrill={fitnessDrill}
-        setFitnessDrill={setFitnessDrill}
         onViewClick={(id: number) => router.push(`/drills/${id ?? ""}`)}
         onEditClick={(id: number) => router.push(`/edit-drills-${id}`)}
         onDeleteClick={(id: number) => deleteDrills(id)} 

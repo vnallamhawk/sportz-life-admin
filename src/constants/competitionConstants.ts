@@ -137,6 +137,75 @@ export const COMPETITION_DETAILS_CONSTANTS: FormValues[] = [
   
   ];
 
+  export const BANK_DETAILS_CONSTANTS:FormValues[] = [
+    {
+      label: "Bank Name",
+      id: "name",
+      type: "textbox",
+      placeHolder:"Bank Name",
+      rules: {
+        required: true,
+        maxLength: {
+          value: 35,
+          message: "Too Many Characters",
+        },
+      },
+    },
+    {
+      label: "Branch",
+      id: "branch",
+      type: "textbox",
+      placeHolder:"Branch",
+      rules: {
+        required: true,
+        maxLength: {
+          value: 35,
+          message: "Too Many Characters",
+        },
+      },
+    },
+    {
+      label: "Account Number",
+      id: "accountNo",
+      type: "textbox",
+      placeHolder:"Account Number",
+      rules: {
+        required: true,
+        maxLength: {
+          value: 35,
+          message: "Too Many Characters",
+        },
+      },
+    },
+    {
+      label: "IFSC",
+      id: "ifsc",
+      type: "textbox",
+      placeHolder:"IFSC",
+      rules: {
+        required: true,
+        maxLength: {
+          value: 35,
+          message: "Too Many Characters",
+        },
+      },
+    },
+    {
+      label: "Account Holder Name",
+      id: "name",
+      type: "textbox",
+      placeHolder:"Account Holder Name",
+      rules: {
+        required: true,
+        maxLength: {
+          value: 35,
+          message: "Too Many Characters",
+        },
+      },
+    },
+  ];
+
+
   export const COMPETITION_TABLE_HEADERS = [
     {
       label: "Competition Name",

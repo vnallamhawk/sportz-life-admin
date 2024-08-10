@@ -78,8 +78,6 @@ interface MultiTabCompProps {
   TABLE2_ROWS?: { [key: string]: any; id: number }[];
   setFilterByName?: any;
   filterByName?: string;
-  fitnessDrill?: boolean;
-  setFitnessDrill?: any;
   onViewClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
   onDeleteClick?: (id: number) => void;
