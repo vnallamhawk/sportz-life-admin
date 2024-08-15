@@ -78,8 +78,6 @@ interface MultiTabCompProps {
   TABLE2_ROWS?: { [key: string]: any; id: number }[];
   setFilterByName?: any;
   filterByName?: string;
-  fitnessDrill?: boolean;
-  setFitnessDrill?: any;
   onViewClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
   onDeleteClick?: (id: number) => void;
@@ -131,9 +129,9 @@ const MultiTabComp = ({
       <div className="bg-s-gray px-6 pb-7">
         <div className="rounded-2xl shadow-sm lg:bg-white lg:p-6">
           <Tabs value={tab1value} activeKey={activeKey}>
-            <div className="pricing-tabs mb-6 flex items-center justify-between">
+            <div className="pricing-tabs mb-6 flex items-center lg:justify-between justify-center">
               <TabsHeader
-                className="pricing-tabs"
+                className="pricing-tabs lg:justify-start justify-center"
                 indicatorProps={{
                   className:
                     "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none",
@@ -141,7 +139,7 @@ const MultiTabComp = ({
               >
                 <Tab
                   value={tab1value}
-                  className={`${activeKey==="0"?"active":""} text-nowrap w-auto px-0 font-heading text-2xl font-medium uppercase`}
+                  className={`${activeKey==="0"?"active":""} bg-[#EAEAEA] lg:bg-transparent text-nowrap lg:w-auto w-1/2 px-0 font-heading text-2xl lg:font-medium lg:uppercase`}
                   key={"0"}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                   onClick={()=>setActiveKey("0")}
@@ -150,7 +148,7 @@ const MultiTabComp = ({
                 </Tab>
                 <Tab
                   value={tab2value}
-                  className={`${activeKey==="1"?"active":""} text-nowrap w-auto px-0 font-heading text-2xl font-medium uppercase`}
+                  className={`${activeKey==="1"?"active":""} bg-[#EAEAEA] lg:bg-transparent ml-4 text-nowrap lg:w-auto w-1/2 px-0 font-heading text-2xl lg:font-medium lg:uppercase`}
                   key={"1"}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                   onClick={()=>setActiveKey("1")}

@@ -40,8 +40,8 @@ export default function AddPayroll(props: any) {
     STAFF_DETAILS_CONSTANT
   );
 
-  const  createdBy= sessionData?.token?.id
-  const  academyId= sessionData?.token?.academyId
+  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
+  const  academyId= sessionData?.token?sessionData?.token?.academyId:sessionData?.user?.academyId
 
 
 
@@ -119,7 +119,7 @@ export default function AddPayroll(props: any) {
     if(createdBy){
       createMutate({
         designation: designation,
-        createdBy
+        createdBy:parseInt(createdBy as string)
       });
     }
    

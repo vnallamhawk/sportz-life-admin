@@ -166,7 +166,7 @@ const AllData = ({
            {Object.keys(dropdownItems).map((item:string,index)=>{
                     return(
                       // eslint-disable-next-line react/jsx-key
-                      <button className="font-400 rounded bg-gray-500 px-4 py-0.5 text-white" onClick={()=>setSelectedComponent(item)}>
+                      <button className="font-400 rounded bg-gray-500 px-4 py-0.5 text-white mr-3" onClick={()=>setSelectedComponent(item)}>
                 {dropdownData[item]}
               </button>
                     

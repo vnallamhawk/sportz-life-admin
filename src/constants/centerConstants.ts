@@ -4,6 +4,7 @@ export const CENTER_DETAILS_CONSTANTS: FormValues[] = [
     label: "Center Name",
     id: "name",
     type: "textbox",
+    placeHolder:"Center Name",
     rules: {
       required: true,
       maxLength: {
@@ -16,6 +17,8 @@ export const CENTER_DETAILS_CONSTANTS: FormValues[] = [
     label: "Phone Number",
     id: "phoneNumber",
     type: "textbox",
+    placeHolder:"Phone Number",
+
     rules: {
       required: true,
       maxLength: {
@@ -28,6 +31,8 @@ export const CENTER_DETAILS_CONSTANTS: FormValues[] = [
     label: "Email Address",
     id: "email",
     type: "textbox",
+    placeHolder: "Email Address",
+
     rules: {
       required: true,
       pattern: {
@@ -55,6 +60,7 @@ export const CENTER_DETAILS_CONSTANTS: FormValues[] = [
     label: "Location",
     id: "address",
     type: "textbox",
+    placeHolder: "Location",
     rules: {
       required: true,
       maxLength: {

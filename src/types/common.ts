@@ -31,7 +31,7 @@ export interface TableFields {
   name:string
   placeholder?: string;
   options?: { label: string|undefined; value: string | number|undefined }[];
-  isMulti?:boolean
+  isMulti?:boolean;
 }
 
 

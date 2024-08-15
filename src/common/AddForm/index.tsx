@@ -14,7 +14,7 @@ import Image from "next/image";
 import Plus from "../../images/plus.svg";
 import Remove from "../../images/remove.svg";
 import { Switch } from "@material-tailwind/react";
-
+import AddFile from "../../images/add-file.svg";
 import { Controller, useForm } from "react-hook-form";
 import Select from "react-select";
 import Button from "~/components/Button";
@@ -248,7 +248,7 @@ const AddForm = ({
             control={control}
             render={({ field: { onChange, value } }) => {
               return (
-                <div className="relative mt-4">
+                <div className="relative">
                   <Textbox
                     className="h-12 w-full"
                     placeHolder={placeHolder}
@@ -256,7 +256,7 @@ const AddForm = ({
                     // TODO: FIX THIS TS ERROR
                     value={value as string}
                   />
-                  <div className="dropdown absolute right-0.5 top-0.5">
+                  <div className="dropdown absolute right-0.5 top-2/4 -translate-y-2/4 p-3 h-12 border-l inline-flex justify-center items-center">
                     <Dropdown
                       label={dropdownLabel}
                       inline={true}
@@ -429,6 +429,13 @@ const AddForm = ({
         <label className="col-span-2 mt-5 flex h-48 flex-col justify-center rounded-lg border-2 border-dashed border-gray-300 bg-stone-100 text-center lg:hidden">
           <div className="mb-3 flex items-center justify-center">
             <input type="file" className="hidden" />
+            <Image
+              width={0}
+              height={0}
+              src={AddFile}
+              className="h-auto w-auto mr-2"
+              alt=""
+            />
             <div className="text-base font-medium text-gray-500">
               {imageTitle}
             </div>

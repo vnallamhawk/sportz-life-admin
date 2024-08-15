@@ -84,8 +84,8 @@ export default function AddCoachMultiFormLayout() {
   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCoachUseEffectRun = useRef(false);
   const { data: sessionData } = useSession();
-  const  createdBy= sessionData?.token?.id
-  const  academyId= sessionData?.token?.academyId
+  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
+  const  academyId= sessionData?.token?sessionData?.token?.academyId:sessionData?.user?.academyId
 
 
   useEffect(() => {
@@ -226,10 +226,11 @@ export default function AddCoachMultiFormLayout() {
           dateOfBirth: new Date(finalForm.dateOfBirth),
           trainingLevel: finalForm.trainingLevel
             .value as (typeof TRAINING_LEVEL)[number],
-          createdBy: sessionData?.token?.id,
-          createdAt:new Date(),
+            createdBy:parseInt(createdBy as string),
+            createdAt:new Date(),
           updatedAt:new Date(),
-          academyId: sessionData?.token?.academyId,
+          academyId:parseInt(academyId as string)
+
   
         });
       }

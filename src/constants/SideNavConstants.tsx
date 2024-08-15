@@ -11,10 +11,10 @@ import ReportsIcon from "~/components/Icons/ReportsIcon";
 import StaffIcon from "~/components/Icons/StaffIcon";
 import SupportIcon from "~/components/Icons/SupportIcon";
 import TrainingDrillsIcon from "~/components/Icons/TrainingDrillsIcon";
-// import TrainingPlanIcon from "~/components/Icons/TrainingPlanIcon";
+import TrainingPlanIcon from "~/components/Icons/TrainingPlanIcon";
 import InjuryLogsIcon from "~/components/Icons/InjuryLogsIcon";
 import StaffPayrollIcon from "~/components/Icons/StaffPayrollIcon";
-// import FinancialAnalyticIcon from "~/components/Icons/FinancialAnalyticIcon";
+import FinancialAnalyticIcon from "~/components/Icons/FinancialAnalyticIcon";
 // import InventoryIcon from "~/components/Icons/InventoryIcon";
 import SettingsIcon from "~/components/Icons/SettingsIcon";
 
@@ -59,11 +59,11 @@ export const SIDE_NAV_ITEMS = [
     route: "/drills",
     icon: <TrainingDrillsIcon />,
   },
-  // {
-  //   label: "Training Plan",
-  //   route: "/plans",
-  //   icon: <TrainingPlanIcon />,
-  // },
+  {
+    label: "Training Plan",
+    route: "/trainingPlan",
+    icon: <TrainingPlanIcon />,
+  },
   {
     label: "Competitions",
     route: "/competitions",
@@ -84,11 +84,11 @@ export const SIDE_NAV_ITEMS = [
     route: "/staffPayroll",
     icon: <StaffPayrollIcon />,
   },
-  // {
-  //   label: "Financial Analytic",
-  //   route: "/financial",
-  //   icon: <FinancialAnalyticIcon />,
-  // },
+  {
+    label: "Financial Analytic",
+    route: "/financial",
+    icon: <FinancialAnalyticIcon />,
+  },
   // {
   //   label: "Inventory",
   //   route: "/inventory",

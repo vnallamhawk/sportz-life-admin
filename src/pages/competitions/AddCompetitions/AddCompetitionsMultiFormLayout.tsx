@@ -10,7 +10,7 @@ import React, {
   import { useForm } from "react-hook-form";
   // import { type MULTI_FORM_TYPES } from "~/types/coach";
   import FileUpload from "~/components/FileUpload";
-  import AddStaffShift from "~/components/AddStaff/AddStaffShift";
+  import AddPaymentDetails from "~/components/AddCompetition/AddPaymentDetails";
   import AddStaff from "~/components/AddStaff/AddStaff";
   import { useRouter } from "next/router";
   import { api } from "~/utils/api";
@@ -166,9 +166,9 @@ import AddCompetition from "~/components/AddCompetition/AddCompetition";
       <FormContext.Provider value={formProviderData}>
         <div className="grid grid-cols-6 grid-rows-1">
           <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-            {currentStep === 1 && <AddCompetition/>}
+            {currentStep === 1&& <AddCompetition/>}
             {currentStep === 2 && (
-              <AddStaffShift finalFormSubmission={finalFormSubmissionHandler} />
+              <AddPaymentDetails finalFormSubmission={finalFormSubmissionHandler} />
             )}
           </Card>
         </div>

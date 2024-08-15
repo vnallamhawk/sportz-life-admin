@@ -33,7 +33,9 @@ export default function AllTrainingPlans() {
         addButtonText="Add Plan"
         setActiveKey={(key:string)=>setActiveKey(key)}              
         activeKey={activeKey}
-        addButtonUrl="/injurylog/AddInjury"
+        addButtonUrl={
+          activeKey==="0"?"/trainingPlan/AddTrainingPlan/FitnessPlan":"/trainingPlan/AddTrainingPlan/CoachingPlan"
+        }
         dropdownItems={{}}
         table1show={true}
         table2show={true}
