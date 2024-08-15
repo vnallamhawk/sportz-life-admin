@@ -14,6 +14,7 @@ import type { FormValues } from "~/types/common";
 export default function AddCenter() {
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
@@ -99,6 +100,7 @@ export default function AddCenter() {
         imageTitle="Center Image"
         buttonItems={{ next: true }}
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}

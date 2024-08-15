@@ -77,8 +77,8 @@ export default function AddAthleteMultiFormLayout() {
 
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
-  const  createdBy= sessionData?.token?.id
-  const  academyId= sessionData?.token?.academyId
+  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
+  const  academyId= sessionData?.token?sessionData?.token?.academyId:sessionData?.user?.academyId
 
 
 
@@ -197,7 +197,8 @@ export default function AddAthleteMultiFormLayout() {
           weightUnit:"kg",
           createdAt:new Date(),
           updatedAt:new Date(),
-          academyCode: academyId,
+          academyCode:parseInt(academyId as string)
+          ,
   
         });
       }

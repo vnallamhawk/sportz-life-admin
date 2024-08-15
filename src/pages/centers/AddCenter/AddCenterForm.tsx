@@ -66,6 +66,8 @@ export default function AddCenterForm() {
   const router = useRouter();
   const id = Number(router?.query?.id);
   const { data: sessionData } = useSession();
+  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
+  const  academyId= sessionData?.token?sessionData?.token?.academyId:sessionData?.user?.academyId
 
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -194,8 +196,8 @@ export default function AddCenterForm() {
         mobile: finalForm?.phoneNumber,
         address: finalForm?.address,
         image: "",
-        createdBy: sessionData?.token?.id,
-        academyId:sessionData?.token?.academyId,
+        createdBy: parseInt(createdBy as string),
+        academyId:parseInt(academyId as string),
         createdAt:new Date(),
         updatedAt:new Date()
       });

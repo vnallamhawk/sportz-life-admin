@@ -29,8 +29,8 @@ const AddSports = () => {
   const [sportDetails, setSportDetails] = useState<SportDetails>({name:"",subTitle:"",about:""});
   const { data: sessionData } = useSession();
 
-  const  createdBy= sessionData?.token?.id
-  const  academyId= sessionData?.token?.academyId
+  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
+  const  academyId= sessionData?.token?sessionData?.token?.academyId:sessionData?.user?.academyId
 
 
 
@@ -85,6 +85,7 @@ const AddSports = () => {
   };
 
   const addNewSport = (e: any) => {
+    debugger
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -94,7 +95,7 @@ const AddSports = () => {
         about:sportDetails.name,
         subTitle:sportDetails.subTitle,
         image: "",
-        createdBy,
+        createdBy:parseInt(createdBy as string),
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -124,7 +125,7 @@ const AddSports = () => {
         tableFields={[
           {
             type: "select",
-            name: "value",
+            name: "name",
             placeholder: "Select Sports",
             options: finalOptions,
           },

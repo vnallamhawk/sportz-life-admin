@@ -20,8 +20,8 @@ const AddInventory = (props: any) => {
   });
   const { data: allInventories } = api.inventory.getAllInventories.useQuery();
   const { data: sessionData } = useSession();  
-  const  createdBy= sessionData?.token?.id
-  const  academyId= sessionData?.token?.academyId
+  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
+  const  academyId= sessionData?.token?sessionData?.token?.academyId:sessionData?.user?.academyId
 
 
   const { mutate: createMutate } = api.inventory.createInventory.useMutation({
@@ -92,7 +92,7 @@ const AddInventory = (props: any) => {
     if(createdBy){
       createMutate({
         ...inventoryDetails,
-        createdBy,
+        createdBy:parseInt(createdBy as string)
       });
     }
    
