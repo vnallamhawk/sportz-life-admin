@@ -25,10 +25,7 @@ export default function Dashboard() {
   const [value, onChange] = useState<Value>(new Date());
 
   return (
-    <div className=" px-6">
- 
-      
-      
+    <div className="px-6">
       <div className="flex items-start">
         <div className="flex flex-col grow" >
       <div className="mb-5 grow flex justify-between"> 
