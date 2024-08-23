@@ -8,14 +8,16 @@ import User from "../../images/user.png";
 import { Dropdown } from "flowbite-react";
 import Dots from "../../images/dots.svg";
 import { IconButton } from "@material-tailwind/react";
+import PostDetail from "./postDetail";
 
 export default function Post() {
     return (
+        <>
         <div className="bg-s-gray px-6 pb-7">
             <Card className="rounded-2xl shadow-sm lg:bg-white lg:p-6">
                 <div className="mb-14 flex items-center justify-between ">
                     <div className="font-heading text-2xl font-medium uppercase">
-                        All Post
+                        Add Post
                     </div>
                     <div className="hidden items-center lg:flex ">
                         <div className="relative">
@@ -30,7 +32,7 @@ export default function Post() {
                                 placeholder="Search by name"
                             />
                         </div>
-                        <Link href="">
+                        <Link href="/post/AddPost">
                             <button className="ml-3 rounded-lg bg-mandy-dark px-6 py-2.5 text-white">
                                 Add Post
                             </button>
@@ -74,7 +76,7 @@ export default function Post() {
                                                     />
                                                 </button>
                                             )}
-                                            className="post-dropdown w-50 rounded-lg bg-[#303030] p-3 text-white"
+                                            className="post-dropdown w-50 rounded-lg bg-[#303030] p-3 text-white border-0"
                                         >
                                             <Dropdown.Item className="text-white hover:bg-black focus:bg-black">
                                                 Edit Post
@@ -125,7 +127,7 @@ export default function Post() {
                                                     />
                                                 </button>
                                             )}
-                                            className="post-dropdown w-50 rounded-lg bg-[#303030] p-3 text-white"
+                                            className="post-dropdown w-50 rounded-lg bg-[#303030] p-3 text-white border-0"
                                         >
                                             <Dropdown.Item className="text-white hover:bg-black focus:bg-black">
                                                 Edit Post
@@ -174,5 +176,7 @@ export default function Post() {
                     </div>
             </Card>
         </div>
+        <PostDetail />
+        </>
     )
 }
