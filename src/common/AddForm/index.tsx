@@ -217,8 +217,8 @@ const AddForm = ({
                 <Select
                   isMulti={props?.isMulti ?? false}
                   options={options}
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  value={value}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                  value={formData[id]}
                   placeholder={placeHolder}
                   className="border-1 c-select w-full border-gray-300"
                   classNamePrefix="react-select"
@@ -254,8 +254,9 @@ const AddForm = ({
                     placeHolder={placeHolder}
                     onChangeHandler={onChange}
                     // TODO: FIX THIS TS ERROR
-                    value={value as string}
-                  />
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                    value={formData[id] as string}
+                    />
                   <div className="dropdown absolute right-0.5 top-2/4 -translate-y-2/4 p-3 h-12 border-l inline-flex justify-center items-center">
                     <Dropdown
                       label={dropdownLabel}
@@ -295,8 +296,8 @@ const AddForm = ({
             render={({ field: { onChange, value } }) => {
               return (
                 <Switch
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  value={value}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                  value={formData['taxable']}
                   onChange={(e) =>
                     handleChangeTime(e.target.checked, "taxable")
                   }
@@ -338,7 +339,8 @@ const AddForm = ({
               return (
                 <Datepicker
                   placeHolder={props.placeHolder}
-                  value={new Date(value as string)}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                  value={new Date(formData[id] as string)}
                   className="h-12"
                   onChangeHandler={onChange}
                 />
@@ -360,8 +362,9 @@ const AddForm = ({
                 className="h-20 w-full"
                 placeholder={placeHolder}
                 onChange={onChange}
-                value={value as string}
-              />
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                value={formData[id]}
+                />
             )}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
@@ -380,7 +383,8 @@ const AddForm = ({
                 placeHolder={placeHolder}
                 onChangeHandler={onChange}
                 // TODO: FIX THIS TS ERROR
-                value={value as string}
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                value={formData[id]}
               />
             )}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

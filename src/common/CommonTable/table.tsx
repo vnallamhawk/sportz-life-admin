@@ -115,7 +115,7 @@ const CommonTable = ({
                                 className="view-drop rounded-lg bg-black w-auto h-auto"
                                 renderTrigger={() => (
                                   <button className="py-2">
-                                    <Image width={0} height={0} src={Dots} alt=""  />
+                                    <Image width={20} height={20} src={Dots} alt=""  />
                                   </button>
                                 )}
                               >

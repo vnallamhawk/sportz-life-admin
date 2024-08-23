@@ -79,20 +79,31 @@ export default function AddCenterForm() {
 
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
+  const centerData=  id && api.center.getCenterById.useQuery({ id });
 
   //   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCenterUseEffectRun = useRef(false);
 
-  useEffect(() => {
-    if (id) {
-      const { data: center } = api.center.getCenterById.useQuery({ id });
 
-      if (center && !hasCenterUseEffectRun.current) {
-        setFormData(center);
+  useEffect(() => {
+    if (centerData &&centerData.data ) {
+
+      if (centerData.data && !hasCenterUseEffectRun.current) {
+        let obj:any={...centerData.data}
+        obj.sports=centerData?.data?.CenterSports?.map((v:any) => ({
+          sportId:v.sportId,
+          id:v.id
+        }));
+        obj.inventories=centerData?.data?.CenterInventories?.map((v:any) => ({
+          inventoryId:v.inventoryId,
+          id:v.id
+        }));
+        setFormData(obj);
         hasCenterUseEffectRun.current = true;
       }
     }
-  }, [id]);
+  }, [centerData]);
+
 
   const formProviderData = {
     ...methods,
@@ -171,10 +182,11 @@ export default function AddCenterForm() {
     if (formData?.isEditMode) {
       editMutate({
         ...finalForm,
-        mobile: finalForm?.phoneNumber,
-        address: finalForm?.location,
-        name: "",
-        image: ""
+        mobile: finalForm?.mobile,
+        address: finalForm?.address,
+        image: "",
+        centerId:id,
+        updatedAt:new Date()
       });
     } else {
       // eslint-disable-next-line no-console
@@ -186,14 +198,14 @@ export default function AddCenterForm() {
       });
       setFormData({
         ...finalForm,
-        mobile: finalForm?.phoneNumber,
+        mobile: finalForm?.mobile,
         address: finalForm?.address,
         image: "",
         sportsId,
       });
       createMutate({
         ...finalForm,
-        mobile: finalForm?.phoneNumber,
+        mobile: finalForm?.mobile,
         address: finalForm?.address,
         image: "",
         createdBy: parseInt(createdBy as string),

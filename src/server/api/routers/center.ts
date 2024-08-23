@@ -59,6 +59,11 @@ export const centerRouter = createTRPCRouter({
               include:{
                 Sports:true
               }
+            },
+            CenterInventories:{
+              include:{
+                Inventories:true
+              }
             }
          
           },
@@ -148,7 +153,8 @@ export const centerRouter = createTRPCRouter({
         image: z.string(),
         mobile: z.string(),
         address: z.string(),
-        centerId:z.number()
+        centerId:z.number(),
+        updatedAt:z.date()
       })
     )
     .mutation(
@@ -158,7 +164,8 @@ export const centerRouter = createTRPCRouter({
           mobile,
           email,
           address,
-          centerId
+          centerId,
+          updatedAt
         },
         ctx,
       }) => {
@@ -171,6 +178,7 @@ export const centerRouter = createTRPCRouter({
             email: email,
             mobile: mobile,
             address: address,
+            updatedAt:updatedAt
           },
         });
 

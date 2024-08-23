@@ -15,7 +15,7 @@ export const CENTER_DETAILS_CONSTANTS: FormValues[] = [
   },
   {
     label: "Phone Number",
-    id: "phoneNumber",
+    id: "mobile",
     type: "textbox",
     placeHolder:"Phone Number",
 
