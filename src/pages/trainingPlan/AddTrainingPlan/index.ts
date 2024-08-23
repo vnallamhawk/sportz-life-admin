@@ -1,1 +1,1 @@
-export { default } from "./AddTrainingPlanMultiFormLayout";
+export { default } from "./FitnessPlan";
