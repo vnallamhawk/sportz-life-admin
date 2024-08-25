@@ -39,6 +39,7 @@ export default function AssignBatches({
   const [centerId, setCenterId] = useState<number>();
   const {
     stepData: { currentStep, setCurrentStep },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
@@ -102,7 +103,9 @@ export default function AssignBatches({
   }, [centerId, centers, formConstantValues]);
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if ( formData && formData?.coachBatches) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       setTableData(formData?.coachBatches);
     }
   }, [formData]);
@@ -150,6 +153,7 @@ export default function AssignBatches({
         formConstantValues={formConstantValues}
         buttonItems={{ prevFinish: true }}
         setFormData={setFormData}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}

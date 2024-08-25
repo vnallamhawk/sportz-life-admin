@@ -26,6 +26,10 @@ export const STAFF_TABLE_HEADERS = [
     label: "Contact No",
     id: "phone",
   },
+  {
+    label:"Action",
+    id:"action"
+  }
 ];
 export const STAFF_DASH_CENTER_TABLE_HEADERS = [
   {
