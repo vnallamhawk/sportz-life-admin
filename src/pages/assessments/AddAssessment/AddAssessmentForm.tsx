@@ -16,6 +16,8 @@ import { useSession } from "next-auth/react";
 import { Centers } from "@prisma/client";
 import AddAssessment from "~/components/AddAssessment/AddAsessment";
 import AssignTestBank from "~/components/AddAssessment/AssignTestBank";
+import AddAssessmentScoring from "~/components/AddAssessment/AddAssessmentScoring";
+import AddAssessmentSchedule from "~/components/AddAssessment/AddAsessmentSchedule";
 const multiFormData = {
   name: "",
   image: "",
@@ -206,6 +208,10 @@ export default function AddAssessmentForm() {
           <Card className="relative col-span-12 h-full min-h-[535px] !rounded-r-none rounded-l-xl p-0 pb-0 pt-10 lg:col-span-4 lg:bg-white lg:pb-6 ">
             {currentStep === 1 && <AddAssessment />}
             {currentStep === 2 && <AssignTestBank />}
+            {currentStep === 3 && <AddAssessmentScoring />}
+            {currentStep === 4 && <AddAssessmentSchedule />}
+            {currentStep === 5 && <AddAssessmentSchedule />}
+
             {/* {currentStep === 3 && (
               <AddInventory
                 finalFormSubmissionHandler={finalFormSubmissionHandler}

@@ -82,3 +82,99 @@ export const ASSIGN_TEST_BANK_TABLE_HEADERS = [
     id: "action",
   },
 ];
+
+
+export const ASSESSMENT_SCORING_OPTIONS=[
+  
+    {
+      label: "Allow Athletes to self-assess",
+      id: "name",
+      type: "switch",
+      rules: {
+        required: true,
+        
+      },
+    },
+    
+    {
+      label: "Allow Coach to assess",
+      id: "name",
+      type: "switch",
+      rules: {
+        required: true,
+        
+      },
+    },
+    {
+      label: "Add Areas of Strength",
+      id: "name",
+      type: "switch",
+      rules: {
+        required: true,
+        
+      },
+    },
+    {
+      label: "Add Areas of Weakness",
+      id: "name",
+      type: "switch",
+      rules: {
+        required: true,
+        
+      },
+    },
+    {
+      label: "Add Coach's Comments",
+      id: "name",
+      type: "switch",
+      rules: {
+        required: true,
+        
+      },
+    },
+  
+]
+
+export const ASSESSMENT_SCHEDULE=[
+  
+  {
+    label: "Select Duration:Recurring",
+    id: "duration",
+    type: "select",
+    rules: {
+      required: true,
+      
+    },
+  },
+  
+  {
+    label: "Recurring Type",
+    id: "type",
+    type: "select",
+    rules: {
+      required: true,
+      
+    },
+  },
+  {
+    label: "Start",
+    id: "startDate",
+    type: "calendar",
+    placeHolder: "Start Date",
+    rules: {
+      required: true
+    },
+  },
+
+  {
+    label: "End",
+    id: "endDate",
+    type: "calendar",
+    placeHolder: "End Date",
+    rules: {
+      required: true,
+    },
+  },
+ 
+
+]

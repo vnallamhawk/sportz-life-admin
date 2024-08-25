@@ -12,9 +12,9 @@ interface Options {
   value: string | number|undefined;
 }
 
-const AssignTestBank = () => {
+const AssessmentParticipants = () => {
   const router=useRouter()
-  const [testBanks, setTestBanks] = useState<{[key:string]:any}[]>([]);
+  const [participants, setParticipants] = useState<{[key:string]:any}[]>([]);
   const [finalOptions, setFinalOptions] = useState<Options[]>([]);
   const [showModal, setShowModal] = useState(false);
   const { data: sessionData } = useSession();
@@ -40,20 +40,20 @@ const AssignTestBank = () => {
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
-  const onSaveTestbank = (currentTestBankData: {[key:string]:any}) => {
-    const arr: {[key:string]:any}[] = [...testBanks];
+  const onSaveParticipants = (currentParticipantsData: {[key:string]:any}) => {
+    const arr: {[key:string]:any}[] = [...participants];
     arr.push({
-      ...currentTestBankData,
+      ...currentParticipantsData,
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      sportId: parseInt(currentTestBankData?.value),
+      sportId: parseInt(currentParticipantsData?.value),
     });
-    setTestBanks(arr);
+    setParticipants(arr);
   };
 
-  const removeTestBanks = (index: number) => {
-    const arr = [...testBanks];
+  const removeParticipants = (index: number) => {
+    const arr = [...participants];
     arr.splice(index, 1);
-    setTestBanks(arr);
+    setParticipants(arr);
   };
 
   
@@ -63,25 +63,37 @@ const AssignTestBank = () => {
 
       <AddForm
         cardTitle="CREATE ASSESSMENT"
-        tableTitle="ASSIGN TEST BANK"
+        tableTitle="SCHEDULE PARTICIPANTS"
         tableFields={[
           {
             type: "select",
-            name: "type",
-            placeholder: "Select Test Bank Type",
+            name: "center",
+            placeholder: "Center",
             options: finalOptions,
           },
           {
             type: "select",
-            name: "name",
-            placeholder: "Select Test Name",
+            name: "sport",
+            placeholder: "Sport",
+            options: finalOptions,
+          },
+          {
+            type: "select",
+            name: "batch",
+            placeholder: "Batch",
+            options: finalOptions,
+          },
+          {
+            type: "select",
+            name: "athlete",
+            placeholder: "Athlete",
             options: finalOptions,
           },
         ]}
         TableHeadings={ASSIGN_TEST_BANK_TABLE_HEADERS}
-        tablekey="testBanks"
-        tableData={testBanks}
-        addTableData={onSaveTestbank}
+        tablekey="participants"
+        tableData={participants}
+        addTableData={onSaveParticipants}
         buttonItems={{ next: true }}
         setFormData={setFormData}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -91,10 +103,10 @@ const AssignTestBank = () => {
         addTableButton={() => {
           setShowModal(!showModal);
         }}
-        onRemoveTableButton={removeTestBanks}
+        onRemoveTableButton={removeParticipants}
       />
     </>
   );
 };
 
-export default AssignTestBank;
+export default AssessmentParticipants;
