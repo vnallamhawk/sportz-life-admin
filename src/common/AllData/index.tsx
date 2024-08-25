@@ -22,6 +22,7 @@ import ChangeBatchModal from "~/components/Modal/ChangeBatchModal";
 interface AllData{
   title:string,
   addButtonText?:string,
+  addNewButtonUrl?:string
   addButtonUrl?:string,
   dropdownItems:{changeBatch?:boolean;delete?:boolean;attendance?:boolean;changeCenter?:boolean;reminder?:boolean;freeze?:boolean},
   TABLE_ROWS:{[key:string]:any,id:number}[],
@@ -36,6 +37,7 @@ interface AllData{
   onDeleteClick?:(id:number)=>void,
   filters?:{[key:string]:any}[],
   applyFilters?:(appliedFilters:{[key:string]:any})=>void
+  addNewButtonText?:string
 }
 
 
@@ -65,7 +67,9 @@ const AllData = ({
   onEditClick,
   onDeleteClick,
   filters,
-  applyFilters
+  applyFilters,
+  addNewButtonText,
+  addNewButtonUrl
 }: AllData) => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
@@ -110,6 +114,14 @@ const AllData = ({
               <Link href={addButtonUrl}>
                 <button className="ml-3 rounded-lg bg-mandy-dark px-6 py-2.5 text-white">
                   {addButtonText}
+                </button>
+              </Link>
+            )}
+             {addNewButtonUrl && (
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              <Link href={addNewButtonUrl}>
+                <button className="ml-3 rounded-lg bg-mandy-dark px-6 py-2.5 text-white">
+                  {addNewButtonText}
                 </button>
               </Link>
             )}
