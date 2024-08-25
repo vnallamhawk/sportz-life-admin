@@ -9,11 +9,10 @@ import { GENDER_VALUES } from "~/types/coach";
 // Now add this object into an array
 
 export const staffRouter = createTRPCRouter({
-  getAllStaffs: publicProcedure.query(({ ctx }) => {
-    const allStaffs = ctx?.prisma?.staffs?.findMany({
+  getAllStaffs: publicProcedure.input(z.object({ createdBy: z.number() })).query(async (opts) => {
+    const allStaffs = await opts.ctx?.prisma?.staffs?.findMany({
       where:{
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        createdBy:ctx?.session?.token.id,
+        createdBy:opts.input.createdBy
       },
       include: {
         StaffDesignation:true,

@@ -6,7 +6,7 @@ import SiteLogoIcon from "../Icons/SiteLogoIcon";
 import Image from "next/image";
 import LogoWhite from "../../images/logo-white.svg";
 
-export default function SideNav({ className }: { className: string }) {
+export default function SideNav({ className ,openSideBar}: { className: string ,openSideBar:boolean}) {
   // const { pathname } = useRouter();
   const { data: sessionData } = useSession();
 

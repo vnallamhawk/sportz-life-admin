@@ -3,6 +3,8 @@ import { Dropdown } from "flowbite-react";
 import Image from "next/image";
 import React from "react";
 import Cross from "../../images/cross.svg";
+import type { Centers } from "@prisma/client";
+import { api } from "~/utils/api";
 
 const ChangeCenterModal = (
   {
@@ -13,6 +15,8 @@ const ChangeCenterModal = (
     setSelectedComponent: (value: string) => void;
   }
 ) => {
+  const { data: centers } = api.center.getAllCenters.useQuery();
+
   const customTheme = {
     inlineWrapper:
       "text-gray-500 font-medium text-lg bg-white border-gray-200 border w-full  focus:outline-none  font-medium rounded-lg  px-5 py-2.5 justify-between inline-flex items-center ",
@@ -53,42 +57,21 @@ const ChangeCenterModal = (
               className="w-50 drop-shadow-[0_12px_16px_-4px_rgba(16, 24, 40, 0.08)] !relative top-0 mt-2 !translate-y-0 !transform  border-0 text-black transition-all duration-300 ease-in"
             >
               <div className="scroll max-h-[117px] overflow-auto rounded-b-lg px-4">
-                <div className="my-3">
-                  <input
-                    type="checkbox"
-                    className="h-5 w-5 rounded border-2 border-orange-light border-opacity-30 text-orange-light focus:ring-0 "
-                  />
-                  <span className="ml-3 text-lg font-medium text-gray-500">
-                    Biswa Bharati Stadium
-                  </span>
-                </div>
-                <div className="my-3">
-                  <input
-                    type="checkbox"
-                    className="h-5 w-5 rounded border-2 border-orange-light border-opacity-30 text-orange-light focus:ring-0 "
-                  />
-                  <span className="ml-3 text-lg font-medium text-gray-500">
-                    Netaji Indoor Stadium
-                  </span>
-                </div>
-                <div className="my-3">
-                  <input
-                    type="checkbox"
-                    className="h-5 w-5 rounded border-2 border-orange-light border-opacity-30 text-orange-light focus:ring-0 "
-                  />
-                  <span className="ml-3 text-lg font-medium text-gray-500">
-                    Bijoygorh Sports Ground
-                  </span>
-                </div>
-                <div className="my-3">
-                  <input
-                    type="checkbox"
-                    className="h-5 w-5 rounded border-2 border-orange-light border-opacity-30 text-orange-light focus:ring-0 "
-                  />
-                  <span className="ml-3 text-lg font-medium text-gray-500">
-                    Bijoygorh Sports Ground
-                  </span>
-                </div>
+                {
+                  centers && centers.length>0 && centers.map((item:Centers)=>{
+                    return (
+                      <div className="my-3" key={item?.id}>
+                      <input
+                        type="checkbox"
+                        className="h-5 w-5 rounded border-2 border-orange-light border-opacity-30 text-orange-light focus:ring-0 "
+                      />
+                      <span className="ml-3 text-lg font-medium text-gray-500">
+                        {item.name}
+                      </span>
+                    </div>
+                    )
+                  })
+                }
               </div>
             </Dropdown>
 

@@ -34,7 +34,8 @@ interface AllData{
   onViewClick?:(id:number)=>void,
   onEditClick?:(id:number)=>void,
   onDeleteClick?:(id:number)=>void,
-
+  filters?:{[key:string]:any}[],
+  applyFilters?:(appliedFilters:{[key:string]:any})=>void
 }
 
 
@@ -63,7 +64,8 @@ const AllData = ({
   onViewClick,
   onEditClick,
   onDeleteClick,
- 
+  filters,
+  applyFilters
 }: AllData) => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
@@ -102,7 +104,7 @@ const AllData = ({
                 </div>
               </>
             )}
-            {filter && <Filter open={open}/>}
+            {filter &&filters && applyFilters &&  filters.length>0 && <Filter open={open} filters={filters} applyFilters={applyFilters}/>}
             {addButtonUrl && (
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               <Link href={addButtonUrl}>
