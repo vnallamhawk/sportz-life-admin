@@ -19,7 +19,7 @@ export default function Athlete() {
   const [filterByName, setFilterByName] = useState("");
   const router = useRouter();
   const [finalData, setFinalData] = useState<Athletes[]>([]);
-  const [filters, setFilters] = useState([]);
+  const [filters, setFilters] = useState<{[key:string]:any}>([]);
 
   const { data: athletes } =
     filterByName == ""
@@ -70,7 +70,7 @@ export default function Athlete() {
 
   const handleFilters=(appliedFilters:{[key:string]:any})=>{
 
-    setFilters(filters)
+    setFilters(appliedFilters)
   }
 
   return (
