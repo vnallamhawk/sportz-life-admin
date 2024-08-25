@@ -68,18 +68,21 @@ export default function AddStaffMultiFormLayout() {
   const { setOpenToast } = useContext(ToastContext);
 
   const hasStaffUseEffectRun = useRef(false);
+  const staffData =  id && api.staff.getStaffById.useQuery({ id });
+
 
   useEffect(() => {
-    if (id) {
-      const { data: staff } =   api.staff.getStaffById.useQuery({ id });
+    if (staffData &&staffData.data ) {
 
-      if (staff && !hasStaffUseEffectRun.current) {
+      if (staffData.data && !hasStaffUseEffectRun.current) {
+        const obj:any={...staffData.data}
 
-        setFormData(staff);
+        setFormData(obj);
         hasStaffUseEffectRun.current = true;
       }
     }
-  }, [id]);
+  }, [staffData]);
+ 
 
   const formProviderData = {
     ...methods,
@@ -165,6 +168,7 @@ export default function AddStaffMultiFormLayout() {
         gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         dateOfBirth: new Date(finalForm.dateOfBirth),
+        updatedAt:new Date(),
       });
     } else {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
