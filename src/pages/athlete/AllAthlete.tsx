@@ -19,6 +19,7 @@ export default function Athlete() {
   const [filterByName, setFilterByName] = useState("");
   const router = useRouter();
   const [finalData, setFinalData] = useState<Athletes[]>([]);
+  const [filters, setFilters] = useState([]);
 
   const { data: athletes } =
     filterByName == ""
@@ -66,6 +67,11 @@ export default function Athlete() {
   const deleteAthlete = (id: number) => {
     deleteMutate({ athleteId: id, deletedAt: moment().toISOString() });
   };
+
+  const handleFilters=(appliedFilters:{[key:string]:any})=>{
+
+    setFilters(filters)
+  }
 
   return (
     <>
@@ -117,6 +123,7 @@ export default function Athlete() {
 
      }
         ]}
+        applyFilters={(appliedFilters:{[key:string]:any})=>handleFilters(appliedFilters)}
         onViewClick={(id: number) => void router.push(`/athlete/${id ?? ""}`)}
         onEditClick={(id: number) => void router.push(`/edit-athlete-${id}`)}
         onDeleteClick={(id: number) => deleteAthlete(id)} rowSelection={true}      />

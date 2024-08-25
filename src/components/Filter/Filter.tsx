@@ -15,10 +15,10 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
-import { api } from "~/utils/api";
 
-export default function Filter({ open,filters }: { open: boolean ,filters:{[key:string]:any}[]}) {
+export default function Filter({ open,filters ,applyFilters}: { open: boolean ,filters:{[key:string]:any}[],  applyFilters?:(appliedFilters:{[key:string]:any})=>void}) {
   const [filter, setFilter] = useState<boolean>(false);
+  const [appliedFilters, setAppliedFilters] = useState<{[key:string]:any}>({});
 
   useEffect(() => {
     setFilter(open);
@@ -52,6 +52,21 @@ export default function Filter({ open,filters }: { open: boolean ,filters:{[key:
     }
 
   },[filters, openAcc])
+
+  const handleCheck=(id:number,label:string)=>{
+    let obj:{[key:string]:any}={...appliedFilters}
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const arr:number[]=appliedFilters[label]?[...appliedFilters[label]]:[]
+    if(arr.includes(id)){
+        const index=arr.findIndex((item)=>item===id)
+        arr.splice(index,1)
+
+    }else{
+        arr.push(id)
+    }
+    obj={...obj,[label]:id}
+    setAppliedFilters(obj)
+  }
 
 
   return (
@@ -125,6 +140,7 @@ export default function Filter({ open,filters }: { open: boolean ,filters:{[key:
                                 <input
                                   type="checkbox"
                                   className="h-5 w-5 rounded border-2 border-orange-light border-opacity-30 text-orange-light focus:ring-0 "
+                                  onChange={()=>handleCheck(item.id,filterItem.id as string)}
                                 />
                                 <span className="ml-2">{item?.name}</span>
                               </div>
@@ -147,7 +163,13 @@ export default function Filter({ open,filters }: { open: boolean ,filters:{[key:
 
             })}
             <div className="flex justify-center">
-              <button className="mx-2 rounded-lg bg-mandy-dark px-5 py-2 text-white">
+              <button className="mx-2 rounded-lg bg-mandy-dark px-5 py-2 text-white" onClick={()=>{
+                if( applyFilters && appliedFilters && Object.keys(appliedFilters).length>0){
+                    applyFilters(appliedFilters)
+                }
+
+              }
+                }>
                 Apply Filter
               </button>
               <button className="mx-2 rounded-lg bg-gray-500 px-5 py-2 text-white">
