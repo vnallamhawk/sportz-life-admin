@@ -16,7 +16,6 @@ import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import { ToastContext } from "~/contexts/Contexts";
 import { useSession } from "next-auth/react";
-import type { GENDER_VALUES } from "~/types/coach";
 
 const multiFormData = {
   name: "",
@@ -69,6 +68,7 @@ export default function AddStaffMultiFormLayout() {
 
   const hasStaffUseEffectRun = useRef(false);
   const staffData =  id && api.staff.getStaffById.useQuery({ id });
+  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
 
 
   useEffect(() => {
@@ -164,8 +164,8 @@ export default function AddStaffMultiFormLayout() {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         payrollId: parseInt(finalForm?.payroll?.value),
         image: "",
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+        gender: finalForm.gender.value.toLowerCase() ,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         dateOfBirth: new Date(finalForm.dateOfBirth),
         updatedAt:new Date(),
@@ -183,9 +183,9 @@ export default function AddStaffMultiFormLayout() {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         payrollId: parseInt(finalForm?.payroll?.value),
         image: "",
-        createdBy: sessionData?.token?.id,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+        createdBy: parseInt(createdBy as string),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+        gender: finalForm.gender.value.toLowerCase() ,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         dateOfBirth: new Date(finalForm.dateOfBirth),
         createdAt:new Date(),

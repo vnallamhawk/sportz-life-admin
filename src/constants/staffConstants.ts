@@ -100,6 +100,7 @@ export const STAFF_DASH_DUTY_TABLE_HEADERS = [
 export const STAFF_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Staff Name",
+    placeHolder: "Staff Name",
     id: "name",
     type: "textbox",
     rules: {
@@ -126,6 +127,7 @@ export const STAFF_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Phone Number",
     id: "phone",
+    placeHolder: "Phone Number",
     type: "textbox",
     rules: {
       required: true,
@@ -139,6 +141,7 @@ export const STAFF_DETAILS_CONSTANTS: FormValues[] = [
     label: "Email Address",
     id: "email",
     type: "textbox",
+    placeHolder: "Email Addressr",
     rules: {
       required: true,
       pattern: {

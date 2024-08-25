@@ -6,6 +6,8 @@ import { STAFF_TABLE_HEADERS } from "~/constants/staffConstants";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
 import type { Staffs,StaffDesignation, Centers } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { calculateAge } from "~/utils/common";
 
 interface StaffType extends Staffs{
   StaffDesignation?:StaffDesignation
@@ -14,12 +16,15 @@ interface StaffType extends Staffs{
 
 export default function AllStaff() {
   const router = useRouter();
+  const { data: sessionData } = useSession();
 
   const [finalData, setFinalData] = useState<StaffType[]>([]);
   const [filterByName, setFilterByName] = useState("");
+  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
+
   const { data: staffs } =
     filterByName == ""
-      ? api.staff.getAllStaffs.useQuery()
+      ? api.staff.getAllStaffs.useQuery({createdBy:parseInt(createdBy as string)})
       : api.staff.getAllStaffsByName.useQuery({ name: filterByName });
 
   useEffect(() => {
@@ -28,7 +33,8 @@ export default function AllStaff() {
         return {
           ...staff,
           designation:staff.StaffDesignation?staff.StaffDesignation.designation:"",
-          center:staff.Centers?staff.Centers?.name:""
+          center:staff.Centers?staff.Centers?.name:"",
+          age:calculateAge(staff?.dateOfBirth)
 
         };
       });
