@@ -10,7 +10,15 @@ export const STAFF_DETAILS_CONSTANT: FormValues[] = [
       required: true,
     },
   },
-
+  {
+    label: "Salary Amt",
+    id: "grossSalary",
+    type: "textbox",
+    placeHolder: "Enter Salary",
+    rules: {
+      required: true,
+    },
+  },
   {
     label: "Taxable",
     id: "taxable",

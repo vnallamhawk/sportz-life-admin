@@ -36,7 +36,7 @@ import { useSession } from "next-auth/react";
 // };
 const multiFormData: any = {
   designationId: "",
-  grossSalary: 0,
+  grossSalary: null,
   isEditMode: false,
 };
 const defaultValues = {
@@ -83,7 +83,7 @@ export default function AddCenterForm() {
   const [showTabSlabModal, setShowTabSlabModal] = useState(false);
   const [taxSlab, setTaxSlab] = useState<any>({});
   const { data: sessionData, status } = useSession();
-  const [createdBy,setCreatedBy]=useState<number>()
+  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
 
 
 
@@ -95,14 +95,7 @@ export default function AddCenterForm() {
     }
   );
 
-  useEffect(()=>{
-    if(sessionData && sessionData.token && sessionData.token.id){
-      setCreatedBy(sessionData.token.id)
-    }else{
-      router.push("/Login")
-    }
-
-  },[sessionData])
+  
   // useEffect(() => {
   //   if (id) {
   //     if (center && !hasCenterUseEffectRun.current) {
@@ -135,7 +128,7 @@ export default function AddCenterForm() {
 
   const finalFormSubmissionHandler = async (
     // finalForm: Required<MULTI_FORM_TYPES>
-    finalForm: Required<any>
+    finalForm: any
   ) => {
     if(createdBy){
       if (formData.isEditMode) {
@@ -143,18 +136,13 @@ export default function AddCenterForm() {
         //   ...finalForm,
         // });
       } else {
+
         setFormData({
           ...finalForm,
         });
         createMutate({
           ...finalForm,
-          createdBy,
-          designationId: 0,
-          taxable: false,
-          grossSalary: 0,
-          slabId: 0,
-          tax_percent: 0,
-          netSalary: 0
+          createdBy: parseInt(createdBy as string),
         });
       }
     }
@@ -168,7 +156,7 @@ export default function AddCenterForm() {
         fromAmount: parseInt(taxSlab?.fromAmount),
         toAmount: parseInt(taxSlab?.toAmount),
         percentage: parseInt(taxSlab?.percentage),
-        createdBy
+        createdBy:parseInt(createdBy as string),
       });
     }
   

@@ -108,6 +108,11 @@ export default function AddPayroll(props: any) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         setFormData(obj);
       }
+    }else{
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      obj.netSalary = obj.grossSalary;
+      obj.tax=0
+      obj.tax_percent=0
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     props?.finalFormSubmissionHandler(obj);
