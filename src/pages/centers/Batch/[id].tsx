@@ -45,8 +45,8 @@ const multiFormData: MULTI_FORM_BATCH_TYPES = {
   batchName: "",
   selectSports: [],
   selectCoaches: [],
-  capacity: 0,
-  price: 0,
+  capacity: null,
+  price: null,
 };
 
 const defaultValues = {
@@ -121,6 +121,7 @@ export default function AddCoachMultiFormLayout({
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
   const [batchId, setBatchId] = useState<number>();
   const { data: sessionData } = useSession();
+  const  academyId= sessionData?.token?sessionData?.token?.academyId:sessionData?.user?.academyId
 
   const formProviderData = {
     ...methods,
@@ -182,7 +183,7 @@ export default function AddCoachMultiFormLayout({
         price: parseInt(finalForm?.price),
         sportId: parseInt(sportId),
         centerId: center?.id,
-        academyId:sessionData?.token?.academyId,
+        academyId:parseInt(academyId as string),
         createdAt:new Date(),
         updatedAt:new Date(),
         occupiedSeat:0

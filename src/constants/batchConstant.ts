@@ -5,6 +5,7 @@ export const BATCH_DETAILS_CONSTANTS: FormValues[] = [
     label: "Batch Name",
     id: "name",
     type: "textbox",
+    placeHolder:"Batch Name",
     rules: {
       required: true,
       maxLength: {
@@ -49,6 +50,7 @@ export const BATCH_DETAILS_CONSTANTS: FormValues[] = [
     label: "Max Batch Capacity",
     id: "capacity",
     type: "number",
+    placeHolder:"Max Batch Capacity",
     rules: {
       required: true,
       maxLength: {

@@ -222,7 +222,7 @@ export default function AddCoachMultiFormLayout() {
           phone: finalForm.phone,
           email: finalForm.email,
           designation: finalForm.designation?.value,
-          gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+          gender: finalForm.gender.value.toLowerCase(),
           dateOfBirth: new Date(finalForm.dateOfBirth),
           trainingLevel: finalForm.trainingLevel
             .value as (typeof TRAINING_LEVEL)[number],

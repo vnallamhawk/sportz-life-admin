@@ -137,6 +137,6 @@ export interface MULTI_FORM_BATCH_TYPES {
   selectCoaches: MultiSelectOption[];
   batchTimings?: unknown[];
   isEditMode?: boolean;
-  capacity: number;
-  price: number;
+  capacity: number|null;
+  price: number|null;
 }
