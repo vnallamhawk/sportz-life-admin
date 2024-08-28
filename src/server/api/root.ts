@@ -21,6 +21,7 @@ import { coachBatchesRouter } from "./routers/coachBatches";
 import { coachSportsRouter } from "./routers/coachSports";
 import { athleteSportsRouter } from "./routers/athleteSports";
 import { athleteBatchesRouter } from "./routers/athleteBatches";
+import { assessmentRouter } from "./routers/assessment";
 
 /**
  * This is the primary router for your server.
@@ -48,7 +49,8 @@ export const appRouter = createTRPCRouter({
   coachBatches:coachBatchesRouter,
   coachSports:coachSportsRouter,
   athleteSports:athleteSportsRouter,
-  athleteBatches:athleteBatchesRouter
+  athleteBatches:athleteBatchesRouter,
+  assessment: assessmentRouter,
 });
 
 // export type definition of API
