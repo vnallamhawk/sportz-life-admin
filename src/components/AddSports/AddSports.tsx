@@ -85,7 +85,6 @@ const AddSports = () => {
   };
 
   const addNewSport = (e: any) => {
-    debugger
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

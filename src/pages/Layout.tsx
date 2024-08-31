@@ -18,11 +18,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router=useRouter()
 
-  // useEffect(() => {
-  //   if (status === 'unauthenticated') {
-  //     router.push("/")
-  //   } 
-  // }, [status, sessionData]);
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      void router.push("/Login")
+    } 
+  }, [status, sessionData, router]);
 
 
   return (

@@ -42,7 +42,7 @@ export const COACH_DETAILS_CONSTANTS: FormValues[] = [
     label: "Coach Name",
     id: "name",
     type: "textbox",
-    placeHolder:"Coach Name",
+    placeHolder: "Coach Name",
     rules: {
       required: true,
       maxLength: {
@@ -73,8 +73,8 @@ export const COACH_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Phone Number",
     id: "phone",
+    placeHolder: "Phone Number",
     type: "textbox",
-    placeHolder:"Phone Number",
     rules: {
       required: true,
       maxLength: {
@@ -86,8 +86,8 @@ export const COACH_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Email Address",
     id: "email",
-    type: "textbox",
     placeHolder:"Email Address",
+    type: "textbox",
 
     rules: {
       required: true,

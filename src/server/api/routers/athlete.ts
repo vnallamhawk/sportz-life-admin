@@ -15,6 +15,9 @@ export const athleteRouter = createTRPCRouter({
       where: {
         deletedAt: null,
       },
+      include:{
+        AthleteSportsMaps:true
+      }
     });
     return allAthletes;
   }),

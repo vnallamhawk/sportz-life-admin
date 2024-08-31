@@ -43,9 +43,9 @@ export const staffPayrollRouter = createTRPCRouter({
       z.object({
         taxable:z.boolean(),
         grossSalary:z.number(),   
-        slabId :z.number(),
+        slabId :z.number().optional(),
         designationId:z.number(),
-        tax_percent:z.number(),
+        tax_percent:z.number().optional(),
         netSalary:z.number(),
         createdBy:z.number()
       })
@@ -63,16 +63,21 @@ export const staffPayrollRouter = createTRPCRouter({
         },
         ctx,
       }) => {
+        const obj:any={taxable,
+          grossSalary,
+          slabId,
+          designationId,
+          netSalary,
+          createdBy}
+          if(slabId && tax_percent){
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            obj.slabId=slabId
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            obj.tax_percent=tax_percent
+          }
         const response = await ctx.prisma.staffPayroll.create({
-          data: {
-            taxable,
-            grossSalary,
-            slabId,
-            designationId,
-            tax_percent,
-            netSalary,
-            createdBy:createdBy
-          },
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          data: obj,
         });
         return response;
       }

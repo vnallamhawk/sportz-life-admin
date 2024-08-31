@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import AllData from "~/common/AllData";
 import { useRouter } from "next/router";
@@ -19,15 +18,15 @@ export default function Athlete() {
   const [filterByName, setFilterByName] = useState("");
   const router = useRouter();
   const [finalData, setFinalData] = useState<Athletes[]>([]);
-  const [filters, setFilters] = useState([]);
+  const [filters, setFilters] = useState<{ [key: string]: any }>([]);
 
   const { data: athletes } =
     filterByName == ""
       ? api.athlete.getAllAthletes.useQuery()
       : api.athlete.getAthleteByName.useQuery({ name: filterByName });
-      const { data: sports } = api.sports.getAllSports.useQuery();
-      const { data: centers } = api.center.getAllCenters.useQuery();
-      const { data: batches } = api.batches.getAllBatches.useQuery();
+  const { data: sports } = api.sports.getAllSports.useQuery();
+  const { data: centers } = api.center.getAllCenters.useQuery();
+  const { data: batches } = api.batches.getAllBatches.useQuery();
 
   const dropdownObj = {
     changeCenter: true,
@@ -40,7 +39,7 @@ export default function Athlete() {
 
   const { mutate: deleteMutate } = api.athlete.deleteAthlete.useMutation({
     onSuccess: (response) => {
-      const arr :Athletes[]= [...finalData];
+      const arr: Athletes[] = [...finalData];
       const index = finalData?.findIndex(
         (item: Athletes) => item?.id == response?.id
       );
@@ -54,7 +53,7 @@ export default function Athlete() {
 
   useEffect(() => {
     if (athletes && athletes?.length > 0) {
-      const updatedAthletes: Athletes[] = athletes.map((athletes:Athletes) => {
+      const updatedAthletes: Athletes[] = athletes.map((athletes: Athletes) => {
         return {
           ...athletes,
           // status: athlete?.designation,
@@ -68,10 +67,9 @@ export default function Athlete() {
     deleteMutate({ athleteId: id, deletedAt: moment().toISOString() });
   };
 
-  const handleFilters=(appliedFilters:{[key:string]:any})=>{
-
-    setFilters(filters)
-  }
+  const handleFilters = (appliedFilters: { [key: string]: any }) => {
+    setFilters(appliedFilters);
+  };
 
   return (
     <>
@@ -87,46 +85,55 @@ export default function Athlete() {
         filter={true}
         filters={[
           {
-            label:"Filter by Sports",
-            id:"sports",
-            type:"multiSelect",
-            data:sports
+            label: "Filter by Sports",
+            id: "sports",
+            type: "multiSelect",
+            data: sports,
           },
           {
-             label:"Filter by Center",
-            id:"centers",
-            type:"multiSelect",
-            data:centers
+            label: "Filter by Center",
+            id: "centers",
+            type: "multiSelect",
+            data: centers,
           },
           {
-            label:"Filter by Batches",
-           id:"batches",
-           type:"multiSelect",
-           data:batches
-         },
-         {
-          label:"Filter by Age",
-         id:"age",
-         type:"bar"
-       },
-         {
-          label:"Filter by Payment Status",
-         id:"payment_status",
-         type:"multiSelect",
-         data:[{id:1,name:"Payment Dues"},{id:2,name:"Paid"}]
-       },
-       {
-        label:"Filter by Gender",
-       id:"gender",
-       type:"multiSelect",
-       data:[{id:1,name:"Male"},{id:2,name:"Female"}]
-
-     }
+            label: "Filter by Batches",
+            id: "batches",
+            type: "multiSelect",
+            data: batches,
+          },
+          {
+            label: "Filter by Age",
+            id: "age",
+            type: "bar",
+          },
+          {
+            label: "Filter by Payment Status",
+            id: "payment_status",
+            type: "multiSelect",
+            data: [
+              { id: 1, name: "Payment Dues" },
+              { id: 2, name: "Paid" },
+            ],
+          },
+          {
+            label: "Filter by Gender",
+            id: "gender",
+            type: "multiSelect",
+            data: [
+              { id: 1, name: "Male" },
+              { id: 2, name: "Female" },
+            ],
+          },
         ]}
-        applyFilters={(appliedFilters:{[key:string]:any})=>handleFilters(appliedFilters)}
+        applyFilters={(appliedFilters: { [key: string]: any }) =>
+          handleFilters(appliedFilters)
+        }
         onViewClick={(id: number) => void router.push(`/athlete/${id ?? ""}`)}
         onEditClick={(id: number) => void router.push(`/edit-athlete-${id}`)}
-        onDeleteClick={(id: number) => deleteAthlete(id)} rowSelection={true}      />
+        onDeleteClick={(id: number) => deleteAthlete(id)}
+        rowSelection={true}
+      />
     </>
   );
 }
