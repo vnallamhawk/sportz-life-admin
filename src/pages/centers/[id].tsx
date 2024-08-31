@@ -123,12 +123,7 @@ export default function Page({ center }: { center: CenterDetails }) {
   const [selectedTab, setSelectedTab] = useState<string|undefined>(tabs[0]?.name);
   const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>();
 
-  const handleCertificateClick = () =>
-    setDisplayCertificate(!displayCertificate);
-  const handleBatchClick = () => setDisplayBatch(!displayBatch);
-  const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
-  const sportsArr: string[] = ["Rugby", "Baseball", "Tennis", "BasketBall"];
-  const [filterByName, setFilterByName] = useState("");
+
   const [loading, setLoading] = useState(true);
   const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs);
 
@@ -140,6 +135,18 @@ export default function Page({ center }: { center: CenterDetails }) {
         const obj:TabType={...arr[index]}
         obj.value =  center?.CenterInventories?center?.CenterInventories?.length:0;
         arr[index]=obj
+      }
+      const coachesIndex = arr.findIndex((item:TabType) => item.name === "coaches");
+      if (coachesIndex > -1 && center?.Coaches) {
+        const obj:TabType={...arr[coachesIndex]}
+        obj.value =  center?.Coaches?center?.Coaches?.length:0;
+        arr[coachesIndex]=obj
+      }
+      const athletesIndex = arr.findIndex((item:TabType) => item.name === "athletes");
+      if (athletesIndex > -1 && center?.Athletes) {
+        const obj:TabType={...arr[athletesIndex]}
+        obj.value =  center?.Athletes?center?.Athletes?.length:0;
+        arr[athletesIndex]=obj
       }
       const batchIndex = arr.findIndex((item:TabType) => item.name === "batches");
       if (batchIndex > -1 && center?.Batches) {
@@ -205,7 +212,7 @@ export default function Page({ center }: { center: CenterDetails }) {
         cardTitle="CENTER DETAILS"
         editButtonClick={() => void router.push(`/edit-center-${center?.id}`)}
         editText={"Edit Center"}
-        tabs={tabs}
+        tabs={finalTabs}
         handleTabClick={handleClick}
         data={center}
         selectedComponent={selectedComponent}

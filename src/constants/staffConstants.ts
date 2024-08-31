@@ -145,7 +145,7 @@ export const STAFF_DETAILS_CONSTANTS: FormValues[] = [
     label: "Email Address",
     id: "email",
     type: "textbox",
-    placeHolder: "Email Addressr",
+    placeHolder: "Email Address",
     rules: {
       required: true,
       pattern: {
