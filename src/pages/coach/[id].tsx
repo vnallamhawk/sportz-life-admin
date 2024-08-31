@@ -1,17 +1,29 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
 import CardTitle from "~/components/Card/CardTitle";
 import Image from "next/image";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
+import staffCalendar from "../../images/Staff_calendar.png";
+import staffCenter from "../../images/Staff_center.png";
+import staffPayroll from "../../images/Staff_payroll.png";
+import staffShift from "../../images/Staff_shift.png";
 import type {
   Batches,
   Centers,
+  CoachCentersBatches,
+  CoachQualifications,
   CoachSportsMaps,
   Coaches,
+  StaffPayroll,
 } from "@prisma/client";
 import { type Sports } from "@prisma/client";
+import type { TabType, TableHead } from "~/types/common";
+import Attendance from "~/components/Attendance";
+import AllData from "~/common/AllData";
+import DetailPage from "~/common/DetailPage";
+
 import // DATE_TIME_FORMAT,
 // NO_DATA,
 "~/globals/globals";
@@ -26,12 +38,29 @@ import { ToastContext } from "~/contexts/Contexts";
 // import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 // import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
 import router from "next/router";
+import s3 from "../../lib/aws";
+import moment from "moment-timezone";
+import { calculateAge } from "~/utils/common";
+import { COACH_DASH_BATCH_TABLE_HEADERS } from "~/constants/centerDashTables";
+import { STAFF_DASH_PAYROLL_TABLE_HEADERS } from "~/constants/staffConstants";
+import { COACH_CERTIFICATE_TABLE_HEADERS } from "~/constants/coachConstants";
+
+
+interface CoachCentersBatchesType extends CoachCentersBatches{
+  Batches?:Batches
+}
+
+interface CoachSportsMapsType extends CoachSportsMaps{
+  Sports?:Sports
+}
 
 type Coach = Coaches & {
-  CoachSportsMaps: CoachSportsMaps[];
-  Centers: Centers;
-  Batches: Batches;
+  CoachSportsMaps: CoachSportsMapsType[];
+  CoachQualifications:CoachQualifications[]
+  CoachCentersBatches:CoachCentersBatchesType[]
+  StaffPayroll:StaffPayroll
 };
+
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -43,9 +72,19 @@ export const getServerSideProps = async (
       id: id ? Number(id) : undefined,
     },
     include: {
-      CoachCentersBatches:true,
-      // CoachSportsMaps: true,
+      CoachCentersBatches:{
+        include:{
+          Batches:true
+        }
+      },
+       CoachSportsMaps: {
+        include: {
+          Sports: true,
+        },
+       },
+       StaffPayroll:true,
       Centers: true,
+      CoachQualifications:true
       // Batches: true,
       // Batches: true,
     },
@@ -57,65 +96,40 @@ export const getServerSideProps = async (
       coach: JSON.parse(JSON.stringify(coach)), // <== here is a solution
     },
   };
-  // return {
-  //   props: {
-  //     coach: {
-  //       ...coach,
-  //       createdAt: coach?.createdAt?.toISOString(),
-  //       updatedAt: coach?.updatedAt?.toISOString(),
-  //       dateOfBirth: coach?.dateOfBirth
-  //         ? coach?.dateOfBirth?.toISOString()
-  //         : "",
-  //       // CoachSportsMaps: coachSportsMaps?.map((sport) => ({
-  //       //   ...sport,
-  //       //   createdAt: sport?.createdAt ? sport?.createdAt?.toISOString() : "",
-  //       //   updatedAt: sport?.updatedAt ? sport?.updatedAt?.toISOString() : "",
-  //       // })),
-  //       Centers: {
-  //         ...centers,
-  //         createdAt: centers?.createdAt
-  //           ? centers?.createdAt?.toISOString()
-  //           : "",
-  //         updatedAt: centers?.updatedAt
-  //           ? centers?.updatedAt?.toISOString()
-  //           : "",
-  //       },
-  //       // Centers: centers?.map((center) => ({
-  //       //   ...center,
-  //       //   createdAt: center?.createdAt ? center?.createdAt.toISOString() : "",
-  //       //   updatedAt: center?.updatedAt ? center?.updatedAt.toISOString() : "",
-  //       // })),
-
-  //       // certificates: coach?.certificates.map((cert) => ({
-  //       //   ...cert,
-  //       //   startDate: cert.startDate ? dateFormat(cert.startDate) : "",
-  //       //   endDate: cert.endDate ? dateFormat(cert.endDate) : "",
-  //       // })),
-  //       Batches: batches.map((coachBatch) => ({
-  //         ...coachBatch,
-  //         createdAt: coachBatch?.createdAt
-  //           ? coachBatch?.createdAt.toISOString()
-  //           : "",
-  //         updatedAt: coachBatch?.updatedAt
-  //           ? coachBatch?.updatedAt.toISOString()
-  //           : "",
-  //         // batch: batches.find((batch) => batch.id == coachBatch.id),
-  //         // center: centers.find(
-  //         //   (center) =>
-  //         //     center.id ==
-  //         //     batches.find((batch) => batch.id == coachBatch.batchId)?.centerId
-  //         // ),
-  //       })),
-  //     },
-  //     // sports: sports.map((sport) => ({
-  //     //   ...sport,
-  //     //   createdAt: sport?.createdAt ? sport?.createdAt.toISOString() : "",
-  //     //   updatedAt: sport?.updatedAt ? sport?.updatedAt.toISOString() : "",
-  //     // })),
-  //     // batches: batches,
-  //   },
-  // };
+ 
 };
+
+const tabs = [
+  {
+    label: "Attendance",
+    name: "attendance",
+    value: "60%",
+    image: staffCalendar,
+    allLabel: "ATTENDANCE",
+  },
+  {
+    label: "Batches",
+    name: "batches",
+    value: "02",
+    image: staffCenter,
+    allLabel: "CENTERS",
+  },
+  {
+    label: "Payroll",
+    name: "payroll",
+    value: "$400",
+    image: staffPayroll,
+    allLabel: "PAYROLL",
+  },
+  {
+    label: "Certificates",
+    name: "certificates",
+    value: "03",
+    image: staffShift,
+    allLabel: "DUTY SHIFT",
+  },
+];
+
 
 export default function Page({
   coach,
@@ -141,119 +155,111 @@ export default function Page({
     setDisplayCertificate(!displayCertificate);
   const handleBatchClick = () => setDisplayBatch(!displayBatch);
   const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
+  const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>();
+
+  const [selectedTab, setSelectedTab] = useState<string | undefined>(
+    tabs[0]?.name
+  );
+
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+
+  useEffect(()=>{
+
+    if(coach && coach.image){
+      void getSignedUrlForImage(coach.image)
+    }
+
+
+  },[coach])
+
+  // eslint-disable-next-line @typescript-eslint/require-await
+  const getSignedUrlForImage = async (key:string) => {
+    try {
+        const s3info = s3.getSignedUrl("getObject", {
+            Bucket: process.env.S3_BUCKET_NAME,
+            Key: key,
+            Expires: 60,
+        });
+        setImageUrl(s3info);
+    } catch (error) {
+        return null;
+    }
+};
+
+const handleClick = (tab: TabType) => {
+  let component;
+  let TABLE_HEAD:TableHead=[];
+  let TABLE_ROWS: {[key:string]:any,id:number}[] =[];
+  if (tab?.name === "attendance") {
+    component = <Attendance />;
+  } else {
+    if (tab?.name === "batches") {
+      TABLE_HEAD = COACH_DASH_BATCH_TABLE_HEADERS;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      TABLE_ROWS = coach?.CoachCentersBatches ? coach?.CoachCentersBatches : [];
+    } else if (tab?.name === "payroll") {
+      TABLE_HEAD = STAFF_DASH_PAYROLL_TABLE_HEADERS;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      TABLE_ROWS = coach?.StaffPayroll ? [coach?.StaffPayroll] : [];
+    } else if (tab?.name === "certificates") {
+      TABLE_HEAD = COACH_CERTIFICATE_TABLE_HEADERS;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      TABLE_ROWS = coach?.CoachQualifications ? coach?.CoachQualifications : [];
+    }
+
+    component = (
+      <AllData
+        title={tab?.allLabel ? tab?.allLabel : ""}
+        dropdownItems={{}}
+        TABLE_HEAD={TABLE_HEAD}
+        TABLE_ROWS={TABLE_ROWS}
+        rowSelection={false}
+        showImage={false}
+      />
+    );
+  }
+  setSelectedComponent(component);
+  setSelectedTab(tab?.name);
+};
 
   return (
     <>
-      <Card className="h-100 mx-5">
-        <header className="flex justify-between">
-          <CardTitle title="COACH DETAILS" />
-          <Button onClick={() =>  void router.push(`/edit-coach-${coach.id}`)}>
-            Edit Coach
-          </Button>
-        </header>
-        <div className="flex">
-          <Image
-            className="h-40 w-40 rounded-full"
-            src={"/images/rugby.jpg"}
-            alt=""
-            width="300"
-            height="200"
-          />
-          <div className="w-10/12 px-10">
-            <div className="mt-5 font-bold">
-              <span> {coach.name} </span>
-              <span> ({coach.designation})</span>
-            </div>
-            <div className="text-orange-400">
-              {coach?.CoachSportsMaps?.map(
-                ({ sportId }) => sportsDictionary?.[sportId]
-              ).join(" ,")}
-            </div>
-            <div className="mt-5 flex">
-              <div className="about">
-                <div className="text-gray-400"> About </div>
-                <div className="font-bold text-gray-600">{coach.about}</div>
-              </div>
-            </div>
-            <div className="mt-2 flex justify-between">
-              <div className="training-level">
-                <div className="text-gray-400"> Training level Expertise </div>
-                <div className="font-bold text-gray-600">
-                  {coach.trainingLevel}
-                </div>
-              </div>
-              <div className="experience-level">
-                <div className="text-gray-400">
-                  {" "}
-                  Years of Coaching Experience{" "}
-                </div>
-                <div className="font-bold text-gray-600">
-                  {coach.experienceLevel}
-                </div>
-              </div>
-            </div>
-            <div className="mt-2 flex justify-between">
-              <div>
-                <div className="text-gray-400"> Contact Number </div>
-                <div className="font-bold text-gray-600">{coach.phone}</div>
-              </div>
-              <div>
-                <div className="text-gray-400">Email</div>
-                <div className="font-bold text-gray-600">{coach.email}</div>
-              </div>
-              <div>
-                <div className="text-gray-400">DOB</div>
-                <div className="font-bold text-gray-600">
-                  {/* {coach.dateOfBirth
-                    ? DATE_TIME_FORMAT.format(new Date(coach.dateOfBirth))
-                    : ""} */}
-                </div>
-              </div>
-              <div>
-                <div className="text-gray-400">Gender</div>
-                <div className="font-bold text-gray-600">{coach.gender}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-5 flex w-10/12 justify-between">
-          <div
-            className={`w-60 cursor-pointer rounded-lg border-2 border-solid p-5 ${
-              displayAttendance ? "border-fuchsia-800" : "border-gray-400"
-            }`}
-            onClick={handleAttendanceClick}
-          >
-            <div className="font-bold"> Attendance</div>
-            <div className="text-4xl font-bold"> 60%</div>
-          </div>
-          <div
-            className={`w-60 cursor-pointer rounded-lg border-2 border-solid p-5 ${
-              displayBatch ? "border-rose-400" : "border-gray-400"
-            }`}
-            onClick={handleBatchClick}
-          >
-            <div className="font-bold"> Batches</div>
-            <div className="text-4xl font-bold">
-              {/* {coach?.Batches?.length ?? NO_DATA} */}
-            </div>
-          </div>
-          <div
-            className={`w-60 cursor-pointer rounded-lg border-2 border-solid p-5 ${
-              displayCertificate ? "border-indigo-600" : "border-gray-400"
-            }`}
-            onClick={handleCertificateClick}
-          >
-            <div className="font-bold"> Certificates</div>
-            <div className="text-4xl font-bold">
-              {/* {coach?.certificates?.length ?? NO_DATA} */}
-            </div>
-          </div>
-        </div>
-        <AddCoachSuccessToast
-          open={openToast}
-          setOpen={setOpenToast}
-        ></AddCoachSuccessToast>
-      </Card>
+      <DetailPage
+        cardTitle="Coach DETAILS"
+        editButtonClick={() => void router.push(`/edit-coach-${coach?.id}`)}
+        editText={"Edit Coach"}
+        tabs={tabs}
+        handleTabClick={handleClick}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        data={{ ...coach,imageUrl }}
+        name={`${coach?.name}(${coach.designation})`}
+        selectedComponent={selectedComponent}
+        selectedTab={selectedTab}
+        badgeData={coach?.CoachSportsMaps||[]}
+        details={[
+          {
+            items: [
+              {
+                label: "Contact Number",
+                value: coach?.phone || "",
+              },
+              { label: "Email", value: coach?.email || "" },
+
+              {
+                label: "Age",
+                value: calculateAge(coach?.dateOfBirth),
+              },
+            
+              { label: "Gender", value: coach?.gender || "" },
+              {
+                label: "Training Level",
+                value: coach?.trainingLevel || "",
+              },
+            ],
+          },
+        ]}
+      />
     </>
   );
 }

@@ -538,6 +538,7 @@ model Coaches {
   ScheduledPlans            ScheduledPlans[]
   TrainingDrills            TrainingDrills[]
   TrainingPlans             TrainingPlans[]
+  StaffPayroll              StaffPayroll?              @relation(fields: [payrollId], references: [id], onDelete: NoAction, map: "Coaches_ibfk_401")
 
   @@index([academyId], map: "academyId")
   @@index([centerId], map: "centerId")
@@ -1060,8 +1061,9 @@ model CoachCentersBatches {
   deletedAt DateTime? @db.DateTime(0)
   Centers   Centers   @relation(fields: [centerId], references: [id], onDelete: NoAction, map: "CoachCentersBatches_ibfk_253")
   Coaches   Coaches   @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "CoachCentersBatches_ibfk_254")
+  Batches   Batches    @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "CoachCentersBatches_ibfk_255")
 
-  @@unique([centerId, coachId], map: "CoachCentersBatches_centerId_coachId_unique")
+  @@unique([centerId, coachId,batchId], map: "CoachCentersBatches_centerId_coachId_unique")
   @@index([coachId], map: "coachId")
 }
 

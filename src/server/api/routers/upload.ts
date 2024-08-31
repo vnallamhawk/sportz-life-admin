@@ -44,7 +44,7 @@ export const uploadRouter = createTRPCRouter({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         const data = await s3.upload(uploadParams).promise();
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        return { url: data.Location }
+        return { url: data.Key }
       } catch (err:any) {
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-member-access
         throw new Error(`Upload failed: ${err.message}`);

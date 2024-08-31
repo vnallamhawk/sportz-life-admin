@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import {  useEffect, useState } from "react";
 import staffCalendar from "../../images/Staff_calendar.png";
 import staffCenter from "../../images/Staff_center.png";
 import staffPayroll from "../../images/Staff_payroll.png";
@@ -12,6 +12,7 @@ import type {
   StaffShifts,
   Staffs,
 } from "@prisma/client";
+import s3 from '../../lib/aws';
 
 import { useRouter } from "next/router";
 
@@ -95,6 +96,31 @@ export default function Page({ staff }: { staff: StaffDetails }) {
   const [selectedTab, setSelectedTab] = useState<string | undefined>(
     tabs[0]?.name
   );
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+
+  useEffect(()=>{
+
+    if(staff && staff.image){
+      void getSignedUrlForImage(staff.image)
+    }
+
+
+  },[staff])
+
+  // eslint-disable-next-line @typescript-eslint/require-await
+  const getSignedUrlForImage = async (key:string) => {
+    try {
+        const s3info = s3.getSignedUrl("getObject", {
+            Bucket: process.env.S3_BUCKET_NAME,
+            Key: key,
+            Expires: 60,
+        });
+        setImageUrl(s3info);
+    } catch (error) {
+        return null;
+    }
+};
 
   const handleClick = (tab: TabType) => {
     let component;
@@ -138,7 +164,7 @@ export default function Page({ staff }: { staff: StaffDetails }) {
         tabs={tabs}
         handleTabClick={handleClick}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        data={{ ...staff, description: staff?.StaffDesignation?.designation }}
+        data={{ ...staff, description: staff?.StaffDesignation?.designation,imageUrl }}
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}
         details={[
