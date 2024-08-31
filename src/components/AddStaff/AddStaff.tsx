@@ -8,7 +8,7 @@ import { api } from "~/utils/api";
 import AddForm from "~/common/AddForm";
 import type { FormValues } from "~/types/common";
 
-const AddStaff = () => {
+const AddStaff = ({onDropCallback}:{onDropCallback:(files: Array<File>)=>void}) => {
   const {
     stepData: { currentStep, setCurrentStep },
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -108,6 +108,7 @@ const AddStaff = () => {
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
+        onDropCallback={onDropCallback}
       />
     </>
   );

@@ -230,7 +230,7 @@ export default function AddStaffMultiFormLayout() {
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 1 && <AddStaff />}
+          {currentStep === 1 && <AddStaff onDropCallback={onDropCallback}/>}
           {currentStep === 2 && (
             <AddStaffShift finalFormSubmission={finalFormSubmissionHandler} />
           )}

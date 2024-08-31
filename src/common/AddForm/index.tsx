@@ -52,6 +52,8 @@ interface AddForm {
   setDependentKey?: any;
   dependentKey1?: string;
   setDependentKey1?: any;
+  onDropCallback?:(files: Array<File>)=>void;
+  uploadUrl?:string
 }
 const AddForm = ({
   cardTitle,
@@ -83,6 +85,8 @@ const AddForm = ({
   setDependentKey,
   dependentKey1,
   setDependentKey1,
+  onDropCallback,
+  uploadUrl
 }: AddForm) => {
   let inputElement;
   const {
@@ -432,11 +436,21 @@ const AddForm = ({
       {imageTitle && (
         <label className="col-span-2 mt-5 flex h-48 flex-col justify-center rounded-lg border-2 border-dashed border-gray-300 bg-stone-100 text-center lg:hidden">
           <div className="mb-3 flex items-center justify-center">
-            <input type="file" className="hidden" />
+            <input type="file" className="hidden" onChange={(e:React.ChangeEvent<HTMLInputElement>)=>
+            {
+              if(imageTitle &&onDropCallback && e.target.files ){
+                const uploadedFile:File|null| undefined=e.target.files.length>0?e.target.files[0]:null
+                if(uploadedFile){
+                  onDropCallback([uploadedFile])
+                }
+
+              }
+            }
+              }/>
             <Image
               width={0}
               height={0}
-              src={AddFile}
+              src={uploadUrl?uploadUrl:AddFile}
               className="h-auto w-auto mr-2"
               alt=""
             />
