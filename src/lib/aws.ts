@@ -3,10 +3,10 @@ import AWS from 'aws-sdk';
 
 AWS.config.update({
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+  accessKeyId: process.env.ACCESS_KEY!,
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  region: process.env.AWS_REGION, // e.g., 'us-east-1'
+  secretAccessKey: process.env.SECRET_KEY!,
+  region: process.env.REGION, // e.g., 'us-east-1'
 });
 
 const s3 = new AWS.S3();
