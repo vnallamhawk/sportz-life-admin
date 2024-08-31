@@ -1123,12 +1123,8 @@ model CoachOnCenters {
   createdAt      DateTime         @db.DateTime(0)
   updatedAt      DateTime         @db.DateTime(0)
   deletedAt      DateTime?        @db.DateTime(0)
-  Coaches        Coaches          @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "CoachOnCenters_ibfk_21")
-  Centers        Centers          @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "CoachOnCenters_ibfk_22")
-  Coaches        CoachOnCenters   @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "CoachOnCenters_ibfk_21")
-  CoachOnCenters CoachOnCenters[]
-  Centers        CoachOnCenters   @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "CoachOnCenters_ibfk_22")
-  CoachOnCenters CoachOnCenters[]
+  Coaches        Coaches   @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "CoachOnCenters_ibfk_21")
+  Centers        Centers   @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "CoachOnCenters_ibfk_22")
 
   @@unique([coachId, centerId], map: "CoachOnCenters_coachId_centerId_unique")
   @@index([centerId], map: "centerId")
