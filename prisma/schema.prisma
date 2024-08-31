@@ -387,7 +387,7 @@ model Batches {
   Academies               Academies                 @relation(fields: [academyId], references: [id], onDelete: NoAction, map: "Batches_ibfk_2793")
   Payments                Payments[]
   ScheduledCenterBatches  ScheduledCenterBatches[]
-
+  CoachCentersBatches       CoachCentersBatches[]
   @@index([coachId], map: "coachId")
   @@index([sportId], map: "sportId")
   @@index([academyId], map: "academyId")
@@ -851,7 +851,7 @@ model StaffPayroll {
   StaffDesignation StaffDesignation @relation(fields: [designationId], references: [id], map: "StaffDesignationPayrol_ibfk_1")
   Admin            Admin            @relation(fields: [createdBy], references: [id], map: "StaffPayrollAdmin_ibfk_1")
   Staffs           Staffs[]
-
+  Coaches          Coaches[]
   @@index([createdBy], map: "createdBy")
   @@index([designationId], map: "designationId")
   @@index([slabId], map: "slabId")
