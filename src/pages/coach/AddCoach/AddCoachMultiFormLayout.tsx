@@ -86,7 +86,9 @@ export default function AddCoachMultiFormLayout() {
   const { data: sessionData } = useSession();
   const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
   const  academyId= sessionData?.token?sessionData?.token?.academyId:sessionData?.user?.academyId
-
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadUrl, setUploadUrl] = useState<string>("");
+  const uploadImage = api.upload.uploadImage.useMutation();
 
   useEffect(() => {
     if(id){
@@ -123,13 +125,41 @@ export default function AddCoachMultiFormLayout() {
   });
 
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
-    setPreview(
-      acceptedFiles.map((upFile) =>
-        Object.assign(upFile, {
-          preview: URL.createObjectURL(upFile),
-        })
-      )
-    );
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      setPreview(
+        acceptedFiles.map((upFile: File) =>
+          Object.assign(upFile, {
+            preview: URL.createObjectURL(upFile),
+          })
+        )
+      );
+      const uploadedFile: File | null = acceptedFiles[0]
+        ? acceptedFiles[0]
+        : null;
+      setFile(uploadedFile);
+      if (!uploadedFile) {
+        alert('Please select a valid file');
+        return;
+      }else  {
+        const fileReader = new FileReader();
+        fileReader.onloadend = async () => {
+          const base64String = fileReader.result as string;
+    
+
+          try {
+            const response  = await uploadImage.mutateAsync({
+              file: base64String,
+              filename: uploadedFile.name,
+              mimetype: uploadedFile.type,
+            });
+            setUploadUrl(response.url);
+          } catch (err) {
+            console.error("Upload failed:", err);
+          }
+        };
+        fileReader.readAsDataURL(uploadedFile)      
+      }
+    }
   }, []);
 
   const { mutate: createMutateCoachSports } =
@@ -203,17 +233,21 @@ export default function AddCoachMultiFormLayout() {
   ) => {
     if(createdBy && academyId){
       if (formData.isEditMode) {
-        // editMutate({
-        //   name: finalForm.name,
-        //   phone: finalForm.phone,
-        //   email: finalForm.email,
-        //   designation: finalForm.designation?.value,
-        //   gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
-        //   dateOfBirth: new Date(finalForm.dateOfBirth),
-        //   trainingLevel: finalForm.trainingLevel
-        //     .value as (typeof TRAINING_LEVEL)[number],
-        //   coachId: finalForm.coachId,
-        // });
+        editMutate({
+          name: finalForm.name,
+          phone: finalForm.phone,
+          email: finalForm.email,
+          designation: finalForm.designation?.value,
+          gender: finalForm.gender.value.toLowerCase(),
+          dateOfBirth: new Date(finalForm.dateOfBirth),
+          trainingLevel: finalForm.trainingLevel
+            .value as (typeof TRAINING_LEVEL)[number],
+          updatedAt:new Date(),
+          academyId:parseInt(academyId as string),
+          image:uploadUrl,
+          coachId:id
+  
+        });
       } else {
         setFormData({...finalForm})
   
@@ -229,8 +263,8 @@ export default function AddCoachMultiFormLayout() {
             createdBy:parseInt(createdBy as string),
             createdAt:new Date(),
           updatedAt:new Date(),
-          academyId:parseInt(academyId as string)
-
+          academyId:parseInt(academyId as string),
+          image:uploadUrl
   
         });
       }

@@ -96,8 +96,8 @@ export const coachRouter = createTRPCRouter({
         createdBy:z.number(),
         createdAt:z.date(),
         updatedAt:z.date(),
-        academyId:z.number()
-
+        academyId:z.number(),
+        image:z.string()
       })
     )
     .mutation(
@@ -112,7 +112,8 @@ export const coachRouter = createTRPCRouter({
           trainingLevel,
           createdAt,
           updatedAt,
-          academyId
+          academyId,
+          image
         },
         ctx,
       }) => {
@@ -128,7 +129,8 @@ export const coachRouter = createTRPCRouter({
             trainingLevel: trainingLevel,
             createdAt,
             updatedAt,
-            academyId
+            academyId,
+            image
           },
         });
         return response;
@@ -138,34 +140,32 @@ export const coachRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        about: z.string(),
         phone: z.string(),
         email: z.string(),
         designation: z.string(),
         gender: z.enum(GENDER_VALUES),
-        certificates: certificatesSchema,
         dateOfBirth: z.date(),
-        sports: coachingSportsSchema,
         trainingLevel: z.enum(TRAINING_LEVEL),
-        experienceLevel: z.enum(EXPERIENCE_LEVEL),
-        batchIds: z.array(z.number()),
-        centerIds: z.array(z.number()),
-        coachId: z.number(),
+        updatedAt:z.date(),
+        academyId:z.number(),
+        image:z.string(),
+        coachId:z.number()
       })
     )
     .mutation(
       async ({
         input: {
           name,
-          about,
           phone,
           email,
           designation,
           gender,
           dateOfBirth,
-          // batchIds,
-          // centerIds,
-          coachId,
+          trainingLevel,
+          updatedAt,
+          academyId,
+          image,
+          coachId
         },
         ctx,
       }) => {
@@ -175,44 +175,15 @@ export const coachRouter = createTRPCRouter({
           },
           data: {
             name: name,
-            about: about,
-            phone: phone,
+             phone: phone,
             email: email,
             designation: designation,
-            gender: gender,
-            // certificates: {
-            //   create: certificates,
-            // },
-            // sports: {
-            //   create: sportsId.map((id) => ({
-            //     sport: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            // centers: {
-            //   create: centerIds.map((id) => ({
-            //     center: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            // batches: {
-            //   create: batchIds.map((id) => ({
-            //     batch: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
+            gender: gender,            
             dateOfBirth: dateOfBirth,
-            trainingLevel: "advanced",
-            experienceLevel: "two_five",
+            trainingLevel: trainingLevel,
+            updatedAt,
+            academyId,
+            image
           },
         });
 

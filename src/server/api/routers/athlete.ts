@@ -83,7 +83,8 @@ export const athleteRouter = createTRPCRouter({
         weightUnit:z.string(),
         createdAt:z.date(),
         updatedAt:z.date(),
-        academyCode:z.number()
+        academyCode:z.number(),
+        image:z.string()
       })
     )
     .mutation(
@@ -103,8 +104,8 @@ export const athleteRouter = createTRPCRouter({
           fatherName,
           createdAt,
           updatedAt,
-          academyCode
-        
+          academyCode,
+          image
         },
         ctx,
       }) => {
@@ -121,6 +122,7 @@ export const athleteRouter = createTRPCRouter({
             centerId: centerId,
             dob: dob,
             address,
+            image,
             fatherName,
             heightUnit:"cm",
             weightUnit:"kg",
@@ -138,11 +140,20 @@ export const athleteRouter = createTRPCRouter({
         name: z.string(),
         phone: z.string(),
         email: z.string(),
+        bloodGroup: z.enum(BLOOD_GROUPS),
         gender: z.enum(GENDER_VALUES),
         dob: z.date(),
-        batchIds: z.array(z.number()),
-        centerIds: z.array(z.number()),
-        coachId: z.number(),
+        height: z.number(),
+        weight: z.number(),
+        address:z.string(),
+        centerId: z.number(),
+        medicalHistory:z.array(z.object({message:z.string()})),
+        fatherName:z.string(),
+        heightUnit:z.string(),
+        weightUnit:z.string(),
+        updatedAt:z.date(),
+        image:z.string(),
+        athleteId:z.number()
       })
     )
     .mutation(
@@ -151,62 +162,44 @@ export const athleteRouter = createTRPCRouter({
           name,
           phone,
           email,
+          bloodGroup,
           gender,
-          // certificates,
           dob,
-          // sports,
-          // batchIds,
-          // centerIds,
-          coachId,
+          height,
+          weight,
+          centerId,
+          medicalHistory,
+          address,
+          fatherName,
+          updatedAt,
+          image,
+          athleteId,
         },
         ctx,
       }) => {
-        // const sportsId = sports.map(({ value }:{value:any}) => value);
-        //eslint-disable-next-line no-console
         const response = await ctx.prisma.athletes.update({
           where: {
-            id: coachId,
+            id: athleteId,
           },
           data: {
             name: name,
             phone: phone,
             email: email,
+            bloodGroup: bloodGroup,
             gender: gender,
-            // certificates: {
-            //   create: certificates,
-            // },
-            // sports: {
-            //   create: sportsId.map((id) => ({
-            //     sport: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            // centers: {
-            //   create: centerIds.map((id) => ({
-            //     center: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
-            // batches: {
-            //   create: batchIds.map((id) => ({
-            //     batch: {
-            //       connect: {
-            //         id: Number(id),
-            //       },
-            //     },
-            //   })),
-            // },
+            height:height,
+            weight:weight,
+            medicalHistory,
+            centerId: centerId,
             dob: dob,
-
+            address,
+            image,
+            fatherName,
+            heightUnit:"cm",
+            weightUnit:"kg",
+            updatedAt,
           },
         });
-
         return response;
       }
     ),

@@ -88,14 +88,15 @@ export const staffRouter = createTRPCRouter({
           centerId,
           createdBy,
           createdAt,
-          updatedAt
+          updatedAt,
+          image
         },
         ctx,
       }) => {
         const response = await ctx.prisma.staffs.create({
           data: {
             name: name,
-            image: "img1",
+            image: image,
             designationId: designationId,
             email: email,
             phone: phone,
@@ -115,30 +116,32 @@ export const staffRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        designation: z.string(),
-        mobile: z.string(),
+        designationId: z.number(),
+        phone: z.string(),
         email: z.string(),
-        status: z.number(),
-        age: z.string(),
-        gender: z.string(),
+        dateOfBirth: z.date(),
+        gender: z.enum(GENDER_VALUES),
         image: z.string(),
-        payroll: z.string(),
-        center: z.string(),
-        createdBy: z.number(),
-        staffId: z.number(),
+        payrollId: z.number(),
+        centerId: z.number(),
+        updatedAt:z.date(),
+        staffId:z.number()
       })
     )
     .mutation(
       async ({
         input: {
           name,
-          designation,
-          mobile,
-          status,
+          designationId,
+          phone,
+          dateOfBirth,
           email,
-          age,
-          createdBy,
+          gender,
+          payrollId,
+          centerId,
+          updatedAt,
           staffId,
+          image
         },
         ctx,
       }) => {
@@ -148,13 +151,15 @@ export const staffRouter = createTRPCRouter({
           },
           data: {
             name: name,
-            image: "img1",
-            // designation: designation,
+            image: image,
+            designationId: designationId,
             email: email,
-            phone: mobile,
-            status: status,
-            // age: age,
-            createdBy: createdBy,
+            phone: phone,
+            gender:gender,
+            payrollId:payrollId,
+            centerId:centerId,
+            dateOfBirth: dateOfBirth,
+            updatedAt
           },
         });
 

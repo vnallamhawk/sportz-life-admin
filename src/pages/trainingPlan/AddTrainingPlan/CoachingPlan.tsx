@@ -65,7 +65,9 @@ export default function AddInjuryMultiFormLayout() {
   );
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
-
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadUrl, setUploadUrl] = useState<string>("");
+  const uploadImage = api.upload.uploadImage.useMutation();
   const formProviderData = {
     ...methods,
     stepData: { currentStep, setCurrentStep },
@@ -82,13 +84,41 @@ export default function AddInjuryMultiFormLayout() {
 
 
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
-    setPreview(
-      acceptedFiles.map((upFile) =>
-        Object.assign(upFile, {
-          preview: URL.createObjectURL(upFile),
-        })
-      )
-    );
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      setPreview(
+        acceptedFiles.map((upFile: File) =>
+          Object.assign(upFile, {
+            preview: URL.createObjectURL(upFile),
+          })
+        )
+      );
+      const uploadedFile: File | null = acceptedFiles[0]
+        ? acceptedFiles[0]
+        : null;
+      setFile(uploadedFile);
+      if (!uploadedFile) {
+        alert('Please select a valid file');
+        return;
+      }else  {
+        const fileReader = new FileReader();
+        fileReader.onloadend = async () => {
+          const base64String = fileReader.result as string;
+    
+
+          try {
+            const response  = await uploadImage.mutateAsync({
+              file: base64String,
+              filename: uploadedFile.name,
+              mimetype: uploadedFile.type,
+            });
+            setUploadUrl(response.url);
+          } catch (err) {
+            console.error("Upload failed:", err);
+          }
+        };
+        fileReader.readAsDataURL(uploadedFile)      
+      }
+    }
   }, []);
 
   const finalFormSubmissionHandler = (

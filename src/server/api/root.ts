@@ -52,7 +52,7 @@ export const appRouter = createTRPCRouter({
   athleteSports:athleteSportsRouter,
   athleteBatches:athleteBatchesRouter,
   assessment: assessmentRouter,
-  uploadRouter:uploadRouter
+  upload:uploadRouter
 });
 
 // export type definition of API

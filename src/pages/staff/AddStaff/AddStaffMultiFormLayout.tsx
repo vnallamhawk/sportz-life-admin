@@ -70,7 +70,9 @@ export default function AddStaffMultiFormLayout() {
   const staffData =  id && api.staff.getStaffById.useQuery({ id });
   const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
 
-
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadUrl, setUploadUrl] = useState<string>("");
+  const uploadImage = api.upload.uploadImage.useMutation();
   useEffect(() => {
     if (staffData &&staffData.data ) {
 
@@ -116,14 +118,43 @@ export default function AddStaffMultiFormLayout() {
   });
   
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
-    setPreview(
-      acceptedFiles.map((upFile) =>
-        Object.assign(upFile, {
-          preview: URL.createObjectURL(upFile),
-        })
-      )
-    );
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      setPreview(
+        acceptedFiles.map((upFile: File) =>
+          Object.assign(upFile, {
+            preview: URL.createObjectURL(upFile),
+          })
+        )
+      );
+      const uploadedFile: File | null = acceptedFiles[0]
+        ? acceptedFiles[0]
+        : null;
+      setFile(uploadedFile);
+      if (!uploadedFile) {
+        alert('Please select a valid file');
+        return;
+      }else  {
+        const fileReader = new FileReader();
+        fileReader.onloadend = async () => {
+          const base64String = fileReader.result as string;
+    
+
+          try {
+            const response  = await uploadImage.mutateAsync({
+              file: base64String,
+              filename: uploadedFile.name,
+              mimetype: uploadedFile.type,
+            });
+            setUploadUrl(response.url);
+          } catch (err) {
+            console.error("Upload failed:", err);
+          }
+        };
+        fileReader.readAsDataURL(uploadedFile)      
+      }
+    }
   }, []);
+
 
   useEffect(() => {
     if (
@@ -163,12 +194,13 @@ export default function AddStaffMultiFormLayout() {
         centerId: parseInt(finalForm?.center?.value),
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         payrollId: parseInt(finalForm?.payroll?.value),
-        image: "",
+        image: uploadUrl,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
         gender: finalForm.gender.value.toLowerCase() ,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         dateOfBirth: new Date(finalForm.dateOfBirth),
         updatedAt:new Date(),
+        staffId:id
       });
     } else {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -182,7 +214,7 @@ export default function AddStaffMultiFormLayout() {
         centerId: parseInt(finalForm?.center?.value),
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         payrollId: parseInt(finalForm?.payroll?.value),
-        image: "",
+        image: uploadUrl,
         createdBy: parseInt(createdBy as string),
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
         gender: finalForm.gender.value.toLowerCase() ,
