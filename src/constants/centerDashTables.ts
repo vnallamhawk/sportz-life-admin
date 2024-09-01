@@ -26,6 +26,33 @@ export const CENTER_DASH_BATCH_TABLE_HEADERS = [
     id: "action",
   },
 ];
+
+export const COACH_DASH_BATCH_TABLE_HEADERS = [
+  {
+    label: "Batch Name",
+    id: "batch",
+  },
+  {
+    label: "Center",
+    id: "center",
+  },
+  {
+    label: "No. of Students",
+    id: "students",
+  },
+  {
+    label: "Sport",
+    id: "sport",
+  },
+  {
+    label: "Batch Start Date",
+    id: "startDate",
+  },
+  {
+    label: "Action",
+    id: "action",
+  },
+];
 export const CENTER_DASH_COACH_TABLE_HEADERS = [
   {
     label: "Coach Name",

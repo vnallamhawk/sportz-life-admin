@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useContext, useState } from "react";
 import Button from "~/components/Button";
 import Card from "~/components/Card";
@@ -18,6 +19,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 interface Detail {
   cardTitle: string;
+  name?:string
   editButtonClick: () => void;
   editText?: string;
   data: { [key: string]: any };
@@ -43,6 +45,7 @@ const DetailPage = ({
   selectedComponent,
   selectedTab,
   badgeData,
+  name
 }: Detail) => {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
@@ -101,10 +104,11 @@ const DetailPage = ({
         </header>
         <div className="flex flex-col items-center lg:flex-row lg:items-start">
           <div>
-            <Image
+            <img
               className="h-[150px] w-[150px] rounded-full object-cover"
-              src={"/images/rugby.jpg"}
-              alt=""
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              src={data?.imageUrl?data?.imageUrl:"/images/rugby.jpg"}
+              alt="S3 Image"              
               width="200"
               height="150"
             />
@@ -124,7 +128,7 @@ const DetailPage = ({
 
           <div className="mt-3 w-full lg:mt-0 lg:w-10/12 lg:pl-10">
             <div className="text-center font-heading text-3xl font-medium uppercase text-white md:text-black lg:text-start">
-              {data?.name}
+              {name?name:data?.name}
             </div>
             <div className="flex justify-start">
               {badgeData &&

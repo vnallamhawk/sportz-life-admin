@@ -387,7 +387,7 @@ model Batches {
   Academies               Academies                 @relation(fields: [academyId], references: [id], onDelete: NoAction, map: "Batches_ibfk_2793")
   Payments                Payments[]
   ScheduledCenterBatches  ScheduledCenterBatches[]
-
+  CoachCentersBatches       CoachCentersBatches[]
   @@index([coachId], map: "coachId")
   @@index([sportId], map: "sportId")
   @@index([academyId], map: "academyId")
@@ -538,6 +538,7 @@ model Coaches {
   ScheduledPlans            ScheduledPlans[]
   TrainingDrills            TrainingDrills[]
   TrainingPlans             TrainingPlans[]
+  StaffPayroll              StaffPayroll?              @relation(fields: [payrollId], references: [id], onDelete: NoAction, map: "Coaches_ibfk_401")
 
   @@index([academyId], map: "academyId")
   @@index([centerId], map: "centerId")
@@ -850,7 +851,7 @@ model StaffPayroll {
   StaffDesignation StaffDesignation @relation(fields: [designationId], references: [id], map: "StaffDesignationPayrol_ibfk_1")
   Admin            Admin            @relation(fields: [createdBy], references: [id], map: "StaffPayrollAdmin_ibfk_1")
   Staffs           Staffs[]
-
+  Coaches          Coaches[]
   @@index([createdBy], map: "createdBy")
   @@index([designationId], map: "designationId")
   @@index([slabId], map: "slabId")
@@ -1060,8 +1061,9 @@ model CoachCentersBatches {
   deletedAt DateTime? @db.DateTime(0)
   Centers   Centers   @relation(fields: [centerId], references: [id], onDelete: NoAction, map: "CoachCentersBatches_ibfk_253")
   Coaches   Coaches   @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "CoachCentersBatches_ibfk_254")
+  Batches   Batches    @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "CoachCentersBatches_ibfk_255")
 
-  @@unique([centerId, coachId], map: "CoachCentersBatches_centerId_coachId_unique")
+  @@unique([centerId, coachId,batchId], map: "CoachCentersBatches_centerId_coachId_unique")
   @@index([coachId], map: "coachId")
 }
 
