@@ -1,4 +1,5 @@
-import React, { useContext,  useState } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import React, { useContext,  useEffect,  useState } from "react";
 
 import CoachImg from "../../images/CoachesImg.png";
 import BatchImg from "../../images/BatchesImg.png";
@@ -8,10 +9,8 @@ import InventoryImg from "../../images/InventoryImg.png";
 
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import type { Athletes } from "@prisma/client";
-
-import { ToastContext } from "~/contexts/Contexts";
-import { useRouter } from "next/router";
+import type { AthleteBatchesMaps, AthleteSportsMaps, Athletes, Batches, Sports } from "@prisma/client";
+import s3 from "../../lib/aws";
 
 import DetailPage from "~/common/DetailPage";
 import AllData from "~/common/AllData";
@@ -28,6 +27,18 @@ export const getServerSideProps = async (
   const athlete = await prisma.athletes.findUnique({
     where: {
       id: id ? Number(id) : undefined,
+    },
+    include: {
+      AthleteSportsMaps:{
+        include:{
+          Sports:true
+        }
+      },
+      AthleteBatchesMaps:{
+        include:{
+          Batches:true
+        }
+      },
     },
   });
 
@@ -83,40 +94,77 @@ type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-export default function Page({ athlete }: { athlete: Athletes }) {
-  const router = useRouter();
-  const [displayCertificate, setDisplayCertificate] = useState(false);
-  const [displayBatch, setDisplayBatch] = useState(false);
-  const [displayAttendance, setDisplayAttendance] = useState(false);
-  const { openToast, setOpenToast } = useContext(ToastContext);
-  const [value, onChange] = useState<Value>(new Date());
+interface AthleteBatchesMapsType extends AthleteBatchesMaps{
+  Batches?:Batches
+}
+
+interface AthleteSportsMapsType extends AthleteSportsMaps{
+  Sports?:Sports
+}
+
+
+type Athlete = Athletes & {
+  AthleteSportsMaps: AthleteSportsMapsType[];
+  AthleteBatchesMaps:AthleteBatchesMapsType[]
+};
+
+
+export default function Page({ athlete }: { athlete: Athlete }) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [selectedComponent,setSelectedComponent]=useState<any>()
   const [selectedTab, setSelectedTab] = useState<string|undefined>(tabs[0]?.name);
 
-  const handleCertificateClick = () =>
-    setDisplayCertificate(!displayCertificate);
-  const handleBatchClick = () => setDisplayBatch(!displayBatch);
-  const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
-  const sportsArr: string[] = ["Rugby", "Baseball", "Tennis", "BasketBall"];
-  const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-  // useEffect(()=>{
-  //   if(finalTabs && finalTabs.length>0 && Object.keys(center).length>0 ){
-  //     const arr=[...finalTabs]
-  //     const index=arr?.findIndex((item)=>item?.name==="inventories")
-  //     if(index>-1 && center?.CenterInventories){
-  //       arr[index].value=center?.CenterInventories?.length
-  //     }
-  //     const batchIndex=arr?.findIndex((item)=>item?.name==="batches")
-  //     if(batchIndex>-1 && center?.Batches){
-  //       arr[batchIndex].value=center?.Batches?.length
-  //     }
-  //     setFinalTabs(arr)
-  //   }
+  useEffect(()=>{
 
-  // },[center,finalTabs])
+    if(athlete && athlete.image){
+      void getSignedUrlForImage(athlete.image)
+    }
+
+
+  },[athlete])
+
+  // eslint-disable-next-line @typescript-eslint/require-await
+  const getSignedUrlForImage = async (key:string) => {
+    try {
+        const s3info = s3.getSignedUrl("getObject", {
+            Bucket: process.env.S3_BUCKET_NAME,
+            Key: key,
+            Expires: 60,
+        });
+        setImageUrl(s3info);
+    } catch (error) {
+        return null;
+    }
+};
+
+  useEffect(() => {
+    if (finalTabs && finalTabs.length > 0 && Object.keys(athlete).length > 0) {
+      const arr:TabType[]= [...finalTabs];
+      const medical_historyIndex = arr.findIndex((item:TabType) => item.name === "medical_history");
+      if (medical_historyIndex > -1 && athlete?.medicalHistory) {
+        const obj:TabType={...arr[medical_historyIndex]}
+        obj.value =  0;
+        arr[medical_historyIndex]=obj
+      }
+      const batchIndex = arr.findIndex((item:TabType) => item.name === "batches");
+      if (batchIndex > -1 && athlete?.AthleteBatchesMaps) {
+        const batchObj:TabType={...arr[batchIndex]}
+
+        batchObj.value = athlete?.AthleteBatchesMaps?athlete?.AthleteBatchesMaps?.length:0;
+        arr[batchIndex]=batchObj
+
+      }
+      if(JSON.stringify(finalTabs)!==JSON.stringify(arr)){
+        setFinalTabs(arr);
+
+      }
+    }
+  }, [athlete, finalTabs]);
+
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
@@ -159,11 +207,13 @@ export default function Page({ athlete }: { athlete: Athletes }) {
     <>
       <DetailPage
         cardTitle="ATHLETE DETAILS"
-        editButtonClick={() => void router.push(`/edit-athlete-${athlete?.id}`)}
+        editButtonUrl={`/edit-athlete-${athlete?.id}`}
+
         editText={"Edit Athlete"}
-        tabs={tabs}
+        tabs={finalTabs}
         handleTabClick={handleClick}
-        data={athlete}
+        data={{...athlete,imageUrl}}
+        badgeData={athlete?.AthleteSportsMaps ||[]}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}       />

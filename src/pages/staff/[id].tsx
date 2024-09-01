@@ -84,7 +84,7 @@ const tabs = [
 
 interface StaffDetails extends Staffs {
   StaffDesignation?: StaffDesignation;
-  Centers?: Centers;
+  Centers?: Centers[];
   StaffPayroll?: StaffPayroll;
   StaffShifts?: StaffShifts[];
 }
@@ -96,17 +96,41 @@ export default function Page({ staff }: { staff: StaffDetails }) {
   const [selectedTab, setSelectedTab] = useState<string | undefined>(
     tabs[0]?.name
   );
+  const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs);
+
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
 
   useEffect(()=>{
-
     if(staff && staff.image){
       void getSignedUrlForImage(staff.image)
     }
-
-
   },[staff])
+
+  useEffect(() => {
+    if (finalTabs && finalTabs.length > 0 && Object.keys(staff).length > 0) {
+      const arr:TabType[]= [...finalTabs];
+      const centersIndex = arr.findIndex((item:TabType) => item.name === "centers");
+      if (centersIndex > -1 && staff?.Centers) {
+        const obj:TabType={...arr[centersIndex]}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        obj.value = staff?.Centers?staff?.Centers?.length:0;
+        arr[centersIndex]=obj
+      }
+      const batchIndex = arr.findIndex((item:TabType) => item.name === "batches");
+      if (batchIndex > -1 && staff?.StaffShifts) {
+        const batchObj:TabType={...arr[batchIndex]}
+
+        batchObj.value = staff.StaffShifts?staff?.StaffShifts?.length:0;
+        arr[batchIndex]=batchObj
+
+      }
+      if(JSON.stringify(finalTabs)!==JSON.stringify(arr)){
+        setFinalTabs(arr);
+
+      }
+    }
+  }, [staff, finalTabs]);
 
   // eslint-disable-next-line @typescript-eslint/require-await
   const getSignedUrlForImage = async (key:string) => {
@@ -131,7 +155,7 @@ export default function Page({ staff }: { staff: StaffDetails }) {
     } else {
       if (tab?.name === "centers") {
         TABLE_HEAD = STAFF_DASH_CENTER_TABLE_HEADERS;
-        TABLE_ROWS = staff?.Centers ? [staff?.Centers] : [];
+        TABLE_ROWS = staff?.Centers ? [...staff?.Centers] : [];
       } else if (tab?.name === "payroll") {
         TABLE_HEAD = STAFF_DASH_PAYROLL_TABLE_HEADERS;
         TABLE_ROWS = staff?.StaffPayroll ? [staff?.StaffPayroll] : [];
@@ -159,9 +183,9 @@ export default function Page({ staff }: { staff: StaffDetails }) {
     <>
       <DetailPage
         cardTitle="STAFF DETAILS"
-        editButtonClick={() => void router.push(`/edit-staff-${staff?.id}`)}
+        editButtonUrl={`/edit-staff-${staff?.id}`}
         editText={"Edit Staff"}
-        tabs={tabs}
+        tabs={finalTabs}
         handleTabClick={handleClick}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         data={{ ...staff, description: staff?.StaffDesignation?.designation,imageUrl }}

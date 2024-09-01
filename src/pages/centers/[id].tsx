@@ -7,9 +7,17 @@ import AtheleteImg from "../../images/AthelteImg.png";
 import InventoryImg from "../../images/InventoryImg.png";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import type { Athletes, BatchSchedules, Batches, CenterInventories, CenterSports, Centers, Coaches, Inventories, Sports } from "@prisma/client";
-import { ToastContext } from "~/contexts/Contexts";
-import { useRouter } from "next/router";
+import type {
+  Athletes,
+  BatchSchedules,
+  Batches,
+  CenterInventories,
+  CenterSports,
+  Centers,
+  Coaches,
+  Inventories,
+  Sports,
+} from "@prisma/client";
 import DetailPage from "~/common/DetailPage";
 import AllData from "~/common/AllData";
 import {
@@ -19,6 +27,7 @@ import {
   CENTER_DASH_INVENTORY_TABLE_HEADERS,
 } from "~/constants/centerDashTables";
 import type { TabType } from "~/types/common";
+import s3 from "../../lib/aws";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -35,8 +44,8 @@ export const getServerSideProps = async (
           Sports: true,
         },
       },
-      Athletes:true,
-      Coaches:true,
+      Athletes: true,
+      Coaches: true,
       CenterInventories: {
         include: {
           Inventories: true,
@@ -59,7 +68,7 @@ export const getServerSideProps = async (
   };
 };
 
-const tabs:TabType[] = [
+const tabs: TabType[] = [
   {
     label: "Coaches",
     name: "coaches",
@@ -90,73 +99,97 @@ const tabs:TabType[] = [
   },
 ];
 
-
-
-interface CenterSportsType extends CenterSports{
-  Sports?:Sports
+interface CenterSportsType extends CenterSports {
+  Sports?: Sports;
 }
 
-interface CenterInventoriesType extends CenterInventories{
-  Inventories?:Inventories
+interface CenterInventoriesType extends CenterInventories {
+  Inventories?: Inventories;
 }
-interface BatchType extends Batches{
-  BatchSchedules?:BatchSchedules
-  Sports?:Sports
-
+interface BatchType extends Batches {
+  BatchSchedules?: BatchSchedules;
+  Sports?: Sports;
 }
-interface CenterDetails extends Centers{
-  CenterInventories?:CenterInventoriesType[],
-  Batches?:BatchType[]
-  CenterSports?:CenterSportsType[]
-  Athletes?:Athletes[]
-  Coaches?:Coaches[]
+interface CenterDetails extends Centers {
+  CenterInventories?: CenterInventoriesType[];
+  Batches?: BatchType[];
+  CenterSports?: CenterSportsType[];
+  Athletes?: Athletes[];
+  Coaches?: Coaches[];
 }
-
-
 
 export default function Page({ center }: { center: CenterDetails }) {
-  const router = useRouter();
-  const [displayCertificate, setDisplayCertificate] = useState(false);
-  const [displayBatch, setDisplayBatch] = useState(false);
-  const [displayAttendance, setDisplayAttendance] = useState(false);
-  const { openToast, setOpenToast } = useContext(ToastContext);
-  const [selectedTab, setSelectedTab] = useState<string|undefined>(tabs[0]?.name);
+  const [selectedTab, setSelectedTab] = useState<string | undefined>(
+    tabs[0]?.name
+  );
   const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>();
-
 
   const [loading, setLoading] = useState(true);
   const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs);
 
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (center && center.image) {
+      void getSignedUrlForImage(center.image);
+    }
+  }, [center]);
+
+  // eslint-disable-next-line @typescript-eslint/require-await
+  const getSignedUrlForImage = async (key: string) => {
+    try {
+      const s3info = s3.getSignedUrl("getObject", {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: key,
+        Expires: 60,
+      });
+      setImageUrl(s3info);
+    } catch (error) {
+      return null;
+    }
+  };
+
   useEffect(() => {
     if (finalTabs && finalTabs.length > 0 && Object.keys(center).length > 0) {
-      const arr:TabType[]= [...finalTabs];
-      const index = arr.findIndex((item:TabType) => item.name === "inventories");
+      const arr: TabType[] = [...finalTabs];
+      const index = arr.findIndex(
+        (item: TabType) => item.name === "inventories"
+      );
       if (index > -1 && center?.CenterInventories) {
-        const obj:TabType={...arr[index]}
-        obj.value =  center?.CenterInventories?center?.CenterInventories?.length:0;
-        arr[index]=obj
+        const obj: TabType = { ...arr[index] };
+        obj.value = center?.CenterInventories
+          ? center?.CenterInventories?.length
+          : 0;
+        arr[index] = obj;
       }
-      const coachesIndex = arr.findIndex((item:TabType) => item.name === "coaches");
+      const coachesIndex = arr.findIndex(
+        (item: TabType) => item.name === "coaches"
+      );
       if (coachesIndex > -1 && center?.Coaches) {
-        const obj:TabType={...arr[coachesIndex]}
-        obj.value =  center?.Coaches?center?.Coaches?.length:0;
-        arr[coachesIndex]=obj
+        const obj: TabType = { ...arr[coachesIndex] };
+        obj.value = center?.Coaches ? center?.Coaches?.length : 0;
+        arr[coachesIndex] = obj;
       }
-      const athletesIndex = arr.findIndex((item:TabType) => item.name === "athletes");
+      const athletesIndex = arr.findIndex(
+        (item: TabType) => item.name === "athletes"
+      );
       if (athletesIndex > -1 && center?.Athletes) {
-        const obj:TabType={...arr[athletesIndex]}
-        obj.value =  center?.Athletes?center?.Athletes?.length:0;
-        arr[athletesIndex]=obj
+        const obj: TabType = { ...arr[athletesIndex] };
+        obj.value = center?.Athletes ? center?.Athletes?.length : 0;
+        arr[athletesIndex] = obj;
       }
-      const batchIndex = arr.findIndex((item:TabType) => item.name === "batches");
+      const batchIndex = arr.findIndex(
+        (item: TabType) => item.name === "batches"
+      );
       if (batchIndex > -1 && center?.Batches) {
-        const batchObj:TabType={...arr[batchIndex]}
+        const batchObj: TabType = { ...arr[batchIndex] };
 
-        batchObj.value = center?.Batches?center?.Batches?.length:0;
-        arr[batchIndex]=batchObj
-
+        batchObj.value = center?.Batches ? center?.Batches?.length : 0;
+        arr[batchIndex] = batchObj;
       }
-      setFinalTabs(arr);
+      if (JSON.stringify(finalTabs) !== JSON.stringify(arr)) {
+        setFinalTabs(arr);
+      }
     }
   }, [center, finalTabs]);
 
@@ -167,33 +200,36 @@ export default function Page({ center }: { center: CenterDetails }) {
   const handleClick = (tab: TabType) => {
     let TABLE_HEAD;
     let TABLE_ROWS = [];
-    let tableProps
+    let tableProps;
     if (tab?.name === "batches") {
       TABLE_HEAD = CENTER_DASH_BATCH_TABLE_HEADERS;
-      TABLE_ROWS=center?.Batches?center?.Batches:[]
-      tableProps={ addButtonText:"Add Batch",
-      addButtonUrl:`/centers/Batch/${center?.id}`}
+      TABLE_ROWS = center?.Batches ? center?.Batches : [];
+      tableProps = {
+        addButtonText: "Add Batch",
+        addButtonUrl: `/centers/Batch/${center?.id}`,
+      };
     } else if (tab?.name === "coaches") {
       TABLE_HEAD = CENTER_DASH_COACH_TABLE_HEADERS;
-      TABLE_ROWS=center?.Coaches?center?.Coaches:[]
-
+      TABLE_ROWS = center?.Coaches ? center?.Coaches : [];
     } else if (tab?.name === "athletes") {
       TABLE_HEAD = CENTER_DASH_ATHLETE_TABLE_HEADERS;
-      TABLE_ROWS=center?.Athletes?center?.Athletes:[]
-
+      TABLE_ROWS = center?.Athletes ? center?.Athletes : [];
     } else {
       TABLE_HEAD = CENTER_DASH_INVENTORY_TABLE_HEADERS;
-      TABLE_ROWS=center?.CenterInventories?center?.CenterInventories.map((data) => {
-        return {
-          ...center,name:data?.Inventories?.name
-           // batches: center?.Batches?.length,
-        };
-      }):[];
+      TABLE_ROWS = center?.CenterInventories
+        ? center?.CenterInventories.map((data) => {
+            return {
+              ...center,
+              name: data?.Inventories?.name,
+              // batches: center?.Batches?.length,
+            };
+          })
+        : [];
     }
     const component = (
       <AllData
-        title={tab?.allLabel?tab?.allLabel:""}
-       {...tableProps}
+        title={tab?.allLabel ? tab?.allLabel : ""}
+        {...tableProps}
         dropdownItems={{}}
         TABLE_HEAD={TABLE_HEAD}
         TABLE_ROWS={TABLE_ROWS}
@@ -210,22 +246,22 @@ export default function Page({ center }: { center: CenterDetails }) {
     <>
       <DetailPage
         cardTitle="CENTER DETAILS"
-        editButtonClick={() => void router.push(`/edit-center-${center?.id}`)}
+        editButtonUrl={`/edit-center-${center?.id}`}
         editText={"Edit Center"}
         tabs={finalTabs}
         handleTabClick={handleClick}
-        data={center}
+        data={{ ...center, imageUrl }}
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}
-        badgeData={center?.CenterSports?center?.CenterSports:[]}
+        badgeData={center?.CenterSports ? center?.CenterSports : []}
         details={[
           {
-              items: [
-                { label: "Contact Number", value: center?.mobile },
-                { label: "Email", value: center?.email },
-                { label: "Location", value: center?.address },
-              ],
-            },
+            items: [
+              { label: "Contact Number", value: center?.mobile },
+              { label: "Email", value: center?.email },
+              { label: "Location", value: center?.address },
+            ],
+          },
         ]}
       />
     </>
