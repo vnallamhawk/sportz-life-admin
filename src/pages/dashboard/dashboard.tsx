@@ -10,6 +10,7 @@ import { useState } from 'react';
 import Calendar from 'react-calendar';
 import Bollyball from "../../images/bollyball.svg";
 import ArrowLeft from "../../images/arrow-left-gray.svg"
+import { api } from "~/utils/api";
 
 import {
   ageWiseCountData,
@@ -23,6 +24,52 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export default function Dashboard() {
   const [value, onChange] = useState<Value>(new Date());
+  const { mutate: createMutate } = api.assessment.createAssessment.useMutation({
+    onSuccess: (response) => {
+      console.log("createMutate-onSuccess", response);
+      return response?.id;
+    },
+  });
+  const { data: assessments } = api.assessment.getAllAssessments.useQuery({
+    page: 1,
+    limit: 1,
+    sports: [1],
+    levels: ["beginner"],
+    assessmentStatuses: ["ongoing"],
+  });
+
+    // useEffect(() => {
+  //   createMutate({
+  //     testBanks: [1],
+  //     status: true,
+  //     name: "assessment 1",
+  //     academyId: 1,
+  //     centerId: 1,
+  //     sportId: 1,
+  //     startDate: new Date(),
+  //     endDate: new Date(),
+  //     description: "description",
+  //     level: "beginner",
+  //     isAthleteAssess: true,
+  //     isCoachAssess: true,
+  //     isStrengthAdded: true,
+  //     isWeaknessAdded: true,
+  //     isCommentsAdded: true,
+  //     mode: "recurring",
+  //     interval: "weekly",
+  //     participants: [
+  //       {
+  //         centerId: 1,
+  //         sportId: 1,
+  //         batchId: 1,
+  //         athleteId: 1,
+  //       },
+  //     ],
+  //     assessmentStatus: "ongoing",
+  //   });
+  // }, []);
+
+  console.log("getAllAssessments-assessments", assessments);
 
   return (
     <div className="px-6">
