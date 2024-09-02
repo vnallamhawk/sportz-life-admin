@@ -24,19 +24,18 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export default function Dashboard() {
   const [value, onChange] = useState<Value>(new Date());
-  const { mutate: createMutate } = api.assessment.createAssessment.useMutation({
-    onSuccess: (response) => {
-      console.log("createMutate-onSuccess", response);
-      return response?.id;
-    },
-  });
-  const { data: assessments } = api.assessment.getAllAssessments.useQuery({
-    page: 1,
-    limit: 1,
-    sports: [1],
-    levels: ["beginner"],
-    assessmentStatuses: ["ongoing"],
-  });
+  // const { mutate: createMutate } = api.assessment.createAssessment.useMutation({
+  //   onSuccess: (response) => {
+  //     return response?.id;
+  //   },
+  // });
+  // const { data: assessments } = api.assessment.getAllAssessments.useQuery({
+  //   page: 1,
+  //   limit: 1,
+  //   sports: [1],
+  //   levels: ["beginner"],
+  //   assessmentStatuses: ["ongoing"],
+  // });
 
     // useEffect(() => {
   //   createMutate({
@@ -69,7 +68,6 @@ export default function Dashboard() {
   //   });
   // }, []);
 
-  console.log("getAllAssessments-assessments", assessments);
 
   return (
     <div className="px-6">
