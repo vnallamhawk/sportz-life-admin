@@ -16,12 +16,15 @@ const AllDrills = () => {
     setLoading(isLoading);
   };
   const [finalData, setFinalData] = useState<{ [key: string]: any }[]>([]);
+  const [filters, setFilters] = useState<{ [key: string]: any }>([]);
 
 
   const deleteDrills = (id: number) => {
     // deleteMutate({ centerId: id, deletedAt: moment().toISOString() });
   };
-
+  const handleFilters = (appliedFilters: { [key: string]: any }) => {
+    setFilters(appliedFilters);
+  };
   return (
     <>
       <MultiTabComp
@@ -35,6 +38,10 @@ const AllDrills = () => {
         }
         dropdownItems={{}}
         table1show={true}
+        filters={[]}
+        applyFilters={(appliedFilters: { [key: string]: any }) =>
+          handleFilters(appliedFilters)
+        }
         table2show={true}
         TABLE1_HEAD={COACHING_DRILL_TABLE_HEADERS}
         TABLE1_ROWS={[]}

@@ -39,7 +39,6 @@ import { ToastContext } from "~/contexts/Contexts";
 // import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
 import router from "next/router";
 import s3 from "../../lib/aws";
-import moment from "moment-timezone";
 import { calculateAge } from "~/utils/common";
 import { COACH_DASH_BATCH_TABLE_HEADERS } from "~/constants/centerDashTables";
 import { STAFF_DASH_PAYROLL_TABLE_HEADERS } from "~/constants/staffConstants";
@@ -83,10 +82,7 @@ export const getServerSideProps = async (
         },
        },
        StaffPayroll:true,
-      Centers: true,
       CoachQualifications:true
-      // Batches: true,
-      // Batches: true,
     },
   });
   
@@ -133,28 +129,11 @@ const tabs = [
 
 export default function Page({
   coach,
-  sports,
 }: {
   coach: Coach;
   sports: Sports[];
 }) {
-  const sportsDictionary = sports?.reduce(
-    (accumulator: Record<number, string>, current) => {
-      accumulator[current.id] = current.name;
-      return accumulator;
-    },
-    {}
-  );
 
-  const [displayCertificate, setDisplayCertificate] = useState(false);
-  const [displayBatch, setDisplayBatch] = useState(false);
-  const [displayAttendance, setDisplayAttendance] = useState(false);
-  const { openToast, setOpenToast } = useContext(ToastContext);
-
-  const handleCertificateClick = () =>
-    setDisplayCertificate(!displayCertificate);
-  const handleBatchClick = () => setDisplayBatch(!displayBatch);
-  const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
   const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>();
 
   const [selectedTab, setSelectedTab] = useState<string | undefined>(
@@ -163,6 +142,31 @@ export default function Page({
 
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
+  const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs);
+
+  useEffect(() => {
+    if (finalTabs && finalTabs.length > 0 && Object.keys(coach).length > 0) {
+      const arr:TabType[]= [...finalTabs];
+      const certificatesIndex = arr.findIndex((item:TabType) => item.name === "certificates");
+      if (certificatesIndex > -1 && coach?.CoachQualifications) {
+        const obj:TabType={...arr[certificatesIndex]}
+        obj.value =  coach?.CoachQualifications?coach?.CoachQualifications?.length:0;
+        arr[certificatesIndex]=obj
+      }
+      const batchIndex = arr.findIndex((item:TabType) => item.name === "batches");
+      if (batchIndex > -1 && coach?.CoachCentersBatches) {
+        const batchObj:TabType={...arr[batchIndex]}
+
+        batchObj.value = coach?.CoachCentersBatches?coach?.CoachCentersBatches?.length:0;
+        arr[batchIndex]=batchObj
+
+      }
+      if(JSON.stringify(finalTabs)!==JSON.stringify(arr)){
+        setFinalTabs(arr);
+
+      }
+    }
+  }, [coach, finalTabs]);
 
   useEffect(()=>{
 
@@ -195,6 +199,7 @@ const handleClick = (tab: TabType) => {
     component = <Attendance />;
   } else {
     if (tab?.name === "batches") {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       TABLE_HEAD = COACH_DASH_BATCH_TABLE_HEADERS;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       TABLE_ROWS = coach?.CoachCentersBatches ? coach?.CoachCentersBatches : [];
@@ -227,9 +232,9 @@ const handleClick = (tab: TabType) => {
     <>
       <DetailPage
         cardTitle="Coach DETAILS"
-        editButtonClick={() => void router.push(`/edit-coach-${coach?.id}`)}
+        editButtonUrl={`/edit-coach-${coach?.id}`}
         editText={"Edit Coach"}
-        tabs={tabs}
+        tabs={finalTabs}
         handleTabClick={handleClick}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         data={{ ...coach,imageUrl }}

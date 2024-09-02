@@ -203,7 +203,7 @@ export default function Page({ center }: { center: CenterDetails }) {
     <>
       <DetailPage
         cardTitle="CENTER DETAILS"
-        editButtonClick={() => void router.push(`/edit-center-${center?.id}`)}
+        editButtonUrl={`/edit-center-${center?.id}`}
         editText={"Edit Center"}
         tabs={tabs}
         handleTabClick={handleClick}

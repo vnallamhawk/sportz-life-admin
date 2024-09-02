@@ -95,7 +95,9 @@ const AddForm = ({
     reset,
     trigger,
     formState: { errors },
-  } = useForm<any>({ mode: "onSubmit" });
+  
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  } = useForm<any>({ mode: "onSubmit" ,values:formData});
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [currentTableData, setCurrentTableData] = useState<{

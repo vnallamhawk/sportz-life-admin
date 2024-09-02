@@ -408,7 +408,7 @@ model Centers {
   name                   String                   @db.VarChar(255)
   email                  String                   @db.VarChar(255)
   createdBy              Int
-  image                  Int?
+  image                  String?
   address                String                   @db.Text
   mobile                 String                   @db.VarChar(255)
   academyId              Int?

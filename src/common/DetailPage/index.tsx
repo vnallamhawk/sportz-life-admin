@@ -19,8 +19,8 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 interface Detail {
   cardTitle: string;
-  name?:string
-  editButtonClick: () => void;
+  name?: string;
+  editButtonUrl: string;
   editText?: string;
   data: { [key: string]: any };
   details?: { items: { label: string; value: string | number }[] }[];
@@ -36,7 +36,7 @@ interface Detail {
 
 const DetailPage = ({
   cardTitle,
-  editButtonClick,
+  editButtonUrl,
   editText,
   data,
   details,
@@ -45,7 +45,7 @@ const DetailPage = ({
   selectedComponent,
   selectedTab,
   badgeData,
-  name
+  name,
 }: Detail) => {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
@@ -97,8 +97,14 @@ const DetailPage = ({
       <Card className="h-100 mx-5 bg-gradient-to-r from-[#2D323D] to-[#141720] md:bg-white md:bg-none">
         <header className="mb-5 hidden items-start  justify-between lg:flex ">
           <CardTitle title={cardTitle} />
-          <Button onClick={() => editButtonClick()}>
-            <Image width={0} height={0} src={Edit} className="mr-2 w-auto h-auto" alt="" />
+          <Button onClick={() => void router.push(editButtonUrl)}>
+            <Image
+              width={0}
+              height={0}
+              src={Edit}
+              className="mr-2 h-auto w-auto"
+              alt=""
+            />
             {editText}
           </Button>
         </header>
@@ -107,8 +113,8 @@ const DetailPage = ({
             <img
               className="h-[150px] w-[150px] rounded-full object-cover"
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              src={data?.imageUrl?data?.imageUrl:"/images/rugby.jpg"}
-              alt="S3 Image"              
+              src={data?.imageUrl ? data?.imageUrl : "/images/rugby.jpg"}
+              alt="S3 Image"
               width="200"
               height="150"
             />
@@ -128,23 +134,21 @@ const DetailPage = ({
 
           <div className="mt-3 w-full lg:mt-0 lg:w-10/12 lg:pl-10">
             <div className="text-center font-heading text-3xl font-medium uppercase text-white md:text-black lg:text-start">
-              {name?name:data?.name}
+              {name ? name : data?.name}
             </div>
             <div className="flex justify-start">
               {badgeData &&
                 badgeData.length > 0 &&
-                badgeData?.map(
-                  (ele, index: number) => {
-                    return (
-                      <div
-                        className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm"
-                        key={index}
-                      >
-                        <p className="text-pink-500">{ele?.Sports?.name}</p>
-                      </div>
-                    );
-                  }
-                )}
+                badgeData?.map((ele, index: number) => {
+                  return (
+                    <div
+                      className="mr-4 rounded-full bg-[#FEEFF2] px-3 py-2 text-sm"
+                      key={index}
+                    >
+                      <p className="text-pink-500">{ele?.Sports?.name}</p>
+                    </div>
+                  );
+                })}
             </div>
             <div className="text-center text-base text-white md:text-blush-dark lg:text-start">
               {data?.description}
@@ -260,7 +264,6 @@ const DetailPage = ({
         })}
       </Slider>
       {selectedComponent}
-     
     </>
   );
 };

@@ -18,9 +18,15 @@ export default function AllInjuryLogs() {
 
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState<{ [key: string]: any }>([]);
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
+  }; 
+
+
+  const handleFilters = (appliedFilters: { [key: string]: any }) => {
+    setFilters(appliedFilters);
   };
 
   return (
@@ -38,6 +44,10 @@ export default function AllInjuryLogs() {
         TABLE1_ROWS={[]}
         TABLE2_HEAD={INJURY_COACH_TABLE_HEADER}
         TABLE2_ROWS={[]}
+        filters={[]}
+        applyFilters={(appliedFilters: { [key: string]: any }) =>
+          handleFilters(appliedFilters)
+        }
         setFilterByName={setFilterByName}
         filterByName={filterByName}
         setActiveKey={(key:string)=>setActiveKey(key)}              

@@ -91,10 +91,10 @@ export default function AddCenterForm() {
   const [uploadUrl, setUploadUrl] = useState<string>("");
   const uploadImage = api.upload.uploadImage.useMutation();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
+  const formProviderData = {
+    ...methods,
+    stepData: { currentStep, setCurrentStep },
+    multiFormData: { formData, setFormData },
   };
 
   useEffect(() => {
@@ -111,17 +111,15 @@ export default function AddCenterForm() {
             id: v.id,
           })
         );
+        console.log(centerData,"centerDatacenterDatacenterData",obj)
+
         setFormData(obj);
         hasCenterUseEffectRun.current = true;
       }
     }
   }, [centerData]);
 
-  const formProviderData = {
-    ...methods,
-    stepData: { currentStep, setCurrentStep },
-    multiFormData: { formData, setFormData },
-  };
+
   const { mutate: createMutate } = api.center.createCenter.useMutation({
     onSuccess: (response) => {
       console.log("response data is ", response);
@@ -263,6 +261,7 @@ export default function AddCenterForm() {
             {currentStep === 2 && <AddSports />}
             {currentStep === 3 && (
               <AddInventory
+              formData={formData}
                 finalFormSubmissionHandler={finalFormSubmissionHandler}
               />
             )}
