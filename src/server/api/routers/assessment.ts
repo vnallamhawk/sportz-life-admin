@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { TRAINING_LEVEL } from "~/types/coach";
@@ -6,6 +8,7 @@ import {
   ASSESSMENT_INTERVAL,
   ASSESSMENT_STATUS,
 } from "~/types/assessment";
+import type { AssessmentAssignedAthletes, AssessmentBatches, AssessmentCenterBatches, AssessmentCenters, AssessmentSports } from "@prisma/client";
 
 async function createAssessmentChilds({
   ctx,
@@ -17,27 +20,35 @@ async function createAssessmentChilds({
     return;
   }
   // start of saving assessment test banks
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   const testBanksToSave = testBanks.map((id: number) => ({
     testBankId: id,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     assessmentId,
     createdAt: new Date(),
     updatedAt: new Date(),
   }));
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   await ctx.prisma.assignedTestBanks.createMany({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     data: testBanksToSave,
     skipDuplicates: true,
   });
   // end of saving assessment test banks
 
   // start of saving assessment athletes
-  const athletesToSave = participants.map((item: any) => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+  const athletesToSave :AssessmentAssignedAthletes[] = participants.map((item:AssessmentAssignedAthletes) => ({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     athleteId: item.athleteId,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     assessmentId,
     createdAt: new Date(),
     updatedAt: new Date(),
   }));
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   await ctx.prisma.assessmentAssignedAthletes.createMany({
     data: athletesToSave,
     skipDuplicates: true,
@@ -45,13 +56,16 @@ async function createAssessmentChilds({
   // end of saving assessment athletes
 
   // start of saving assessment batches
-  const batchesToSave = participants.map((item: any) => ({
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+  const batchesToSave :AssessmentBatches[]= participants.map((item: AssessmentBatches) => ({
     batchId: item.batchId,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     assessmentId,
     createdAt: new Date(),
     updatedAt: new Date(),
   }));
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   await ctx.prisma.assessmentBatches.createMany({
     data: batchesToSave,
     skipDuplicates: true,
@@ -59,13 +73,16 @@ async function createAssessmentChilds({
   // end of saving assessment batches
 
   // start of saving assessment centers
-  const centersToSave = participants.map((item: any) => ({
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+  const centersToSave :AssessmentCenters[]= participants.map((item: AssessmentCenters) => ({
     centerId: item.centerId,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     assessmentId,
     createdAt: new Date(),
     updatedAt: new Date(),
   }));
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   await ctx.prisma.assessmentCenters.createMany({
     data: centersToSave,
     skipDuplicates: true,
@@ -73,13 +90,16 @@ async function createAssessmentChilds({
   // end of saving assessment centers
 
   // start of saving assessment sports
-  const sportsToSave = participants.map((item: any) => ({
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+  const sportsToSave:AssessmentSports[] = participants.map((item: AssessmentSports) => ({
     sportId: item.sportId,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     assessmentId,
     createdAt: new Date(),
     updatedAt: new Date(),
   }));
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   await ctx.prisma.assessmentSports.createMany({
     data: sportsToSave,
     skipDuplicates: true,
@@ -91,44 +111,58 @@ async function deleteAssessmentChilds({ ctx, assessmentId }: any) {
   if (!assessmentId) {
     return;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   await ctx.prisma.assignedTestBanks.deleteMany({
     where: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       assessmentId,
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   await ctx.prisma.assessmentAssignedAthletes.deleteMany({
     where: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       assessmentId,
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   await ctx.prisma.assessmentBatches.deleteMany({
     where: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       assessmentId,
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   await ctx.prisma.assessmentCenters.deleteMany({
     where: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       assessmentId,
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   await ctx.prisma.assessmentSports.deleteMany({
     where: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       assessmentId,
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   await ctx.prisma.assessmentAssignedCoaches.deleteMany({
     where: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       assessmentId,
     },
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   await ctx.prisma.assessmentResults.deleteMany({
     where: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       assessmentId,
     },
   });
@@ -174,7 +208,9 @@ export const assessmentRouter = createTRPCRouter({
           const val = {
             contains: trimmedSearch,
           };
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           listQuery.where.name = val;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           countQuery.where.name = val;
         }
         if (sports?.length) {
@@ -185,21 +221,27 @@ export const assessmentRouter = createTRPCRouter({
               },
             },
           };
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           listQuery.where.AssessmentSports = val;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           countQuery.where.AssessmentSports = val;
         }
         if (levels?.length) {
           const val = {
             in: levels,
           };
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           listQuery.where.level = val;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           countQuery.where.level = val;
         }
         if (assessmentStatuses?.length) {
           const val = {
             in: assessmentStatuses,
           };
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           listQuery.where.assessmentStatus = val;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           countQuery.where.assessmentStatus = val;
         }
 
