@@ -19,7 +19,13 @@ export default function AllTrainingPlans() {
 
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState<{ [key: string]: any }>([]);
 
+
+
+  const handleFilters = (appliedFilters: { [key: string]: any }) => {
+    setFilters(appliedFilters);
+  };
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
@@ -35,6 +41,10 @@ export default function AllTrainingPlans() {
         activeKey={activeKey}
         addButtonUrl={
           activeKey==="0"?"/trainingPlan/AddTrainingPlan/FitnessPlan":"/trainingPlan/AddTrainingPlan/CoachingPlan"
+        }
+        filters={[]}
+        applyFilters={(appliedFilters: { [key: string]: any }) =>
+          handleFilters(appliedFilters)
         }
         dropdownItems={{}}
         table1show={true}

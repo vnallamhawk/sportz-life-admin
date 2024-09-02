@@ -8,7 +8,6 @@ import AddForm from "~/common/AddForm";
 import { STAFF_SHIFT_CONSTANTS } from "~/constants/staffConstants";
 import { STAFF_TIMINGS_TABLE_HEADERS } from "~/constants/staffTimingConstants";
 import type { FormValues } from "~/types/common";
-import MultiTabComp from "~/common/MultiTabComp";
 import {
   Tabs,
   TabsHeader,

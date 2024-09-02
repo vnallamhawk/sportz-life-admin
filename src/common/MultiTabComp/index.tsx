@@ -81,6 +81,8 @@ interface MultiTabCompProps {
   onViewClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
   onDeleteClick?: (id: number) => void;
+  filters?:{[key:string]:any}[],
+  applyFilters?:(appliedFilters:{[key:string]:any})=>void
   activeKey:string
   setActiveKey:any
   filter?:boolean
@@ -93,6 +95,8 @@ const MultiTabComp = ({
   table1show,
   table2show,
   TABLE1_HEAD,
+  filters,
+  applyFilters,
   TABLE1_ROWS,
   TABLE2_HEAD,
   TABLE2_ROWS,
@@ -175,7 +179,7 @@ const MultiTabComp = ({
                     onChange={(e: any) => setFilterByName(e.target.value)}
                   />
                 </div>
-                {filter && <Filter open={open}/>}
+                {filter && filters && applyFilters &&  filters.length>0 && <Filter open={open} filters={filters} applyFilters={applyFilters}/>}
                 <Link href={addButtonUrl!}>
                   <button className="ml-3 rounded-lg bg-mandy-dark px-6 py-2.5 text-white">
                     {addButtonText}
