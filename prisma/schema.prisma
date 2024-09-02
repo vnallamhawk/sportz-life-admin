@@ -1063,7 +1063,9 @@ model CoachCentersBatches {
   Coaches   Coaches   @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "CoachCentersBatches_ibfk_254")
   Batches   Batches    @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "CoachCentersBatches_ibfk_255")
 
-  @@unique([centerId, coachId,batchId], map: "CoachCentersBatches_centerId_coachId_unique")
+  @@unique([centerId, coachId], map: "CoachCentersBatches_centerId_coachId_unique")
+    @@unique([centerId, coachId,batchId], map: "CoachCentersBatches_centerId_coachId_batchId_unique")
+
   @@index([coachId], map: "coachId")
 }
 

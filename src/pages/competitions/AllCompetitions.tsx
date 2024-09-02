@@ -14,10 +14,7 @@ export default function AllCompetition() {
 
   const [finalData, setFinalData] = useState([]);
   const [filterByName, setFilterByName] = useState("");
-  const { data: staffs } =
-    filterByName == ""
-      ? api.staff.getAllStaffs.useQuery()
-      : api.staff.getAllStaffsByName.useQuery({ name: filterByName });
+
 
 //   useEffect(() => {
 //     if (staffs && staffs?.length > 0) {

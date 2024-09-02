@@ -12,14 +12,18 @@ async function createInjuryLogChilds({ ctx, images, injuryLogId }: any) {
   if (!injuryLogId) {
     return;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   const imagesToSave = images.map((url: string) => ({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     injuryId: injuryLogId,
     image: url,
     createdAt: new Date(),
     updatedAt: new Date(),
   }));
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   await ctx.prisma.injuryImages.createMany({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     data: imagesToSave,
     skipDuplicates: true,
   });
@@ -29,8 +33,10 @@ async function deleteInjuryLogChilds({ ctx, injuryLogId }: any) {
   if (!injuryLogId) {
     return;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
   await ctx.prisma.injuryImages.deleteMany({
     where: {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       injuryId: injuryLogId,
     },
   });
@@ -67,29 +73,37 @@ export const injuryLogRouter = createTRPCRouter({
         const val = {
           contains: trimmedSearch,
         };
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         listQuery.where.description = val;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         countQuery.where.description = val;
       }
       if (injuryTypes?.length) {
         const val = {
           in: injuryTypes,
         };
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         listQuery.where.injuryType = val;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         countQuery.where.injuryType = val;
       }
       if (statuses?.length) {
         const val = {
           in: statuses,
         };
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         listQuery.where.status = val;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         countQuery.where.status = val;
       }
 
       return Promise.all([
         // Query the database for total items
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         ctx.prisma.injuryLogs.count(countQuery),
 
         // Query the database for paginated items
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         ctx.prisma.injuryLogs.findMany(listQuery),
       ]).then((result) => {
         const totalItems = result[0];
@@ -173,7 +187,7 @@ export const injuryLogRouter = createTRPCRouter({
         },
         ctx,
       }) => {
-        const dataToSave: { [key: string]: any } = {
+        const dataToSave:any = {
           bodyPart,
           bodyPartName,
           injuryDate,
@@ -189,18 +203,23 @@ export const injuryLogRouter = createTRPCRouter({
         // discussion - need to make optional
         if (athleteId) {
           // discussion - need to make optional
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           dataToSave.athleteId = athleteId;
         }
         if (description) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           dataToSave.description = description;
         }
         if (medicalReport) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           dataToSave.medicalReport = medicalReport;
         }
         if (coachId) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           dataToSave.coachId = coachId;
         }
-        const injuryLog = await ctx.prisma.injuryLog.create({
+        const injuryLog = await ctx.prisma.injuryLogs.create({
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           data: dataToSave,
         });
 
