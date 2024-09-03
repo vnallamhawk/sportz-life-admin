@@ -1134,6 +1134,28 @@ model CoachOnCenters {
   @@index([centerId], map: "centerId")
 }
 
+model FeePlans {
+  id                Int              @id @unique(map: "id") @default(autoincrement())
+  name              String           @db.VarChar(255)
+  amount            Float            @db.Float
+  feeType           FeePlans_feeType
+  isProrata         Boolean?
+  recurringType     FeePlans_recurringType?
+}
+
+enum FeePlans_feeType {
+  free
+  one_time  @map("one time")
+  recurring   
+}
+
+enum FeePlans_recurringType {
+  bi_monthly  @map("bi monthly")
+  quarterly
+  half_yearly @map("half yearly")
+  annually
+}
+
 enum BatchSchedules_day {
   mon
   tue

@@ -24,6 +24,7 @@ import { athleteBatchesRouter } from "./routers/athleteBatches";
 import { assessmentRouter } from "./routers/assessment";
 import { uploadRouter } from "./routers/upload";
 import { injuryLogRouter } from "./routers/injurylog";
+import { feePlanRouter } from "./routers/feePlan";
 
 /**
  * This is the primary router for your server.
@@ -54,7 +55,8 @@ export const appRouter = createTRPCRouter({
   athleteBatches:athleteBatchesRouter,
   assessment: assessmentRouter,
   upload:uploadRouter,
-  injuryLog: injuryLogRouter
+  injuryLog: injuryLogRouter,
+  feePlan: feePlanRouter
 });
 
 // export type definition of API
