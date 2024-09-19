@@ -21,16 +21,16 @@ const MyApp: AppType<{ session: Session | null }> = ({
   const pathname = usePathname();
   const router=useRouter()
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const session = await getSession();
-      if (!session) {
-        void router.push('/Login');
-      }
-    };
+  // useEffect(() => {
+  //   const checkSession = async () => {
+  //     const session = await getSession();
+  //     if (!session) {
+  //       void router.push('/Login');
+  //     }
+  //   };
 
-    void checkSession();
-  }, [router]);
+  //   void checkSession();
+  // }, [router]);
   return (
     <SessionProvider session={session}>
       <ThemeContextProvider>
