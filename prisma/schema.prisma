@@ -594,7 +594,7 @@ model InjuryImages {
 
 model InjuryLogs {
   id            Int                     @id @default(autoincrement())
-  athleteId     Int
+  athleteId     Int?
   description   String?                 @db.VarChar(255)
   bodyPart      InjuryLogs_bodyPart
   bodyPartName  InjuryLogs_bodyPartName

@@ -155,3 +155,107 @@ export const INJURY_ATHLETE_TABLE_HEADER = [
      
       
   ]
+
+
+  export const UPPER_BODY_PARTS=[
+    {
+      label:"Head",value:"head"
+      
+    },
+    {label:"Neck",value:"neck"
+    
+    },
+    {
+      label:"Left Shoulder",value:"left_shoulder"
+    },
+    {
+      label:"Right Shoulder",value:"right_shoulder"
+    
+    },
+    {
+      label:"Chest",value:"chest"
+      
+    },
+    {
+      label:"Upper Back",value:"upper_back"
+    },
+    {
+      label:"Left Elbow",value:"left_elbow"
+    },
+    {
+      label:"Right Elbow",value:"right_elbow"
+    },
+    {
+      label:"Left Wrist",value:"left_wrist"
+    },
+    {
+      label:"Right Wrist",value:"right_wrist"
+    },
+    {
+      label:"Left Finger",value:"left_finger"
+    },
+    {
+      label:"Right Finger",value:"right_finger"
+    }
+  ]
+  
+  export const MEDIAL_BODY_PARTS=[
+    {label:"Abdomen" ,value:"abdomen"},
+     {
+      label:"Lower Back",value:"lower_back"
+     }
+  ]
+  export const LOWER_BODY_PARTS=[
+    {label:"Groin" ,value:"groin"},
+     {
+      label:"Glutes",value:"glutes"
+     },
+     {
+      label:"Left Thigh",value:"left_thigh"
+     },
+     {
+      label:"Right Thigh",value:"right_thigh"
+     },
+     {
+      label:"Left Hamstring",value:"left_hamstring"
+     },
+     {
+      label:"Right Hamstring",value:"right_hamstring"
+     },
+     {
+      label:"Left Knee",value:"left_knee"
+     },
+     {
+      label:"Right Knee",value:"right_knee"
+     },
+     {
+      label:"Left Calf Muscle",value:"left_calf_muscle"
+     },
+     {
+      label:"Right Calf Muscle",value:"right_calf_muscle"
+     },
+     {
+      label:"Left Ankle",value:"left_ankle"
+     },
+     {
+      label:"Right Ankle",value:"right_ankle"
+     },
+     {
+      label:"Left Achillis",value:"left_achillis"
+     },
+     {
+      label:"Right Achillis",value:"right_achillis"
+     },
+     {
+      label:"Left Heel",value:"left_heel"
+     },
+     {
+      label:"Right Heel",value:"right_heel"
+     },
+     {
+      label:"Left Toe Finger",value:"left_toe_finger"
+     },
+     {
+      label:"Right Toe Finger",value:"right_toe_finger"
+     },
+  ]

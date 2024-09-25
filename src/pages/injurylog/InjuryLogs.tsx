@@ -1,20 +1,16 @@
 import React, { useState } from "react";
-import Card from "~/components/Card/Card";
-import CardTitle from "~/components/Card/CardTitle";
-import Textbox from "~/components/Textbox/Textbox";
-import Button from "~/components/Button/Button";
-import Table from "~/components/Table/Table";
-import CoachTableHeader from "../../components/AllCoaches/CoachTableHeader";
-import CoachTableBody from "../../components/AllCoaches/CoachTableBody";
+
 import { useRouter } from "next/navigation";
-import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
-import TabsComponent from "~/components/Tabs";
+
 import MultiTabComp from "~/common/MultiTabComp";
-import { INJURY_ATHLETE_TABLE_HEADER, INJURY_COACH_TABLE_HEADER } from "~/constants/injuryLog";
+import {
+  INJURY_ATHLETE_TABLE_HEADER,
+  INJURY_COACH_TABLE_HEADER,
+} from "~/constants/injuryLog";
 
 export default function AllInjuryLogs() {
   const router = useRouter();
-  const [activeKey,setActiveKey]=useState("0")
+  const [activeKey, setActiveKey] = useState("0");
 
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
@@ -22,21 +18,20 @@ export default function AllInjuryLogs() {
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
-  }; 
-
+  };
 
   const handleFilters = (appliedFilters: { [key: string]: any }) => {
     setFilters(appliedFilters);
   };
 
+
   return (
-   <>
-     {/* <Checkout /> */}
-     <MultiTabComp
+    <>
+      <MultiTabComp
         tab1label="Athlete Injuries"
         tab2label="Coach Injuries"
         addButtonText="Add Injury"
-        addButtonUrl="/injurylog/AddInjury"
+        addButtonUrl={`/injurylog/AddInjury`}
         dropdownItems={{}}
         table1show={true}
         table2show={true}
@@ -44,18 +39,39 @@ export default function AllInjuryLogs() {
         TABLE1_ROWS={[]}
         TABLE2_HEAD={INJURY_COACH_TABLE_HEADER}
         TABLE2_ROWS={[]}
-        filters={[]}
         applyFilters={(appliedFilters: { [key: string]: any }) =>
           handleFilters(appliedFilters)
         }
+        filter={true}
+        filters={[
+          {
+            label: "Filter by Injury Type",
+            id: "sports",
+            type: "multiSelect",
+            data: [
+              { label: "Severe", value: "Severe" },
+              { label: "Moderate", value: "Moderate" },
+              { label: "Mild", value: "Mild" },
+            ],
+          },
+          {
+            label: "Filter by Injury Status",
+            id: "centers",
+            type: "multiSelect",
+            data: [
+              { label: "Active", value: "active" },
+              { label: "Past", value: "past" },
+            ],
+          },
+        ]}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
-        setActiveKey={(key:string)=>setActiveKey(key)}              
+        setActiveKey={(key: string) => setActiveKey(key)}
         activeKey={activeKey}
         // onViewClick={(id: number) => {}}
         // onEditClick={(id: number) => {}}
         // onDeleteClick={(id: number) => {}}
       />
-   </>
+    </>
   );
 }

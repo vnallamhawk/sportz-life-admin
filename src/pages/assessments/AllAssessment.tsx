@@ -3,10 +3,11 @@ import moment from "moment";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import AllData from "~/common/AllData";
+import MultiTabComp from "~/common/MultiTabComp";
 import { ASSESSMENT_TABLE_HEADERS } from "~/constants/assessment";
 import { api } from "~/utils/api";
 
-const AllCenter = () => {
+const AllAssessment = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [filterByName, setFilterByName] = useState("");
@@ -14,6 +15,8 @@ const AllCenter = () => {
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
+  const [activeKey, setActiveKey] = useState("0");
+
   const { data: centers } =
     filterByName == ""
       ? api.center.getAllCenters.useQuery()
@@ -51,26 +54,51 @@ const AllCenter = () => {
 
   return (
     <>
-      <AllData
-        title="ALL ASSESSMENTS"
-        addButtonText="CREATE ASSESSMENT"
-        addNewButtonText="Test Bank"
-        addButtonUrl="/assessments/AddAssessment"
-        addNewButtonUrl="/assessments/AddtestBank"
+
+<MultiTabComp
+        tab1label="ALL ASSESSMENTS"
+        tab2label="All Test Banks"
+        addButtonText={activeKey==="0"?"Add Assessment":"Add Test Bank"}
+        addButtonUrl={`/injurylog/AddInjury`}
         dropdownItems={{}}
-        filter={false}
-        TABLE_HEAD={ASSESSMENT_TABLE_HEADERS}
-        TABLE_ROWS={finalData}
+        table1show={true}
+        table2show={false}
+        table2Component={<MultiTabComp
+          tab1label="ALL ASSESSMENTS"
+          tab2label="All Test Banks"
+          addButtonText={activeKey==="0"?"Add Assessment":"Add Test Bank"}
+          addButtonUrl={`/injurylog/AddInjury`}
+          dropdownItems={{}}
+          table1show={true}
+          table2show={true}
+          TABLE1_HEAD={ASSESSMENT_TABLE_HEADERS}
+          TABLE1_ROWS={finalData}
+          TABLE2_HEAD={ASSESSMENT_TABLE_HEADERS}
+          TABLE2_ROWS={[]}
+          setFilterByName={setFilterByName}
+          filterByName={filterByName}
+          setActiveKey={(key: string) => setActiveKey(key)}
+          activeKey={activeKey}
+          // onViewClick={(id: number) => {}}
+          // onEditClick={(id: number) => {}}
+          // onDeleteClick={(id: number) => {}}
+        />
+
+        }
+        TABLE1_HEAD={ASSESSMENT_TABLE_HEADERS}
+        TABLE1_ROWS={finalData}
+        TABLE2_HEAD={ASSESSMENT_TABLE_HEADERS}
+        TABLE2_ROWS={[]}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
-        rowSelection={false}
-        showImage={false}
-        onViewClick={(id: number) => router.push(`/assessments/${id ?? ""}`)}
-        onEditClick={(id: number) => router.push(`/edit-assessment-${id}`)}
-        onDeleteClick={(id: number) => deleteAssessment(id)}
+        setActiveKey={(key: string) => setActiveKey(key)}
+        activeKey={activeKey}
+        // onViewClick={(id: number) => {}}
+        // onEditClick={(id: number) => {}}
+        // onDeleteClick={(id: number) => {}}
       />
     </>
   );
 };
 
-export default AllCenter;
+export default AllAssessment;

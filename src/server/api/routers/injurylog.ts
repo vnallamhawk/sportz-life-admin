@@ -51,9 +51,10 @@ export const injuryLogRouter = createTRPCRouter({
         search: z.string().optional(),
         injuryTypes: z.array(z.string()).optional(),
         statuses: z.array(z.string()).optional(),
+        type:z.string().optional()
       })
     )
-    .query(({ ctx, input: { page, limit, search, injuryTypes, statuses } }) => {
+    .query(({ ctx, input: { page, limit, search, injuryTypes, statuses ,type} }) => {
       const listQuery: any = {
         skip: (page - 1) * limit,
         take: limit,
@@ -65,6 +66,23 @@ export const injuryLogRouter = createTRPCRouter({
           createdAt: "desc",
         },
       };
+      if(type ){
+        if(type==="athlete"){
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          listQuery.where={
+            athleteId:{
+              not:null
+            }
+          }
+        }else{
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          listQuery.where={
+            coachId:{
+              not:null
+            }
+          }
+        }
+      }
       const countQuery: any = {
         where: {},
       };
