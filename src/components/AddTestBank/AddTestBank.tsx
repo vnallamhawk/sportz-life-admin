@@ -6,7 +6,7 @@ import type {
 import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
-import { CENTER_DETAILS_CONSTANTS } from "~/constants/centerConstants";
+import { NUMERIC_TYPE, PHYSICAL_TEST_BANK } from "~/constants/assessment";
 
 import AddForm from "~/common/AddForm";
 import type { FormValues } from "~/types/common";
@@ -24,75 +24,68 @@ export default function AddTestBank(props: { finalFormSubmissionHandler: any; ph
     reset,
     trigger,
     formState: { errors },
-  } = useForm<CENTER_TYPES>({ mode: "onSubmit" });
+  } = useForm({ mode: "onSubmit" });
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
  
   const { data: coaches } = api.coach.getAllCoaches.useQuery()
-
+  const [measureType,setMeasureType]=useState<string>("")
   const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
-    CENTER_DETAILS_CONSTANTS
+    PHYSICAL_TEST_BANK
   );
 
     useEffect(() => {
-      if (sports?.length && hasExecuted.current) {
-        const updatedFormConstantValues = formConstantValues.map(
-          (formConstant) => {
-            if (formConstant.id === "selectSports") {
-              return {
-                ...formConstant,
-                options: sports.map((sport: { name: string; id: number }) => ({
-                  label: sport.name,
-                  value: sport.id.toString(),
-                })),
-              };
-            } else {
-              return formConstant;
+      if(!props.physical){
+        if (sports?.length && hasExecuted.current) {
+          const updatedFormConstantValues = formConstantValues.map(
+            (formConstant,index) => {
+              if (index==1) {
+                return {
+                  ...formConstant,
+                  id:"sport",
+                  options: sports.map((sport: { name: string; id: number }) => ({
+                    label: sport.name,
+                    value: sport.id.toString(),
+                  })),
+                };
+              } else {
+                return formConstant;
+              }
             }
-          }
-        );
-        hasExecuted.current = false;
-        setFormConstantValues(updatedFormConstantValues);
+          );
+          hasExecuted.current = false;
+          setFormConstantValues(updatedFormConstantValues);
+        }
       }
-    }, [formConstantValues, sports, sports?.length]);
+      
+    }, [formConstantValues, sports, sports?.length,props.physical]);
 
     useEffect(() => {
-      if (coaches?.length && hasExecuted.current) {
-        const updatedFormConstantValues = formConstantValues.map(
-          (formConstant) => {
-            if (formConstant.id === "selectCoaches") {
-              return {
-                ...formConstant,
-                options: coaches.map((coach: { name: string; id: number }) => ({
-                  label: coach.name,
-                  value: coach.id.toString(),
-                })),
-              };
-            } else {
-              return formConstant;
-            }
-          }
-        );
-        hasExecuted.current = false;
-        setFormConstantValues(updatedFormConstantValues);
+      
+      if (measureType==="Numeric value") {
+        const arr:FormValues[]=[...formConstantValues,...NUMERIC_TYPE]
+
+        setFormConstantValues(arr);
+        setMeasureType('')
       }
-    }, [formConstantValues, coaches, coaches?.length]);
+    }, [formConstantValues, measureType]);
 
 
   return (
     <>
 <AddForm
-        cardTitle="ADD CENTER"
-        cardSubTitle="CENTER DETAILS"
+        cardTitle={props?.physical?"ADD PHYSICAL PERFORMANCE TESTS":"ADD SPORTS-SPECIFIC PERFORMANCE TESTS"}
+        cardSubTitle={props?.physical?"PHYSICAL TESTS DETAILS":"SPORTS-SPECIFIC TESTS DETAILS"}
         formConstantValues={formConstantValues}
-        imageTitle="Center Image"
-        buttonItems={{ next: true }}
+        buttonItems={{ finish: true }}
         setFormData={setFormData}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
+        setDependentKey={(value: string) => setMeasureType(value)}
+        dependentKey="measure_type"
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         finalFormSubmissionHandler={props?.finalFormSubmissionHandler}
       />

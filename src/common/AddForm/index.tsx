@@ -33,7 +33,7 @@ interface AddForm {
   addTableData?: any;
   tableData?: { [key: string]: any }[];
   tablekey?: string;
-  buttonItems?: { prevNext?: boolean; prevFinish?: boolean; next?: boolean };
+  buttonItems?: { prevNext?: boolean; prevFinish?: boolean; next?: boolean;finish?:boolean };
   setFormData: any;
   formData: any;
   setCurrentStep: any;
@@ -729,6 +729,17 @@ const AddForm = ({
           >
             {prevButtonText}
           </Button>
+          <Button
+            type="button"
+            className="ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
+            onClick={submitCallback}
+          >
+            {finishButtonText}
+          </Button>
+        </div>
+      )}
+{buttonItems?.finish && (
+        <div className="absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end">
           <Button
             type="button"
             className="ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
