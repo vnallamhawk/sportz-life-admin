@@ -24,6 +24,56 @@ export const ASSESSMENT_TABLE_HEADERS = [
       },
   ];
 
+  export const PHYSICAL_TEST_TABLE_HEADERS = [
+    {
+      label: "Test Name",
+      id: "name",
+    },
+  
+    {
+      label: "Test Related To",
+      id: "test Related to",
+    },
+    {
+      label: "Fitness Component",
+      id: "component",
+    },
+    {
+      label: "Training Level",
+      id: "trainingLevel",
+    },
+   
+      {
+        label: "Action",
+        id: "action",
+      },
+  ];
+
+  export const SPORT_SPECIFIC_TABLE_HEADERS = [
+    {
+      label: "Test Name",
+      id: "name",
+    },
+  
+    {
+      label: "Sport",
+      id: "sport",
+    },
+    {
+      label: "Test Type",
+      id: "type",
+    },
+    {
+      label: "Training Level",
+      id: "trainingLevel",
+    },
+ 
+      {
+        label: "Action",
+        id: "action",
+      },
+  ];
+
   export const ASSESSMENT_DETAILS_CONSTANTS:FormValues[]=[
     {
       label: "Assessment Name",

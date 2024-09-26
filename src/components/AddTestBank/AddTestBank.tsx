@@ -11,7 +11,7 @@ import { CENTER_DETAILS_CONSTANTS } from "~/constants/centerConstants";
 import AddForm from "~/common/AddForm";
 import type { FormValues } from "~/types/common";
 
-export default function AddCenter() {
+export default function AddTestBank(props: { finalFormSubmissionHandler: any; physical:boolean}) {
   const {
     stepData: { currentStep, setCurrentStep },
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -79,17 +79,6 @@ export default function AddCenter() {
       }
     }, [formConstantValues, coaches, coaches?.length]);
 
-  //   useEffect(() => {
-  //     // if (!isEditMode) {
-  //     // eslint-disable-next-line no-console
-  //     reset({
-  //       ...currentFormValues,
-  //       ...formData,
-  //     });
-  //     // }
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, [formData]);
-  //test commit
 
   return (
     <>
@@ -104,37 +93,10 @@ export default function AddCenter() {
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        finalFormSubmissionHandler={props?.finalFormSubmissionHandler}
       />
-            {/* <CardTitle title="" />
-      <div className="text-lg font-bold">CENTER DETAILS</div>
-      <div className="mt-10 grid grid-cols-2 gap-x-10 gap-y-12">
-        {formConstantValues.map((props) => (
-          <div key={props.id}>
-            {getInputElement(props)}
-
-            <span className="text-red-800">
-              {errors[props.id]?.type === "required" && (
-                <div>This field is required</div>
-              )}
-              {errors[props.id]?.type === "pattern" && (
-                <div> This field is not matching the pattern</div>
-              )}
-              {errors[props.id]?.type === "maxLength" && (
-                <div>{`This field is exceeding the max. character limit`}</div>
-              )}
-            </span>
-          </div>
-        ))}
-      </div>
-      <div className="mr-10 mt-10 flex justify-end">
-        <Button
-          className="border-1 mx-3 bg-pink-600 hover:bg-pink-800"
-          type="button"
-          onClick={() => void nextClickHandler()}
-        >
-          Next
-        </Button>
-      </div> */}
+      
     </>
   );
 }

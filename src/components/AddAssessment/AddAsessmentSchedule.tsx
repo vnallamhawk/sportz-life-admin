@@ -11,7 +11,7 @@ import AddForm from "~/common/AddForm";
 import type { FormValues } from "~/types/common";
 import { ASSESSMENT_SCHEDULE } from "~/constants/assessment";
 
-export default function AddAssessmentSchedule() {
+export default function AddAssessmentSchedule(props: { finalFormSubmissionHandler: any; }) {
   const {
     stepData: { currentStep, setCurrentStep },
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -81,6 +81,8 @@ export default function AddAssessmentSchedule() {
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+        finalFormSubmissionHandler={props?.finalFormSubmissionHandler}
       />
         
     </>

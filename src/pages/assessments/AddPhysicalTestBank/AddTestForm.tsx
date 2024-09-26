@@ -14,10 +14,8 @@ import { useRouter } from "next/router";
 import { ToastContext } from "~/contexts/Contexts";
 import { useSession } from "next-auth/react";
 import { Centers } from "@prisma/client";
-import AddAssessment from "~/components/AddAssessment/AddAsessment";
-import AssignTestBank from "~/components/AddAssessment/AssignTestBank";
-import AddAssessmentScoring from "~/components/AddAssessment/AddAssessmentScoring";
-import AddAssessmentSchedule from "~/components/AddAssessment/AddAsessmentSchedule";
+import AddTestBank from "~/components/AddTestBank/AddTestBank";
+
 const multiFormData = {
   name: "",
   image: "",
@@ -48,7 +46,7 @@ export interface FormContextTypes {
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 
-export default function AddAssessmentForm() {
+export default function AddTestBankForm() {
   const router = useRouter();
   const id = Number(router?.query?.id);
   const { data: sessionData } = useSession();
@@ -206,10 +204,8 @@ export default function AddAssessmentForm() {
       <div className="bg-s-gray lg:px-6 lg:pb-7">
         <div className="grid grid-cols-6 grid-rows-1">
           <Card className="relative col-span-12 h-full min-h-[535px] !rounded-r-none rounded-l-xl p-0 pb-0 pt-10 lg:col-span-4 lg:bg-white lg:pb-6 ">
-            {currentStep === 1 && <AddAssessment />}
-            {currentStep === 2 && <AssignTestBank />}
-            {currentStep === 3 && <AddAssessmentScoring />}
-            {currentStep === 4 && <AddAssessmentSchedule  finalFormSubmissionHandler={finalFormSubmissionHandler}/>}
+            {currentStep === 1 && <AddTestBank  finalFormSubmissionHandler={finalFormSubmissionHandler} physical={true}/>}
+           
 
             {/* {currentStep === 3 && (
               <AddInventory

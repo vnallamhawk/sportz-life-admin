@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import AllData from "~/common/AllData";
 import MultiTabComp from "~/common/MultiTabComp";
-import { ASSESSMENT_TABLE_HEADERS } from "~/constants/assessment";
+import { ASSESSMENT_TABLE_HEADERS, PHYSICAL_TEST_TABLE_HEADERS, SPORT_SPECIFIC_TABLE_HEADERS } from "~/constants/assessment";
 import { api } from "~/utils/api";
 
 const AllAssessment = () => {
@@ -16,6 +16,7 @@ const AllAssessment = () => {
     setLoading(isLoading);
   };
   const [activeKey, setActiveKey] = useState("0");
+  const [childActiveKey, setChildActiveKey] = useState("0");
 
   const { data: centers } =
     filterByName == ""
@@ -59,26 +60,22 @@ const AllAssessment = () => {
         tab1label="ALL ASSESSMENTS"
         tab2label="All Test Banks"
         addButtonText={activeKey==="0"?"Add Assessment":"Add Test Bank"}
-        addButtonUrl={`/injurylog/AddInjury`}
+        addButtonUrl={activeKey==="0"?`/assessments/AddAssessment`:childActiveKey==="0"?`/assessments/AddPhysicalTestBank`:`/assessments/AddSportSpecificTestBank`}
         dropdownItems={{}}
         table1show={true}
         table2show={false}
         table2Component={<MultiTabComp
-          tab1label="ALL ASSESSMENTS"
-          tab2label="All Test Banks"
-          addButtonText={activeKey==="0"?"Add Assessment":"Add Test Bank"}
-          addButtonUrl={`/injurylog/AddInjury`}
+          tab1label="PHYSICAL TESTS"
+          tab2label="SPORTS-SPECIFIC TESTS"
           dropdownItems={{}}
           table1show={true}
           table2show={true}
-          TABLE1_HEAD={ASSESSMENT_TABLE_HEADERS}
+          TABLE1_HEAD={PHYSICAL_TEST_TABLE_HEADERS}
           TABLE1_ROWS={finalData}
-          TABLE2_HEAD={ASSESSMENT_TABLE_HEADERS}
-          TABLE2_ROWS={[]}
-          setFilterByName={setFilterByName}
-          filterByName={filterByName}
-          setActiveKey={(key: string) => setActiveKey(key)}
-          activeKey={activeKey}
+          TABLE2_HEAD={SPORT_SPECIFIC_TABLE_HEADERS}
+          TABLE2_ROWS={finalData}
+          setActiveKey={(key: string) => setChildActiveKey(key)}
+          activeKey={childActiveKey}
           // onViewClick={(id: number) => {}}
           // onEditClick={(id: number) => {}}
           // onDeleteClick={(id: number) => {}}
@@ -89,6 +86,8 @@ const AllAssessment = () => {
         TABLE1_ROWS={finalData}
         TABLE2_HEAD={ASSESSMENT_TABLE_HEADERS}
         TABLE2_ROWS={[]}
+        filter={activeKey==="0"?false:true}
+        filters={activeKey==="0"?[]:[]}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
         setActiveKey={(key: string) => setActiveKey(key)}
