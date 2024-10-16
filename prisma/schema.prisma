@@ -594,7 +594,7 @@ model InjuryImages {
 
 model InjuryLogs {
   id            Int                     @id @default(autoincrement())
-  athleteId     Int
+  athleteId     Int?
   description   String?                 @db.VarChar(255)
   bodyPart      InjuryLogs_bodyPart
   bodyPartName  InjuryLogs_bodyPartName
@@ -1132,6 +1132,28 @@ model CoachOnCenters {
 
   @@unique([coachId, centerId], map: "CoachOnCenters_coachId_centerId_unique")
   @@index([centerId], map: "centerId")
+}
+
+model FeePlans {
+  id                Int              @id @unique(map: "id") @default(autoincrement())
+  name              String           @db.VarChar(255)
+  amount            Float            @db.Float
+  feeType           FeePlans_feeType
+  isProrata         Boolean?
+  recurringType     FeePlans_recurringType?
+}
+
+enum FeePlans_feeType {
+  free
+  one_time  @map("one time")
+  recurring   
+}
+
+enum FeePlans_recurringType {
+  bi_monthly  @map("bi monthly")
+  quarterly
+  half_yearly @map("half yearly")
+  annually
 }
 
 enum BatchSchedules_day {

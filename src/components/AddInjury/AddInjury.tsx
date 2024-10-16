@@ -8,7 +8,10 @@ import { api } from "~/utils/api";
 import Image from "next/image";
 import { Dropdown, Radio } from "flowbite-react";
 
-export default function AddInjury() {
+
+
+
+export default function AddInjury({search}:{search:string}) {
   let inputElement;
   const {
     stepData: { currentStep, setCurrentStep },
@@ -27,6 +30,7 @@ export default function AddInjury() {
   const currentFormValues = getValues();
   const hasExecuted = useRef(true);
   const { data: athletes } = api.athlete.getAllAthletes.useQuery();
+  const {data:coaches}=api.coach.getAllCoaches.useQuery()
 
   const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     INJURY_DETAILS_CONSTANTS
@@ -36,16 +40,37 @@ export default function AddInjury() {
       "text-gray-500 font-medium text-lg bg-white rounded-r-md border-gray-200 border-l w-full  focus:outline-none  font-medium px-5 py-2 justify-between inline-flex items-center ",
   };
 
+  
+
   useEffect(() => {
-    if (athletes?.length && hasExecuted.current) {
+    if (athletes?.length && hasExecuted.current &&search &&  search?.includes("Athlete")) {
       const updatedFormConstantValues: FormValues[] = formConstantValues.map(
         (formConstant: FormValues) => {
           if (formConstant.id === "selectedId") {
             return {
               ...formConstant,
-              options: athletes.map((sport: { name: string; id: number }) => ({
-                label: sport.name,
-                value: sport.id.toString(),
+              options: athletes.map((athlete: { name: string; id: number }) => ({
+                label: athlete.name,
+                value: athlete.id.toString(),
+              })),
+            };
+          } else {
+            return formConstant;
+          }
+        }
+      );
+      hasExecuted.current = false;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      setFormConstantValues(updatedFormConstantValues);
+    }else{
+      const updatedFormConstantValues: FormValues[] = formConstantValues.map(
+        (formConstant: FormValues) => {
+          if (formConstant.id === "selectedId") {
+            return {
+              ...formConstant,
+              options: coaches?.map((coach: { name: string; id: number }) => ({
+                label: coach.name,
+                value: coach.id.toString(),
               })),
             };
           } else {
@@ -57,7 +82,7 @@ export default function AddInjury() {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       setFormConstantValues(updatedFormConstantValues);
     }
-  }, [formConstantValues, athletes, athletes?.length]);
+  }, [formConstantValues, athletes, athletes?.length,coaches,search]);
 
   useEffect(() => {
     // if (!isEditMode) {
@@ -78,7 +103,6 @@ export default function AddInjury() {
         cardTitle="ADD INJURY LOG"
         cardSubTitle="Injured Information"
         formConstantValues={formConstantValues}
-        tableData={medicalHistoryData}
         buttonItems={{ next: true }}
         setFormData={setFormData}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

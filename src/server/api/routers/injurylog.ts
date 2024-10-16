@@ -51,9 +51,10 @@ export const injuryLogRouter = createTRPCRouter({
         search: z.string().optional(),
         injuryTypes: z.array(z.string()).optional(),
         statuses: z.array(z.string()).optional(),
+        type:z.string().optional()
       })
     )
-    .query(({ ctx, input: { page, limit, search, injuryTypes, statuses } }) => {
+    .query(({ ctx, input: { page, limit, search, injuryTypes, statuses ,type} }) => {
       const listQuery: any = {
         skip: (page - 1) * limit,
         take: limit,
@@ -65,6 +66,23 @@ export const injuryLogRouter = createTRPCRouter({
           createdAt: "desc",
         },
       };
+      if(type ){
+        if(type==="athlete"){
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          listQuery.where={
+            athleteId:{
+              not:null
+            }
+          }
+        }else{
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          listQuery.where={
+            coachId:{
+              not:null
+            }
+          }
+        }
+      }
       const countQuery: any = {
         where: {},
       };
@@ -159,8 +177,6 @@ export const injuryLogRouter = createTRPCRouter({
         isAidDone: z.boolean(),
         medicalReport: z.string().optional(),
         status: z.string(),
-        createdAt: z.date(),
-        updatedAt: z.date(),
         coachId: z.number().optional(),
         images: z.array(z.string()),
       })
@@ -180,8 +196,6 @@ export const injuryLogRouter = createTRPCRouter({
           isAidDone,
           medicalReport,
           status,
-          createdAt,
-          updatedAt,
           coachId,
           images,
         },
@@ -197,8 +211,8 @@ export const injuryLogRouter = createTRPCRouter({
           recoveryTime,
           isAidDone,
           status,
-          createdAt,
-          updatedAt,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         };
         // discussion - need to make optional
         if (athleteId) {
@@ -248,8 +262,6 @@ export const injuryLogRouter = createTRPCRouter({
         isAidDone: z.boolean(),
         medicalReport: z.string().optional(),
         status: z.string(),
-        createdAt: z.date(),
-        updatedAt: z.date(),
         coachId: z.number().optional(),
         images: z.array(z.string()),
       })
@@ -270,8 +282,6 @@ export const injuryLogRouter = createTRPCRouter({
           isAidDone,
           medicalReport,
           status,
-          createdAt,
-          updatedAt,
           coachId,
           images,
         },
@@ -287,8 +297,7 @@ export const injuryLogRouter = createTRPCRouter({
           recoveryTime,
           isAidDone,
           status,
-          createdAt,
-          updatedAt,
+          updatedAt: new Date(),
         };
         // discussion - need to make optional
         if (athleteId) {

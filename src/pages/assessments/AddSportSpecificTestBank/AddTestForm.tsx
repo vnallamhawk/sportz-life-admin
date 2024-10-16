@@ -48,7 +48,7 @@ export interface FormContextTypes {
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 
-export default function AddAssessmentForm() {
+export default function AddTestBankForm() {
   const router = useRouter();
   const id = Number(router?.query?.id);
   const { data: sessionData } = useSession();
@@ -209,7 +209,8 @@ export default function AddAssessmentForm() {
             {currentStep === 1 && <AddAssessment />}
             {currentStep === 2 && <AssignTestBank />}
             {currentStep === 3 && <AddAssessmentScoring />}
-            {currentStep === 4 && <AddAssessmentSchedule  finalFormSubmissionHandler={finalFormSubmissionHandler}/>}
+            {currentStep === 4 && <AddAssessmentSchedule />}
+            {currentStep === 5 && <AddAssessmentSchedule />}
 
             {/* {currentStep === 3 && (
               <AddInventory
