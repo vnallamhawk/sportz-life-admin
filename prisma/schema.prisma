@@ -610,7 +610,7 @@ model InjuryLogs {
   updatedAt     DateTime                @db.DateTime(0)
   coachId       Int?
   InjuryImages  InjuryImages[]
-  Athletes      Athletes                @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "InjuryLogs_ibfk_55")
+  Athletes      Athletes?                @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "InjuryLogs_ibfk_55")
   Coaches       Coaches?                @relation(fields: [coachId], references: [id], map: "InjuryLogs_ibfk_56")
 
   @@index([athleteId], map: "athleteId")
