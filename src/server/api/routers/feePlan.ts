@@ -35,32 +35,41 @@ export const feePlanRouter = createTRPCRouter({
           const val = {
             contains: trimmedSearch,
           };
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           listQuery.where.description = val;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           countQuery.where.description = val;
         }
         if (feeTypes?.length) {
           const val = {
             in: feeTypes,
           };
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           listQuery.where.feeType = val;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           countQuery.where.feeType = val;
         }
         if (recurringTypes?.length) {
           const val = {
             in: recurringTypes,
           };
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           listQuery.where.recurringType = val;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           countQuery.where.recurringType = val;
         }
         if (typeof isProrata === "boolean") {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           listQuery.where.isProrata = isProrata;
         }
 
         return Promise.all([
           // Query the database for total items
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           ctx.prisma.feePlans.count(countQuery),
 
           // Query the database for paginated items
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           ctx.prisma.feePlans.findMany(listQuery),
         ]).then((result) => {
           const totalItems = result[0];
@@ -114,7 +123,7 @@ export const feePlanRouter = createTRPCRouter({
         input: { name, amount, feeType, isProrata, recurringType },
         ctx,
       }) => {
-        const dataToSave: { [key: string]: any } = {
+        const dataToSave = {
           name,
           amount,
           feeType,
@@ -127,7 +136,7 @@ export const feePlanRouter = createTRPCRouter({
           dataToSave.recurringType = recurringType;
         }
 
-        const feePlan = await ctx.prisma.feePlan.create({
+        const feePlan = await ctx.prisma.feePlans.create({
           data: dataToSave,
         });
 

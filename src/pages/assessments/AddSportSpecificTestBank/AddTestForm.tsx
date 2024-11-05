@@ -209,8 +209,8 @@ export default function AddTestBankForm() {
             {currentStep === 1 && <AddAssessment />}
             {currentStep === 2 && <AssignTestBank />}
             {currentStep === 3 && <AddAssessmentScoring />}
-            {currentStep === 4 && <AddAssessmentSchedule />}
-            {currentStep === 5 && <AddAssessmentSchedule />}
+            {/* {currentStep === 4 && <AddAssessmentSchedule />} */}
+            {currentStep === 4 && <AddAssessmentSchedule finalFormSubmissionHandler={finalFormSubmissionHandler}/>}
 
             {/* {currentStep === 3 && (
               <AddInventory
