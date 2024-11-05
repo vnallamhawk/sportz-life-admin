@@ -173,7 +173,7 @@ export default function AddInjuryMultiFormLayout() {
       <FormContext.Provider value={formProviderData}>
         <div className="relative grid grid-cols-6 grid-rows-1">
           <Card className="relative col-span-12 h-full !rounded-r-none rounded-l-xl bg-white p-0 pt-10 lg:col-span-4">
-            {currentStep === 1 && <AddInjury />}
+            {currentStep === 1 && <AddInjury search={""}/>}
             {currentStep === 2 && (
               <AddGeneralDetails
                 finalFormSubmissionHandler={finalFormSubmissionHandler}

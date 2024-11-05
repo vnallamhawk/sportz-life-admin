@@ -130,11 +130,8 @@ export const feePlanRouter = createTRPCRouter({
           isProrata: !!isProrata,
           createdAt: new Date(),
           updatedAt: new Date(),
+          recurringType
         };
-
-        if (recurringType) {
-          dataToSave.recurringType = recurringType;
-        }
 
         const feePlan = await ctx.prisma.feePlans.create({
           data: dataToSave,
