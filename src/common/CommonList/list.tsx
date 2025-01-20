@@ -2,7 +2,7 @@ import Image from "next/image";
 import User from "../../images/user.png";
 
 interface CommonList {
-  item: { id: number; [key: string]: any };
+  item: { id: number;[key: string]: any };
   onViewClick?: (id: number) => void;
 }
 
@@ -26,8 +26,9 @@ const CommonList = ({ item, onViewClick }: CommonList) => {
             )}
           </div>
         </div>
-        {item?.status && item?.status != "1" && (
-          <div className="rounded-full border border-tertiary-700 bg-tertiary-200 px-3 py-1 text-sm font-normal capitalize text-tertiary-700">
+        {item?.status && item?.status == "1" && (
+          <div
+            className="rounded-full border border-tertiary-700 bg-tertiary-200 px-3 py-1 text-sm font-normal capitalize text-tertiary-700">
             {item?.status}
           </div>
         )}

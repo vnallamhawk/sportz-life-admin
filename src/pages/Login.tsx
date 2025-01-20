@@ -10,7 +10,7 @@ import { signIn } from "next-auth/react";
 import { api } from "~/utils/api";
 
 interface LoginDetails {
-  [key:string]:string
+  [key: string]: string
 }
 export default function Login() {
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function Login() {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
 
-    // createMutate({ email: "gamuaggarwal@gmail.com", password: "Gamini@123",academyId:1 });
+    // createMutate({ email: "gamuaggarwal@gmail.com", password: "Gamini@123", academyId: 1 });
 
     const res = await signIn("credentials", {
       redirect: false,
@@ -43,10 +43,10 @@ export default function Login() {
     }
   };
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     const obj: LoginDetails = { ...loginDetails };
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      obj[e.target.name] = e.target.value;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    obj[e.target.name] = e.target.value;
     setLoginDetails(obj);
   };
   return (
@@ -97,7 +97,7 @@ export default function Login() {
             <button
               type="submit"
               className="w-full rounded-lg bg-blue-700 bg-theme-light p-2 text-white hover:bg-theme-dark"
-              onClick={(e)=> void handleSubmit(e)}
+              onClick={(e) => void handleSubmit(e)}
             >
               Sign In
             </button>

@@ -5,16 +5,16 @@ import User from "../../images/user.png";
 
 import { Dropdown, DropdownHeader } from "flowbite-react";
 
-interface CommonTable{
-  
-    TABLE_HEAD: { label: string; id: string }[];
-    TABLE_ROWS:{[key:string]:any,id:number}[];
-    rowSelection: boolean;
-    showImage: boolean;
-    onViewClick?: (id:number)=>void;
-    onEditClick?: (id:number)=>void;
-    onDeleteClick?: (id:number)=>void;
-  
+interface CommonTable {
+
+  TABLE_HEAD: { label: string; id: string }[];
+  TABLE_ROWS: { [key: string]: any, id: number }[];
+  rowSelection: boolean;
+  showImage: boolean;
+  onViewClick?: (id: number) => void;
+  onEditClick?: (id: number) => void;
+  onDeleteClick?: (id: number) => void;
+
 }
 
 const CommonTable = ({
@@ -26,7 +26,8 @@ const CommonTable = ({
   onEditClick,
   onDeleteClick,
 
-}:CommonTable) => {
+}: CommonTable) => {
+
   return (
     <>
       <div className="overflow-auto px-0">
@@ -56,7 +57,7 @@ const CommonTable = ({
             </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS?.map((data: {[key:string]:any,id:number}, index: number) => {
+            {TABLE_ROWS?.map((data: { [key: string]: any, id: number }, index: number) => {
               const isLast = index === TABLE_ROWS.length - 1;
               const classes = isLast
                 ? "p-4 border-y-2 border-gray-100"
@@ -75,17 +76,18 @@ const CommonTable = ({
                   )}
                   {TABLE_HEAD?.map(
                     (
-                      head:{ label: string; id: string } ,
+                      head: { label: string; id: string },
                       columnIndex: number
                     ) => {
+
                       return (
                         <td className={classes} key={columnIndex}>
                           {head?.id !== "status" ? (
                             head?.id !== "action" ? (
                               columnIndex == 0 &&
-                              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                              data?.image &&
-                              showImage ? (
+                                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                                data?.image &&
+                                showImage ? (
                                 <div className="flex items-center gap-3">
                                   <Image width={0} height={0}
                                     src={User}
@@ -115,7 +117,7 @@ const CommonTable = ({
                                 className="view-drop rounded-lg bg-black w-auto h-auto"
                                 renderTrigger={() => (
                                   <button className="py-2">
-                                    <Image width={20} height={20} src={Dots} alt=""  />
+                                    <Image width={20} height={20} src={Dots} alt="" />
                                   </button>
                                 )}
                               >
@@ -124,7 +126,7 @@ const CommonTable = ({
                                     {onEditClick && <button
                                       className="mx-1 text-white"
                                       onClick={() =>
-                                          onEditClick(data?.id)
+                                        onEditClick(data?.id)
                                       }
                                     >
                                       Edit
@@ -150,6 +152,7 @@ const CommonTable = ({
                                   </div>
                                 </DropdownHeader>
                               </Dropdown>
+                              // <div></div>
                             )
                           ) : (
                             <div className="w-max">

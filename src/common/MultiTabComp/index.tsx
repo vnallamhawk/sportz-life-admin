@@ -94,9 +94,8 @@ const MultiTabComp = ({
               >
                 <Tab
                   value={tab1value}
-                  className={`${
-                    activeKey === "0" ? "active" : ""
-                  } text-nowrap w-1/2 bg-[#EAEAEA] px-0 font-heading text-2xl lg:w-auto lg:bg-transparent lg:font-medium lg:uppercase`}
+                  className={`${activeKey === "0" ? "active" : ""
+                    } text-nowrap w-1/2 bg-[#EAEAEA] px-0 font-heading text-2xl lg:w-auto lg:bg-transparent lg:font-medium lg:uppercase`}
                   key={"0"}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                   onClick={() => setActiveKey("0")}
@@ -105,9 +104,8 @@ const MultiTabComp = ({
                 </Tab>
                 <Tab
                   value={tab2value}
-                  className={`${
-                    activeKey === "1" ? "active" : ""
-                  } text-nowrap ml-4 w-1/2 bg-[#EAEAEA] px-0 font-heading text-2xl lg:w-auto lg:bg-transparent lg:font-medium lg:uppercase`}
+                  className={`${activeKey === "1" ? "active" : ""
+                    } text-nowrap ml-4 w-1/2 bg-[#EAEAEA] px-0 font-heading text-2xl lg:w-auto lg:bg-transparent lg:font-medium lg:uppercase`}
                   key={"1"}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                   onClick={() => setActiveKey("1")}
@@ -142,7 +140,7 @@ const MultiTabComp = ({
                     applyFilters={applyFilters}
                   />
                 )}
-               {addButtonText &&  <Link
+                {addButtonText && <Link
                   href={{
                     pathname: addButtonUrl,
                     query: {
@@ -169,6 +167,7 @@ const MultiTabComp = ({
                     onViewClick={onViewClick}
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
                     onEditClick={onEditClick}
+                    onDeleteClick={onDeleteClick}
                   />
                 </TabPanel>
               ) : null}

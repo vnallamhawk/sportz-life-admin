@@ -7,9 +7,9 @@ function AddSportModal({
   sportDetails,
   setSportDetails,
   handleSport,
-}: {show:boolean;setShow:any;handleSport:any;setSportDetails:any;sportDetails:SportDetails}) {
+}: { show: boolean; setShow: any; handleSport: any; setSportDetails: any; sportDetails: SportDetails }) {
   const handleSportChange = (name: string, value: string) => {
-    const obj: {[key:string]:string} = { ...sportDetails };
+    const obj: { [key: string]: string } = { ...sportDetails };
     obj[name] = value;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     setSportDetails(obj);
@@ -20,9 +20,8 @@ function AddSportModal({
       <div
         // tabindex="-1"
         aria-hidden="true"
-        className={`${
-          !show ? `hidden` : ``
-        } absolute right-10 top-0 z-50 w-80   
+        className={`${!show ? `hidden` : ``
+          } absolute right-10 top-0 z-50 w-80   
             items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0`}
       >
         <div className="relative max-h-full w-full max-w-md p-4">
@@ -46,9 +45,9 @@ function AddSportModal({
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeWidth="2"
                     d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                   />
                 </svg>

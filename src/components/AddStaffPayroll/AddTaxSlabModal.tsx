@@ -1,7 +1,7 @@
 import React from "react";
 
-export type TaxSlab={
-  fromAmount:string|number;toAmount:string|number,percentage:string|number
+export type TaxSlab = {
+  fromAmount: string | number; toAmount: string | number, percentage: string | number
 }
 
 function AddTaxSlabModal({
@@ -10,9 +10,9 @@ function AddTaxSlabModal({
   submitTaxSlab,
   setTaxSlab,
   taxSlab,
-}: {show:boolean;setShow:any;submitTaxSlab:any;setTaxSlab:any;taxSlab:TaxSlab}) {
-  
-  const handleDesignationChange = (name: "fromAmount"|"toAmount"|"percentage", value: string) => {
+}: { show: boolean; setShow: any; submitTaxSlab: any; setTaxSlab: any; taxSlab: TaxSlab }) {
+
+  const handleDesignationChange = (name: "fromAmount" | "toAmount" | "percentage", value: string) => {
     const obj: TaxSlab = { ...taxSlab };
     obj[name] = value;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -24,9 +24,8 @@ function AddTaxSlabModal({
       <div
         // tabindex="-1"
         aria-hidden="true"
-        className={`${
-          !show ? `hidden` : ``
-        } absolute right-10 top-0 z-50 w-80   
+        className={`${!show ? `hidden` : ``
+          } absolute right-10 top-0 z-50 w-80   
             items-center justify-center overflow-y-auto overflow-x-hidden md:inset-0`}
       >
         <div className="relative max-h-full w-full max-w-md p-4">
@@ -50,9 +49,9 @@ function AddTaxSlabModal({
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeWidth="2"
                     d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                   />
                 </svg>

@@ -1,8 +1,8 @@
 <svg width="704" height="783" viewBox="0 0 704 783" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g clip-path="url(#clip0_875_28483)">
 <path d="M0 0H689C697.284 0 704 6.71573 704 15V768C704 776.284 697.284 783 689 783H0V0Z" fill="#EAEAEA"/>
-<rect x="135" y="84" width="916" height="581" rx="15" fill="url(#pattern0_875_28483)" stroke="black" stroke-width="10"/>
-<rect x="80" y="233" width="916" height="515" rx="15" fill="url(#pattern1_875_28483)" stroke="black" stroke-width="10"/>
+<rect x="135" y="84" width="916" height="581" rx="15" fill="url(#pattern0_875_28483)" stroke="black" strokeWidth="10"/>
+<rect x="80" y="233" width="916" height="515" rx="15" fill="url(#pattern1_875_28483)" stroke="black" strokeWidth="10"/>
 <path d="M0 -2H689C697.284 -2 704 4.71573 704 13V768C704 776.284 697.284 783 689 783H0V-2Z" fill="url(#paint0_linear_875_28483)"/>
 </g>
 <defs>

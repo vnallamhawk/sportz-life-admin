@@ -8,16 +8,16 @@ import Search from "../../components/Search";
 import ThemeButton from "../ThemeButton";
 import { signOut } from "next-auth/react";
 
-export default function DashboardHeader({setOpenSideBar,openSideBar}:{setOpenSideBar:any;openSideBar:boolean}) {
-  
+export default function DashboardHeader({ setOpenSideBar, openSideBar }: { setOpenSideBar: any; openSideBar: boolean }) {
+
   return (
     <div className="px-6 py-7 dark:bg-black dark:text-white">
       <div className="flex items-center justify-between">
         <div className="flex">
-          <div className="mr-3 block lg:hidden" onClick={()=>{
+          <div className="mr-3 block lg:hidden" onClick={() => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call
             setOpenSideBar(!openSideBar)
-            }}>
+          }}>
             <Image width={0} height={0} src={Toggle} className="w-auto h-auto" alt="" />
           </div>
           <h2 className="font-heading text-xl font-medium md:text-3xl">
@@ -67,9 +67,9 @@ export default function DashboardHeader({setOpenSideBar,openSideBar}:{setOpenSid
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
+                    strokeLinecap="round"
                     stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeWidth="2"
                     d="m1 1 4 4 4-4"
                   />
                 </svg>

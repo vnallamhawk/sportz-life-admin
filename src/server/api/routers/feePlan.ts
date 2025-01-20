@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { FEE_PLAN_FEE_TYPE, FEE_PLAN_RECURRING_TYPE } from "~/types/feePlan";
+import { FEE_PLAN_FEE_TYPE, FEE_PLAN_RECURRING_TYPE, LATE_FEE_TYPE } from "~/types/feePlan";
 
 export const feePlanRouter = createTRPCRouter({
   getAllFeePlans: publicProcedure
@@ -12,12 +12,13 @@ export const feePlanRouter = createTRPCRouter({
         feeTypes: z.array(z.string()).optional(),
         recurringTypes: z.array(z.string()).optional(),
         isProrata: z.boolean().optional(),
+        status: z.number().optional()
       })
     )
     .query(
       ({
         ctx,
-        input: { page, limit, search, feeTypes, recurringTypes, isProrata },
+        input: { page, limit, search, feeTypes, recurringTypes, isProrata, status },
       }) => {
         const listQuery: any = {
           skip: (page - 1) * limit,
@@ -63,6 +64,10 @@ export const feePlanRouter = createTRPCRouter({
           listQuery.where.isProrata = isProrata;
         }
 
+        if (status) {
+          listQuery.where.status = status
+        }
+
         return Promise.all([
           // Query the database for total items
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -70,7 +75,25 @@ export const feePlanRouter = createTRPCRouter({
 
           // Query the database for paginated items
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          ctx.prisma.feePlans.findMany(listQuery),
+          ctx.prisma.feePlans.findMany({
+            // ...listQuery,
+            select: {
+              id: true,
+              name: true,
+              amount: true,
+              feeType: true,
+              isProrata: true,
+              recurringType: true,
+              isLate: true,
+              lateFeeType: true,
+              lateFee: true,
+              createdBy: true,
+              currency: true,
+              status: true, // Ensure this field is explicitly selected
+              createdAt: true,
+              updatedAt: true,
+            },
+          }),
         ]).then((result) => {
           const totalItems = result[0];
           const data = result[1];
@@ -106,7 +129,7 @@ export const feePlanRouter = createTRPCRouter({
         });
 
         return feePlans;
-      } catch (error) {}
+      } catch (error) { }
     }),
   createFeePlan: publicProcedure
     .input(
@@ -116,11 +139,17 @@ export const feePlanRouter = createTRPCRouter({
         feeType: z.enum(FEE_PLAN_FEE_TYPE),
         isProrata: z.boolean().optional(),
         recurringType: z.enum(FEE_PLAN_RECURRING_TYPE).optional(),
+        isLate: z.boolean().optional(),
+        lateFeeType: z.enum(LATE_FEE_TYPE).optional(),
+        lateFee: z.number().optional(),
+        createdBy: z.number(),
+        currency: z.string().optional(),
+        status: z.number().optional()
       })
     )
     .mutation(
       async ({
-        input: { name, amount, feeType, isProrata, recurringType },
+        input: { name, amount, feeType, isProrata, recurringType, isLate, lateFeeType, lateFee, currency, createdBy, status },
         ctx,
       }) => {
         const dataToSave = {
@@ -130,7 +159,13 @@ export const feePlanRouter = createTRPCRouter({
           isProrata: !!isProrata,
           createdAt: new Date(),
           updatedAt: new Date(),
-          recurringType
+          recurringType,
+          isLate: !!isLate,
+          lateFeeType,
+          lateFee,
+          currency,
+          createdBy,
+          // status: status || 1
         };
 
         const feePlan = await ctx.prisma.feePlans.create({

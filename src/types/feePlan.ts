@@ -6,3 +6,8 @@ export const FEE_PLAN_RECURRING_TYPE = [
   "half_yearly",
   "annually",
 ] as const;
+
+export const LATE_FEE_TYPE = [
+  "amount",
+  "percentage"
+] as const;

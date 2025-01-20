@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `FeePlans` ADD COLUMN `status` TINYINT NULL DEFAULT 1;

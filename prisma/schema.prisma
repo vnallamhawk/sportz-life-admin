@@ -1141,6 +1141,14 @@ model FeePlans {
   feeType           FeePlans_feeType
   isProrata         Boolean?
   recurringType     FeePlans_recurringType?
+  isLate            Boolean?
+  lateFeeType       FeePlans_isLateType?
+  lateFee           Float?           @db.Float
+  createdBy         Int
+  currency          String?
+  createdAt         DateTime    @db.DateTime(0)
+  updatedAt         DateTime    @db.DateTime(0)
+  status            Int        @default(1) @db.TinyInt
 }
 
 enum FeePlans_feeType {
@@ -1154,6 +1162,11 @@ enum FeePlans_recurringType {
   quarterly
   half_yearly @map("half yearly")
   annually
+}
+
+enum FeePlans_isLateType {
+  amount
+  percentage
 }
 
 enum BatchSchedules_day {
