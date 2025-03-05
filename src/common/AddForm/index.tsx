@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useContext,
-  useState,
-  useRef,
-  useCallback,
-} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import Textbox from "~/components/Textbox";
@@ -33,13 +27,17 @@ interface AddForm {
   addTableData?: any;
   tableData?: { [key: string]: any }[];
   tablekey?: string;
-  buttonItems?: { prevNext?: boolean; prevFinish?: boolean; next?: boolean;finish?:boolean };
+  buttonItems?: {
+    prevNext?: boolean;
+    prevFinish?: boolean;
+    next?: boolean;
+    finish?: boolean;
+  };
   setFormData: any;
   formData: any;
   setCurrentStep: any;
   currentStep: number;
   finalFormSubmissionHandler?: any;
-  // tableFields?: any;
   tableFields?: TableFields[];
   addTableButtonText?: string;
   addTableButton?: any;
@@ -52,8 +50,8 @@ interface AddForm {
   setDependentKey?: any;
   dependentKey1?: string;
   setDependentKey1?: any;
-  onDropCallback?:(files: Array<File>)=>void;
-  uploadUrl?:string
+  onDropCallback?: (files: Array<File>) => void;
+  uploadUrl?: string;
 }
 const AddForm = ({
   cardTitle,
@@ -86,7 +84,7 @@ const AddForm = ({
   dependentKey1,
   setDependentKey1,
   onDropCallback,
-  uploadUrl
+  uploadUrl,
 }: AddForm) => {
   let inputElement;
   const {
@@ -95,9 +93,9 @@ const AddForm = ({
     reset,
     trigger,
     formState: { errors },
-  
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  } = useForm<any>({ mode: "onSubmit" ,values:formData});
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  } = useForm<any>({ mode: "onSubmit", values: formData });
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [currentTableData, setCurrentTableData] = useState<{
@@ -224,7 +222,7 @@ const AddForm = ({
                   isMulti={props?.isMulti ?? false}
                   options={options}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                  value={formData[id]||value}
+                  value={formData[id] || value}
                   placeholder={placeHolder}
                   className="border-1 c-select w-full border-gray-300"
                   classNamePrefix="react-select"
@@ -261,9 +259,9 @@ const AddForm = ({
                     onChangeHandler={onChange}
                     // TODO: FIX THIS TS ERROR
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-                    value={formData[id] as string||value}
-                    />
-                  <div className="dropdown absolute right-0.5 top-2/4 -translate-y-2/4 p-3 h-12 border-l inline-flex justify-center items-center">
+                    value={(formData[id] as string) || value}
+                  />
+                  <div className="dropdown absolute right-0.5 top-2/4 inline-flex h-12 -translate-y-2/4 items-center justify-center border-l p-3">
                     <Dropdown
                       label={dropdownLabel}
                       inline={true}
@@ -303,7 +301,7 @@ const AddForm = ({
               return (
                 <Switch
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                  value={formData['taxable']||value}
+                  value={formData["taxable"] || value}
                   onChange={(e) =>
                     handleChangeTime(e.target.checked, "taxable")
                   }
@@ -346,7 +344,11 @@ const AddForm = ({
                 <Datepicker
                   placeHolder={props.placeHolder}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                  value={value?new Date(value as string):new Date(formData[id] as string)}
+                  value={
+                    value
+                      ? new Date(value as string)
+                      : new Date(formData[id] as string)
+                  }
                   className="h-12"
                   onChangeHandler={onChange}
                 />
@@ -369,8 +371,8 @@ const AddForm = ({
                 placeholder={placeHolder}
                 onChange={onChange}
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                value={value||formData[id]}
-                />
+                value={value || formData[id]}
+              />
             )}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
@@ -390,7 +392,7 @@ const AddForm = ({
                 onChangeHandler={onChange}
                 // TODO: FIX THIS TS ERROR
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                value={value||formData[id]}
+                value={value || formData[id]}
               />
             )}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -438,22 +440,24 @@ const AddForm = ({
       {imageTitle && (
         <label className="col-span-2 mt-5 flex h-48 flex-col justify-center rounded-lg border-2 border-dashed border-gray-300 bg-stone-100 text-center lg:hidden">
           <div className="mb-3 flex items-center justify-center">
-            <input type="file" className="hidden" onChange={(e:React.ChangeEvent<HTMLInputElement>)=>
-            {
-              if(imageTitle &&onDropCallback && e.target.files ){
-                const uploadedFile:File|null| undefined=e.target.files.length>0?e.target.files[0]:null
-                if(uploadedFile){
-                  onDropCallback([uploadedFile])
+            <input
+              type="file"
+              className="hidden"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (imageTitle && onDropCallback && e.target.files) {
+                  const uploadedFile: File | null | undefined =
+                    e.target.files.length > 0 ? e.target.files[0] : null;
+                  if (uploadedFile) {
+                    onDropCallback([uploadedFile]);
+                  }
                 }
-
-              }
-            }
-              }/>
+              }}
+            />
             <Image
               width={0}
               height={0}
-              src={uploadUrl?uploadUrl:AddFile}
-              className="h-auto w-auto mr-2"
+              src={uploadUrl ? uploadUrl : AddFile}
+              className="mr-2 h-auto w-auto"
               alt=""
             />
             <div className="text-base font-medium text-gray-500">
@@ -738,7 +742,7 @@ const AddForm = ({
           </Button>
         </div>
       )}
-{buttonItems?.finish && (
+      {buttonItems?.finish && (
         <div className="absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end">
           <Button
             type="button"
