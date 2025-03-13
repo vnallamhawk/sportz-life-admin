@@ -105,10 +105,14 @@ export default function AddPlans() {
         }));
     };
 
+    type FormData = {
+        recurringType: string;
+    };
+
     const handleRecurringPeriodChange = (selectedOption: SingleValue<{ value: string; label: string }>) => {
-        setFormData((prev: any) => ({
+        setFormData((prev: FormData) => ({
             ...prev,
-            recurringType: selectedOption ? selectedOption.value : "", // Handle null case
+            recurringType: selectedOption?.value ?? "", // ✅ More concise way to handle null
         }));
     };
 
