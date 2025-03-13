@@ -4,13 +4,12 @@ import LoginMobileImage from "../images/pngwing.svg";
 import Link from "next/link";
 import Image from "next/image";
 
-import { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
-import { api } from "~/utils/api";
 
 interface LoginDetails {
-  [key: string]: string
+  [key: string]: string;
 }
 export default function Login() {
   const router = useRouter();
@@ -25,7 +24,7 @@ export default function Login() {
   //   },
   // });
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault();
 
@@ -43,7 +42,7 @@ export default function Login() {
     }
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const obj: LoginDetails = { ...loginDetails };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     obj[e.target.name] = e.target.value;
@@ -53,9 +52,11 @@ export default function Login() {
     <div className="grid h-screen gap-2 p-5 lg:grid-cols-2 lg:p-3">
       <div className="items-center justify-center lg:flex">
         <div className="text-center">
-          <Image width={0} height={0}
+          <Image
+            width={0}
+            height={0}
             src={Logo}
-            className="w-auto h-auto max-w-3 left-1.5 top-1.5 mx-auto mb-10 text-center sm:mb-16 md:mb-20 lg:absolute lg:max-w-xs"
+            className="max-w-3 left-1.5 top-1.5 mx-auto mb-10 h-auto w-auto text-center sm:mb-16 md:mb-20 lg:absolute lg:max-w-xs"
             alt=""
           />
         </div>
@@ -105,16 +106,20 @@ export default function Login() {
         </div>
       </div>
       <div className="flex items-center justify-end ">
-        <Image width={0} height={0}
+        <Image
+          width={0}
+          height={0}
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           src={LoginImage}
-          className="hidden max-h-[calc(100vh-30px)] w-full lg:block h-auto"
+          className="hidden h-auto max-h-[calc(100vh-30px)] w-full lg:block"
           alt=""
         />
-        <Image width={0} height={0}
+        <Image
+          width={0}
+          height={0}
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           src={LoginMobileImage}
-          className="mt-4 block max-h-[calc(100vh-30px)] w-full lg:hidden h-auto"
+          className="mt-4 block h-auto max-h-[calc(100vh-30px)] w-full lg:hidden"
           alt=""
         />
       </div>

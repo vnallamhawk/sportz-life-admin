@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useContext,
-  useState,
-  useRef,
-  useCallback,
-} from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import Datepicker from "~/components/DatePicker/DatePickerWrapper";
 import Textbox from "~/components/Textbox";
@@ -39,7 +33,6 @@ interface AddForm {
   setCurrentStep: any;
   currentStep: number;
   finalFormSubmissionHandler?: any;
-  // tableFields?: any;
   tableFields?: TableFields[];
   addTableButtonText?: string;
   addTableButton?: any;
@@ -86,7 +79,7 @@ const AddForm = ({
   dependentKey1,
   setDependentKey1,
   onDropCallback,
-  uploadUrl
+  uploadUrl,
 }: AddForm) => {
   let inputElement;
   const {
@@ -98,7 +91,6 @@ const AddForm = ({
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   } = useForm<any>({ mode: "onSubmit", values: formData });
-
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [currentTableData, setCurrentTableData] = useState<{
