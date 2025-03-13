@@ -8,14 +8,15 @@ import {
 
 const athleteBatchesSchema = z.object({
   athleteId: z.number(),
-  sportId:z.number(),
-  batchId:z.number(),
-  createdAt:z.date(),
-  updatedAt:z.date(),
-  })
-  
-  // Now add this object into an array
-  const athleteBatchesInfoSchema = z.array(athleteBatchesSchema)
+  sportId: z.number(),
+  batchId: z.number(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  centerId: z.number()
+})
+
+// Now add this object into an array
+const athleteBatchesInfoSchema = z.array(athleteBatchesSchema)
 
 // Now add this object into an array
 

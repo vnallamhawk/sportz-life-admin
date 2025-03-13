@@ -19,14 +19,26 @@ export default function Athlete() {
   const router = useRouter();
   const [finalData, setFinalData] = useState<Athletes[]>([]);
   const [filters, setFilters] = useState<{ [key: string]: any }>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: athletes } =
+  const athletesData: any =
     filterByName == ""
-      ? api.athlete.getAllAthletes.useQuery()
+      ? api.athlete.getAllAthletesWithPagination.useQuery({ page: currentPage, limit: 1 })
       : api.athlete.getAthleteByName.useQuery({ name: filterByName });
   const { data: sports } = api.sports.getAllSports.useQuery();
   const { data: centers } = api.center.getAllCenters.useQuery();
   const { data: batches } = api.batches.getAllBatches.useQuery();
+
+  const athletes = athletesData?.data?.data ?? []; // Ensure it's an array
+  const totalPages = athletesData?.data?.totalPages ?? 1; // Ensure a valid number
+
+  console.log({ athletes })
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   const dropdownObj = {
     changeCenter: true,
@@ -129,10 +141,13 @@ export default function Athlete() {
         applyFilters={(appliedFilters: { [key: string]: any }) =>
           handleFilters(appliedFilters)
         }
-        onViewClick={(id: number) => void router.push(`/athlete/${id ?? ""}`)}
-        onEditClick={(id: number) => void router.push(`/edit-athlete-${id}`)}
+        onViewClick={(id: number) => router.replace(`/athlete/${id ?? ""}`).then(() => window.location.reload())}
+        onEditClick={(id: number) => router.replace(`/edit-athlete-${id}`).then(() => window.location.reload())}
         onDeleteClick={(id: number) => deleteAthlete(id)}
         rowSelection={true}
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onHandlePageChange={handlePageChange}
       />
     </>
   );

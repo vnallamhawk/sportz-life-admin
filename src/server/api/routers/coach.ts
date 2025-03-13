@@ -28,12 +28,66 @@ export const coachRouter = createTRPCRouter({
   getAllCoaches: publicProcedure.query(({ ctx }) => {
     const allCoaches = ctx?.prisma.coaches?.findMany({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      where:{
-        deletedAt:null,
+      where: {
+        deletedAt: null,
       },
     });
     return allCoaches;
   }),
+
+  getAllCoachesWithPagination: publicProcedure
+    .input(
+      z.object({
+        page: z.number().min(1), // Ensures the page is at least 1
+        limit: z.number().min(1).max(100), // Controls the number of records per page
+        sortOrder: z.enum(["asc", "desc"]).optional().default("desc"), // Sorting order
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { page, limit, sortOrder } = input;
+      const skip = (page - 1) * limit; // Calculate the offset
+
+      const [coaches, total] = await Promise.all([
+        ctx.prisma.coaches.findMany({
+          where: {
+            deletedAt: null,
+          },
+          include: {
+            Centers: true,
+            CoachCentersBatches: {
+              include: {
+                Batches: true, // Include Batches associated with the coach
+              },
+            },
+            CoachSportsMaps: {
+              include: {
+                Sports: true, // Fetch the associated sports
+              },
+            },
+            Batches: true, // Direct relation with batches
+          },
+          skip,
+          take: limit,
+          orderBy: {
+            createdAt: sortOrder, // Sort by createdAt (ascending or descending)
+          },
+        }),
+        ctx.prisma.coaches.count({
+          where: {
+            deletedAt: null,
+          },
+        }),
+      ]);
+
+      return {
+        data: coaches,
+        total,
+        page,
+        totalPages: Math.ceil(total / limit),
+      };
+    }),
+
+
   getCoachById: publicProcedure
     .input(
       z.object({
@@ -93,11 +147,15 @@ export const coachRouter = createTRPCRouter({
         gender: z.enum(GENDER_VALUES),
         dateOfBirth: z.date(),
         trainingLevel: z.enum(TRAINING_LEVEL),
-        createdBy:z.number(),
-        createdAt:z.date(),
-        updatedAt:z.date(),
-        academyId:z.number(),
-        image:z.string()
+        createdBy: z.number(),
+        createdAt: z.date(),
+        updatedAt: z.date(),
+        academyId: z.number(),
+        image: z.string(),
+        experience: z.string(),
+        about: z.string(),
+        experienceLevel: z.enum(EXPERIENCE_LEVEL),
+        centerId: z.number()
       })
     )
     .mutation(
@@ -113,7 +171,11 @@ export const coachRouter = createTRPCRouter({
           createdAt,
           updatedAt,
           academyId,
-          image
+          image,
+          experience,
+          about,
+          experienceLevel,
+          centerId
         },
         ctx,
       }) => {
@@ -121,16 +183,20 @@ export const coachRouter = createTRPCRouter({
         const response = await ctx.prisma.coaches.create({
           data: {
             name: name,
-             phone: phone,
+            phone: phone,
             email: email,
             designation: designation,
-            gender: gender,            
+            gender: gender,
             dateOfBirth: dateOfBirth,
             trainingLevel: trainingLevel,
             createdAt,
             updatedAt,
             academyId,
-            image
+            image,
+            experience,
+            about,
+            experienceLevel,
+            centerId
           },
         });
         return response;
@@ -146,10 +212,10 @@ export const coachRouter = createTRPCRouter({
         gender: z.enum(GENDER_VALUES),
         dateOfBirth: z.date(),
         trainingLevel: z.enum(TRAINING_LEVEL),
-        updatedAt:z.date(),
-        academyId:z.number(),
-        image:z.string(),
-        coachId:z.number()
+        updatedAt: z.date(),
+        academyId: z.number(),
+        image: z.string(),
+        coachId: z.number()
       })
     )
     .mutation(
@@ -175,10 +241,10 @@ export const coachRouter = createTRPCRouter({
           },
           data: {
             name: name,
-             phone: phone,
+            phone: phone,
             email: email,
             designation: designation,
-            gender: gender,            
+            gender: gender,
             dateOfBirth: dateOfBirth,
             trainingLevel: trainingLevel,
             updatedAt,
@@ -191,7 +257,7 @@ export const coachRouter = createTRPCRouter({
       }
     ),
 
-    deleteCoach: publicProcedure
+  deleteCoach: publicProcedure
     .input(
       z.object({
         coachId: z.number(),

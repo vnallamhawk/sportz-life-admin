@@ -11,9 +11,8 @@ const nextConfig = withImages({
   images: {
     disableStaticImages: true,
   },
-  webpack: (
-    /** @type {{ module: { rules: { test: RegExp; include: RegExp; use: string[]; }[]; }; }} */ config
-  ) => {
+  // @ts-ignore
+  webpack: (config) => {
     config.module.rules.push(
       {
         test: /\.svg$/,
@@ -32,21 +31,6 @@ const nextConfig = withImages({
     locales: ["en"],
     defaultLocale: "en",
   },
-  fileExtensions: [
-    "jpg",
-    "jpeg",
-    "svg",
-    "png",
-    "gif",
-    "ico",
-    "webp",
-    "jp2",
-    "avif",
-    "woff",
-    "woff2",
-    "otf",
-    "ttf",
-  ],
   reactStrictMode: true,
   async rewrites() {
     return [
@@ -69,6 +53,10 @@ const nextConfig = withImages({
       {
         source: "/edit-staff-:id",
         destination: "/staff/AddStaff",
+      },
+      {
+        source: "/edit-plan-:id",
+        destination: "/pricing/AddPlans?search=Fee+Plan", // FIXED
       },
     ];
   },

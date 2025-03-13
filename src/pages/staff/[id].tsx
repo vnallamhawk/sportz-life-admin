@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import staffCalendar from "../../images/Staff_calendar.png";
 import staffCenter from "../../images/Staff_center.png";
 import staffPayroll from "../../images/Staff_payroll.png";
@@ -36,9 +36,9 @@ export const getServerSideProps = async (
       id: id ? Number(id) : undefined,
     },
     include: {
-      StaffDesignation: true,
-      Centers: true,
-      StaffPayroll: true,
+      // StaffDesignation: true,
+      // Centers: true,
+      // StaffPayroll: true,
       StaffShifts: true,
     },
   });
@@ -83,6 +83,8 @@ const tabs = [
 ];
 
 interface StaffDetails extends Staffs {
+  gender: any;
+  dateOfBirth: any;
   StaffDesignation?: StaffDesignation;
   Centers?: Centers[];
   StaffPayroll?: StaffPayroll;
@@ -101,31 +103,31 @@ export default function Page({ staff }: { staff: StaffDetails }) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
 
-  useEffect(()=>{
-    if(staff && staff.image){
+  useEffect(() => {
+    if (staff && staff.image) {
       void getSignedUrlForImage(staff.image)
     }
-  },[staff])
+  }, [staff])
 
   useEffect(() => {
     if (finalTabs && finalTabs.length > 0 && Object.keys(staff).length > 0) {
-      const arr:TabType[]= [...finalTabs];
-      const centersIndex = arr.findIndex((item:TabType) => item.name === "centers");
+      const arr: TabType[] = [...finalTabs];
+      const centersIndex = arr.findIndex((item: TabType) => item.name === "centers");
       if (centersIndex > -1 && staff?.Centers) {
-        const obj:TabType={...arr[centersIndex]}
+        const obj: TabType = { ...arr[centersIndex] }
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        obj.value = staff?.Centers?staff?.Centers?.length:0;
-        arr[centersIndex]=obj
+        obj.value = staff?.Centers ? staff?.Centers?.length : 0;
+        arr[centersIndex] = obj
       }
-      const batchIndex = arr.findIndex((item:TabType) => item.name === "batches");
+      const batchIndex = arr.findIndex((item: TabType) => item.name === "batches");
       if (batchIndex > -1 && staff?.StaffShifts) {
-        const batchObj:TabType={...arr[batchIndex]}
+        const batchObj: TabType = { ...arr[batchIndex] }
 
-        batchObj.value = staff.StaffShifts?staff?.StaffShifts?.length:0;
-        arr[batchIndex]=batchObj
+        batchObj.value = staff.StaffShifts ? staff?.StaffShifts?.length : 0;
+        arr[batchIndex] = batchObj
 
       }
-      if(JSON.stringify(finalTabs)!==JSON.stringify(arr)){
+      if (JSON.stringify(finalTabs) !== JSON.stringify(arr)) {
         setFinalTabs(arr);
 
       }
@@ -133,23 +135,23 @@ export default function Page({ staff }: { staff: StaffDetails }) {
   }, [staff, finalTabs]);
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  const getSignedUrlForImage = async (key:string) => {
+  const getSignedUrlForImage = async (key: string) => {
     try {
-        const s3info = s3.getSignedUrl("getObject", {
-            Bucket: process.env.S3_BUCKET_NAME,
-            Key: key,
-            Expires: 60,
-        });
-        setImageUrl(s3info);
+      const s3info = s3.getSignedUrl("getObject", {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: key,
+        Expires: 60,
+      });
+      setImageUrl(s3info);
     } catch (error) {
-        return null;
+      return null;
     }
-};
+  };
 
   const handleClick = (tab: TabType) => {
     let component;
-    let TABLE_HEAD:TableHead=[];
-    let TABLE_ROWS: {[key:string]:any,id:number}[] =[];
+    let TABLE_HEAD: TableHead = [];
+    let TABLE_ROWS: { [key: string]: any, id: number }[] = [];
     if (tab?.name === "attendance") {
       component = <Attendance />;
     } else {
@@ -188,7 +190,7 @@ export default function Page({ staff }: { staff: StaffDetails }) {
         tabs={finalTabs}
         handleTabClick={handleClick}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        data={{ ...staff, description: staff?.StaffDesignation?.designation,imageUrl }}
+        data={{ ...staff, description: staff?.StaffDesignation?.designation, imageUrl }}
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}
         details={[

@@ -7,10 +7,6 @@ export const COACH_TABLE_HEADERS = [
     id: "name",
   },
   {
-    label: "Age",
-    id: "age",
-  },
-  {
     label: "Designation",
     id: "designation",
   },
@@ -18,14 +14,17 @@ export const COACH_TABLE_HEADERS = [
     label: "Sport Coaching",
     id: "sportCoaching",
   },
-
+  {
+    label: "Age",
+    id: "age",
+  },
   {
     label: "Gender",
     id: "gender",
   },
   {
     label: "Batches",
-    id: "batches",
+    id: "batchesCount",
   },
   {
     label: "Contact No",
@@ -36,6 +35,19 @@ export const COACH_TABLE_HEADERS = [
     label: "Action",
   },
 ];
+
+
+export const COACH_DESIGNATION = [
+  {
+    label: "Technical Director",
+    value: "technical_director",
+  },
+  { label: "Head Coach", value: "head_coach" },
+  { label: "Coach", value: "coach" },
+  { label: "Assistant Coach", value: "assistant_coach" },
+  { label: "Trainee Coach", value: "trainee_coach" },
+]
+
 
 export const COACH_DETAILS_CONSTANTS: FormValues[] = [
   {
@@ -71,6 +83,37 @@ export const COACH_DETAILS_CONSTANTS: FormValues[] = [
     },
   },
   {
+    label: "Experience Level",
+    id: "experience_level",
+    type: "select",
+    options: [
+      {
+        label: "0 to 1",
+        value: "zero_one",
+      },
+      { label: "2 to 5", value: "two_five" },
+      { label: "6 to 10", value: "six_ten" },
+      { label: "10 Over", value: "ten_over" },
+    ],
+    placeHolder: "Select Experience Level",
+    rules: {
+      required: true,
+    },
+  },
+  {
+    label: "Experience",
+    id: "experience",
+    type: "textbox",
+    placeHolder: "Experience",
+    rules: {
+      required: true,
+      maxLength: {
+        value: 35,
+        message: "Too Many Characters",
+      },
+    },
+  },
+  {
     label: "Phone Number",
     id: "phone",
     placeHolder: "Phone Number",
@@ -86,7 +129,7 @@ export const COACH_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Email Address",
     id: "email",
-    placeHolder:"Email Address",
+    placeHolder: "Email Address",
     type: "textbox",
 
     rules: {

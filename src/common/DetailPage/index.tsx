@@ -23,14 +23,14 @@ interface Detail {
   editButtonUrl: string;
   editText?: string;
   data: { [key: string]: any };
-  details?: { items: { label: string; value: string | number }[] }[];
+  details?: { items: { label: string; value: string | any }[] }[];
   tabs: TabType[];
   handleTabClick: any;
   selectedComponent: any;
   selectedTab: string | undefined;
   badgeData?: {
     [key: string]: any;
-    Sports?: { name: string; [key: string]: any };
+    Sports?: { name: string;[key: string]: any };
   }[];
 }
 
@@ -168,37 +168,25 @@ const DetailPage = ({
               </div>
             )}
 
-            <div className="mt-5 grid grid-cols-3 md:gap-4">
-              {details &&
-                details.length > 0 &&
-                details.map((row, rowIndex: number) => {
-                  return (
-                    <div className="col-span-12 md:col-span-1" key={rowIndex}>
-                      {row?.items.length > 0 &&
-                        row.items?.map(
-                          (
-                            item: { label: string; value: string | number },
-                            index: number
-                          ) => {
-                            return (
-                              <div className="contact mt-4" key={index}>
-                                <div className="line block bg-[#974062] md:hidden "></div>
-                                <div>
-                                  <div className="mb-1 text-sm text-gray-400">
-                                    {item?.label}
-                                  </div>
-                                  <div className="font-bold text-gray-600">
-                                    {item?.value}
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          }
-                        )}
-                    </div>
-                  );
-                })}
+            <div className="mt-5 grid grid-cols-5 gap-4">
+              {details && details.length > 0 && (
+                <div className="col-span-12 flex flex-wrap md:grid md:grid-cols-5 text-gray-600">
+                  {details.map((row, rowIndex: number) => {
+                    return row.items.map(
+                      (item: { label: string; value: string | number }, index: number) => {
+                        return (
+                          <div className="md:col-span-1 text-center" key={`${rowIndex}-${index}`}>
+                            <div className="mb-1 text-sm text-gray-400">{item.label}</div>
+                            <div className="font-bold">{item.value}</div>
+                          </div>
+                        );
+                      }
+                    );
+                  })}
+                </div>
+              )}
             </div>
+
           </div>
         </div>
         <div className="tab-slider mt-8">
@@ -206,9 +194,8 @@ const DetailPage = ({
             {tabs?.map((tab: TabType, index: number) => {
               return (
                 <div
-                  className={`${
-                    selectedTab === tab?.key ? "active" : ""
-                  }rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px]`}
+                  className={`${selectedTab === tab?.key ? "active" : ""
+                    }rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px]`}
                   onClick={() => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                     handleTabClick(tab);

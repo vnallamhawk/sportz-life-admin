@@ -12,15 +12,50 @@ import { BLOOD_GROUPS, EXPERIENCE_LEVEL, GENDER_VALUES, TRAINING_LEVEL } from "~
 export const athleteRouter = createTRPCRouter({
   getAllAthletes: publicProcedure.query(({ ctx }) => {
     const allAthletes = ctx?.prisma.athletes?.findMany({
-      where: {
-        deletedAt: null,
-      },
-      include:{
-        AthleteSportsMaps:true
+
+      include: {
+        AthleteSportsMaps: true
       }
     });
     return allAthletes;
   }),
+
+  getAllAthletesWithPagination: publicProcedure
+    .input(
+      z.object({
+        page: z.number().min(1), // Ensures the page is at least 1
+        limit: z.number().min(1).max(100), // Controls the number of records per page
+        sortOrder: z.enum(["asc", "desc"]).optional().default("desc"), // Sorting order
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { page, limit, sortOrder } = input;
+      const skip = (page - 1) * limit; // Calculate the offset
+
+      const [athletes, total] = await Promise.all([
+        ctx.prisma.athletes.findMany({
+          skip,
+          take: limit,
+          include: {
+            AthleteBatchesMaps: true,
+            AthleteSportsMaps: true
+          },
+          orderBy: {
+            createdAt: sortOrder, // Sort by createdAt (ascending or descending)
+          },
+        }),
+        ctx.prisma.athletes.count({
+        }),
+      ]);
+
+      return {
+        data: athletes,
+        total,
+        page,
+        totalPages: Math.ceil(total / limit),
+      };
+    }),
+
   getAthleteById: publicProcedure
     .input(
       z.object({
@@ -42,7 +77,7 @@ export const athleteRouter = createTRPCRouter({
         });
 
         return athletes;
-      } catch (error) {}
+      } catch (error) { }
     }),
   getAthleteByName: publicProcedure
     .input(
@@ -57,9 +92,9 @@ export const athleteRouter = createTRPCRouter({
             contains: opts.input.name,
           },
         },
-        include: {
-          Centers: true,
-        },
+        // include: {
+        //   Centers: true,
+        // },
       });
 
       return athletes;
@@ -75,16 +110,16 @@ export const athleteRouter = createTRPCRouter({
         dob: z.date(),
         height: z.number(),
         weight: z.number(),
-        address:z.string(),
-        centerId: z.number(),
-        medicalHistory:z.array(z.object({message:z.string()})),
-        fatherName:z.string(),
-        heightUnit:z.string(),
-        weightUnit:z.string(),
-        createdAt:z.date(),
-        updatedAt:z.date(),
-        academyCode:z.number(),
-        image:z.string()
+        address: z.string(),
+        // centerId: z.number(),
+        medicalHistory: z.array(z.object({ message: z.string() })),
+        fatherName: z.string(),
+        heightUnit: z.string(),
+        weightUnit: z.string(),
+        createdAt: z.date(),
+        updatedAt: z.date(),
+        academyCode: z.number(),
+        image: z.string()
       })
     )
     .mutation(
@@ -98,7 +133,7 @@ export const athleteRouter = createTRPCRouter({
           dob,
           height,
           weight,
-          centerId,
+          // centerId,
           medicalHistory,
           address,
           fatherName,
@@ -116,16 +151,16 @@ export const athleteRouter = createTRPCRouter({
             email: email,
             bloodGroup: bloodGroup,
             gender: gender,
-            height:height,
-            weight:weight,
+            height: height,
+            weight: weight,
             medicalHistory,
-            centerId: centerId,
+            // centerId: centerId,
             dob: dob,
             address,
             image,
             fatherName,
-            heightUnit:"cm",
-            weightUnit:"kg",
+            heightUnit: "cm",
+            weightUnit: "kg",
             createdAt,
             updatedAt,
             academyCode
@@ -145,15 +180,15 @@ export const athleteRouter = createTRPCRouter({
         dob: z.date(),
         height: z.number(),
         weight: z.number(),
-        address:z.string(),
-        centerId: z.number(),
-        medicalHistory:z.array(z.object({message:z.string()})),
-        fatherName:z.string(),
-        heightUnit:z.string(),
-        weightUnit:z.string(),
-        updatedAt:z.date(),
-        image:z.string(),
-        athleteId:z.number()
+        address: z.string(),
+        // centerId: z.number(),
+        medicalHistory: z.array(z.object({ message: z.string() })),
+        fatherName: z.string(),
+        heightUnit: z.string(),
+        weightUnit: z.string(),
+        updatedAt: z.date(),
+        image: z.string(),
+        athleteId: z.number()
       })
     )
     .mutation(
@@ -167,7 +202,7 @@ export const athleteRouter = createTRPCRouter({
           dob,
           height,
           weight,
-          centerId,
+          // centerId,
           medicalHistory,
           address,
           fatherName,
@@ -187,16 +222,16 @@ export const athleteRouter = createTRPCRouter({
             email: email,
             bloodGroup: bloodGroup,
             gender: gender,
-            height:height,
-            weight:weight,
+            height: height,
+            weight: weight,
             medicalHistory,
-            centerId: centerId,
+            // centerId: centerId,
             dob: dob,
             address,
             image,
             fatherName,
-            heightUnit:"cm",
-            weightUnit:"kg",
+            heightUnit: "cm",
+            weightUnit: "kg",
             updatedAt,
           },
         });
@@ -216,7 +251,7 @@ export const athleteRouter = createTRPCRouter({
           id: athleteId,
         },
         data: {
-          deletedAt,
+          updatedAt: deletedAt,
         },
       });
 

@@ -4,17 +4,20 @@ import Dots from "../../images/dots.svg";
 import User from "../../images/user.png";
 
 import { Dropdown, DropdownHeader } from "flowbite-react";
+import { PLANNING_FEE_TYPE } from "~/constants/pricingConstant";
+import { useState } from "react";
 
 interface CommonTable {
-
   TABLE_HEAD: { label: string; id: string }[];
-  TABLE_ROWS: { [key: string]: any, id: number }[];
+  TABLE_ROWS: { [key: string]: any; id: number }[];
   rowSelection: boolean;
   showImage: boolean;
   onViewClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
   onDeleteClick?: (id: number) => void;
-
+  totalPages?: number;
+  currentPage?: number;
+  onHandlePageChange?: (page: number) => void;
 }
 
 const CommonTable = ({
@@ -25,8 +28,27 @@ const CommonTable = ({
   onViewClick,
   onEditClick,
   onDeleteClick,
-
+  totalPages = 1,
+  currentPage = 1,
+  onHandlePageChange = () => { }
 }: CommonTable) => {
+  const renderPages = () => {
+    const pages: (number | string)[] = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, "...", totalPages);
+      } else if (currentPage >= totalPages - 3) {
+        pages.push(1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, currentPage + 2, "...", totalPages);
+      }
+    }
+    return pages;
+  };
 
   return (
     <>
@@ -75,37 +97,30 @@ const CommonTable = ({
                     </td>
                   )}
                   {TABLE_HEAD?.map(
-                    (
-                      head: { label: string; id: string },
-                      columnIndex: number
-                    ) => {
-
+                    (head: { label: string; id: string }, columnIndex: number) => {
                       return (
                         <td className={classes} key={columnIndex}>
-                          {head?.id !== "status" ? (
+                          {head?.id === "feeType" ? (
+                            <Typography variant="small" className="font-bold">
+                              {PLANNING_FEE_TYPE[data[head?.id] as keyof typeof PLANNING_FEE_TYPE] || "Unknown"}
+                            </Typography>
+                          ) : head?.id !== "status" ? (
                             head?.id !== "action" ? (
-                              columnIndex == 0 &&
-                                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                                data?.image &&
-                                showImage ? (
+                              columnIndex == 0 && data?.image && showImage ? (
                                 <div className="flex items-center gap-3">
-                                  <Image width={0} height={0}
+                                  <Image
+                                    width={0}
+                                    height={0}
                                     src={User}
                                     alt=""
                                     className="h-6 w-6 rounded md:h-8 md:w-8"
                                   />
-                                  <Typography
-                                    variant="small"
-                                    className="font-bold"
-                                  >
+                                  <Typography variant="small" className="font-bold">
                                     {data[head?.id]}
                                   </Typography>
                                 </div>
                               ) : (
-                                <Typography
-                                  variant="small"
-                                  className="font-bold"
-                                >
+                                <Typography variant="small" className="font-bold">
                                   {data[head?.id]}
                                 </Typography>
                               )
@@ -123,45 +138,36 @@ const CommonTable = ({
                               >
                                 <DropdownHeader>
                                   <div className="flex items-center">
-                                    {onEditClick && <button
-                                      className="mx-1 text-white"
-                                      onClick={() =>
+                                    {onEditClick && (
+                                      <button className="mx-1 text-white" onClick={() => {
                                         onEditClick(data?.id)
-                                      }
-                                    >
-                                      Edit
-                                    </button>}
+                                      }}>
+                                        Edit
+                                      </button>
+                                    )}
                                     {onViewClick && (
-                                      <button
-                                        className="mx-1 text-white"
-                                        onClick={() =>
-                                          onViewClick(data?.id)
-                                        }
-                                      >
+                                      <button className="mx-1 text-white" onClick={() => onViewClick(data?.id)}>
                                         View
                                       </button>
                                     )}
-                                    {onDeleteClick && <button
-                                      className="mx-1 text-white"
-                                      onClick={() => {
-                                        onDeleteClick(data?.id);
-                                      }}
-                                    >
-                                      Delete
-                                    </button>}
+                                    {onDeleteClick && (
+                                      <button className="mx-1 text-white" onClick={() => onDeleteClick(data?.id)}>
+                                        Delete
+                                      </button>
+                                    )}
                                   </div>
                                 </DropdownHeader>
                               </Dropdown>
-                              // <div></div>
                             )
                           ) : (
                             <div className="w-max">
                               <Chip
                                 size="sm"
                                 variant="ghost"
-                                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                                value={data?.status}
-                                className="rounded-full border border-tertiary-700 bg-tertiary-200 px-3 font-normal capitalize text-tertiary-700"
+                                value={data?.status === 1 ? "On" : data?.status === 2 ? "Off" : "Unknown"}
+                                className={`rounded-full border px-3 font-normal capitalize 
+                                  ${data?.status === 1 ? "border-green-400 bg-green-50 text-green-400" : ""} 
+                                  ${data?.status === 2 ? "border-orange-400 bg-orange-50 text-orange-400" : ""}`}
                               />
                             </div>
                           )}
@@ -169,6 +175,7 @@ const CommonTable = ({
                       );
                     }
                   )}
+
                 </tr>
               );
             })}
@@ -177,39 +184,19 @@ const CommonTable = ({
       </div>
       <div className="flex items-center justify-center p-4">
         <div className="flex items-center gap-2">
-          <IconButton variant="outlined" size="sm" className="mx-1">
-            1
-          </IconButton>
-          <IconButton
-            variant="text"
-            size="sm"
-            className="mx-1 bg-gray-700 text-white"
-          >
-            2
-          </IconButton>
-          <IconButton
-            variant="text"
-            size="sm"
-            className="mx-1 bg-gray-700 text-white"
-          >
-            3
-          </IconButton>
-          {/* <IconButton variant="text" size="sm" className="bg-gray-700 text-white">
-            ...
-          </IconButton>
-          <IconButton variant="text" size="sm" >
-            8
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            9
-          </IconButton>
-          <IconButton variant="text" size="sm">
-            10
-          </IconButton> */}
+          {renderPages().map((page, index) => (
+            <IconButton
+              key={index}
+              variant={currentPage === page ? "text" : "outlined"}
+              size="sm"
+              className={`mx-1 ${currentPage === page ? "bg-gray-700 text-white" : ""}`}
+              onClick={() => typeof page === "number" && onHandlePageChange?.(page)}
+              disabled={page === "..."}
+            >
+              {page}
+            </IconButton>
+          ))}
         </div>
-        {/* <Button variant="outlined" size="sm">
-          Next
-        </Button> */}
       </div>
     </>
   );

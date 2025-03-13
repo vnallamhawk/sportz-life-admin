@@ -43,7 +43,7 @@ const multiFormData: MULTI_FORM_TYPES = {
   centerIds: [],
   isEditMode: false,
   coachId: undefined,
-  coachBatches:[]
+  coachBatches: []
 };
 
 const defaultValues = {
@@ -84,24 +84,26 @@ export default function AddCoachMultiFormLayout() {
   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCoachUseEffectRun = useRef(false);
   const { data: sessionData } = useSession();
-  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
-  const  academyId= sessionData?.token?sessionData?.token?.academyId:sessionData?.user?.academyId
+  const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
+  const academyId = sessionData?.token ? sessionData?.token?.academyId : sessionData?.user?.academyId
   const [file, setFile] = useState<File | null>(null);
   const [uploadUrl, setUploadUrl] = useState<string>("");
   const uploadImage = api.upload.uploadImage.useMutation();
 
+  const coachData = id && api.coach.getCoachById.useQuery({ id });
+
+
   useEffect(() => {
-    if(id){
-      const { data: coach } =  api.coach.getCoachById.useQuery({ id });
-      if (coach && !hasCoachUseEffectRun.current) {
+    if (coachData && coachData.data && !hasCoachUseEffectRun.current) {
+      let obj: any = { ...coachData.data };
 
-        setFormData(coach);
-        hasCoachUseEffectRun.current = true;
-      }
+      obj.isEditMode = true;
 
+      setFormData(obj);
+      hasCoachUseEffectRun.current = true;
     }
-    
-  }, [id, batches]);
+
+  }, [coachData]);
 
   const formProviderData = {
     ...methods,
@@ -113,6 +115,7 @@ export default function AddCoachMultiFormLayout() {
       console.log("response data is ", response);
       setCoachId(response?.id);
       setOpenToast(true);
+      router.push("/coach").then(() => window.location.reload());
       return response
     },
   });
@@ -120,7 +123,7 @@ export default function AddCoachMultiFormLayout() {
   const { mutate: editMutate } = api.coach.editCoach.useMutation({
     onSuccess: (response) => {
       setOpenToast(true);
-      void router.push(`/coach/${response?.id ?? ""}`);
+      router.push(`/coach/${response?.id ?? ""}`).then(() => window.location.reload());
     },
   });
 
@@ -140,14 +143,14 @@ export default function AddCoachMultiFormLayout() {
       if (!uploadedFile) {
         alert('Please select a valid file');
         return;
-      }else  {
+      } else {
         const fileReader = new FileReader();
         fileReader.onloadend = async () => {
           const base64String = fileReader.result as string;
-    
+
 
           try {
-            const response  = await uploadImage.mutateAsync({
+            const response = await uploadImage.mutateAsync({
               file: base64String,
               filename: uploadedFile.name,
               mimetype: uploadedFile.type,
@@ -157,7 +160,7 @@ export default function AddCoachMultiFormLayout() {
             console.error("Upload failed:", err);
           }
         };
-        fileReader.readAsDataURL(uploadedFile)      
+        fileReader.readAsDataURL(uploadedFile)
       }
     }
   }, []);
@@ -182,11 +185,17 @@ export default function AddCoachMultiFormLayout() {
     api.coachBatches.createCoachbatches.useMutation({
       onSuccess: (response) => {
         console.log("response data is ", response);
-        router.push(`/coach/${coachId ?? ""}`);
+        // router.push(`/coach/${coachId ?? ""}`);
 
         return response;
       },
     });
+
+  const validDate = (dateString: any) => {
+    const [day, month, year] = dateString.split("/");
+    const validDate = new Date(`${year}-${month}-${day}`);
+    return validDate;
+  }
 
   useEffect(() => {
     if (
@@ -197,33 +206,42 @@ export default function AddCoachMultiFormLayout() {
       formData?.coachBatches &&
       coachId
     ) {
-      const finalCoachSports = formData?.coachingSports?.map((v:any) => ({
+      const finalCoachSports = formData?.coachingSports?.map((v: any) => ({
         sportId: parseInt(v.value),
         ...v,
         coachId,
-        createdAt:new Date(),
-        updatedAt:new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       }));
 
       createMutateCoachSports(finalCoachSports);
 
-      const finalCertificates = formData?.certificates?.map((v:any) => ({
+      const finalCertificates = formData?.certificates?.map((v: any) => ({
         ...v,
-        startDate: new Date(v.startDate),
-        endDate: new Date(v.endDate),
+        startDate: validDate(v.startDate),
+        endDate: validDate(v.endDate),
         coachId,
-        createdAt:new Date(),
-        updatedAt:new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        fileType: "link",
+        fileName: "",
+        fileUrl: ""
       }));
+
       createMutateCoachCertificates(finalCertificates);
 
-      const finalCenterBatches = formData?.coachBatches?.map((v:any) => ({
-        ...v,
-        centerId: v.center?.value,
+      const batchesData = formData?.batches;
+
+      const finalCenterBatches = batchesData.map((v: any) => ({
+        centerId: formData.center?.value,
         coachId,
-        createdAt:new Date(),
-        updatedAt:new Date(),
+        batchId: v.value,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }));
+
+      console.log({ finalCenterBatches })
+
       createMutateCoachBatches(finalCenterBatches);
     }
   }, [coachId, formData]);
@@ -231,7 +249,7 @@ export default function AddCoachMultiFormLayout() {
   const finalFormSubmissionHandler = (
     finalForm: any
   ) => {
-    if(createdBy && academyId){
+    if (createdBy && academyId) {
       if (formData.isEditMode) {
         editMutate({
           name: finalForm.name,
@@ -242,15 +260,16 @@ export default function AddCoachMultiFormLayout() {
           dateOfBirth: new Date(finalForm.dateOfBirth),
           trainingLevel: finalForm.trainingLevel
             .value as (typeof TRAINING_LEVEL)[number],
-          updatedAt:new Date(),
-          academyId:parseInt(academyId as string),
-          image:uploadUrl,
-          coachId:id
-  
+          updatedAt: new Date(),
+          academyId: parseInt(academyId as string),
+          image: uploadUrl,
+          coachId: id
+
         });
       } else {
-        setFormData({...finalForm})
-  
+        finalForm.centerId = finalForm.center?.value;
+        setFormData({ ...finalForm })
+
         createMutate({
           name: finalForm.name,
           phone: finalForm.phone,
@@ -260,23 +279,26 @@ export default function AddCoachMultiFormLayout() {
           dateOfBirth: new Date(finalForm.dateOfBirth),
           trainingLevel: finalForm.trainingLevel
             .value as (typeof TRAINING_LEVEL)[number],
-            createdBy:parseInt(createdBy as string),
-            createdAt:new Date(),
-          updatedAt:new Date(),
-          academyId:parseInt(academyId as string),
-          image:uploadUrl
-  
+          createdBy: parseInt(createdBy as string),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          academyId: parseInt(academyId as string),
+          image: uploadUrl,
+          experience: finalForm.experience,
+          about: "",
+          experienceLevel: finalForm.experience_level?.value,
+          centerId: finalForm.centerId
         });
       }
     }
-   
+
   };
 
   return (
     <FormContext.Provider value={formProviderData}>
       <div className="grid grid-cols-6 grid-rows-1">
         <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 1&& <AddCoach />}
+          {currentStep === 1 && <AddCoach />}
           {currentStep === 2 && <AddCoachCertificates />}
           {currentStep === 3 && (
             <AssignBatches

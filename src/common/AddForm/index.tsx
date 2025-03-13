@@ -16,7 +16,7 @@ import Remove from "../../images/remove.svg";
 import { Switch } from "@material-tailwind/react";
 import AddFile from "../../images/add-file.svg";
 import { Controller, useForm } from "react-hook-form";
-import Select from "react-select";
+import Select, { ActionMeta, MultiValue, SingleValue } from "react-select";
 import Button from "~/components/Button";
 import { Dropdown, Textarea } from "flowbite-react";
 import type { FormValues, TableFields } from "~/types/common";
@@ -33,7 +33,7 @@ interface AddForm {
   addTableData?: any;
   tableData?: { [key: string]: any }[];
   tablekey?: string;
-  buttonItems?: { prevNext?: boolean; prevFinish?: boolean; next?: boolean;finish?:boolean };
+  buttonItems?: { prevNext?: boolean; prevFinish?: boolean; next?: boolean; finish?: boolean };
   setFormData: any;
   formData: any;
   setCurrentStep: any;
@@ -52,8 +52,8 @@ interface AddForm {
   setDependentKey?: any;
   dependentKey1?: string;
   setDependentKey1?: any;
-  onDropCallback?:(files: Array<File>)=>void;
-  uploadUrl?:string
+  onDropCallback?: (files: Array<File>) => void;
+  uploadUrl?: string
 }
 const AddForm = ({
   cardTitle,
@@ -95,14 +95,17 @@ const AddForm = ({
     reset,
     trigger,
     formState: { errors },
-  
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  } = useForm<any>({ mode: "onSubmit" ,values:formData});
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  } = useForm<any>({ mode: "onSubmit", values: formData });
+
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [currentTableData, setCurrentTableData] = useState<{
     [key: string]: any;
   }>({});
+  const [selectedPlaceholders, setSelectedPlaceholders] = useState<{ [key: string]: string }>({});
+
 
   const nextClickHandler = useCallback(async () => {
     const result = await trigger();
@@ -150,23 +153,34 @@ const AddForm = ({
 
   const handleChangeCurrentData = (
     name: string,
-    data: { label: string; value: string },
-    value: string | number
+    data: { label: string; value: string } | null,
+    value: string | number,
+    placeholder: string // Accept placeholder as a parameter
   ) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const obj: { [key: string]: string | number } = { ...currentTableData };
-    if (data && Object.keys(data).length > 0 && data?.label && data?.value) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      obj[name] = data?.value;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      obj["name"] = data?.label;
+
+    if (data && data?.label && data?.value) {
+      obj["value"] = data.value;
+      obj["name"] = data.label;
+
+      // Update the placeholder dynamically
+      setSelectedPlaceholders((prev) => ({
+        ...prev,
+        [name]: data.label,
+      }));
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       obj[name] = value;
+
+      // Reset placeholder using the passed placeholder value
+      setSelectedPlaceholders((prev) => ({
+        ...prev,
+        [name]: placeholder,
+      }));
     }
 
     setCurrentTableData(obj);
   };
+
 
   const submitCallback = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -210,6 +224,13 @@ const AddForm = ({
       options,
     } = props;
 
+    const sanitizedOptions = options
+      ?.filter(option => option.label !== undefined && option.value !== undefined) // Remove undefined values
+      ?.map(option => ({
+        label: option.label ?? "",  // Ensure label is always a string
+        value: option.value ?? "",  // Ensure value is always a string or number
+      }));
+
     switch (type) {
       case "select":
         inputElement = (
@@ -222,23 +243,37 @@ const AddForm = ({
               return (
                 <Select
                   isMulti={props?.isMulti ?? false}
-                  options={options}
+                  options={sanitizedOptions}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                  value={formData[id]||value}
+                  // value={formData[id] || value}
                   placeholder={placeHolder}
                   className="border-1 c-select w-full border-gray-300"
                   classNamePrefix="react-select"
-                  onChange={(element: {
-                    value: string | { label: string; value: string | number };
-                  }) => {
-                    onChange(element);
+                  onChange={(
+                    newValue: SingleValue<{ label: string; value: string | number }> |
+                      MultiValue<{ label: string; value: string | number }>,
+                    actionMeta: ActionMeta<{ label: string; value: string | number }>
+                  ) => {
+                    if (!newValue) return; // Handle null case
+
+                    if (Array.isArray(newValue)) {
+                      // Multi-select case
+                      onChange(newValue.map((option) => option.value));
+                    } else {
+                      // Single-select case
+                      onChange(
+                        Array.isArray(newValue)
+                          ? newValue.map((item) => item.value) // Multi-select: extract values
+                          : (newValue as { label: string; value: string | number })?.value // Single-select: get value
+                      );
+
+                    }
+
                     if (dependentKey && dependentKey === id) {
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                      setDependentKey(element?.value);
+                      setDependentKey(newValue ? (Array.isArray(newValue) ? newValue[0].value : (newValue as { label: string; value: string | number })?.value) : "");
                     }
                     if (dependentKey1 && dependentKey1 === id) {
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                      setDependentKey1(element?.value);
+                      setDependentKey1(newValue ? (Array.isArray(newValue) ? newValue[0].value : (newValue as { label: string; value: string | number })?.value) : "");
                     }
                   }}
                 />
@@ -261,8 +296,8 @@ const AddForm = ({
                     onChangeHandler={onChange}
                     // TODO: FIX THIS TS ERROR
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-                    value={formData[id] as string||value}
-                    />
+                    value={formData[id] as string || value}
+                  />
                   <div className="dropdown absolute right-0.5 top-2/4 -translate-y-2/4 p-3 h-12 border-l inline-flex justify-center items-center">
                     <Dropdown
                       label={dropdownLabel}
@@ -303,7 +338,7 @@ const AddForm = ({
               return (
                 <Switch
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                  value={formData['taxable']||value}
+                  value={formData['taxable'] || value}
                   onChange={(e) =>
                     handleChangeTime(e.target.checked, "taxable")
                   }
@@ -346,7 +381,7 @@ const AddForm = ({
                 <Datepicker
                   placeHolder={props.placeHolder}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                  value={value?new Date(value as string):new Date(formData[id] as string)}
+                  value={value ? new Date(value as string) : new Date(formData[id] as string)}
                   className="h-12"
                   onChangeHandler={onChange}
                 />
@@ -369,8 +404,8 @@ const AddForm = ({
                 placeholder={placeHolder}
                 onChange={onChange}
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                value={value||formData[id]}
-                />
+                value={value || formData[id]}
+              />
             )}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
@@ -390,7 +425,7 @@ const AddForm = ({
                 onChangeHandler={onChange}
                 // TODO: FIX THIS TS ERROR
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                value={value||formData[id]}
+                value={value || formData[id]}
               />
             )}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -438,21 +473,20 @@ const AddForm = ({
       {imageTitle && (
         <label className="col-span-2 mt-5 flex h-48 flex-col justify-center rounded-lg border-2 border-dashed border-gray-300 bg-stone-100 text-center lg:hidden">
           <div className="mb-3 flex items-center justify-center">
-            <input type="file" className="hidden" onChange={(e:React.ChangeEvent<HTMLInputElement>)=>
-            {
-              if(imageTitle &&onDropCallback && e.target.files ){
-                const uploadedFile:File|null| undefined=e.target.files.length>0?e.target.files[0]:null
-                if(uploadedFile){
+            <input type="file" className="hidden" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              if (imageTitle && onDropCallback && e.target.files) {
+                const uploadedFile: File | null | undefined = e.target.files.length > 0 ? e.target.files[0] : null
+                if (uploadedFile) {
                   onDropCallback([uploadedFile])
                 }
 
               }
             }
-              }/>
+            } />
             <Image
               width={0}
               height={0}
-              src={uploadUrl?uploadUrl:AddFile}
+              src={uploadUrl ? uploadUrl : AddFile}
               className="h-auto w-auto mr-2"
               alt=""
             />
@@ -504,7 +538,8 @@ const AddForm = ({
                           handleChangeCurrentData(
                             item?.name,
                             { label: "", value: "" },
-                            e.target.value
+                            e.target.value,
+                            item?.placeholder ?? "" // Pass placeholder as the fourth argument
                           );
                         }}
                       />
@@ -512,31 +547,23 @@ const AddForm = ({
                       <Select
                         isMulti={item?.isMulti ?? false}
                         options={item?.options}
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         value={currentTableData[item?.name]}
-                        placeholder={item?.placeholder}
+                        placeholder={selectedPlaceholders[item?.name] || item?.placeholder}
                         className="border-1 c-select h-12 w-full border-gray-300"
                         classNamePrefix="react-select"
-                        onChange={(element) =>
-                          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                          handleChangeCurrentData(item?.name, element, "")
-                        }
+                        onChange={(element) => handleChangeCurrentData(item?.name, element, "", item?.placeholder ?? "")}
                       />
                     ) : (
                       <div className="relative mt-3 lg:mt-0">
                         <input
-                          className="w-34  h-12 rounded-lg border border-gray-300 p-2 pr-9 text-center focus:border-gray-600 focus:outline-none focus:ring-0 lg:ml-7 lg:w-20"
-                          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                          className="w-34 h-12 rounded-lg border border-gray-300 p-2 pr-9 text-center focus:border-gray-600 focus:outline-none focus:ring-0 lg:ml-7 lg:w-20"
                           value={currentTableData[item?.name]}
                           onChange={(e) => {
                             handleChangeCurrentData(
-                              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
                               item?.name,
                               { label: "", value: "" },
-                              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                              item?.type === "number"
-                                ? parseInt(e.target.value)
-                                : e.target.value
+                              item?.type === "number" ? parseInt(e.target.value) : e.target.value,
+                              item?.placeholder ?? "" // Pass placeholder as the fourth argument
                             );
                           }}
                         />
@@ -576,63 +603,47 @@ const AddForm = ({
             </button>
           </div>
           <div className="scroll mt-5 hidden max-h-[370px] overflow-auto px-0 lg:block">
-            <table className="common-table w-full min-w-max table-auto  border-separate border-spacing-y-3 text-left">
+            <table className="common-table w-full table-fixed border-separate border-spacing-y-2 text-left">
               <thead>
                 <tr>
-                  {TableHeadings?.map(
-                    (head: { label: string; id: string }, index: number) => {
-                      return (
-                        <th
-                          className="w-20 pl-7 font-medium text-gray-400"
-                          key={index}
-                        >
-                          {head.label}
-                        </th>
-                      );
-                    }
-                  )}
+                  {TableHeadings?.map((head, index) => (
+                    <th
+                      key={index}
+                      className="pl-7 font-medium text-gray-400"
+                      style={{ minWidth: "150px", wordBreak: "break-word" }} // Prevents text overflow
+                    >
+                      {head.label}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {tableData &&
-                  tableData.length > 0 &&
-                  tableData?.map(
-                    (data: { [key: string]: any }, dataIndex: number) => {
-                      return (
-                        <tr key={dataIndex}>
-                          {TableHeadings?.map(
-                            (
-                              head: { label: string; id: string },
-                              headIndex: number
-                            ) => {
-                              return (
-                                <td key={headIndex}>
-                                  {head?.id !== "action" ? (
-                                    <span className="border-y-2 border-gray-100 p-4">
-                                      {data[head?.id]}
-                                    </span>
-                                  ) : (
-                                    <span
-                                      className="border-y-2 border-gray-100 p-4 font-medium text-gray-400"
-                                      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-                                      onClick={() =>
-                                        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-                                        onRemoveTableButton(dataIndex)
-                                      }
-                                    >
-                                      Remove
-                                    </span>
-                                  )}
-                                </td>
-                              );
-                            }
+                {tableData?.length > 0 &&
+                  tableData.map((data, dataIndex) => (
+                    <tr key={dataIndex} className="border-b border-gray-100">
+                      {TableHeadings.map((head, headIndex) => (
+                        <td
+                          key={headIndex}
+                          className="p-4 border-gray-100"
+                          style={{ minWidth: "150px", wordBreak: "break-word" }} // Ensures text wraps properly
+                        >
+                          {head.id !== "action" ? (
+                            <span>{data[head.id]}</span>
+                          ) : (
+                            <span
+                              className="font-medium text-gray-400 cursor-pointer hover:text-red-500"
+                              onClick={() => onRemoveTableButton(dataIndex)}
+                            >
+                              Remove
+                            </span>
                           )}
-                        </tr>
-                      );
-                    }
-                  )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
               </tbody>
             </table>
+
           </div>
           {/* mobile view ------------------*/}
           <div className="invent-mobile relative mt-10 rounded-t-[40px] bg-[#FFE5DE] px-5 py-10 lg:hidden">
@@ -738,7 +749,7 @@ const AddForm = ({
           </Button>
         </div>
       )}
-{buttonItems?.finish && (
+      {buttonItems?.finish && (
         <div className="absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end">
           <Button
             type="button"

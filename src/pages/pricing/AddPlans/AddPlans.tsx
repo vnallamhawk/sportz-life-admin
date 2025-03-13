@@ -8,16 +8,20 @@ import { Switch } from "@material-tailwind/react";
 import { useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
+import { SingleValue } from "react-select"; // Ensure this import exists
+import { FEE_PLAN_FEE_TYPE, FEE_PLAN_RECURRING_TYPE } from "~/types/feePlan";
+import { PLANNING_FEE_TYPE_OPTIONS, PLANNING_RECURRING_OPTIONS } from "~/constants/pricingConstant";
+
 
 export default function AddPlans() {
     const router = useRouter();
+    const id = Number(router?.query?.id); // Extract ID from query
+
 
     const { data: sessionData } = useSession();
     const createdBy = sessionData?.token
         ? sessionData?.token?.id
         : sessionData?.user?.id;
-
-    console.log({ createdBy })
 
     const [formData, setFormData] = useState<any>({
         name: null,
@@ -32,6 +36,16 @@ export default function AddPlans() {
         createdBy: null,
     });
 
+    const [errors, setErrors] = useState<any>({});
+
+    // Fetch Fee Plan details if ID exists
+    const { data: feePlanData, refetch } = api.feePlan.getFeePlanById.useQuery(
+        { id }, // Pass as an object
+        {
+            enabled: !!id, // Fetch only if ID exists
+        }
+    );
+
     useEffect(() => {
         if (createdBy) {
             setFormData((prev: any) => ({
@@ -41,35 +55,35 @@ export default function AddPlans() {
         }
     }, [createdBy]);
 
-    console.log({ formData })
-    const [errors, setErrors] = useState<any>({});
-
-    const feeTypeOptions = [
-        { value: "one_time", label: "One Time" },
-        { value: "recurring", label: "Recurring" },
-        { value: "free", label: "Free" },
-    ];
-
-    const recurringOptions = [
-        { value: "bi_monthly", label: "Bi-Monthly" },
-        { value: "quarterly", label: "Quarterly" },
-        { value: "half_yearly", label: "Half Yearly" },
-        { value: "annually", label: "Annually" },
-    ];
+    useEffect(() => {
+        if (id && feePlanData) {
+            setFormData({
+                name: feePlanData.name || "",
+                amount: feePlanData.amount?.toString() || "",
+                currency: feePlanData.currency || "USD",
+                feeType: feePlanData.feeType || null,
+                recurringType: feePlanData.recurringType || null,
+                // isProrata: feePlanData.isProrata ?? true,
+                // isLate: feePlanData.isLate ?? false,
+                lateFeeType: feePlanData.lateFeeType || null,
+                lateFee: feePlanData.lateFee?.toString() || "",
+                // createdBy: feePlanData.createdBy || createdBy,
+                createdAt: feePlanData.createdAt || new Date(),
+                updatedAt: new Date(),
+            });
+        }
+    }, [id, feePlanData]);
 
     const { mutate: createFeePlanMutate } = api.feePlan.createFeePlan.useMutation({
-        onSuccess: (response) => {
-            console.log("Fee Plan Created:", response);
-
-            router.push(`/pricing`);
-        },
-        onError: (error: any) => {
-
-            const errObject = error.data.zodError.fieldErrors;
-
-            setErrors(errObject || error || {});
-        },
+        onSuccess: () => router.push(`/pricing`),
+        onError: (error: any) => setErrors(error.data.zodError.fieldErrors || {}),
     });
+
+    const { mutate: updateFeePlanMutate } = api.feePlan.editFeePlan.useMutation({
+        onSuccess: () => router.push(`/pricing`),
+        onError: (error: any) => setErrors(error.data.zodError.fieldErrors || {}),
+    });
+
 
     const handleInputChange = (e: any) => {
         const { name, value } = e.target;
@@ -91,9 +105,13 @@ export default function AddPlans() {
         }));
     };
 
-    const handleRecurringPeriodChange = (selectedOption: { value: any; }) => {
-        setFormData((prev: any) => ({ ...prev, recurringType: selectedOption.value }));
+    const handleRecurringPeriodChange = (selectedOption: SingleValue<{ value: string; label: string }>) => {
+        setFormData((prev: any) => ({
+            ...prev,
+            recurringType: selectedOption ? selectedOption.value : "", // Handle null case
+        }));
     };
+
 
     const handleSwitchToggle = () => {
         setFormData((prev: any) => ({ ...prev, isProrata: !prev.isProrata }));
@@ -122,15 +140,18 @@ export default function AddPlans() {
         if (formData.lateFee !== null) finalForm.lateFee = Number(formData.lateFee); // Ensure lateFee is a number
         if (formData.currency !== null) finalForm.currency = formData.currency;
 
-        console.log({ finalForm })
+        if (id) {
+            finalForm.feePlanId = id;
+        }
+
         // Send the finalForm to the mutation
-        createFeePlanMutate(finalForm);
+        id ? updateFeePlanMutate({ id, ...finalForm }) : createFeePlanMutate(finalForm);
     };
 
     return (
         <div className="px-6 bg-s-gray pb-7">
             <Card className="col-span-12 lg:col-span-4 h-full p-0 pt-10 bg-white rounded-l-xl !rounded-r-none relative">
-                <CardTitle title="ADD FEE PLAN" />
+                <CardTitle title={id ? "EDIT FEE PLAN" : "ADD FEE PLAN"} />
                 <div className="font-medium uppercase text-3xl font-heading text-center lg:text-left">
                     Fee Plan Details
                 </div>
@@ -148,8 +169,8 @@ export default function AddPlans() {
                     </div>
                     <div>
                         <Select
-                            options={feeTypeOptions}
-                            value={feeTypeOptions.find((option) => option.value === formData.feeType)}
+                            options={PLANNING_FEE_TYPE_OPTIONS}
+                            value={PLANNING_FEE_TYPE_OPTIONS.find((option) => option.value === formData.feeType)}
                             onChange={handleFeeTypeChange}
                             placeholder="Fee Type"
                             className="w-full border-1 border-gray-300 c-select"
@@ -160,8 +181,8 @@ export default function AddPlans() {
                     {formData.feeType === "recurring" && (
                         <div>
                             <Select
-                                options={recurringOptions}
-                                value={recurringOptions.find((option) => option.value === formData.recurringType)}
+                                options={PLANNING_RECURRING_OPTIONS}
+                                value={PLANNING_RECURRING_OPTIONS.find((option) => option.value === formData.recurringType) || null} // Ensure null safety
                                 onChange={handleRecurringPeriodChange}
                                 placeholder="Select Recurring Period"
                                 className="w-full border-1 border-gray-300 c-select"
@@ -253,11 +274,11 @@ export default function AddPlans() {
                 </div>
                 <div className="text-end mt-10">
                     <button
-                        className="!border-0 px-5 py-3 lg:py-1.5 lg:rounded rounded-full focus:ring-0 outline-0 bg-mandy-dark hover:bg-mandy-dark focus:outline-none focus:ring text-white w-full lg:w-auto"
+                        className="!border-0 px-5 py-3 lg:py-1.5 lg:rounded rounded-full focus:ring-0 outline-0 bg-mandy-dark hover:bg-mandy-dark focus:outline-none text-white w-full lg:w-auto"
                         type="button"
                         onClick={handleSubmit}
                     >
-                        Add Fee Plan
+                        {id ? "Update Fee Plan" : "Add Fee Plan"}
                     </button>
                 </div>
             </Card>

@@ -25,8 +25,8 @@ import AllData from "~/common/AllData";
 import DetailPage from "~/common/DetailPage";
 
 import // DATE_TIME_FORMAT,
-// NO_DATA,
-"~/globals/globals";
+  // NO_DATA,
+  "~/globals/globals";
 // import {
 //   type CoachWithRelations,
 //   ExperienceLevelEnum,
@@ -42,22 +42,23 @@ import s3 from "../../lib/aws";
 import { calculateAge } from "~/utils/common";
 import { COACH_DASH_BATCH_TABLE_HEADERS } from "~/constants/centerDashTables";
 import { STAFF_DASH_PAYROLL_TABLE_HEADERS } from "~/constants/staffConstants";
-import { COACH_CERTIFICATE_TABLE_HEADERS } from "~/constants/coachConstants";
+import { COACH_CERTIFICATE_TABLE_HEADERS, COACH_DESIGNATION } from "~/constants/coachConstants";
 
 
-interface CoachCentersBatchesType extends CoachCentersBatches{
-  Batches?:Batches
+interface CoachCentersBatchesType extends CoachCentersBatches {
+  Batches?: Batches
 }
 
-interface CoachSportsMapsType extends CoachSportsMaps{
-  Sports?:Sports
+interface CoachSportsMapsType extends CoachSportsMaps {
+  Sports?: Sports
 }
 
 type Coach = Coaches & {
   CoachSportsMaps: CoachSportsMapsType[];
-  CoachQualifications:CoachQualifications[]
-  CoachCentersBatches:CoachCentersBatchesType[]
-  StaffPayroll:StaffPayroll
+  CoachQualifications: CoachQualifications[]
+  CoachCentersBatches: CoachCentersBatchesType[]
+  StaffPayroll: StaffPayroll
+  Centers: Centers
 };
 
 
@@ -71,28 +72,33 @@ export const getServerSideProps = async (
       id: id ? Number(id) : undefined,
     },
     include: {
-      CoachCentersBatches:{
-        include:{
-          Batches:true
+      Centers: true,
+      CoachCentersBatches: {
+        include: {
+          Batches: {
+            include: {
+              Sports: true
+            }
+          }
         }
       },
-       CoachSportsMaps: {
+      CoachSportsMaps: {
         include: {
           Sports: true,
         },
-       },
-       StaffPayroll:true,
-      CoachQualifications:true
+      },
+      StaffPayroll: true,
+      CoachQualifications: true
     },
   });
-  
+
   return {
     props: {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       coach: JSON.parse(JSON.stringify(coach)), // <== here is a solution
     },
   };
- 
+
 };
 
 const tabs = [
@@ -146,87 +152,100 @@ export default function Page({
 
   useEffect(() => {
     if (finalTabs && finalTabs.length > 0 && Object.keys(coach).length > 0) {
-      const arr:TabType[]= [...finalTabs];
-      const certificatesIndex = arr.findIndex((item:TabType) => item.name === "certificates");
+      const arr: TabType[] = [...finalTabs];
+      const certificatesIndex = arr.findIndex((item: TabType) => item.name === "certificates");
       if (certificatesIndex > -1 && coach?.CoachQualifications) {
-        const obj:TabType={...arr[certificatesIndex]}
-        obj.value =  coach?.CoachQualifications?coach?.CoachQualifications?.length:0;
-        arr[certificatesIndex]=obj
+        const obj: TabType = { ...arr[certificatesIndex] }
+        obj.value = coach?.CoachQualifications ? coach?.CoachQualifications?.length : 0;
+        arr[certificatesIndex] = obj
       }
-      const batchIndex = arr.findIndex((item:TabType) => item.name === "batches");
+      const batchIndex = arr.findIndex((item: TabType) => item.name === "batches");
       if (batchIndex > -1 && coach?.CoachCentersBatches) {
-        const batchObj:TabType={...arr[batchIndex]}
+        const batchObj: TabType = { ...arr[batchIndex] }
 
-        batchObj.value = coach?.CoachCentersBatches?coach?.CoachCentersBatches?.length:0;
-        arr[batchIndex]=batchObj
+        batchObj.value = coach?.CoachCentersBatches ? coach?.CoachCentersBatches?.length : 0;
+        arr[batchIndex] = batchObj
 
       }
-      if(JSON.stringify(finalTabs)!==JSON.stringify(arr)){
+      if (JSON.stringify(finalTabs) !== JSON.stringify(arr)) {
         setFinalTabs(arr);
 
       }
     }
   }, [coach, finalTabs]);
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    if(coach && coach.image){
+    if (coach && coach.image) {
       void getSignedUrlForImage(coach.image)
     }
 
 
-  },[coach])
+  }, [coach])
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  const getSignedUrlForImage = async (key:string) => {
+  const getSignedUrlForImage = async (key: string) => {
     try {
-        const s3info = s3.getSignedUrl("getObject", {
-            Bucket: process.env.S3_BUCKET_NAME,
-            Key: key,
-            Expires: 60,
-        });
-        setImageUrl(s3info);
+      const s3info = s3.getSignedUrl("getObject", {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: key,
+        Expires: 60,
+      });
+      setImageUrl(s3info);
     } catch (error) {
-        return null;
+      return null;
     }
-};
+  };
 
-const handleClick = (tab: TabType) => {
-  let component;
-  let TABLE_HEAD:TableHead=[];
-  let TABLE_ROWS: {[key:string]:any,id:number}[] =[];
-  if (tab?.name === "attendance") {
-    component = <Attendance />;
-  } else {
-    if (tab?.name === "batches") {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      TABLE_HEAD = COACH_DASH_BATCH_TABLE_HEADERS;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      TABLE_ROWS = coach?.CoachCentersBatches ? coach?.CoachCentersBatches : [];
-    } else if (tab?.name === "payroll") {
-      TABLE_HEAD = STAFF_DASH_PAYROLL_TABLE_HEADERS;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      TABLE_ROWS = coach?.StaffPayroll ? [coach?.StaffPayroll] : [];
-    } else if (tab?.name === "certificates") {
-      TABLE_HEAD = COACH_CERTIFICATE_TABLE_HEADERS;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      TABLE_ROWS = coach?.CoachQualifications ? coach?.CoachQualifications : [];
+  const handleClick = (tab: TabType) => {
+    let component;
+    let TABLE_HEAD: TableHead = [];
+    let TABLE_ROWS: { [key: string]: any, id: number }[] = [];
+    if (tab?.name === "attendance") {
+      component = <Attendance />;
+    } else {
+      if (tab?.name === "batches") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        TABLE_HEAD = COACH_DASH_BATCH_TABLE_HEADERS;
+
+        coach.CoachCentersBatches = coach?.CoachCentersBatches?.map((item: any) => ({
+          ...item,
+          center: coach?.Centers?.name, // Access 'Centers' from each batch entry
+          batchName: item.Batches?.name,
+          students: item.Batches?.capacity,
+          startDate: new Date(item.Batches?.createdAt).toLocaleDateString("en-GB"),
+          sportName: item.Batches?.Sports?.name
+        }));
+
+        TABLE_ROWS = coach?.CoachCentersBatches || [];
+
+
+      } else if (tab?.name === "payroll") {
+        TABLE_HEAD = STAFF_DASH_PAYROLL_TABLE_HEADERS;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        TABLE_ROWS = coach?.StaffPayroll ? [coach?.StaffPayroll] : [];
+      } else if (tab?.name === "certificates") {
+        TABLE_HEAD = COACH_CERTIFICATE_TABLE_HEADERS;
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        TABLE_ROWS = coach?.CoachQualifications ? coach?.CoachQualifications : [];
+      }
+
+      component = (
+        <AllData
+          title={tab?.allLabel ? tab?.allLabel : ""}
+          dropdownItems={{}}
+          TABLE_HEAD={TABLE_HEAD}
+          TABLE_ROWS={TABLE_ROWS}
+          rowSelection={false}
+          showImage={false}
+        />
+      );
     }
+    setSelectedComponent(component);
+    setSelectedTab(tab?.name);
+  };
 
-    component = (
-      <AllData
-        title={tab?.allLabel ? tab?.allLabel : ""}
-        dropdownItems={{}}
-        TABLE_HEAD={TABLE_HEAD}
-        TABLE_ROWS={TABLE_ROWS}
-        rowSelection={false}
-        showImage={false}
-      />
-    );
-  }
-  setSelectedComponent(component);
-  setSelectedTab(tab?.name);
-};
+  const coachDesignation = COACH_DESIGNATION.find((d) => d.value === coach.designation)?.label || coach.designation;
 
   return (
     <>
@@ -237,11 +256,11 @@ const handleClick = (tab: TabType) => {
         tabs={finalTabs}
         handleTabClick={handleClick}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        data={{ ...coach,imageUrl }}
-        name={`${coach?.name}(${coach.designation})`}
+        data={{ ...coach, imageUrl }}
+        name={`${coach?.name}(${coachDesignation})`}
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}
-        badgeData={coach?.CoachSportsMaps||[]}
+        badgeData={coach?.CoachSportsMaps || []}
         details={[
           {
             items: [
@@ -255,7 +274,7 @@ const handleClick = (tab: TabType) => {
                 label: "Age",
                 value: calculateAge(coach?.dateOfBirth),
               },
-            
+
               { label: "Gender", value: coach?.gender || "" },
               {
                 label: "Training Level",

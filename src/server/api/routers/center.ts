@@ -27,21 +27,69 @@ import {
 export const centerRouter = createTRPCRouter({
   getAllCenters: publicProcedure.query(({ ctx }) => {
     const allCenters = ctx?.prisma.centers?.findMany({
-      where:{
-        deletedAt:null,
-        createdBy:ctx?.session?.token?.id
+      where: {
+        deletedAt: null,
+        createdBy: ctx?.session?.token?.id
       },
       include: {
         Batches: true,
-        CenterSports:{
-          include:{
-            Sports:true
+        CenterSports: {
+          include: {
+            Sports: true
           }
         }
       },
     });
     return allCenters;
   }),
+  getAllCentersWithPagination: publicProcedure
+    .input(
+      z.object({
+        page: z.number().min(1), // Ensures the page is at least 1
+        limit: z.number().min(1).max(100), // Controls the number of records per page
+        sortOrder: z.enum(["asc", "desc"]).optional().default("desc"), // Sorting order
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { page, limit, sortOrder } = input;
+      const skip = (page - 1) * limit; // Calculate the offset
+
+      const [centers, total] = await Promise.all([
+        ctx.prisma.centers.findMany({
+          where: {
+            deletedAt: null,
+            createdBy: ctx?.session?.token?.id,
+          },
+          include: {
+            Batches: true,
+            CenterSports: {
+              include: {
+                Sports: true,
+              },
+            },
+          },
+          skip,
+          take: limit,
+          orderBy: {
+            createdAt: sortOrder, // Sort by createdAt (ascending or descending)
+          },
+        }),
+        ctx.prisma.centers.count({
+          where: {
+            deletedAt: null,
+            createdBy: ctx?.session?.token?.id,
+          },
+        }),
+      ]);
+
+      return {
+        data: centers,
+        total,
+        page,
+        totalPages: Math.ceil(total / limit),
+      };
+    }),
+
   getCenterById: publicProcedure
     .input(
       z.object({
@@ -55,17 +103,17 @@ export const centerRouter = createTRPCRouter({
             id: opts.input.id,
           },
           include: {
-            CenterSports:{
-              include:{
-                Sports:true
+            CenterSports: {
+              include: {
+                Sports: true
               }
             },
-            CenterInventories:{
-              include:{
-                Inventories:true
+            CenterInventories: {
+              include: {
+                Inventories: true
               }
             }
-         
+
           },
         });
 
@@ -89,9 +137,9 @@ export const centerRouter = createTRPCRouter({
         include: {
           // Centers: true,
           Batches: true,
-          CenterSports:{
-            include:{
-              Sports:true
+          CenterSports: {
+            include: {
+              Sports: true
             }
           }
           // sports: true,
@@ -106,14 +154,14 @@ export const centerRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        email:z.string(),
+        email: z.string(),
         image: z.string(),
         mobile: z.string(),
         address: z.string(),
-        createdBy:z.number(),
-        academyId:z.number(),
-        createdAt:z.date(),
-        updatedAt:z.date()
+        createdBy: z.number(),
+        academyId: z.number(),
+        createdAt: z.date(),
+        updatedAt: z.date()
       })
     )
     .mutation(
@@ -136,8 +184,8 @@ export const centerRouter = createTRPCRouter({
             email: email,
             mobile: mobile,
             address: address,
-            createdBy:createdBy,
-            academyId:academyId,
+            // createdBy:createdBy,
+            academyId: academyId,
             createdAt,
             updatedAt
           },
@@ -149,12 +197,12 @@ export const centerRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        email:z.string(),
+        email: z.string(),
         image: z.string(),
         mobile: z.string(),
         address: z.string(),
-        centerId:z.number(),
-        updatedAt:z.date()
+        centerId: z.number(),
+        updatedAt: z.date()
       })
     )
     .mutation(
@@ -178,17 +226,17 @@ export const centerRouter = createTRPCRouter({
             email: email,
             mobile: mobile,
             address: address,
-            updatedAt:updatedAt
+            updatedAt: updatedAt
           },
         });
 
         return response;
       }
     ),
-    deleteCenter: publicProcedure
+  deleteCenter: publicProcedure
     .input(
       z.object({
-        
+
         centerId: z.number(),
         deletedAt: z.string(),
       })

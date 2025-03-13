@@ -10,6 +10,9 @@ const TableListView = ({
   onViewClick,
   onEditClick,
   onDeleteClick,
+  totalPages,
+  currentPage,
+  onHandlePageChange
 }: {
   TABLE_HEAD: TableHead;
   // TABLE_ROWS: TableRows;
@@ -19,6 +22,9 @@ const TableListView = ({
   onViewClick?: (id: number) => void;
   onEditClick?: (id: number) => void;
   onDeleteClick?: (id: number) => void;
+  totalPages?: number;
+  currentPage?: number;
+  onHandlePageChange?: (page: number) => void
 }) => {
 
   return (
@@ -32,6 +38,9 @@ const TableListView = ({
           onViewClick={onViewClick}
           onEditClick={onEditClick}
           onDeleteClick={onDeleteClick}
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onHandlePageChange={onHandlePageChange}
         />
       </div>
       <div className="block lg:hidden">

@@ -11,29 +11,40 @@ const AllCenter = () => {
   const [loading, setLoading] = useState(true);
   const [filterByName, setFilterByName] = useState("");
   const [finalData, setFinalData] = useState<Centers[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
-  const { data: centers } =
-    filterByName == ""
-      ? api.center.getAllCenters.useQuery()
+  const centersData: any =
+    filterByName === ""
+      ? api.center.getAllCentersWithPagination.useQuery({ page: currentPage, limit: 10 })
       : api.center.getCentersByName.useQuery({ name: filterByName });
 
+  const centers = centersData?.data?.data ?? []; // Ensure it's an array
+  const totalPages = centersData?.data?.totalPages ?? 1; // Ensure a valid number
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+
   useEffect(() => {
-    if (centers && centers?.length > 0) {
-      const updatedCenters = centers.map((center) => {
-        return {
-          ...center,
-          batches: center?.Batches?.length,
-        };
-      });
+    if (centers.length > 0) { // Check only after ensuring centers is an array
+      const updatedCenters = centers.map((center: { Batches: string | any[]; }) => ({
+        ...center,
+        batches: center?.Batches?.length || 0, // Ensure a valid number
+      }));
       setFinalData(updatedCenters);
     }
   }, [centers]);
 
+
   const { mutate: deleteMutate } = api.center.deleteCenter.useMutation({
     onSuccess: (response) => {
-      const arr:Centers[] = [...finalData];
+      const arr: Centers[] = [...finalData];
       const index = finalData?.findIndex(
         (item: Centers) => item?.id == response?.id
       );
@@ -66,6 +77,9 @@ const AllCenter = () => {
         onViewClick={(id: number) => router.push(`/centers/${id ?? ""}`)}
         onEditClick={(id: number) => router.push(`/edit-center-${id}`)}
         onDeleteClick={(id: number) => deleteCenter(id)}
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onHandlePageChange={handlePageChange}
       />
     </>
   );

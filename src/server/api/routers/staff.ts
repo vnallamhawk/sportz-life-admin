@@ -11,14 +11,11 @@ import { GENDER_VALUES } from "~/types/coach";
 export const staffRouter = createTRPCRouter({
   getAllStaffs: publicProcedure.input(z.object({ createdBy: z.number() })).query(async (opts) => {
     const allStaffs = await opts.ctx?.prisma?.staffs?.findMany({
-      where:{
-        createdBy:opts.input.createdBy
-      },
-      include: {
-        StaffDesignation:true,
-        Centers:true
-     
-      },
+      // include: {
+      //   // StaffDesignation:true,
+      //   Centers:true
+
+      // },
     });
     return allStaffs;
   }),
@@ -29,10 +26,10 @@ export const staffRouter = createTRPCRouter({
         where: {
           id: opts.input.id,
         },
-        include: {
-          StaffDesignation:true
-       
-        },
+        // include: {
+        //   StaffDesignation:true
+
+        // },
       });
       return staff;
     }),
@@ -49,11 +46,11 @@ export const staffRouter = createTRPCRouter({
             contains: opts.input.name,
           },
         },
-        include: {
-          StaffDesignation:true,
-          Centers:true
-       
-        },
+        // include: {
+        //   StaffDesignation:true,
+        //   Centers:true
+
+        // },
       });
 
       return staffs;
@@ -62,31 +59,31 @@ export const staffRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        designationId: z.number(),
+        // designationId: z.number(),
         phone: z.string(),
         email: z.string(),
-        dateOfBirth: z.date(),
-        gender: z.enum(GENDER_VALUES),
+        // dateOfBirth: z.date(),
+        // gender: z.enum(GENDER_VALUES),
         image: z.string(),
-        payrollId: z.number(),
-        centerId: z.number(),
-        createdBy: z.number(),
-        createdAt:z.date(),
-        updatedAt:z.date()
+        // payrollId: z.number(),
+        // centerId: z.number(),
+        // createdBy: z.number(),
+        createdAt: z.date(),
+        updatedAt: z.date()
       })
     )
     .mutation(
       async ({
         input: {
           name,
-          designationId,
+          // designationId,
           phone,
-          dateOfBirth,
+          // dateOfBirth,
           email,
-          gender,
-          payrollId,
-          centerId,
-          createdBy,
+          // gender,
+          // payrollId,
+          // centerId,
+          // createdBy,
           createdAt,
           updatedAt,
           image
@@ -97,16 +94,16 @@ export const staffRouter = createTRPCRouter({
           data: {
             name: name,
             image: image,
-            designationId: designationId,
+            // designationId: designationId,
             email: email,
             phone: phone,
-            gender:gender,
-            payrollId:payrollId,
-            centerId:centerId,
-            dateOfBirth: dateOfBirth,
-            createdBy: createdBy,
+            // gender:gender,
+            // payrollId:payrollId,
+            // centerId:centerId,
+            // dateOfBirth: dateOfBirth,
+            // createdBy: createdBy,
             createdAt,
-          updatedAt
+            updatedAt
           },
         });
         return response;
@@ -119,26 +116,26 @@ export const staffRouter = createTRPCRouter({
         designationId: z.number(),
         phone: z.string(),
         email: z.string(),
-        dateOfBirth: z.date(),
-        gender: z.enum(GENDER_VALUES),
+        // dateOfBirth: z.date(),
+        // gender: z.enum(GENDER_VALUES),
         image: z.string(),
-        payrollId: z.number(),
-        centerId: z.number(),
-        updatedAt:z.date(),
-        staffId:z.number()
+        // payrollId: z.number(),
+        // centerId: z.number(),
+        updatedAt: z.date(),
+        staffId: z.number()
       })
     )
     .mutation(
       async ({
         input: {
           name,
-          designationId,
+          // designationId,
           phone,
-          dateOfBirth,
+          // dateOfBirth,
           email,
-          gender,
-          payrollId,
-          centerId,
+          // gender,
+          // payrollId,
+          // centerId,
           updatedAt,
           staffId,
           image
@@ -152,13 +149,13 @@ export const staffRouter = createTRPCRouter({
           data: {
             name: name,
             image: image,
-            designationId: designationId,
+            // designationId: designationId,
             email: email,
             phone: phone,
-            gender:gender,
-            payrollId:payrollId,
-            centerId:centerId,
-            dateOfBirth: dateOfBirth,
+            // gender:gender,
+            // payrollId:payrollId,
+            // centerId:centerId,
+            // dateOfBirth: dateOfBirth,
             updatedAt
           },
         });
@@ -179,7 +176,7 @@ export const staffRouter = createTRPCRouter({
           id: staffId,
         },
         data: {
-          deletedAt,
+          updatedAt: deletedAt,
         },
       });
 

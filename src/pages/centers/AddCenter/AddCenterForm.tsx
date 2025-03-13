@@ -60,6 +60,15 @@ export interface FormContextTypes {
     setFormData?: React.Dispatch<React.SetStateAction<any>>;
   };
 }
+
+interface Inventory {
+  value: number;
+  name: string;
+  quantity: number;
+  inventoryId: number;
+  centerId: number;
+}
+
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 
 export default function AddCenterForm() {
@@ -97,27 +106,27 @@ export default function AddCenterForm() {
     multiFormData: { formData, setFormData },
   };
 
-  useEffect(() => {
-    if (centerData && centerData.data) {
-      if (centerData.data && !hasCenterUseEffectRun.current) {
-        let obj: any = { ...centerData.data };
-        obj.sports = centerData?.data?.CenterSports?.map((v: any) => ({
-          sportId: v.sportId,
-          id: v.id,
-        }));
-        obj.inventories = centerData?.data?.CenterInventories?.map(
-          (v: any) => ({
-            inventoryId: v.inventoryId,
-            id: v.id,
-          })
-        );
-        console.log(centerData,"centerDatacenterDatacenterData",obj)
 
-        setFormData(obj);
-        hasCenterUseEffectRun.current = true;
-      }
+  useEffect(() => {
+    if (centerData && centerData.data && !hasCenterUseEffectRun.current) {
+      let obj: any = { ...centerData.data };
+
+      obj.sports = centerData?.data?.CenterSports?.map((v: any) => ({
+        sportId: v.sportId,
+        id: v.id,
+      }));
+
+      obj.inventories = centerData?.data?.CenterInventories?.map((v: any) => ({
+        inventoryId: v.inventoryId,
+        id: v.id,
+      }));
+
+      obj.isEditMode = true;
+      setFormData(obj);
+      hasCenterUseEffectRun.current = true;
     }
   }, [centerData]);
+
 
 
   const { mutate: createMutate } = api.center.createCenter.useMutation({
@@ -125,6 +134,7 @@ export default function AddCenterForm() {
       console.log("response data is ", response);
       setOpenToast(true);
       setCenterId(response?.id);
+      router.push("/centers").then(() => window.location.reload());
       return response?.id;
     },
   });
@@ -132,7 +142,7 @@ export default function AddCenterForm() {
     api.centerInventory.createCenterInventory.useMutation({
       onSuccess: (response) => {
         console.log("response data is ", response);
-        router.push(`/centers/${centerId ?? ""}`);
+        // router.push(`/centers/${centerId ?? ""}`);
 
         return response;
       },
@@ -148,7 +158,7 @@ export default function AddCenterForm() {
   const { mutate: editMutate } = api.center.editCenter.useMutation({
     onSuccess: (response) => {
       setOpenToast(true);
-      void router.push(`/centers/${response?.id ?? ""}`);
+      void router.push(`/centers`).then(() => window.location.reload());
     },
   });
 
@@ -168,14 +178,14 @@ export default function AddCenterForm() {
       if (!uploadedFile) {
         alert('Please select a valid file');
         return;
-      }else  {
+      } else {
         const fileReader = new FileReader();
         fileReader.onloadend = async () => {
           const base64String = fileReader.result as string;
-    
+
 
           try {
-            const response  = await uploadImage.mutateAsync({
+            const response = await uploadImage.mutateAsync({
               file: base64String,
               filename: uploadedFile.name,
               mimetype: uploadedFile.type,
@@ -185,7 +195,7 @@ export default function AddCenterForm() {
             console.error("Upload failed:", err);
           }
         };
-        fileReader.readAsDataURL(uploadedFile)      
+        fileReader.readAsDataURL(uploadedFile)
       }
     }
   }, []);
@@ -201,16 +211,22 @@ export default function AddCenterForm() {
       const finalCenterSports = formData?.sports?.map((v: any) => ({
         ...v,
         centerId,
-        academyId: sessionData?.token?.academyId,
+        academyId: sessionData?.user?.academyId ? +sessionData.user.academyId : undefined
       }));
 
       createMutateCenterSports(finalCenterSports);
 
-      const finalInventories = formData?.inventories?.map((v: any) => ({
+      const finalInventories: Inventory[] = formData?.inventories?.map((v: any) => ({
         ...v,
         centerId,
       }));
-      createMutateInventories(finalInventories);
+
+      const finalInventoriesData = finalInventories.map(({ value, ...rest }) => ({
+        id: value,
+        ...rest
+      }));
+
+      createMutateInventories(finalInventoriesData);
     }
   }, [centerId, formData]);
 
@@ -222,11 +238,9 @@ export default function AddCenterForm() {
         address: finalForm?.address,
         image: uploadUrl,
         updatedAt: new Date(),
+        centerId: finalForm?.id
       });
     } else {
-      // eslint-disable-next-line no-console
-      console.log(finalForm);
-      // eslint-disable-next-line no-console
       console.log(finalForm, "djbsdbfn");
       const sportsId = finalForm?.selectSports?.map(function (obj: {
         value: any;
@@ -261,7 +275,7 @@ export default function AddCenterForm() {
             {currentStep === 2 && <AddSports />}
             {currentStep === 3 && (
               <AddInventory
-              formData={formData}
+                formData={formData}
                 finalFormSubmissionHandler={finalFormSubmissionHandler}
               />
             )}
@@ -294,7 +308,7 @@ export default function AddCenterForm() {
               ) : (
                 <div className="previewImage">
                   <ImageWithFallback
-                    src={uploadUrl?uploadUrl:""}
+                    src={uploadUrl ? uploadUrl : ""}
                     alt="preview"
                     height={205}
                     width={205}

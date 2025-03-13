@@ -44,7 +44,7 @@ export const getServerSideProps = async (
           Sports: true,
         },
       },
-      Athletes: true,
+      // Athletes: true,
       Coaches: true,
       CenterInventories: {
         include: {
@@ -218,12 +218,12 @@ export default function Page({ center }: { center: CenterDetails }) {
       TABLE_HEAD = CENTER_DASH_INVENTORY_TABLE_HEADERS;
       TABLE_ROWS = center?.CenterInventories
         ? center?.CenterInventories.map((data) => {
-            return {
-              ...center,
-              name: data?.Inventories?.name,
-              // batches: center?.Batches?.length,
-            };
-          })
+          return {
+            ...center,
+            name: data?.Inventories?.name,
+            // batches: center?.Batches?.length,
+          };
+        })
         : [];
     }
     const component = (

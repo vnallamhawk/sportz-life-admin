@@ -66,6 +66,7 @@ export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 export default function AddAthleteMultiFormLayout() {
   const router = useRouter();
   const id = Number(router?.query?.id);
+  const hasRun = useRef(false); // Track if useEffect has already run
 
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -77,11 +78,24 @@ export default function AddAthleteMultiFormLayout() {
 
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
-  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
-  const  academyId= sessionData?.token?sessionData?.token?.academyId:sessionData?.user?.academyId
+  const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
+  const academyId = sessionData?.token ? sessionData?.token?.academyId : sessionData?.user?.academyId
   const [file, setFile] = useState<File | null>(null);
   const [uploadUrl, setUploadUrl] = useState<string>("");
   const uploadImage = api.upload.uploadImage.useMutation();
+  const athleteData = id && api.athlete.getAthleteById.useQuery({ id });
+  const hasUseEffectRun = useRef(false);
+
+
+  useEffect(() => {
+    if (athleteData && athleteData.data && !hasUseEffectRun.current) {
+      let obj: any = { ...athleteData.data };
+
+      obj.isEditMode = true;
+      setFormData(obj);
+      hasUseEffectRun.current = true;
+    }
+  }, [athleteData]);
 
 
   const formProviderData = {
@@ -94,6 +108,8 @@ export default function AddAthleteMultiFormLayout() {
       console.log("response data is ", response);
       setOpenToast(true);
       setAthleteId(response?.id)
+      router.push("/athlete").then(() => window.location.reload());
+
       return response
     },
   });
@@ -110,87 +126,103 @@ export default function AddAthleteMultiFormLayout() {
   const { mutate: createMutateAthleteSports } =
     api.athleteSports.createAthleteSports.useMutation({
       onSuccess: (response) => {
-        console.log("response data is ", response);
+        console.log("response data in athelete sports ", response);
 
         return response;
       },
     });
-    const { mutate: createMutateAthleteBatches } =
+  const { mutate: createMutateAthleteBatches } =
     api.athleteBatches.createAthletebatches.useMutation({
       onSuccess: (response) => {
-        console.log("response data is ", response);
-        router.push(`/athlete/${athleteId ?? ""}`);
+        console.log("response data in athelete batches ", response);
+        // router.push(`/athlete/${athleteId ?? ""}`);
 
         return response;
       },
     });
 
-    const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
-      if (acceptedFiles && acceptedFiles.length > 0) {
-        setPreview(
-          acceptedFiles.map((upFile: File) =>
-            Object.assign(upFile, {
-              preview: URL.createObjectURL(upFile),
-            })
-          )
-        );
-        const uploadedFile: File | null = acceptedFiles[0]
-          ? acceptedFiles[0]
-          : null;
-        setFile(uploadedFile);
-        if (!uploadedFile) {
-          alert('Please select a valid file');
-          return;
-        }else  {
-          const fileReader = new FileReader();
-          fileReader.onloadend = async () => {
-            const base64String = fileReader.result as string;
-      
-  
-            try {
-              const response  = await uploadImage.mutateAsync({
-                file: base64String,
-                filename: uploadedFile.name,
-                mimetype: uploadedFile.type,
-              });
-              setUploadUrl(response.url);
-            } catch (err) {
-              console.error("Upload failed:", err);
-            }
-          };
-          fileReader.readAsDataURL(uploadedFile)      
-        }
+  const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
+    if (acceptedFiles && acceptedFiles.length > 0) {
+      setPreview(
+        acceptedFiles.map((upFile: File) =>
+          Object.assign(upFile, {
+            preview: URL.createObjectURL(upFile),
+          })
+        )
+      );
+      const uploadedFile: File | null = acceptedFiles[0]
+        ? acceptedFiles[0]
+        : null;
+      setFile(uploadedFile);
+      if (!uploadedFile) {
+        alert('Please select a valid file');
+        return;
+      } else {
+        const fileReader = new FileReader();
+        fileReader.onloadend = async () => {
+          const base64String = fileReader.result as string;
+
+
+          try {
+            const response = await uploadImage.mutateAsync({
+              file: base64String,
+              filename: uploadedFile.name,
+              mimetype: uploadedFile.type,
+            });
+            setUploadUrl(response.url);
+          } catch (err) {
+            console.error("Upload failed:", err);
+          }
+        };
+        fileReader.readAsDataURL(uploadedFile)
       }
-    }, []);
+    }
+  }, []);
 
   useEffect(() => {
     if (
+      !hasRun.current && // Ensure it runs only once
       formData &&
       Object.keys(formData)?.length > 0 &&
       formData?.sportId &&
       formData?.batch &&
       athleteId
     ) {
+      const finalCoachSports = [
+        {
+          sportsId: parseInt(formData.sportId?.value),
+          batchId: parseInt(formData.batch?.value),
+          athleteId: athleteId,
+          centerId: parseInt(formData.centerId?.value),
+          trainingLevel: formData.training_level?.value,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
 
-      const finalCoachSports = formData?.batch?.map((v:any) => ({
-        sportId: parseInt(v.sportId),
-        batchId:v.id,
-        athleteId,
-        centerId: parseInt(formData.center?.value),
-        createdAt:new Date(),
-        updatedAt:new Date(),
-      }));
+      const finalAtheleteBatches = [
+        {
+          sportId: parseInt(formData.sportId?.value),
+          batchId: parseInt(formData.batch?.value),
+          athleteId: athleteId,
+          centerId: parseInt(formData.centerId?.value),
+          trainingLevel: formData.training_level?.value,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
 
       createMutateAthleteSports(finalCoachSports);
+      createMutateAthleteBatches(finalAtheleteBatches);
 
-      createMutateAthleteBatches(finalCoachSports);
+      hasRun.current = true; // Prevent further executions
     }
-  }, [athleteId, formData]);
-  
+  }, [athleteId, JSON.stringify(formData)]);
+
   const finalFormSubmissionHandler = (
-    finalForm:any
+    finalForm: any
   ) => {
-    if(academyId){
+    if (academyId) {
       if (formData.isEditMode) {
         editMutate({
           name: finalForm.name,
@@ -199,17 +231,17 @@ export default function AddAthleteMultiFormLayout() {
           bloodGroup: finalForm.bloodGroup.value,
           gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
           dob: new Date(finalForm.dob),
-          height:parseInt(finalForm.height),
-          weight:parseInt(finalForm.weight),
-          address:finalForm.address,
-          medicalHistory:finalForm.medicalHistory,
-          centerId: parseInt(finalForm.centerId.value),
-          fatherName:finalForm.fatherName,
-          heightUnit:"cm",
-          weightUnit:"kg",
-          image:uploadUrl,
-          updatedAt:new Date(),
-          athleteId:id
+          height: parseInt(finalForm.height),
+          weight: parseInt(finalForm.weight),
+          address: finalForm.address,
+          medicalHistory: finalForm.medicalHistory,
+          // centerId: parseInt(finalForm.centerId.value),
+          fatherName: finalForm.fatherName,
+          heightUnit: "cm",
+          weightUnit: "kg",
+          image: uploadUrl,
+          updatedAt: new Date(),
+          athleteId: id
         });
       } else {
         // eslint-disable-next-line no-console
@@ -222,23 +254,23 @@ export default function AddAthleteMultiFormLayout() {
           bloodGroup: finalForm.bloodGroup.value,
           gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
           dob: new Date(finalForm.dob),
-          height:parseInt(finalForm.height),
-          weight:parseInt(finalForm.weight),
-          address:finalForm.address,
-          medicalHistory:finalForm.medicalHistory,
-          centerId: parseInt(finalForm.centerId.value),
-          fatherName:finalForm.fatherName,
-          heightUnit:"cm",
-          weightUnit:"kg",
-          image:uploadUrl,
-          createdAt:new Date(),
-          updatedAt:new Date(),
-          academyCode:parseInt(academyId as string)
-  
+          height: parseInt(finalForm.height),
+          weight: parseInt(finalForm.weight),
+          address: finalForm.address,
+          medicalHistory: finalForm.medicalHistory,
+          // centerId: parseInt(finalForm.centerId.value),
+          fatherName: finalForm.fatherName,
+          heightUnit: "cm",
+          weightUnit: "kg",
+          image: uploadUrl,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          academyCode: parseInt(academyId as string)
+
         });
       }
     }
-  
+
   };
 
   return (

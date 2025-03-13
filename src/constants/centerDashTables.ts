@@ -30,7 +30,7 @@ export const CENTER_DASH_BATCH_TABLE_HEADERS = [
 export const COACH_DASH_BATCH_TABLE_HEADERS = [
   {
     label: "Batch Name",
-    id: "batch",
+    id: "batchName",
   },
   {
     label: "Center",
@@ -42,10 +42,10 @@ export const COACH_DASH_BATCH_TABLE_HEADERS = [
   },
   {
     label: "Sport",
-    id: "sport",
+    id: "sportName",
   },
   {
-    label: "Batch Start Date",
+    label: "Creation Date",
     id: "startDate",
   },
   {

@@ -39,7 +39,7 @@ async function createAssessmentChilds({
 
   // start of saving assessment athletes
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-  const athletesToSave :AssessmentAssignedAthletes[] = participants.map((item:AssessmentAssignedAthletes) => ({
+  const athletesToSave: AssessmentAssignedAthletes[] = participants.map((item: AssessmentAssignedAthletes) => ({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     athleteId: item.athleteId,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -57,7 +57,7 @@ async function createAssessmentChilds({
 
   // start of saving assessment batches
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-  const batchesToSave :AssessmentBatches[]= participants.map((item: AssessmentBatches) => ({
+  const batchesToSave: AssessmentBatches[] = participants.map((item: AssessmentBatches) => ({
     batchId: item.batchId,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     assessmentId,
@@ -74,7 +74,7 @@ async function createAssessmentChilds({
 
   // start of saving assessment centers
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-  const centersToSave :AssessmentCenters[]= participants.map((item: AssessmentCenters) => ({
+  const centersToSave: AssessmentCenters[] = participants.map((item: AssessmentCenters) => ({
     centerId: item.centerId,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     assessmentId,
@@ -91,7 +91,7 @@ async function createAssessmentChilds({
 
   // start of saving assessment sports
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-  const sportsToSave:AssessmentSports[] = participants.map((item: AssessmentSports) => ({
+  const sportsToSave: AssessmentSports[] = participants.map((item: AssessmentSports) => ({
     sportId: item.sportId,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     assessmentId,
@@ -295,7 +295,7 @@ export const assessmentRouter = createTRPCRouter({
         });
 
         return assessments;
-      } catch (error) {}
+      } catch (error) { }
     }),
   createAssessment: publicProcedure
     .input(
@@ -323,7 +323,7 @@ export const assessmentRouter = createTRPCRouter({
             athleteId: z.number(),
           })
         ),
-        centerId: z.number(), // discussion
+        // centerId: z.number(), // discussion
         assessmentStatus: z.enum(ASSESSMENT_STATUS), // discussion
         status: z.boolean(), // discussion
       })
@@ -347,7 +347,7 @@ export const assessmentRouter = createTRPCRouter({
           startDate,
           endDate,
           participants,
-          centerId, // discussion
+          // centerId, // discussion
           assessmentStatus, // discussion
           status, // discussion
         },
@@ -371,7 +371,8 @@ export const assessmentRouter = createTRPCRouter({
             endDate,
             createdAt: new Date(),
             updatedAt: new Date(),
-            centerId, // discussion
+            assessmentTime: new Date(),
+            // centerId, // discussion
             assessmentStatus, // discussion
             status, // discussion
           },
@@ -465,7 +466,7 @@ export const assessmentRouter = createTRPCRouter({
             startDate,
             endDate,
             updatedAt: new Date(),
-            centerId, // discussion
+            // centerId, // discussion
             assessmentStatus, // discussion
             status, // discussion
           },

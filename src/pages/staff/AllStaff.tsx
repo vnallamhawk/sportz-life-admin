@@ -5,13 +5,14 @@ import AllData from "~/common/AllData";
 import { STAFF_TABLE_HEADERS } from "~/constants/staffConstants";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
-import type { Staffs,StaffDesignation, Centers } from "@prisma/client";
+import type { Staffs, StaffDesignation, Centers } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { calculateAge } from "~/utils/common";
 
-interface StaffType extends Staffs{
-  StaffDesignation?:StaffDesignation
-  Centers?:Centers
+interface StaffType extends Staffs {
+  dateOfBirth(dateOfBirth: any): number;
+  StaffDesignation?: StaffDesignation
+  Centers?: Centers
 }
 
 export default function AllStaff() {
@@ -20,21 +21,21 @@ export default function AllStaff() {
 
   const [finalData, setFinalData] = useState<StaffType[]>([]);
   const [filterByName, setFilterByName] = useState("");
-  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
+  const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
 
   const { data: staffs } =
     filterByName == ""
-      ? api.staff.getAllStaffs.useQuery({createdBy:parseInt(createdBy as string)})
+      ? api.staff.getAllStaffs.useQuery({ createdBy: parseInt(createdBy as string) })
       : api.staff.getAllStaffsByName.useQuery({ name: filterByName });
 
   useEffect(() => {
     if (staffs && staffs?.length > 0) {
-      const updatedStaffs = staffs.map((staff:StaffType) => {
+      const updatedStaffs = staffs.map((staff: any) => {
         return {
           ...staff,
-          designation:staff.StaffDesignation?staff.StaffDesignation.designation:"",
-          center:staff.Centers?staff.Centers?.name:"",
-          age:calculateAge(staff?.dateOfBirth)
+          designation: staff.StaffDesignation ? staff.StaffDesignation.designation : "",
+          center: staff.Centers ? staff.Centers?.name : "",
+          age: calculateAge(staff?.dateOfBirth)
 
         };
       });
@@ -45,31 +46,31 @@ export default function AllStaff() {
 
   const { mutate: deleteMutate } = api.staff.deleteStaff.useMutation({
     onSuccess: (response) => {
-      const arr:Staffs[]=[...finalData]
-      const index=finalData?.findIndex((item:Staffs)=>item?.id==response?.id)
-      if(index>-1){
-        arr.splice(index,1)
+      const arr: any = [...finalData]
+      const index = finalData?.findIndex((item: Staffs) => item?.id == response?.id)
+      if (index > -1) {
+        arr.splice(index, 1)
       }
-     setFinalData(arr)
+      setFinalData(arr)
       return response
     },
   });
-  
-  const deleteStaff=(id:number)=>{
-  
-    deleteMutate({staffId:id,deletedAt:moment().toISOString()})
-   
-  
+
+  const deleteStaff = (id: number) => {
+
+    deleteMutate({ staffId: id, deletedAt: moment().toISOString() })
+
+
   }
 
   return (
     <>
 
-<AllData
+      <AllData
         title="ALL STAFFS"
         addButtonText="ADD NEW STAFF"
         addButtonUrl="/staff/AddStaff"
-        dropdownItems={{reminder:true,changeCenter:true}}
+        dropdownItems={{ reminder: true, changeCenter: true }}
         filter={false}
         TABLE_HEAD={STAFF_TABLE_HEADERS}
         TABLE_ROWS={finalData}
@@ -77,9 +78,9 @@ export default function AllStaff() {
         filterByName={filterByName}
         rowSelection={true}
         showImage={false}
-        onViewClick={(id:number)=>router.push(`/staff/${id ?? ""}`)}
-        onEditClick={(id:number)=>router.push(`/edit-staff-${id}`)}
-        onDeleteClick={(id:number)=>deleteStaff(id)}
+        onViewClick={(id: number) => router.push(`/staff/${id ?? ""}`)}
+        onEditClick={(id: number) => router.push(`/edit-staff-${id}`)}
+        onDeleteClick={(id: number) => deleteStaff(id)}
 
       />
 

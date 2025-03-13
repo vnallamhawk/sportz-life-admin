@@ -11,7 +11,7 @@ import {
 import { dateFormat } from "~/helpers/date";
 import AddForm from "~/common/AddForm";
 
-export default function AddCoachCertificates({}) {
+export default function AddCoachCertificates({ }) {
   const {
     control,
     reset,
@@ -41,7 +41,7 @@ export default function AddCoachCertificates({}) {
   );
 
   const onAddHandler = (data: any) => {
-    const arr:COACH_CERTIFICATE_TABLE_TYPES[]  = [...certificates];
+    const arr: COACH_CERTIFICATE_TABLE_TYPES[] = [...certificates];
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const obj: COACH_CERTIFICATE_TABLE_TYPES = {
@@ -52,9 +52,15 @@ export default function AddCoachCertificates({}) {
       endDate: dateFormat(new Date(data.endDate)),
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       certificateType: data?.certificates?.value,
+      certificateTypeLabel: data?.certificates?.label,
     };
     arr.push(obj);
+    setCertificates(arr);
+  };
 
+  const removeCertificate = (index: number) => {
+    const arr = [...certificates];
+    arr.splice(index, 1);
     setCertificates(arr);
   };
 
@@ -64,7 +70,7 @@ export default function AddCoachCertificates({}) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
       setCertificates(formData.certificates);
     }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   }, [formData?.certificates]);
 
   return (
@@ -82,7 +88,7 @@ export default function AddCoachCertificates({}) {
         tableTitle="Certificates"
         mobileAddButtonText="Add another certificate"
         TableHeadings={[
-          { label: "Certificate", id: "certificateType" },
+          { label: "Certificate", id: "certificateTypeLabel" },
           { label: "Institute", id: "instituteName" },
           { label: "Action", id: "action" },
         ]}
@@ -91,6 +97,7 @@ export default function AddCoachCertificates({}) {
         tablekey="certificates"
         tableData={certificates}
         addTableData={onAddHandler}
+        onRemoveTableButton={removeCertificate}
       />
     </>
   );

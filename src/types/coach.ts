@@ -17,18 +17,18 @@ type Type = (typeof InputType)[number];
 export interface COACH_DETAILS_CONSTANTS_TYPES {
   label?: string;
   id:
-    | "name"
-    | "about"
-    | "designation"
-    | "contactNumber"
-    | "email"
-    | "payroll"
-    | "dateOfBirth"
-    | "gender"
-    | "coachingSports"
-    | "trainingLevel"
-    | "experienceLevel"
-    | "phone";
+  | "name"
+  | "about"
+  | "designation"
+  | "contactNumber"
+  | "email"
+  | "payroll"
+  | "dateOfBirth"
+  | "gender"
+  | "coachingSports"
+  | "trainingLevel"
+  | "experienceLevel"
+  | "phone";
   type: Type;
   placeHolder?: string;
   options?: MultiSelectOption[];
@@ -51,14 +51,14 @@ export interface ASSIGN_BATCHES_TYPES {
 }
 
 export const GENDER_VALUES = ["male", "female"] as const;
-export const BLOOD_GROUPS = [ "APos",
-  "ANeg" , 
-  "BPos", 
-  "BNeg",  
-  "ABPos" ,
-  "ABNeg" ,
-  "OPos",  
-  "ONeg" ] as const;
+export const BLOOD_GROUPS = ["APos",
+  "ANeg",
+  "BPos",
+  "BNeg",
+  "ABPos",
+  "ABNeg",
+  "OPos",
+  "ONeg"] as const;
 
 export const TRAINING_LEVEL = [
   "beginner",
@@ -67,10 +67,10 @@ export const TRAINING_LEVEL = [
   "developer",
 ] as const;
 export const EXPERIENCE_LEVEL = [
-  "ZERO_ONE",
-  "TWO_FIVE",
-  "SIX_TEN",
-  "TEN_OVER",
+  "zero_one",
+  "two_five",
+  "six_ten",
+  "ten_over",
 ] as const;
 export interface COACH_TYPES {
   name: string;
@@ -142,3 +142,10 @@ export type CoachWithRelationsEditForm = Coaches & {
   // batches: CoachesOnBatches[];
   batchTableData?: BatchTableData[];
 };
+
+export const COACH_CERTIFICATE_FILE_TYPE = [
+  "link",
+  "image",
+  "pdf",
+  "video"
+] as const;

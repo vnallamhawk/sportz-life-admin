@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AllData from "~/common/AllData";
-import { COACH_TABLE_HEADERS } from "~/constants/coachConstants";
+import { COACH_DESIGNATION, COACH_TABLE_HEADERS } from "~/constants/coachConstants";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
 import type { Coaches } from "@prisma/client";
+import { calculateAge } from "~/utils/common";
 type Modify<T, R> = Omit<T, keyof R> & R;
 
 
@@ -16,22 +17,36 @@ export default function AllCoach() {
   const [filterByName, setFilterByName] = useState("");
   const [loading, setLoading] = useState(true);
   const [finalData, setFinalData] = useState<CoachesType[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleIsLoading = (isLoading: boolean) => {
     setLoading(isLoading);
   };
 
-  const { data: coaches } =
+  const coachesData: any =
     filterByName == ""
-      ? api.coach.getAllCoaches.useQuery()
+      ? api.coach.getAllCoachesWithPagination.useQuery({ page: currentPage, limit: 10 })
       : api.coach.getCoachesByName.useQuery({ name: filterByName });
+
+  const coaches = coachesData?.data?.data ?? []; // Ensure it's an array
+  const totalPages = coachesData?.data?.totalPages ?? 1;
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   useEffect(() => {
     if (coaches && coaches?.length > 0) {
-      const updatedCoaches = coaches.map((coach:Coaches) => {
+      const updatedCoaches = coaches.map((coach: any) => {
         return {
           ...coach,
           status: coach?.designation,
+          age: calculateAge(coach?.dateOfBirth),
+          batchesCount: coach?.CoachCentersBatches?.length,
+          sportCoaching: coach?.CoachSportsMaps.map((map: any) => map.Sports.name).join(", "),
+          designation: COACH_DESIGNATION.find((d: any) => d.value === coach.designation)?.label || coach.designation,
         };
       });
       setFinalData(updatedCoaches);
@@ -40,7 +55,7 @@ export default function AllCoach() {
 
   const { mutate: deleteMutate } = api.coach.deleteCoach.useMutation({
     onSuccess: (response) => {
-      const arr :CoachesType[]= [...finalData];
+      const arr: CoachesType[] = [...finalData];
       const index = finalData?.findIndex(
         (item: CoachesType) => item?.id == response?.id
       );
@@ -96,6 +111,9 @@ export default function AllCoach() {
         onViewClick={(id: number) => router.push(`/coach/${id ?? ""}`)}
         onEditClick={(id: number) => router.push(`/edit-coach-${id}`)}
         onDeleteClick={(id: number) => deleteCoach(id)}
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onHandlePageChange={handlePageChange}
       />
     </>
   );
