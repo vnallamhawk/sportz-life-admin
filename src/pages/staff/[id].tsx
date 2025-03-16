@@ -12,9 +12,7 @@ import type {
   StaffShifts,
   Staffs,
 } from "@prisma/client";
-import s3 from '../../lib/aws';
-
-import { useRouter } from "next/router";
+import s3 from "../../lib/aws";
 
 import DetailPage from "~/common/DetailPage";
 import AllData from "~/common/AllData";
@@ -92,7 +90,6 @@ interface StaffDetails extends Staffs {
 }
 
 export default function Page({ staff }: { staff: StaffDetails }) {
-  const router = useRouter();
   const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>();
 
   const [selectedTab, setSelectedTab] = useState<string | undefined>(
@@ -102,34 +99,35 @@ export default function Page({ staff }: { staff: StaffDetails }) {
 
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-
   useEffect(() => {
     if (staff && staff.image) {
-      void getSignedUrlForImage(staff.image)
+      void getSignedUrlForImage(staff.image);
     }
-  }, [staff])
+  }, [staff]);
 
   useEffect(() => {
     if (finalTabs && finalTabs.length > 0 && Object.keys(staff).length > 0) {
       const arr: TabType[] = [...finalTabs];
-      const centersIndex = arr.findIndex((item: TabType) => item.name === "centers");
+      const centersIndex = arr.findIndex(
+        (item: TabType) => item.name === "centers"
+      );
       if (centersIndex > -1 && staff?.Centers) {
-        const obj: TabType = { ...arr[centersIndex] }
+        const obj: TabType = { ...arr[centersIndex] };
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         obj.value = staff?.Centers ? staff?.Centers?.length : 0;
-        arr[centersIndex] = obj
+        arr[centersIndex] = obj;
       }
-      const batchIndex = arr.findIndex((item: TabType) => item.name === "batches");
+      const batchIndex = arr.findIndex(
+        (item: TabType) => item.name === "batches"
+      );
       if (batchIndex > -1 && staff?.StaffShifts) {
-        const batchObj: TabType = { ...arr[batchIndex] }
+        const batchObj: TabType = { ...arr[batchIndex] };
 
         batchObj.value = staff.StaffShifts ? staff?.StaffShifts?.length : 0;
-        arr[batchIndex] = batchObj
-
+        arr[batchIndex] = batchObj;
       }
       if (JSON.stringify(finalTabs) !== JSON.stringify(arr)) {
         setFinalTabs(arr);
-
       }
     }
   }, [staff, finalTabs]);
@@ -151,7 +149,7 @@ export default function Page({ staff }: { staff: StaffDetails }) {
   const handleClick = (tab: TabType) => {
     let component;
     let TABLE_HEAD: TableHead = [];
-    let TABLE_ROWS: { [key: string]: any, id: number }[] = [];
+    let TABLE_ROWS: { [key: string]: any; id: number }[] = [];
     if (tab?.name === "attendance") {
       component = <Attendance />;
     } else {
@@ -190,7 +188,11 @@ export default function Page({ staff }: { staff: StaffDetails }) {
         tabs={finalTabs}
         handleTabClick={handleClick}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        data={{ ...staff, description: staff?.StaffDesignation?.designation, imageUrl }}
+        data={{
+          ...staff,
+          description: staff?.StaffDesignation?.designation,
+          imageUrl,
+        }}
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}
         details={[
@@ -203,8 +205,13 @@ export default function Page({ staff }: { staff: StaffDetails }) {
               { label: "Email", value: staff?.email ? staff?.email : "" },
               {
                 label: "DOB",
-                value: staff?.dateOfBirth ? moment(staff?.dateOfBirth).format("DD-MM-YYYY") : "",
+                // eslint-disable-next-line
+                value: staff?.dateOfBirth
+                  ? // eslint-disable-next-line
+                    moment(staff?.dateOfBirth).format("DD-MM-YYYY")
+                  : "",
               },
+              // eslint-disable-next-line
               { label: "Gender", value: staff?.gender ? staff?.gender : "" },
             ],
           },
