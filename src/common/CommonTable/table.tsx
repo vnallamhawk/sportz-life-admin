@@ -5,7 +5,6 @@ import User from "../../images/user.png";
 
 import { Dropdown, DropdownHeader } from "flowbite-react";
 import { PLANNING_FEE_TYPE } from "~/constants/pricingConstant";
-import { useState } from "react";
 
 interface CommonTable {
   TABLE_HEAD: { label: string; id: string }[];
@@ -30,7 +29,7 @@ const CommonTable = ({
   onDeleteClick,
   totalPages = 1,
   currentPage = 1,
-  onHandlePageChange = () => { }
+  onHandlePageChange,
 }: CommonTable) => {
   const renderPages = () => {
     const pages: (number | string)[] = [];
@@ -42,9 +41,26 @@ const CommonTable = ({
       if (currentPage <= 3) {
         pages.push(1, 2, 3, 4, "...", totalPages);
       } else if (currentPage >= totalPages - 3) {
-        pages.push(1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+        pages.push(
+          1,
+          "...",
+          totalPages - 4,
+          totalPages - 3,
+          totalPages - 2,
+          totalPages - 1,
+          totalPages
+        );
       } else {
-        pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, currentPage + 2, "...", totalPages);
+        pages.push(
+          1,
+          "...",
+          currentPage - 1,
+          currentPage,
+          currentPage + 1,
+          currentPage + 2,
+          "...",
+          totalPages
+        );
       }
     }
     return pages;
@@ -79,106 +95,150 @@ const CommonTable = ({
             </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS?.map((data: { [key: string]: any, id: number }, index: number) => {
-              const isLast = index === TABLE_ROWS.length - 1;
-              const classes = isLast
-                ? "p-4 border-y-2 border-gray-100"
-                : "p-4 border-y-2 border-gray-100 ";
+            {TABLE_ROWS?.map(
+              (data: { [key: string]: any; id: number }, index: number) => {
+                const isLast = index === TABLE_ROWS.length - 1;
+                const classes = isLast
+                  ? "p-4 border-y-2 border-gray-100"
+                  : "p-4 border-y-2 border-gray-100 ";
 
-              return (
-                <tr key={index} className={``}>
-                  {rowSelection && (
-                    <td className={`pl-7 ${classes}`}>
-                      {" "}
-                      <input
-                        type="checkbox"
-                        className="h-5 w-5 rounded border-orange-light text-orange-light focus:ring-0 "
-                      />
-                    </td>
-                  )}
-                  {TABLE_HEAD?.map(
-                    (head: { label: string; id: string }, columnIndex: number) => {
-                      return (
-                        <td className={classes} key={columnIndex}>
-                          {head?.id === "feeType" ? (
-                            <Typography variant="small" className="font-bold">
-                              {PLANNING_FEE_TYPE[data[head?.id] as keyof typeof PLANNING_FEE_TYPE] || "Unknown"}
-                            </Typography>
-                          ) : head?.id !== "status" ? (
-                            head?.id !== "action" ? (
-                              columnIndex == 0 && data?.image && showImage ? (
-                                <div className="flex items-center gap-3">
-                                  <Image
-                                    width={0}
-                                    height={0}
-                                    src={User}
-                                    alt=""
-                                    className="h-6 w-6 rounded md:h-8 md:w-8"
-                                  />
-                                  <Typography variant="small" className="font-bold">
+                return (
+                  <tr key={index} className={``}>
+                    {rowSelection && (
+                      <td className={`pl-7 ${classes}`}>
+                        {" "}
+                        <input
+                          type="checkbox"
+                          className="h-5 w-5 rounded border-orange-light text-orange-light focus:ring-0 "
+                        />
+                      </td>
+                    )}
+                    {TABLE_HEAD?.map(
+                      (
+                        head: { label: string; id: string },
+                        columnIndex: number
+                      ) => {
+                        return (
+                          <td className={classes} key={columnIndex}>
+                            {head?.id === "feeType" ? (
+                              <Typography variant="small" className="font-bold">
+                                {PLANNING_FEE_TYPE[
+                                  data[
+                                    head?.id
+                                  ] as keyof typeof PLANNING_FEE_TYPE
+                                ] || "Unknown"}
+                              </Typography>
+                            ) : head?.id !== "status" ? (
+                              head?.id !== "action" ? (
+                                columnIndex == 0 && data?.image && showImage ? (
+                                  <div className="flex items-center gap-3">
+                                    <Image
+                                      width={0}
+                                      height={0}
+                                      src={User}
+                                      alt=""
+                                      className="h-6 w-6 rounded md:h-8 md:w-8"
+                                    />
+                                    <Typography
+                                      variant="small"
+                                      className="font-bold"
+                                    >
+                                      {data[head?.id]}
+                                    </Typography>
+                                  </div>
+                                ) : (
+                                  <Typography
+                                    variant="small"
+                                    className="font-bold"
+                                  >
                                     {data[head?.id]}
                                   </Typography>
-                                </div>
+                                )
                               ) : (
-                                <Typography variant="small" className="font-bold">
-                                  {data[head?.id]}
-                                </Typography>
+                                <Dropdown
+                                  label=""
+                                  dismissOnClick={false}
+                                  placement="top"
+                                  className="view-drop h-auto w-auto rounded-lg bg-black"
+                                  renderTrigger={() => (
+                                    <button className="py-2">
+                                      <Image
+                                        width={20}
+                                        height={20}
+                                        src={Dots}
+                                        alt=""
+                                      />
+                                    </button>
+                                  )}
+                                >
+                                  <DropdownHeader>
+                                    <div className="flex items-center">
+                                      {onEditClick && (
+                                        <button
+                                          className="mx-1 text-white"
+                                          onClick={() => {
+                                            onEditClick(data?.id);
+                                          }}
+                                        >
+                                          Edit
+                                        </button>
+                                      )}
+                                      {onViewClick && (
+                                        <button
+                                          className="mx-1 text-white"
+                                          onClick={() => onViewClick(data?.id)}
+                                        >
+                                          View
+                                        </button>
+                                      )}
+                                      {onDeleteClick && (
+                                        <button
+                                          className="mx-1 text-white"
+                                          onClick={() =>
+                                            onDeleteClick(data?.id)
+                                          }
+                                        >
+                                          Delete
+                                        </button>
+                                      )}
+                                    </div>
+                                  </DropdownHeader>
+                                </Dropdown>
                               )
                             ) : (
-                              <Dropdown
-                                label=""
-                                dismissOnClick={false}
-                                placement="top"
-                                className="view-drop rounded-lg bg-black w-auto h-auto"
-                                renderTrigger={() => (
-                                  <button className="py-2">
-                                    <Image width={20} height={20} src={Dots} alt="" />
-                                  </button>
-                                )}
-                              >
-                                <DropdownHeader>
-                                  <div className="flex items-center">
-                                    {onEditClick && (
-                                      <button className="mx-1 text-white" onClick={() => {
-                                        onEditClick(data?.id)
-                                      }}>
-                                        Edit
-                                      </button>
-                                    )}
-                                    {onViewClick && (
-                                      <button className="mx-1 text-white" onClick={() => onViewClick(data?.id)}>
-                                        View
-                                      </button>
-                                    )}
-                                    {onDeleteClick && (
-                                      <button className="mx-1 text-white" onClick={() => onDeleteClick(data?.id)}>
-                                        Delete
-                                      </button>
-                                    )}
-                                  </div>
-                                </DropdownHeader>
-                              </Dropdown>
-                            )
-                          ) : (
-                            <div className="w-max">
-                              <Chip
-                                size="sm"
-                                variant="ghost"
-                                value={data?.status === 1 ? "On" : data?.status === 2 ? "Off" : "Unknown"}
-                                className={`rounded-full border px-3 font-normal capitalize 
-                                  ${data?.status === 1 ? "border-green-400 bg-green-50 text-green-400" : ""} 
-                                  ${data?.status === 2 ? "border-orange-400 bg-orange-50 text-orange-400" : ""}`}
-                              />
-                            </div>
-                          )}
-                        </td>
-                      );
-                    }
-                  )}
-
-                </tr>
-              );
-            })}
+                              <div className="w-max">
+                                <Chip
+                                  size="sm"
+                                  variant="ghost"
+                                  value={
+                                    data?.status === 1
+                                      ? "On"
+                                      : data?.status === 2
+                                      ? "Off"
+                                      : "Unknown"
+                                  }
+                                  className={`rounded-full border px-3 font-normal capitalize 
+                                  ${
+                                    data?.status === 1
+                                      ? "border-green-400 bg-green-50 text-green-400"
+                                      : ""
+                                  } 
+                                  ${
+                                    data?.status === 2
+                                      ? "border-orange-400 bg-orange-50 text-orange-400"
+                                      : ""
+                                  }`}
+                                />
+                              </div>
+                            )}
+                          </td>
+                        );
+                      }
+                    )}
+                  </tr>
+                );
+              }
+            )}
           </tbody>
         </table>
       </div>
@@ -189,8 +249,12 @@ const CommonTable = ({
               key={index}
               variant={currentPage === page ? "text" : "outlined"}
               size="sm"
-              className={`mx-1 ${currentPage === page ? "bg-gray-700 text-white" : ""}`}
-              onClick={() => typeof page === "number" && onHandlePageChange?.(page)}
+              className={`mx-1 ${
+                currentPage === page ? "bg-gray-700 text-white" : ""
+              }`}
+              onClick={() =>
+                typeof page === "number" && onHandlePageChange?.(page)
+              }
               disabled={page === "..."}
             >
               {page}

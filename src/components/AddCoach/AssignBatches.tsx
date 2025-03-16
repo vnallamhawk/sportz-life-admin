@@ -1,15 +1,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useContext, useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import Select from "react-select";
+// import { useForm } from "react-hook-form";
 import { type MULTI_FORM_TYPES } from "~/types/coach";
-import Table from "../Table";
-import Button from "../Button/Button";
-import CardTitle from "../Card/CardTitle";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import { api } from "~/utils/api";
-import { formatBatchesTableData } from "~/helpers/batches";
-import { type BatchTableData } from "~/types/batch";
 import AddForm from "~/common/AddForm";
 import { COACH_BATCH_CONSTANTS } from "~/constants/coachConstants";
 
@@ -18,18 +12,18 @@ export default function AssignBatches({
 }: {
   finalFormSubmissionHandler: (data: MULTI_FORM_TYPES) => void;
 }) {
-  const {
-    control,
-    formState: { errors },
-    getValues,
-    reset,
-    trigger,
-  } = useForm({
-    defaultValues: {
-      centerName: undefined,
-      batchName: undefined,
-    },
-  });
+  // const {
+  //   control,
+  //   formState: { errors },
+  //   getValues,
+  //   reset,
+  //   trigger,
+  // } = useForm({
+  //   defaultValues: {
+  //     centerName: undefined,
+  //     batchName: undefined,
+  //   },
+  // });
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [formConstantValues, setFormConstantValues] = useState<any>(
     COACH_BATCH_CONSTANTS
@@ -128,17 +122,18 @@ export default function AssignBatches({
     const batches =
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
       data?.batches && data?.batches.length > 0 ? [...data?.batches] : [];
-    console.log({ data })
     for (let i = 0; i < batches.length; i++) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const obj = {
         ...data,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         centerId: parseInt(data?.center?.value),
+        // eslint-disable-next-line
         centerLabel: data?.center?.label,
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
         batchId: parseInt(data?.batches[i]?.value),
+        // eslint-disable-next-line
         batchLabel: data?.batches[i]?.label,
       };
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -149,6 +144,7 @@ export default function AssignBatches({
   };
 
   const removeAssignBatches = (index: number) => {
+    // eslint-disable-next-line
     const arr = [...tableData];
     arr.splice(index, 1);
     setTableData(arr);
