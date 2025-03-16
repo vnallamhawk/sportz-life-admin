@@ -413,7 +413,7 @@ model AthleteOrders {
   academyId   Int
   centerId    Int
   sportId     Int
-  gst         AthleteOrders_gst          @default(dbgenerated("18"))
+  gst         Athlete_Orders_gst         @default(EIGHTEEN)
   gstAmount   Float?                     @default(0) @db.Float
   lateFeeType AthleteOrders_lateFeeType?
   planType    AthleteOrders_planType
@@ -1793,23 +1793,23 @@ enum AthleteOrders_status {
 }
 
 enum Athlete_Orders_gst {
+  ZERO         @map("0")
+  FIVE         @map("5")
+  TWELVE       @map("12")
+  FIFTEEN      @map("15")
+  EIGHTEEN     @map("18")
+  TWENTY_EIGHT @map("28")
 
-  // 0 @map("0")
-  // 5 @map("5")
-  // 12 @map("12")
-  // 15 @map("15")
-  // 18 @map("18")
-  // 28 @map("28")
   @@map("Athlete Orders_gst")
 }
 
 enum Payments_gst {
-  // 0 @map("0")
-  // 5 @map("5")
-  // 12 @map("12")
-  // 15 @map("15")
-  // 18 @map("18")
-  // 28 @map("28")
+  ZERO         @map("0")
+  FIVE         @map("5")
+  TWELVE       @map("12")
+  FIFTEEN      @map("15")
+  EIGHTEEN     @map("18")
+  TWENTY_EIGHT @map("28")
 }
 
 enum Payments_planType {
@@ -1824,15 +1824,6 @@ enum Payments_paymentType {
   Quarterly
   Half_Yearly @map("Half Yearly")
   Annually
-}
-
-enum AthleteOrders_gst {
-  // 0 @map("0")
-  // 5 @map("5")
-  // 12 @map("12")
-  // 15 @map("15")
-  // 18 @map("18")
-  // 28 @map("28")
 }
 
 enum TrainingPlans_traningPlanStatus {
