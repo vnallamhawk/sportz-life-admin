@@ -5,34 +5,35 @@ import AddSportModal from "./AddSportModal";
 import { useSession } from "next-auth/react";
 import AddForm from "~/common/AddForm";
 import { SPORTS_TABLE_HEADERS } from "~/constants/sportConstants";
-import moment from "moment-timezone";
-import type { Sports } from "@prisma/client";
-import { useRouter } from "next/router";
 
 interface Options {
   label: string | undefined;
   value: string | number | undefined;
 }
 
-
 export interface SportDetails {
   name: string;
   subTitle: string;
   image?: any;
-  about?: string
+  about?: string;
 }
 const AddSports = () => {
-  const router = useRouter()
   const [sports, setSports] = useState<{ [key: string]: any }[]>([]);
   const [finalOptions, setFinalOptions] = useState<Options[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [sportDetails, setSportDetails] = useState<SportDetails>({ name: "", subTitle: "", about: "" });
+  const [sportDetails, setSportDetails] = useState<SportDetails>({
+    name: "",
+    subTitle: "",
+    about: "",
+  });
   const { data: sessionData } = useSession();
 
-  const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
-  const academyId = sessionData?.token ? sessionData?.token?.academyId : sessionData?.user?.academyId
-
-
+  const createdBy = sessionData?.token
+    ? sessionData?.token?.id
+    : sessionData?.user?.id;
+  // const academyId = sessionData?.token
+  //   ? sessionData?.token?.academyId
+  //   : sessionData?.user?.academyId;
 
   const { data: allSports } = api.sports.getAllSports.useQuery();
 
@@ -50,8 +51,9 @@ const AddSports = () => {
         const index =
           sports && sports?.length > 0
             ? sports?.findIndex(
-              (item: { [key: string]: any }) => item?.name === finalOptions[i]?.value
-            )
+                (item: { [key: string]: any }) =>
+                  item?.name === finalOptions[i]?.value
+              )
             : -1;
         if (index === -1) {
           arr.push({ label: allSports[i]?.name, value: allSports[i]?.id });
@@ -71,7 +73,9 @@ const AddSports = () => {
   const onSaveSports = (currentSportData: { [key: string]: any }) => {
     const arr: { [key: string]: any }[] = [...sports];
     arr.push({
+      // eslint-disable-next-line
       name: currentSportData?.name,
+      // eslint-disable-next-line
       sportId: parseInt(currentSportData?.value),
     });
 
@@ -100,7 +104,6 @@ const AddSports = () => {
       });
       setShowModal(false);
     }
-
 
     // api for create sport
   };

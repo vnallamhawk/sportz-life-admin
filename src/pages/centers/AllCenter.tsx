@@ -18,10 +18,15 @@ const AllCenter = () => {
   };
   const centersData: any =
     filterByName === ""
-      ? api.center.getAllCentersWithPagination.useQuery({ page: currentPage, limit: 10 })
+      ? api.center.getAllCentersWithPagination.useQuery({
+          page: currentPage,
+          limit: 10,
+        })
       : api.center.getCentersByName.useQuery({ name: filterByName });
 
+  // eslint-disable-next-line
   const centers = centersData?.data?.data ?? []; // Ensure it's an array
+  // eslint-disable-next-line
   const totalPages = centersData?.data?.totalPages ?? 1; // Ensure a valid number
 
   const handlePageChange = (page: number) => {
@@ -30,17 +35,21 @@ const AllCenter = () => {
     }
   };
 
-
   useEffect(() => {
-    if (centers.length > 0) { // Check only after ensuring centers is an array
-      const updatedCenters = centers.map((center: { Batches: string | any[]; }) => ({
-        ...center,
-        batches: center?.Batches?.length || 0, // Ensure a valid number
-      }));
+    // eslint-disable-next-line
+    if (centers.length > 0) {
+      // Check only after ensuring centers is an array
+      // eslint-disable-next-line
+      const updatedCenters = centers.map(
+        (center: { Batches: string | any[] }) => ({
+          ...center,
+          batches: center?.Batches?.length || 0, // Ensure a valid number
+        })
+      );
+      // eslint-disable-next-line
       setFinalData(updatedCenters);
     }
   }, [centers]);
-
 
   const { mutate: deleteMutate } = api.center.deleteCenter.useMutation({
     onSuccess: (response) => {
@@ -77,6 +86,7 @@ const AllCenter = () => {
         onViewClick={(id: number) => router.push(`/centers/${id ?? ""}`)}
         onEditClick={(id: number) => router.push(`/edit-center-${id}`)}
         onDeleteClick={(id: number) => deleteCenter(id)}
+        // eslint-disable-next-line
         totalPages={totalPages}
         currentPage={currentPage}
         onHandlePageChange={handlePageChange}

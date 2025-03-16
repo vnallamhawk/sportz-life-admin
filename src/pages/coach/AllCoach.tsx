@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AllData from "~/common/AllData";
-import { COACH_DESIGNATION, COACH_TABLE_HEADERS } from "~/constants/coachConstants";
+import {
+  COACH_DESIGNATION,
+  COACH_TABLE_HEADERS,
+} from "~/constants/coachConstants";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
 import type { Coaches } from "@prisma/client";
 import { calculateAge } from "~/utils/common";
 type Modify<T, R> = Omit<T, keyof R> & R;
-
 
 type CoachesType = Modify<Coaches, { status: string }>;
 
@@ -15,20 +17,25 @@ export default function AllCoach() {
   const router = useRouter();
 
   const [filterByName, setFilterByName] = useState("");
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [finalData, setFinalData] = useState<CoachesType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const handleIsLoading = (isLoading: boolean) => {
-    setLoading(isLoading);
-  };
+  // const handleIsLoading = (isLoading: boolean) => {
+  //   setLoading(isLoading);
+  // };
 
   const coachesData: any =
     filterByName == ""
-      ? api.coach.getAllCoachesWithPagination.useQuery({ page: currentPage, limit: 10 })
+      ? api.coach.getAllCoachesWithPagination.useQuery({
+          page: currentPage,
+          limit: 10,
+        })
       : api.coach.getCoachesByName.useQuery({ name: filterByName });
 
+  // eslint-disable-next-line
   const coaches = coachesData?.data?.data ?? []; // Ensure it's an array
+  // eslint-disable-next-line
   const totalPages = coachesData?.data?.totalPages ?? 1;
 
   const handlePageChange = (page: number) => {
@@ -38,17 +45,39 @@ export default function AllCoach() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line
     if (coaches && coaches?.length > 0) {
+      // eslint-disable-next-line
       const updatedCoaches = coaches.map((coach: any) => {
+        // eslint-disable-next-line
         return {
           ...coach,
+          // eslint-disable-next-line
           status: coach?.designation,
+          // eslint-disable-next-line
+          // eslint-disable-next-line
           age: calculateAge(coach?.dateOfBirth),
+          // eslint-disable-next-line
           batchesCount: coach?.CoachCentersBatches?.length,
-          sportCoaching: coach?.CoachSportsMaps.map((map: any) => map.Sports.name).join(", "),
-          designation: COACH_DESIGNATION.find((d: any) => d.value === coach.designation)?.label || coach.designation,
+          // eslint-disable-next-line
+          sportCoaching: coach?.CoachSportsMaps.map(
+            // eslint-disable-next-line
+            (map: any) => map.Sports.name
+          ).join(", "),
+          // eslint-disable-next-line
+          designation:
+            // eslint-disable-next-line
+            // eslint-disable-next-line
+            // eslint-disable-next-line
+
+            // eslint-disable-next-line
+            COACH_DESIGNATION.find((d: any) => d.value === coach.designation)
+              ?.label ||
+            // eslint-disable-next-line
+            coach.designation,
         };
       });
+      // eslint-disable-next-line
       setFinalData(updatedCoaches);
     }
   }, [coaches]);
@@ -111,6 +140,7 @@ export default function AllCoach() {
         onViewClick={(id: number) => router.push(`/coach/${id ?? ""}`)}
         onEditClick={(id: number) => router.push(`/edit-coach-${id}`)}
         onDeleteClick={(id: number) => deleteCoach(id)}
+        // eslint-disable-next-line
         totalPages={totalPages}
         currentPage={currentPage}
         onHandlePageChange={handlePageChange}

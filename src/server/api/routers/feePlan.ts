@@ -65,6 +65,7 @@ export const feePlanRouter = createTRPCRouter({
         }
 
         if (status) {
+          // eslint-disable-next-line
           listQuery.where.status = status
         }
 

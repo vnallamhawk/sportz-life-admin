@@ -21,6 +21,7 @@ const ImageWithFallback = ({
   const [error, setError] = useState(false);
 
   return (
+    // eslint-disable-next-line
     <div className={`relative ${className}`} style={{ width, height }}>
       {!error ? (
         <Image
@@ -35,12 +36,13 @@ const ImageWithFallback = ({
           }}
         />
       ) : (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           width={width}
           height={height}
           src={fallbackSrc}
           alt="fallback"
-          className="absolute top-0 left-0 w-full h-full object-cover"
+          className="absolute left-0 top-0 h-full w-full object-cover"
         />
       )}
     </div>

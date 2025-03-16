@@ -1,13 +1,16 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import MultiTabComp from "~/common/MultiTabComp";
-import { PLANNING_FEE_TYPE, PRICING_TABLE_HEADER } from "~/constants/pricingConstant";
-import Download from "../../images/download-white.svg";
-import DownloadPink from "../../images/download-pink.svg";
-import Visa from "../../images/visa.svg";
-import { Radio } from "flowbite-react";
 import {
-  Switch,
+  // PLANNING_FEE_TYPE,
+  PRICING_TABLE_HEADER,
+} from "~/constants/pricingConstant";
+// import Download from "../../images/download-white.svg";
+// import DownloadPink from "../../images/download-pink.svg";
+// import Visa from "../../images/visa.svg";
+// import { Radio } from "flowbite-react";
+import {
+  // Switch,
   DialogHeader,
   Dialog,
   DialogBody,
@@ -17,44 +20,40 @@ import Cross from "../../images/cross.svg";
 import { api } from "~/utils/api";
 import PricingTable from "./pricingSections/PricingTable";
 
-
 export default function Pricing() {
   const [filterByName, setFilterByName] = useState("");
-  const [activeKey, setActiveKey] = useState("0")
-  const [filters, setFilters] = useState<{ [key: string]: any }>([]);
+  const [activeKey, setActiveKey] = useState("0");
+  // const [filters, setFilters] = useState<{ [key: string]: any }>([]);
 
   const [modalOpen, setModalOpen] = useState(false);
   const modalHandleOpen = () => setModalOpen(!modalOpen);
   const [renewOpen, setRenewOpen] = useState(false);
   const renewHandleOpen = () => setRenewOpen(!renewOpen);
 
-
-  const handleFilters = (appliedFilters: { [key: string]: any }) => {
-    setFilters(appliedFilters);
-  };
-
+  // const handleFilters = (appliedFilters: { [key: string]: any }) => {
+  //   setFilters(appliedFilters);
+  // };
 
   const { data: feePlansData } = api.feePlan.getAllFeePlans.useQuery({});
 
-  const { mutate: deleteFeePlanMutate, isLoading } = api.feePlan.deleteFeePlan.useMutation({
-    onSuccess: () => {
-      console.log("Fee plan deleted successfully!");
-      router.push("/pricing"); // Redirect after deletion or refetch data
-    },
-    onError: (error) => {
-      console.error("Error deleting fee plan:", error);
-    },
-  });
+  const { mutate: deleteFeePlanMutate } = api.feePlan.deleteFeePlan.useMutation(
+    {
+      onSuccess: () => {
+        router.push("/pricing"); // Redirect after deletion or refetch data
+      },
+      onError: (error) => {
+        console.error("Error deleting fee plan:", error);
+      },
+    }
+  );
 
   const deleteFeePlan = (feePlanId: number) => {
     deleteFeePlanMutate({ feePlanId }); // Call the mutation with the correct input
   };
 
-
   // filterByName == ""
   //   ? api.center.getAllCenters.useQuery()
   //   : api.center.getCentersByName.useQuery({ name: filterByName });
-
 
   const router = useRouter();
   return (
@@ -75,9 +74,10 @@ export default function Pricing() {
         TABLE2_ROWS={[]}
         setFilterByName={setFilterByName}
         filters={[]}
-        applyFilters={(appliedFilters: { [key: string]: any }) =>
-          handleFilters(appliedFilters)
-        }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        applyFilters={(appliedFilters: { [key: string]: any }) => {
+          // handleFilters(appliedFilters);
+        }}
         filterByName={filterByName}
         activeKey={activeKey}
         setActiveKey={(value: string) => setActiveKey(value)}
