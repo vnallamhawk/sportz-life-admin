@@ -19,6 +19,7 @@ model Academies {
   Admin             Admin[]
   Admins            Admins[]
   Assessments       Assessments[]
+  AthleteOrders     AthleteOrders[]
   Athletes          Athletes[]
   Batches           Batches[]
   CenterSports      CenterSports[]
@@ -43,6 +44,7 @@ model Centers {
   createdBy                Int?
   AssessmentCenters        AssessmentCenters[]
   AthleteAttendances       AthleteAttendances[]
+  AthleteOrders            AthleteOrders[]
   AthleteSportsMaps        AthleteSportsMaps[]
   Batches                  Batches[]
   CenterInventories        CenterInventories[]
@@ -97,6 +99,7 @@ model Sports {
   Assessments            Assessments[]
   AthleteAttendances     AthleteAttendances[]
   AthleteBatchesMaps     AthleteBatchesMaps[]
+  AthleteOrders          AthleteOrders[]
   AthleteSportsMaps      AthleteSportsMaps[]
   Batches                Batches[]
   CenterSports           CenterSports[]
@@ -322,7 +325,7 @@ model Athletes {
   weight                     Float                        @db.Float
   weightUnit                 Athletes_weightUnit
   fatherName                 String                       @db.VarChar(255)
-  countryCode                String?                      @default("+91") @db.VarChar(255)
+  countryCode                String                       @default("+91") @db.VarChar(255)
   phone                      String?                      @unique(map: "phone") @db.VarChar(255)
   email                      String?                      @unique(map: "email") @db.VarChar(255)
   address                    String?                      @db.VarChar(255)
@@ -332,6 +335,8 @@ model Athletes {
   status                     Int?                         @default(1) @db.TinyInt
   createdAt                  DateTime                     @db.DateTime(0)
   updatedAt                  DateTime                     @db.DateTime(0)
+  buildingNumber             String?                      @db.VarChar(255)
+  apartmentNumber            String?                      @db.VarChar(255)
   AssessmentAssignedAthletes AssessmentAssignedAthletes[]
   AssessmentResults          AssessmentResults[]
   Athlete_Orders             Athlete_Orders[]
@@ -393,26 +398,39 @@ model AthleteBatchesMaps {
 }
 
 model AthleteOrders {
-  id          Int                    @id @unique(map: "id") @default(autoincrement())
+  id          Int                        @id @unique(map: "id") @default(autoincrement())
   athleteId   Int
   batchId     Int
   feePlanId   Int
-  orderDate   DateTime               @db.Date
-  updateDate  DateTime               @db.Date
-  dueDate     DateTime               @db.Date
-  status      Payments_paymentStatus
-  baseFee     Float                  @db.Float
-  totalAmount Float                  @db.Float
-  lateFee     Float?                 @default(0) @db.Float
-  createdAt   DateTime               @db.DateTime(0)
-  updatedAt   DateTime               @db.DateTime(0)
-  Athletes    Athletes               @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "AthleteOrders_ibfk_813")
-  Batches     Batches                @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "AthleteOrders_ibfk_815")
-  FeePlans    FeePlans               @relation(fields: [feePlanId], references: [id], onDelete: NoAction, map: "AthleteOrders_ibfk_814")
+  orderDate   DateTime                   @db.Date
+  updateDate  DateTime?                  @db.Date
+  status      AthleteOrders_status?      @default(inactive)
+  baseFee     Float                      @db.Float
+  totalAmount Float                      @db.Float
+  lateFee     Float?                     @default(0) @db.Float
+  createdAt   DateTime                   @db.DateTime(0)
+  updatedAt   DateTime                   @db.DateTime(0)
+  academyId   Int
+  centerId    Int
+  sportId     Int
+  gst         AthleteOrders_gst          @default(dbgenerated("18"))
+  gstAmount   Float?                     @default(0) @db.Float
+  lateFeeType AthleteOrders_lateFeeType?
+  planType    AthleteOrders_planType
+  paymentType AthleteOrders_paymentType?
+  Athletes    Athletes                   @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "AthleteOrders_ibfk_813")
+  Batches     Batches                    @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "AthleteOrders_ibfk_815")
+  FeePlans    FeePlans                   @relation(fields: [feePlanId], references: [id], onDelete: NoAction, map: "AthleteOrders_ibfk_814")
+  Academies   Academies                  @relation(fields: [academyId], references: [id], onDelete: NoAction, map: "AthleteOrders_ibfk_669")
+  Centers     Centers                    @relation(fields: [centerId], references: [id], onDelete: NoAction, map: "AthleteOrders_ibfk_670")
+  Sports      Sports                     @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "AthleteOrders_ibfk_671")
 
   @@index([athleteId], map: "athleteId")
   @@index([batchId], map: "batchId")
   @@index([feePlanId], map: "feePlanId")
+  @@index([academyId], map: "academyId")
+  @@index([centerId], map: "centerId")
+  @@index([sportId], map: "sportId")
 }
 
 model AthleteSportsMaps {
@@ -502,22 +520,22 @@ model Categories {
 }
 
 model CoachAttendances {
-  id         Int                            @id @unique(map: "id")
+  id         Int                          @id @unique(map: "id")
   coachId    Int
   centerId   Int
   sportId    Int
   batchId    Int
-  attendance AthleteAttendances_attendance? @default(present)
-  date       DateTime                       @db.Date
-  time       DateTime?                      @db.Time(0)
-  status     Boolean?                       @default(true)
-  createdAt  DateTime                       @db.DateTime(0)
-  updatedAt  DateTime                       @db.DateTime(0)
-  deletedAt  DateTime?                      @db.DateTime(0)
-  Coaches    Coaches                        @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "CoachAttendances_ibfk_788")
-  Centers    Centers                        @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "CoachAttendances_ibfk_787")
-  Sports     Sports                         @relation(fields: [sportId], references: [id], onDelete: Cascade, map: "CoachAttendances_ibfk_786")
-  Batches    Batches                        @relation(fields: [batchId], references: [id], onDelete: Cascade, map: "CoachAttendances_ibfk_789")
+  attendance CoachAttendances_attendance? @default(present)
+  date       DateTime                     @db.Date
+  time       DateTime?                    @db.Time(0)
+  status     Boolean?                     @default(true)
+  createdAt  DateTime                     @db.DateTime(0)
+  updatedAt  DateTime                     @db.DateTime(0)
+  deletedAt  DateTime?                    @db.DateTime(0)
+  Coaches    Coaches                      @relation(fields: [coachId], references: [id], onDelete: Cascade, map: "CoachAttendances_ibfk_788")
+  Centers    Centers                      @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "CoachAttendances_ibfk_787")
+  Sports     Sports                       @relation(fields: [sportId], references: [id], onDelete: Cascade, map: "CoachAttendances_ibfk_786")
+  Batches    Batches                      @relation(fields: [batchId], references: [id], onDelete: Cascade, map: "CoachAttendances_ibfk_789")
 
   @@index([coachId], map: "coachId")
   @@index([sportId], map: "sportId")
@@ -589,7 +607,7 @@ model Coaches {
   countryCode               String                      @default("+91") @db.VarChar(255)
   phone                     String?                     @unique(map: "phone") @db.VarChar(255)
   email                     String?                     @unique(map: "email") @db.VarChar(255)
-  about                     String?                      @db.Text
+  about                     String                      @db.Text
   payrollId                 Int?
   experienceLevel           Coaches_experienceLevel
   centerId                  Int?
@@ -676,7 +694,6 @@ model Events {
   ageStart        Int
   ageEnd          Int
   registrationFee Float                        @db.Float
-  eventFlayer     String                       @db.VarChar(255)
   description     String                       @db.VarChar(255)
   country         String                       @db.VarChar(255)
   state           String                       @db.VarChar(255)
@@ -686,8 +703,11 @@ model Events {
   startDate       DateTime                     @db.Date
   endDate         DateTime                     @db.Date
   startTime       DateTime                     @db.Time(0)
+  latitude        Float                        @db.Float
+  longitude       Float                        @db.Float
   EventSports     EventSports[]
   Centers         Centers                      @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "Events_ibfk_21")
+  Resources       Resources[]
 
   @@index([centerId], map: "centerId")
 }
@@ -813,23 +833,29 @@ model Otps {
 
 model Payments {
   id                Int                     @id @default(autoincrement())
+  orderId           Int
   athleteId         Int
   sportId           Int
   batchId           Int
   price             Float                   @db.Float
   amountToBePaid    Float                   @db.Float
+  gst               Payments_gst            @default(dbgenerated("18"))
+  gstAmount         Float?                  @default(0) @db.Float
   paidAmount        Float?                  @default(0) @db.Float
   planType          Payments_planType
-  paymentType       Payments_paymentType
+  paymentType       Payments_paymentType?
   paymentStatus     Payments_paymentStatus? @default(pending)
   status            Boolean?                @default(true)
-  createdAt         DateTime                @db.DateTime(0)
-  updatedAt         DateTime                @db.DateTime(0)
-  orderId           Int
-  razorpayOrderId   String                  @db.VarChar(255)
+  razorpayOrderId   String?                 @db.VarChar(255)
   razorpayPaymentId String?                 @db.VarChar(255)
   razorpaySignature String?                 @db.VarChar(255)
-  Athlete_Orders    Athlete_Orders          @relation(fields: [orderId], references: [id], onDelete: NoAction, map: "Payments_ibfk_1802")
+  reciptNo          Int?
+  createdAt         DateTime                @db.DateTime(0)
+  updatedAt         DateTime                @db.DateTime(0)
+  totalAmount       Float                   @db.Float
+  lateFeeType       Payments_lateFeeType?
+  lateFee           Float?                  @default(0) @db.Float
+  nextDueDate       DateTime?               @db.Date
   Athletes          Athletes                @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "Payments_ibfk_808")
   Sports            Sports                  @relation(fields: [sportId], references: [id], onDelete: NoAction, map: "Payments_ibfk_809")
   Batches           Batches                 @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "Payments_ibfk_810")
@@ -837,7 +863,6 @@ model Payments {
   @@index([athleteId], map: "athleteId")
   @@index([batchId], map: "batchId")
   @@index([sportId], map: "sportId")
-  @@index([orderId], map: "orderId")
 }
 
 model Ratings {
@@ -868,11 +893,14 @@ model Resources {
   createdAt      DateTime        @db.DateTime(0)
   updatedAt      DateTime        @db.DateTime(0)
   deletedAt      DateTime?       @db.DateTime(0)
+  eventId        Int?
   TrainingDrills TrainingDrills? @relation(fields: [drillId], references: [id], map: "Resources_ibfk_565")
   TrainingPlans  TrainingPlans?  @relation(fields: [planId], references: [id], map: "Resources_ibfk_566")
+  Events         Events?         @relation(fields: [eventId], references: [id], map: "Resources_ibfk_1201")
 
   @@index([drillId], map: "drillId")
   @@index([planId], map: "planId")
+  @@index([eventId], map: "eventId")
 }
 
 model ScheduledCenterBatches {
@@ -1085,7 +1113,7 @@ model Tickets {
 model Tokens {
   id          Int             @id @default(autoincrement())
   userId      Int?
-  countryCode String          @db.VarChar(255)
+  countryCode String          @default("+91") @db.VarChar(255)
   phone       String          @unique(map: "phone") @db.VarChar(255)
   expiryDate  DateTime?       @db.DateTime(0)
   token       String?         @db.VarChar(255)
@@ -1121,27 +1149,28 @@ model TrainingDrills {
 }
 
 model TrainingPlans {
-  id               Int                    @id @default(autoincrement())
-  name             String                 @db.VarChar(255)
-  objective        String?                @db.VarChar(255)
-  description      String?                @db.VarChar(255)
-  coachingPoint    String?                @db.VarChar(255)
-  duration         TrainingPlans_duration
-  level            TrainingPlans_level
-  fitnessComponent Json?
-  sportId          Int?
-  coachId          Int
-  isScheduled      Boolean?
-  status           Boolean?
-  createdAt        DateTime               @db.DateTime(0)
-  updatedAt        DateTime               @db.DateTime(0)
-  deletedAt        DateTime?              @db.DateTime(0)
-  time             DateTime?              @db.Time(0)
-  Resources        Resources[]
-  ScheduledPlans   ScheduledPlans[]
-  Sports           Sports?                @relation(fields: [sportId], references: [id], map: "TrainingPlans_ibfk_581")
-  Coaches          Coaches                @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "TrainingPlans_ibfk_582")
-  UnscheduledPlans UnscheduledPlans[]
+  id                Int                              @id @default(autoincrement())
+  name              String                           @db.VarChar(255)
+  objective         String?                          @db.VarChar(255)
+  description       String?                          @db.VarChar(255)
+  coachingPoint     String?                          @db.VarChar(255)
+  duration          TrainingPlans_duration
+  level             TrainingPlans_level
+  fitnessComponent  Json?
+  sportId           Int?
+  coachId           Int
+  isScheduled       Boolean?
+  status            Boolean?
+  createdAt         DateTime                         @db.DateTime(0)
+  updatedAt         DateTime                         @db.DateTime(0)
+  deletedAt         DateTime?                        @db.DateTime(0)
+  time              DateTime?                        @db.Time(0)
+  traningPlanStatus TrainingPlans_traningPlanStatus?
+  Resources         Resources[]
+  ScheduledPlans    ScheduledPlans[]
+  Sports            Sports?                          @relation(fields: [sportId], references: [id], map: "TrainingPlans_ibfk_581")
+  Coaches           Coaches                          @relation(fields: [coachId], references: [id], onDelete: NoAction, map: "TrainingPlans_ibfk_582")
+  UnscheduledPlans  UnscheduledPlans[]
 
   @@index([coachId], map: "coachId")
   @@index([sportId], map: "sportId")
@@ -1260,23 +1289,24 @@ model AssessmentCenterSports {
 }
 
 model Athlete_Orders {
-  id          Int                   @id @unique(map: "id") @default(autoincrement())
+  id          Int                    @id @unique(map: "id") @default(autoincrement())
   athleteId   Int
   batchId     Int
   feePlanId   Int
-  orderDate   DateTime              @db.Date
-  dueDate     DateTime              @db.Date
-  status      Athlete_Orders_status
-  totalAmount Float                 @db.Float
-  lateFee     Float?                @default(0) @db.Float
-  baseFee     Float                 @db.Float
-  createdAt   DateTime              @db.DateTime(0)
-  updatedAt   DateTime              @db.DateTime(0)
-  updateDate  DateTime              @db.Date
-  Athletes    Athletes              @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "Athlete Orders_ibfk_2379")
-  Batches     Batches               @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "Athlete Orders_ibfk_2380")
-  FeePlans    FeePlans              @relation(fields: [feePlanId], references: [id], onDelete: NoAction, map: "Athlete Orders_ibfk_2381")
-  Payments    Payments[]
+  orderDate   DateTime               @db.Date
+  updateDate  DateTime               @db.Date
+  dueDate     DateTime               @db.Date
+  gst         Athlete_Orders_gst     @default(dbgenerated("18"))
+  baseFee     Float                  @db.Float
+  totalAmount Float                  @db.Float
+  lateFee     Float?                 @default(0) @db.Float
+  gstAmount   Float?                 @default(0) @db.Float
+  status      Athlete_Orders_status?
+  createdAt   DateTime               @db.DateTime(0)
+  updatedAt   DateTime               @db.DateTime(0)
+  Athletes    Athletes               @relation(fields: [athleteId], references: [id], onDelete: NoAction, map: "Athlete Orders_ibfk_2379")
+  Batches     Batches                @relation(fields: [batchId], references: [id], onDelete: NoAction, map: "Athlete Orders_ibfk_2380")
+  FeePlans    FeePlans               @relation(fields: [feePlanId], references: [id], onDelete: NoAction, map: "Athlete Orders_ibfk_2381")
 
   @@index([athleteId], map: "athleteId")
   @@index([batchId], map: "batchId")
@@ -1392,14 +1422,6 @@ enum BatchSchedules_day {
   fri
   sat
   sun
-}
-
-enum AthleteAttendances_attendance {
-  present
-  absent
-  rest_day   @map("rest day")
-  cancelled
-  not_marked @map("not marked")
 }
 
 enum AthleteSportsMaps_trainingLevel {
@@ -1568,10 +1590,6 @@ enum InjuryLogs_activityType {
   other
 }
 
-enum Payments_planType {
-  one_time
-}
-
 enum Tests_fitnessComponent {
   endurance
   speed
@@ -1598,10 +1616,6 @@ enum InjuryLogs_injuryType {
   severe
   moderate
   mild
-}
-
-enum Payments_paymentType {
-  monthly
 }
 
 enum Assessments_interval {
@@ -1753,4 +1767,100 @@ enum Tests_typeTest {
   sports_specific_skill @map("sports specific skill")
   tactical
   psychological
+}
+
+enum AthleteAttendances_attendance {
+  present
+  absent
+  rest_day   @map("rest day")
+  cancelled
+  not_marked @map("not marked")
+  late
+}
+
+enum CoachAttendances_attendance {
+  present
+  absent
+  rest_day   @map("rest day")
+  cancelled
+  not_marked @map("not marked")
+  late
+}
+
+enum AthleteOrders_status {
+  active
+  inactive
+}
+
+enum Athlete_Orders_gst {
+
+  // 0 @map("0")
+  // 5 @map("5")
+  // 12 @map("12")
+  // 15 @map("15")
+  // 18 @map("18")
+  // 28 @map("28")
+  @@map("Athlete Orders_gst")
+}
+
+enum Payments_gst {
+  // 0 @map("0")
+  // 5 @map("5")
+  // 12 @map("12")
+  // 15 @map("15")
+  // 18 @map("18")
+  // 28 @map("28")
+}
+
+enum Payments_planType {
+  free
+  one_time  @map("one time")
+  recurring
+}
+
+enum Payments_paymentType {
+  Monthly
+  Bi_Monthly  @map("Bi-Monthly")
+  Quarterly
+  Half_Yearly @map("Half Yearly")
+  Annually
+}
+
+enum AthleteOrders_gst {
+  // 0 @map("0")
+  // 5 @map("5")
+  // 12 @map("12")
+  // 15 @map("15")
+  // 18 @map("18")
+  // 28 @map("28")
+}
+
+enum TrainingPlans_traningPlanStatus {
+  ongoing
+  completed
+  upcoming
+}
+
+enum AthleteOrders_lateFeeType {
+  amount
+  percentage
+}
+
+enum AthleteOrders_planType {
+  free
+  one_time  @map("one time")
+  recurring
+}
+
+enum AthleteOrders_paymentType {
+  Monthly
+  Bi_Monthly  @map("Bi-Monthly")
+  Quarterly
+  Half_Yearly @map("Half Yearly")
+  Annually
+}
+
+enum Payments_lateFeeType {
+  amount
+  percentage
 }
