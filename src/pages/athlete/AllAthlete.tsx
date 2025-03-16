@@ -18,21 +18,24 @@ export default function Athlete() {
   const [filterByName, setFilterByName] = useState("");
   const router = useRouter();
   const [finalData, setFinalData] = useState<Athletes[]>([]);
-  const [filters, setFilters] = useState<{ [key: string]: any }>([]);
+  // const [filters, setFilters] = useState<{ [key: string]: any }>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const athletesData: any =
     filterByName == ""
-      ? api.athlete.getAllAthletesWithPagination.useQuery({ page: currentPage, limit: 1 })
+      ? api.athlete.getAllAthletesWithPagination.useQuery({
+          page: currentPage,
+          limit: 1,
+        })
       : api.athlete.getAthleteByName.useQuery({ name: filterByName });
   const { data: sports } = api.sports.getAllSports.useQuery();
   const { data: centers } = api.center.getAllCenters.useQuery();
   const { data: batches } = api.batches.getAllBatches.useQuery();
 
+  // eslint-disable-next-line
   const athletes = athletesData?.data?.data ?? []; // Ensure it's an array
+  // eslint-disable-next-line
   const totalPages = athletesData?.data?.totalPages ?? 1; // Ensure a valid number
-
-  console.log({ athletes })
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -64,7 +67,9 @@ export default function Athlete() {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line
     if (athletes && athletes?.length > 0) {
+      // eslint-disable-next-line
       const updatedAthletes: Athletes[] = athletes.map((athletes: Athletes) => {
         return {
           ...athletes,
@@ -79,9 +84,9 @@ export default function Athlete() {
     deleteMutate({ athleteId: id, deletedAt: moment().toISOString() });
   };
 
-  const handleFilters = (appliedFilters: { [key: string]: any }) => {
-    setFilters(appliedFilters);
-  };
+  // const handleFilters = (appliedFilters: { [key: string]: any }) => {
+  //   setFilters(appliedFilters);
+  // };
 
   return (
     <>
@@ -138,13 +143,27 @@ export default function Athlete() {
             ],
           },
         ]}
-        applyFilters={(appliedFilters: { [key: string]: any }) =>
-          handleFilters(appliedFilters)
+        applyFilters={() =>
+          // appliedFilters: { [key: string]: any }
+          {
+            // handleFilters(appliedFilters);
+          }
         }
-        onViewClick={(id: number) => router.replace(`/athlete/${id ?? ""}`).then(() => window.location.reload())}
-        onEditClick={(id: number) => router.replace(`/edit-athlete-${id}`).then(() => window.location.reload())}
+        // eslint-disable-next-line
+        onViewClick={(id: number) =>
+          router
+            .replace(`/athlete/${id ?? ""}`)
+            .then(() => window.location.reload())
+        }
+        // eslint-disable-next-line
+        onEditClick={(id: number) =>
+          router
+            .replace(`/edit-athlete-${id}`)
+            .then(() => window.location.reload())
+        }
         onDeleteClick={(id: number) => deleteAthlete(id)}
         rowSelection={true}
+        // eslint-disable-next-line
         totalPages={totalPages}
         currentPage={currentPage}
         onHandlePageChange={handlePageChange}

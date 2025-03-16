@@ -1,8 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import Button from "~/components/Button";
-import Card from "~/components/Card";
-import CardTitle from "~/components/Card/CardTitle";
-import Image from "next/image";
+import {
+  // useContext
+  useEffect,
+  useState,
+} from "react";
+// import Button from "~/components/Button";
+// import Card from "~/components/Card";
+// import CardTitle from "~/components/Card/CardTitle";
+// import Image from "next/image";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
 import staffCalendar from "../../images/Staff_calendar.png";
@@ -25,42 +29,40 @@ import AllData from "~/common/AllData";
 import DetailPage from "~/common/DetailPage";
 
 import // DATE_TIME_FORMAT,
-  // NO_DATA,
-  "~/globals/globals";
+// NO_DATA,
+"~/globals/globals";
 // import {
 //   type CoachWithRelations,
 //   ExperienceLevelEnum,
 //   TrainingLevelEnum,
 // } from "~/types/coach";
-import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
-import { ToastContext } from "~/contexts/Contexts";
 // import { dateFormat } from "~/helpers/date";
 // import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 // import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
-import router from "next/router";
 import s3 from "../../lib/aws";
 import { calculateAge } from "~/utils/common";
 import { COACH_DASH_BATCH_TABLE_HEADERS } from "~/constants/centerDashTables";
 import { STAFF_DASH_PAYROLL_TABLE_HEADERS } from "~/constants/staffConstants";
-import { COACH_CERTIFICATE_TABLE_HEADERS, COACH_DESIGNATION } from "~/constants/coachConstants";
-
+import {
+  COACH_CERTIFICATE_TABLE_HEADERS,
+  COACH_DESIGNATION,
+} from "~/constants/coachConstants";
 
 interface CoachCentersBatchesType extends CoachCentersBatches {
-  Batches?: Batches
+  Batches?: Batches;
 }
 
 interface CoachSportsMapsType extends CoachSportsMaps {
-  Sports?: Sports
+  Sports?: Sports;
 }
 
 type Coach = Coaches & {
   CoachSportsMaps: CoachSportsMapsType[];
-  CoachQualifications: CoachQualifications[]
-  CoachCentersBatches: CoachCentersBatchesType[]
-  StaffPayroll: StaffPayroll
-  Centers: Centers
+  CoachQualifications: CoachQualifications[];
+  CoachCentersBatches: CoachCentersBatchesType[];
+  StaffPayroll: StaffPayroll;
+  Centers: Centers;
 };
-
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -77,10 +79,10 @@ export const getServerSideProps = async (
         include: {
           Batches: {
             include: {
-              Sports: true
-            }
-          }
-        }
+              Sports: true,
+            },
+          },
+        },
       },
       CoachSportsMaps: {
         include: {
@@ -88,7 +90,7 @@ export const getServerSideProps = async (
         },
       },
       StaffPayroll: true,
-      CoachQualifications: true
+      CoachQualifications: true,
     },
   });
 
@@ -98,7 +100,6 @@ export const getServerSideProps = async (
       coach: JSON.parse(JSON.stringify(coach)), // <== here is a solution
     },
   };
-
 };
 
 const tabs = [
@@ -132,14 +133,7 @@ const tabs = [
   },
 ];
 
-
-export default function Page({
-  coach,
-}: {
-  coach: Coach;
-  sports: Sports[];
-}) {
-
+export default function Page({ coach }: { coach: Coach; sports: Sports[] }) {
   const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>();
 
   const [selectedTab, setSelectedTab] = useState<string | undefined>(
@@ -153,35 +147,38 @@ export default function Page({
   useEffect(() => {
     if (finalTabs && finalTabs.length > 0 && Object.keys(coach).length > 0) {
       const arr: TabType[] = [...finalTabs];
-      const certificatesIndex = arr.findIndex((item: TabType) => item.name === "certificates");
+      const certificatesIndex = arr.findIndex(
+        (item: TabType) => item.name === "certificates"
+      );
       if (certificatesIndex > -1 && coach?.CoachQualifications) {
-        const obj: TabType = { ...arr[certificatesIndex] }
-        obj.value = coach?.CoachQualifications ? coach?.CoachQualifications?.length : 0;
-        arr[certificatesIndex] = obj
+        const obj: TabType = { ...arr[certificatesIndex] };
+        obj.value = coach?.CoachQualifications
+          ? coach?.CoachQualifications?.length
+          : 0;
+        arr[certificatesIndex] = obj;
       }
-      const batchIndex = arr.findIndex((item: TabType) => item.name === "batches");
+      const batchIndex = arr.findIndex(
+        (item: TabType) => item.name === "batches"
+      );
       if (batchIndex > -1 && coach?.CoachCentersBatches) {
-        const batchObj: TabType = { ...arr[batchIndex] }
+        const batchObj: TabType = { ...arr[batchIndex] };
 
-        batchObj.value = coach?.CoachCentersBatches ? coach?.CoachCentersBatches?.length : 0;
-        arr[batchIndex] = batchObj
-
+        batchObj.value = coach?.CoachCentersBatches
+          ? coach?.CoachCentersBatches?.length
+          : 0;
+        arr[batchIndex] = batchObj;
       }
       if (JSON.stringify(finalTabs) !== JSON.stringify(arr)) {
         setFinalTabs(arr);
-
       }
     }
   }, [coach, finalTabs]);
 
   useEffect(() => {
-
     if (coach && coach.image) {
-      void getSignedUrlForImage(coach.image)
+      void getSignedUrlForImage(coach.image);
     }
-
-
-  }, [coach])
+  }, [coach]);
 
   // eslint-disable-next-line @typescript-eslint/require-await
   const getSignedUrlForImage = async (key: string) => {
@@ -200,7 +197,7 @@ export default function Page({
   const handleClick = (tab: TabType) => {
     let component;
     let TABLE_HEAD: TableHead = [];
-    let TABLE_ROWS: { [key: string]: any, id: number }[] = [];
+    let TABLE_ROWS: { [key: string]: any; id: number }[] = [];
     if (tab?.name === "attendance") {
       component = <Attendance />;
     } else {
@@ -208,18 +205,26 @@ export default function Page({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         TABLE_HEAD = COACH_DASH_BATCH_TABLE_HEADERS;
 
-        coach.CoachCentersBatches = coach?.CoachCentersBatches?.map((item: any) => ({
-          ...item,
-          center: coach?.Centers?.name, // Access 'Centers' from each batch entry
-          batchName: item.Batches?.name,
-          students: item.Batches?.capacity,
-          startDate: new Date(item.Batches?.createdAt).toLocaleDateString("en-GB"),
-          sportName: item.Batches?.Sports?.name
-        }));
+        // eslint-disable-next-line
+        coach.CoachCentersBatches = coach?.CoachCentersBatches?.map(
+          // eslint-disable-next-line
+          (item: any) => ({
+            ...item,
+            center: coach?.Centers?.name, // Access 'Centers' from each batch entry
+            // eslint-disable-next-line
+            batchName: item.Batches?.name,
+            // eslint-disable-next-line
+            students: item.Batches?.capacity,
+            // eslint-disable-next-line
+            startDate: new Date(item.Batches?.createdAt).toLocaleDateString(
+              "en-GB"
+            ),
+            // eslint-disable-next-line
+            sportName: item.Batches?.Sports?.name,
+          })
+        );
 
         TABLE_ROWS = coach?.CoachCentersBatches || [];
-
-
       } else if (tab?.name === "payroll") {
         TABLE_HEAD = STAFF_DASH_PAYROLL_TABLE_HEADERS;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -227,7 +232,9 @@ export default function Page({
       } else if (tab?.name === "certificates") {
         TABLE_HEAD = COACH_CERTIFICATE_TABLE_HEADERS;
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        TABLE_ROWS = coach?.CoachQualifications ? coach?.CoachQualifications : [];
+        TABLE_ROWS = coach?.CoachQualifications
+          ? coach?.CoachQualifications
+          : [];
       }
 
       component = (
@@ -245,7 +252,9 @@ export default function Page({
     setSelectedTab(tab?.name);
   };
 
-  const coachDesignation = COACH_DESIGNATION.find((d) => d.value === coach.designation)?.label || coach.designation;
+  const coachDesignation =
+    COACH_DESIGNATION.find((d) => d.value === coach.designation)?.label ||
+    coach.designation;
 
   return (
     <>
