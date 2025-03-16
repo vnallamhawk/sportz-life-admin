@@ -11,8 +11,8 @@ import { calculateAge } from "~/utils/common";
 
 interface StaffType extends Staffs {
   dateOfBirth(dateOfBirth: any): number;
-  StaffDesignation?: StaffDesignation
-  Centers?: Centers
+  StaffDesignation?: StaffDesignation;
+  Centers?: Centers;
 }
 
 export default function AllStaff() {
@@ -21,51 +21,60 @@ export default function AllStaff() {
 
   const [finalData, setFinalData] = useState<StaffType[]>([]);
   const [filterByName, setFilterByName] = useState("");
-  const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
+  const createdBy = sessionData?.token
+    ? sessionData?.token?.id
+    : sessionData?.user?.id;
 
   const { data: staffs } =
     filterByName == ""
-      ? api.staff.getAllStaffs.useQuery({ createdBy: parseInt(createdBy as string) })
+      ? api.staff.getAllStaffs.useQuery({
+          createdBy: parseInt(createdBy as string),
+        })
       : api.staff.getAllStaffsByName.useQuery({ name: filterByName });
 
   useEffect(() => {
     if (staffs && staffs?.length > 0) {
       const updatedStaffs = staffs.map((staff: any) => {
+        // eslint-disable-next-line
         return {
           ...staff,
-          designation: staff.StaffDesignation ? staff.StaffDesignation.designation : "",
+          // eslint-disable-next-line
+          designation: staff.StaffDesignation
+            ? // eslint-disable-next-line
+              staff.StaffDesignation.designation
+            : "",
+          // eslint-disable-next-line
           center: staff.Centers ? staff.Centers?.name : "",
-          age: calculateAge(staff?.dateOfBirth)
-
+          // eslint-disable-next-line
+          age: calculateAge(staff?.dateOfBirth),
         };
       });
       setFinalData(updatedStaffs);
     }
   }, [staffs]);
 
-
   const { mutate: deleteMutate } = api.staff.deleteStaff.useMutation({
     onSuccess: (response) => {
-      const arr: any = [...finalData]
-      const index = finalData?.findIndex((item: Staffs) => item?.id == response?.id)
+      const arr: any = [...finalData];
+      const index = finalData?.findIndex(
+        (item: Staffs) => item?.id == response?.id
+      );
       if (index > -1) {
-        arr.splice(index, 1)
+        // eslint-disable-next-line
+        arr.splice(index, 1);
       }
-      setFinalData(arr)
-      return response
+      // eslint-disable-next-line
+      setFinalData(arr);
+      return response;
     },
   });
 
   const deleteStaff = (id: number) => {
-
-    deleteMutate({ staffId: id, deletedAt: moment().toISOString() })
-
-
-  }
+    deleteMutate({ staffId: id, deletedAt: moment().toISOString() });
+  };
 
   return (
     <>
-
       <AllData
         title="ALL STAFFS"
         addButtonText="ADD NEW STAFF"
@@ -81,7 +90,6 @@ export default function AllStaff() {
         onViewClick={(id: number) => router.push(`/staff/${id ?? ""}`)}
         onEditClick={(id: number) => router.push(`/edit-staff-${id}`)}
         onDeleteClick={(id: number) => deleteStaff(id)}
-
       />
 
       {/* {showReminder && (
