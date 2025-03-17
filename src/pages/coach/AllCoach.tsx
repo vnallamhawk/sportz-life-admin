@@ -9,6 +9,7 @@ import { api } from "~/utils/api";
 import moment from "moment-timezone";
 import type { Coaches } from "@prisma/client";
 import { calculateAge } from "~/utils/common";
+import { debounce } from "lodash";
 type Modify<T, R> = Omit<T, keyof R> & R;
 
 type CoachesType = Modify<Coaches, { status: string }>;
@@ -16,30 +17,25 @@ type CoachesType = Modify<Coaches, { status: string }>;
 export default function AllCoach() {
   const router = useRouter();
 
-  const [filterByName, setFilterByName] = useState("");
-  // const [loading, setLoading] = useState(true);
+  const [filterByName, setFilterByName] = useState<string | undefined>();
+  const [debouncedName, setDebouncedName] = useState<string | undefined>("");
   const [finalData, setFinalData] = useState<CoachesType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const debouncedQuery = debounce((value: string) => {
+    setDebouncedName(value);
+  }, 500);
 
-  // const handleIsLoading = (isLoading: boolean) => {
-  //   setLoading(isLoading);
-  // };
-
-  const coachesData: any =
-    filterByName == ""
-      ? api.coach.getAllCoachesWithPagination.useQuery({
-          page: currentPage,
-          limit: 10,
-        })
-      : api.coach.getCoachesByName.useQuery({ name: filterByName });
-
-  // eslint-disable-next-line
-  const coaches = coachesData?.data?.data ?? []; // Ensure it's an array
-  // eslint-disable-next-line
-  const totalPages = coachesData?.data?.totalPages ?? 1;
+  const { data: coachesResponse, isLoading } =
+    api.coach.getAllCoachesWithPagination.useQuery({
+      page: currentPage,
+      limit: 10,
+      name: debouncedName,
+    });
+  const coaches = coachesResponse?.data;
+  const totalPages = coachesResponse?.totalPages;
 
   const handlePageChange = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
+    if (totalPages && page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
@@ -47,7 +43,6 @@ export default function AllCoach() {
   useEffect(() => {
     // eslint-disable-next-line
     if (coaches && coaches?.length > 0) {
-      // eslint-disable-next-line
       const updatedCoaches = coaches.map((coach: any) => {
         // eslint-disable-next-line
         return {
@@ -72,7 +67,6 @@ export default function AllCoach() {
             coach.designation,
         };
       });
-      // eslint-disable-next-line
       setFinalData(updatedCoaches);
     }
   }, [coaches]);
@@ -97,29 +91,6 @@ export default function AllCoach() {
 
   return (
     <>
-      {/* <Card className="h-full">
-        <header className="flex justify-between p-2">
-          <CardTitle title="ALL COACHES" />
-          <div>
-            <Textbox
-              value={filterByName}
-              setValue={setFilterByName}
-              placeHolder="Search By Name"
-            />
-            <Button
-              className="ml-3 bg-pink-700 p-2"
-              onClick={() => router.push("/coach/AddCoach")}
-            >
-              ADD NEW COACH
-            </Button>
-          </div>
-        </header>
-        <Table
-          tableHeader={CoachTableHeader()}
-          tableBody={CoachTableBody({ name: filterByName }, handleIsLoading)}
-        />
-        {loading ? <LoadingSpinner /> : ""}
-      </Card> */}
       <AllData
         title="ALL COACHES"
         addButtonText="ADD NEW COACH"
@@ -139,6 +110,8 @@ export default function AllCoach() {
         totalPages={totalPages}
         currentPage={currentPage}
         onHandlePageChange={handlePageChange}
+        debouncedQuery={debouncedQuery}
+        isLoading={isLoading}
       />
     </>
   );

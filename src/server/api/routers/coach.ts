@@ -41,17 +41,25 @@ export const coachRouter = createTRPCRouter({
         page: z.number().min(1), // Ensures the page is at least 1
         limit: z.number().min(1).max(100), // Controls the number of records per page
         sortOrder: z.enum(["asc", "desc"]).optional().default("desc"), // Sorting order
+        name: z.string().optional()
       })
     )
     .query(async ({ ctx, input }) => {
-      const { page, limit, sortOrder } = input;
-      const skip = (page - 1) * limit; // Calculate the offset
+      const { page, limit, sortOrder, name} = input;
+      const skip = (page - 1) * limit; 
+
+      const whereCondition = {
+        deletedAt: null,
+        ...(name && {
+          name: {
+            contains: name,
+          },
+        }),
+      };
 
       const [coaches, total] = await Promise.all([
         ctx.prisma.coaches.findMany({
-          where: {
-            deletedAt: null,
-          },
+          where: whereCondition,
           include: {
             Centers: true,
             CoachCentersBatches: {
@@ -73,9 +81,7 @@ export const coachRouter = createTRPCRouter({
           },
         }),
         ctx.prisma.coaches.count({
-          where: {
-            deletedAt: null,
-          },
+          where: whereCondition
         }),
       ]);
 
@@ -112,31 +118,31 @@ export const coachRouter = createTRPCRouter({
       } catch (error) {
       }
     }),
-  getCoachesByName: publicProcedure
-    .input(
-      z.object({
-        name: z.string(),
-      })
-    )
-    .query(async (opts) => {
-      const coaches = await opts.ctx?.prisma?.coaches?.findMany({
-        where: {
-          name: {
-            contains: opts.input.name,
-          },
-        },
-        include: {
-          CoachSportsMaps: true,
-          Centers: true,
-          Batches: true,
-          // sports: true,
-          // batches: true,
-          // centers: true,
-        },
-      });
+  // getCoachesByName: publicProcedure
+  //   .input(
+  //     z.object({
+  //       name: z.string(),
+  //     })
+  //   )
+  //   .query(async (opts) => {
+  //     const coaches = await opts.ctx?.prisma?.coaches?.findMany({
+  //       where: {
+  //         name: {
+  //           contains: opts.input.name,
+  //         },
+  //       },
+  //       include: {
+  //         CoachSportsMaps: true,
+  //         Centers: true,
+  //         Batches: true,
+  //         // sports: true,
+  //         // batches: true,
+  //         // centers: true,
+  //       },
+  //     });
 
-      return coaches;
-    }),
+  //     return coaches;
+  //   }),
   createCoach: publicProcedure
     .input(
       z.object({

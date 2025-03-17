@@ -17,6 +17,7 @@ import SendReminderModal from "~/components/Modal/SendReminderModal";
 import AttendanceModal from "~/components/Modal/AttendanceModal";
 import ChangeCenterModal from "~/components/Modal/ChangeCenterModal";
 import ChangeBatchModal from "~/components/Modal/ChangeBatchModal";
+import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
 
 interface AllData {
   title: string;
@@ -35,7 +36,7 @@ interface AllData {
   TABLE_HEAD: { label: string; id: string }[];
   filter?: boolean;
   filterByName?: string;
-  setFilterByName?: any;
+  setFilterByName?: (arg0: string) => void;
   rowSelection: boolean;
   showImage?: boolean;
   onViewClick?: (id: number) => void;
@@ -47,6 +48,8 @@ interface AllData {
   totalPages?: number;
   currentPage?: number;
   onHandlePageChange?: (page: number) => void;
+  debouncedQuery?: (arg0: string) => void;
+  isLoading?: boolean;
 }
 
 const dropdownData: { [key: string]: string } = {
@@ -79,12 +82,32 @@ const AllData = ({
   totalPages,
   currentPage,
   onHandlePageChange,
+  debouncedQuery,
+  isLoading,
 }: AllData) => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [selectedComponent, setSelectedComponent] = useState<string>("");
 
   const handleOpen = () => setOpen(!open);
+
+  // const debouncedFilter = useCallback(
+  //   debounce((value: string) => {
+  //     console.log("inside debounce");
+  //     setFilterByName(value);
+  //   }, 300), // 300ms delay before firing
+  //   [] // Empty array ensures it's only created once
+  // );
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFilterByName?.(value); // Update filterByName immediately
+    debouncedQuery?.(value); // Trigger debouncedQuery after delay
+  };
+
+  // const debouncedQuery = debounce((value: string) => {
+  //   setFilterByName(value); // Update debouncedName after delay
+  // }, 500); // 500ms delay (adjust as needed)
 
   return (
     <>
@@ -93,29 +116,26 @@ const AllData = ({
           <div className="mb-6 flex items-center justify-between ">
             <div className="font-heading text-2xl font-medium uppercase"></div>
             <div className="hidden items-center lg:flex ">
-              {setFilterByName && filterByName && (
-                <>
-                  {" "}
-                  <div className="relative">
-                    <Image
-                      width={0}
-                      height={0}
-                      src={SearchIcon}
-                      className="absolute right-3 top-2 z-10 h-auto w-auto"
-                      alt=""
-                    />
-                    <input
-                      type="search"
-                      className="relative w-full rounded-lg border-2 border-gray-200 bg-transparent py-2 pl-4 pr-12 text-base text-gray-700 placeholder-gray-300 focus:border-gray-400 focus:outline-none focus:ring-0 2xl:min-w-[450px]"
-                      placeholder="Search by name"
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-                      onChange={(e) => setFilterByName(e.target.value)}
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                      value={filterByName}
-                    />
-                  </div>
-                </>
-              )}
+              <>
+                <div className="relative">
+                  <Image
+                    width={0}
+                    height={0}
+                    src={SearchIcon}
+                    className="absolute right-3 top-2 z-10 h-auto w-auto"
+                    alt=""
+                  />
+                  <input
+                    type="search"
+                    className="relative w-full rounded-lg border-2 border-gray-200 bg-transparent py-2 pl-4 pr-12 text-base text-gray-700 placeholder-gray-300 focus:border-gray-400 focus:outline-none focus:ring-0 2xl:min-w-[450px]"
+                    placeholder="Search by name"
+                    onChange={handleInputChange}
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    value={filterByName}
+                  />
+                </div>
+              </>
+              {/* )} */}
               {filter && filters && applyFilters && filters.length > 0 && (
                 <Filter
                   open={open}
@@ -219,18 +239,22 @@ const AllData = ({
               })}
             </div>
           )}
-          <TableListView
-            TABLE_HEAD={TABLE_HEAD}
-            TABLE_ROWS={TABLE_ROWS}
-            rowSelection={rowSelection}
-            showImage={showImage}
-            onViewClick={onViewClick}
-            onEditClick={onEditClick}
-            onDeleteClick={onDeleteClick}
-            totalPages={totalPages}
-            currentPage={currentPage}
-            onHandlePageChange={onHandlePageChange}
-          />
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <TableListView
+              TABLE_HEAD={TABLE_HEAD}
+              TABLE_ROWS={TABLE_ROWS}
+              rowSelection={rowSelection}
+              showImage={showImage}
+              onViewClick={onViewClick}
+              onEditClick={onEditClick}
+              onDeleteClick={onDeleteClick}
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onHandlePageChange={onHandlePageChange}
+            />
+          )}
         </div>
       </div>
       <FreezeModal
