@@ -6,23 +6,37 @@ import User from "../../images/user.png";
 import { Dropdown } from "flowbite-react";
 import Search from "../../components/Search";
 import ThemeButton from "../ThemeButton";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
-export default function DashboardHeader({ setOpenSideBar, openSideBar }: { setOpenSideBar: any; openSideBar: boolean }) {
+export default function DashboardHeader({
+  setOpenSideBar,
+  openSideBar,
+}: {
+  setOpenSideBar: any;
+  openSideBar: boolean;
+}) {
+  const { data: sessionData } = useSession();
 
+  console.log(sessionData);
   return (
     <div className="px-6 py-7 dark:bg-black dark:text-white">
       <div className="flex items-center justify-between">
         <div className="flex">
-          <div className="mr-3 block lg:hidden" onClick={() => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            setOpenSideBar(!openSideBar)
-          }}>
-            <Image width={0} height={0} src={Toggle} className="w-auto h-auto" alt="" />
+          <div
+            className="mr-3 block lg:hidden"
+            onClick={() => {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+              setOpenSideBar(!openSideBar);
+            }}
+          >
+            <Image
+              width={0}
+              height={0}
+              src={Toggle}
+              className="h-auto w-auto"
+              alt=""
+            />
           </div>
-          <h2 className="font-heading text-xl font-medium md:text-3xl">
-            DASHBOARD
-          </h2>
         </div>
         <div className="flex items-center">
           <div className=" hidden rounded-lg bg-white text-black  focus:outline-none lg:block">
@@ -32,11 +46,23 @@ export default function DashboardHeader({ setOpenSideBar, openSideBar }: { setOp
             <ThemeButton />
           </button>
           <button className="relative ml-4 hidden rounded-lg bg-white px-3 py-2 md:block">
-            <Image width={0} height={0} src={Bell} alt="" className="relative w-auto h-auto" />
+            <Image
+              width={0}
+              height={0}
+              src={Bell}
+              alt=""
+              className="relative h-auto w-auto"
+            />
             <div className="absolute right-3 top-2.5 h-2 w-2 rounded border border-white bg-red-500 "></div>
           </button>
           <button className="ml-2 rounded-lg bg-white px-1 py-1 md:ml-4 md:px-3 md:py-2">
-            <Image src={Theme} alt="" width="20" height="20" className="w-4 md:w-full" />
+            <Image
+              src={Theme}
+              alt=""
+              width="20"
+              height="20"
+              className="w-4 md:w-full"
+            />
           </button>
           <Dropdown
             label="Dropdown button"
@@ -44,7 +70,9 @@ export default function DashboardHeader({ setOpenSideBar, openSideBar }: { setOp
             renderTrigger={() => (
               <button className="ml-2 flex items-center md:ml-8">
                 <div className="flex items-center">
-                  <Image width={0} height={0}
+                  <Image
+                    width={0}
+                    height={0}
                     src={User}
                     alt=""
                     className="h-6 w-6 rounded md:h-10 md:w-10"
@@ -54,7 +82,7 @@ export default function DashboardHeader({ setOpenSideBar, openSideBar }: { setOp
                       D. Alveraze
                     </div>
                     <div className="text-xs text-gray-400 md:text-sm">
-                      Academy admin
+                      {sessionData?.user.email}
                     </div>
                   </div>
                 </div>
