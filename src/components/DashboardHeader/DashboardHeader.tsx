@@ -7,6 +7,7 @@ import { Dropdown } from "flowbite-react";
 import Search from "../../components/Search";
 import ThemeButton from "../ThemeButton";
 import { signOut, useSession } from "next-auth/react";
+import { NO_DATA } from "~/globals/globals";
 
 export default function DashboardHeader({
   setOpenSideBar,
@@ -78,7 +79,7 @@ export default function DashboardHeader({
                   />
                   <div className="ml-2">
                     <div className="text-xs text-gray-700 md:text-sm">
-                      D. Alveraze
+                      {sessionData?.user.name ?? NO_DATA}
                     </div>
                     <div className="text-xs text-gray-400 md:text-sm">
                       {sessionData?.user.email}
