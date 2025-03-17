@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import AllData from "~/common/AllData";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
-import type { Staffs,StaffDesignation, Centers } from "@prisma/client";
+import type { Staffs } from "@prisma/client";
 import { COMPETITION_TABLE_HEADERS } from "~/constants/competitionConstants";
-
-
 
 export default function AllCompetition() {
   const router = useRouter();
@@ -15,45 +13,41 @@ export default function AllCompetition() {
   const [finalData, setFinalData] = useState([]);
   const [filterByName, setFilterByName] = useState("");
 
+  //   useEffect(() => {
+  //     if (staffs && staffs?.length > 0) {
+  //       const updatedStaffs = staffs.map((staff) => {
+  //         return {
+  //           ...staff,
+  //           designation:staff.StaffDesignation?staff.StaffDesignation.designation:"",
+  //           center:staff.Centers?staff.Centers?.name:""
 
-//   useEffect(() => {
-//     if (staffs && staffs?.length > 0) {
-//       const updatedStaffs = staffs.map((staff) => {
-//         return {
-//           ...staff,
-//           designation:staff.StaffDesignation?staff.StaffDesignation.designation:"",
-//           center:staff.Centers?staff.Centers?.name:""
-
-//         };
-//       });
-//       setFinalData(updatedStaffs);
-//     }
-//   }, [staffs]);
-
+  //         };
+  //       });
+  //       setFinalData(updatedStaffs);
+  //     }
+  //   }, [staffs]);
 
   const { mutate: deleteMutate } = api.staff.deleteStaff.useMutation({
     onSuccess: (response) => {
-      const arr=[...finalData]
-      const index=finalData?.findIndex((item:Staffs)=>item?.id==response?.id)
-      if(index>-1){
-        arr.splice(index,1)
+      const arr = [...finalData];
+      const index = finalData?.findIndex(
+        (item: Staffs) => item?.id == response?.id
+      );
+      if (index > -1) {
+        arr.splice(index, 1);
       }
-     setFinalData(arr)
-      return response
+      setFinalData(arr);
+      return response;
     },
   });
-  
-  const deleteStaff=(id:number)=>{
-  
-    deleteMutate({staffId:id,deletedAt:moment().toISOString()})
-   
-  
-  }
+
+  const deleteStaff = (id: number) => {
+    deleteMutate({ staffId: id, deletedAt: moment().toISOString() });
+  };
 
   return (
     <>
-
-<AllData
+      <AllData
         title="ALL COMPETITIONS"
         addButtonText="ADD Competition"
         addButtonUrl="/competitions/AddCompetitions"
@@ -65,10 +59,9 @@ export default function AllCompetition() {
         filterByName={filterByName}
         rowSelection={true}
         showImage={false}
-        onViewClick={(id:number)=>router.push(`/staff/${id ?? ""}`)}
-        onEditClick={(id:number)=>router.push(`/edit-staff-${id}`)}
-        onDeleteClick={(id:number)=>deleteStaff(id)}
-
+        onViewClick={(id: number) => router.push(`/staff/${id ?? ""}`)}
+        onEditClick={(id: number) => router.push(`/edit-staff-${id}`)}
+        onDeleteClick={(id: number) => deleteStaff(id)}
       />
 
       {/* {showReminder && (

@@ -55,7 +55,6 @@ export default function AllCoach() {
           // eslint-disable-next-line
           status: coach?.designation,
           // eslint-disable-next-line
-          // eslint-disable-next-line
           age: calculateAge(coach?.dateOfBirth),
           // eslint-disable-next-line
           batchesCount: coach?.CoachCentersBatches?.length,
@@ -66,10 +65,6 @@ export default function AllCoach() {
           ).join(", "),
           // eslint-disable-next-line
           designation:
-            // eslint-disable-next-line
-            // eslint-disable-next-line
-            // eslint-disable-next-line
-
             // eslint-disable-next-line
             COACH_DESIGNATION.find((d: any) => d.value === coach.designation)
               ?.label ||
