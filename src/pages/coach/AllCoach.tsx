@@ -7,12 +7,23 @@ import {
 } from "~/constants/coachConstants";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
-import type { Coaches } from "@prisma/client";
+import type { Coaches, Prisma } from "@prisma/client";
 import { calculateAge } from "~/utils/common";
 import { debounce } from "lodash";
 type Modify<T, R> = Omit<T, keyof R> & R;
 
 type CoachesType = Modify<Coaches, { status: string }>;
+
+type CoachWithRelations = Prisma.CoachesGetPayload<{
+  include: {
+    CoachCentersBatches: true;
+    CoachSportsMaps: {
+      include: {
+        Sports: true;
+      };
+    };
+  };
+}>;
 
 export default function AllCoach() {
   const router = useRouter();
@@ -41,30 +52,24 @@ export default function AllCoach() {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line
     if (coaches && coaches?.length > 0) {
-      const updatedCoaches = coaches.map((coach: any) => {
+      const updatedCoaches = coaches.map((coach: CoachWithRelations) => {
         // eslint-disable-next-line
         return {
           ...coach,
-          // eslint-disable-next-line
           status: coach?.designation,
-          // eslint-disable-next-line
           age: calculateAge(coach?.dateOfBirth),
-          // eslint-disable-next-line
-          batchesCount: coach?.CoachCentersBatches?.length,
-          // eslint-disable-next-line
+          batchesCount: coach?.CoachCentersBatches
+            ? coach.CoachCentersBatches.length
+            : 0,
           sportCoaching: coach?.CoachSportsMaps.map(
             // eslint-disable-next-line
             (map: any) => map.Sports.name
           ).join(", "),
-          // eslint-disable-next-line
           designation:
             // eslint-disable-next-line
             COACH_DESIGNATION.find((d: any) => d.value === coach.designation)
-              ?.label ||
-            // eslint-disable-next-line
-            coach.designation,
+              ?.label || coach.designation,
         };
       });
       setFinalData(updatedCoaches);
