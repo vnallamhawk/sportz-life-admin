@@ -242,26 +242,28 @@ const CommonTable = ({
           </tbody>
         </table>
       </div>
-      <div className="flex items-center justify-center p-4">
-        <div className="flex items-center gap-2">
-          {renderPages().map((page, index) => (
-            <IconButton
-              key={index}
-              variant={currentPage === page ? "text" : "outlined"}
-              size="sm"
-              className={`mx-1 ${
-                currentPage === page ? "bg-gray-700 text-white" : ""
-              }`}
-              onClick={() =>
-                typeof page === "number" && onHandlePageChange?.(page)
-              }
-              disabled={page === "..."}
-            >
-              {page}
-            </IconButton>
-          ))}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center p-4">
+          <div className="flex items-center gap-2">
+            {renderPages().map((page, index) => (
+              <IconButton
+                key={index}
+                variant={currentPage === page ? "text" : "outlined"}
+                size="sm"
+                className={`mx-1 ${
+                  currentPage === page ? "bg-gray-700 text-white" : ""
+                }`}
+                onClick={() =>
+                  typeof page === "number" && onHandlePageChange?.(page)
+                }
+                disabled={page === "..."}
+              >
+                {page}
+              </IconButton>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

@@ -18,32 +18,36 @@ import AttendanceModal from "~/components/Modal/AttendanceModal";
 import ChangeCenterModal from "~/components/Modal/ChangeCenterModal";
 import ChangeBatchModal from "~/components/Modal/ChangeBatchModal";
 
-
 interface AllData {
-  title: string,
-  addButtonText?: string,
-  addNewButtonUrl?: string
-  addButtonUrl?: string,
-  dropdownItems: { changeBatch?: boolean; delete?: boolean; attendance?: boolean; changeCenter?: boolean; reminder?: boolean; freeze?: boolean },
-  TABLE_ROWS: { [key: string]: any, id: number }[],
-  TABLE_HEAD: { label: string; id: string }[],
-  filter?: boolean,
-  filterByName?: string,
-  setFilterByName?: any,
-  rowSelection: boolean,
-  showImage?: boolean,
-  onViewClick?: (id: number) => void,
-  onEditClick?: (id: number) => void,
-  onDeleteClick?: (id: number) => void,
-  filters?: { [key: string]: any }[],
-  applyFilters?: (appliedFilters: { [key: string]: any }) => void
-  addNewButtonText?: string
-  totalPages?: number
-  currentPage?: number
-  onHandlePageChange?: (page: number) => void
+  title: string;
+  addButtonText?: string;
+  addNewButtonUrl?: string;
+  addButtonUrl?: string;
+  dropdownItems: {
+    changeBatch?: boolean;
+    delete?: boolean;
+    attendance?: boolean;
+    changeCenter?: boolean;
+    reminder?: boolean;
+    freeze?: boolean;
+  };
+  TABLE_ROWS: { [key: string]: any; id: number }[];
+  TABLE_HEAD: { label: string; id: string }[];
+  filter?: boolean;
+  filterByName?: string;
+  setFilterByName?: any;
+  rowSelection: boolean;
+  showImage?: boolean;
+  onViewClick?: (id: number) => void;
+  onEditClick?: (id: number) => void;
+  onDeleteClick?: (id: number) => void;
+  filters?: { [key: string]: any }[];
+  applyFilters?: (appliedFilters: { [key: string]: any }) => void;
+  addNewButtonText?: string;
+  totalPages?: number;
+  currentPage?: number;
+  onHandlePageChange?: (page: number) => void;
 }
-
-
 
 const dropdownData: { [key: string]: string } = {
   changeBatch: "Change Batch",
@@ -51,11 +55,10 @@ const dropdownData: { [key: string]: string } = {
   attendance: "Attendance",
   changeCenter: "Change Center",
   reminder: "Send Reminder",
-  freeze: "Freeze"
-}
+  freeze: "Freeze",
+};
 
 const AllData = ({
-  title,
   addButtonText,
   addButtonUrl,
   dropdownItems,
@@ -75,31 +78,30 @@ const AllData = ({
   addNewButtonUrl,
   totalPages,
   currentPage,
-  onHandlePageChange
+  onHandlePageChange,
 }: AllData) => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedComponent, setSelectedComponent] = useState<string>("")
+  const [selectedComponent, setSelectedComponent] = useState<string>("");
 
   const handleOpen = () => setOpen(!open);
-
-
 
   return (
     <>
       <div className="bg-s-gray px-6 pb-7">
         <div className="rounded-2xl shadow-sm lg:bg-white lg:p-6">
           <div className="mb-6 flex items-center justify-between ">
-            <div className="font-heading text-2xl font-medium uppercase">
-            </div>
+            <div className="font-heading text-2xl font-medium uppercase"></div>
             <div className="hidden items-center lg:flex ">
               {setFilterByName && filterByName && (
                 <>
                   {" "}
                   <div className="relative">
-                    <Image width={0} height={0}
+                    <Image
+                      width={0}
+                      height={0}
                       src={SearchIcon}
-                      className="absolute right-3 top-2 z-10 w-auto h-auto"
+                      className="absolute right-3 top-2 z-10 h-auto w-auto"
                       alt=""
                     />
                     <input
@@ -114,16 +116,21 @@ const AllData = ({
                   </div>
                 </>
               )}
-              {filter && filters && applyFilters && filters.length > 0 && <Filter open={open} filters={filters} applyFilters={applyFilters} />}
+              {filter && filters && applyFilters && filters.length > 0 && (
+                <Filter
+                  open={open}
+                  filters={filters}
+                  applyFilters={applyFilters}
+                />
+              )}
               {addButtonUrl && (
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 <button
                   className="ml-3 rounded-lg bg-mandy-dark px-6 py-2.5 text-white"
-                  onClick={() => window.location.href = addButtonUrl}
+                  onClick={() => (window.location.href = addButtonUrl)}
                 >
                   {addButtonText}
                 </button>
-
               )}
               {addNewButtonUrl && (
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -137,9 +144,11 @@ const AllData = ({
             <div className="flex items-center lg:hidden ">
               {addButtonUrl && (
                 <button className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-mandy-dark p-3">
-                  <Image width={0} height={0}
+                  <Image
+                    width={0}
+                    height={0}
                     src={Plus}
-                    className="w-auto h-auto"
+                    className="h-auto w-auto"
                     alt=""
                     onClick={() => void router.push(addButtonUrl)}
                   />
@@ -153,9 +162,11 @@ const AllData = ({
                     dismissOnClick={false}
                     renderTrigger={() => (
                       <button className="max-w-10 ml-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 p-3 px-2.5">
-                        <Image width={0} height={0}
+                        <Image
+                          width={0}
+                          height={0}
                           src={Dots}
-                          className="rotate-90 transform w-auto h-auto"
+                          className="h-auto w-auto rotate-90 transform"
                           alt=""
                         />
                       </button>
@@ -164,10 +175,14 @@ const AllData = ({
                   >
                     {Object.keys(dropdownItems).map((item: string, index) => {
                       return (
-                        <Dropdown.Item className="text-white hover:bg-black focus:bg-black" key={index} onClick={() => setSelectedComponent(item)}>
+                        <Dropdown.Item
+                          className="text-white hover:bg-black focus:bg-black"
+                          key={index}
+                          onClick={() => setSelectedComponent(item)}
+                        >
                           {dropdownData[item]}
                         </Dropdown.Item>
-                      )
+                      );
                     })}
                   </Dropdown>
                 </div>
@@ -177,7 +192,13 @@ const AllData = ({
                   className="fixed bottom-24 right-10 inline-flex h-20 w-20 items-center justify-center rounded-full bg-black p-3 lg:hidden"
                   onClick={() => handleOpen()}
                 >
-                  <Image width={0} height={0} src={FilterIcon} className="filter-icon w-auto h-auto " alt="" />
+                  <Image
+                    width={0}
+                    height={0}
+                    src={FilterIcon}
+                    className="filter-icon h-auto w-auto "
+                    alt=""
+                  />
                 </button>
               )}
             </div>
@@ -185,14 +206,16 @@ const AllData = ({
 
           {Object.keys(dropdownItems).length > 0 && (
             <div className="mb-3 hidden  lg:flex">
-              {Object.keys(dropdownItems).map((item: string, index) => {
+              {Object.keys(dropdownItems).map((item: string) => {
                 return (
                   // eslint-disable-next-line react/jsx-key
-                  <button className="font-400 rounded bg-gray-500 px-4 py-0.5 text-white mr-3" onClick={() => setSelectedComponent(item)}>
+                  <button
+                    className="font-400 mr-3 rounded bg-gray-500 px-4 py-0.5 text-white"
+                    onClick={() => setSelectedComponent(item)}
+                  >
                     {dropdownData[item]}
                   </button>
-
-                )
+                );
               })}
             </div>
           )}
@@ -209,12 +232,27 @@ const AllData = ({
             onHandlePageChange={onHandlePageChange}
           />
         </div>
-      </div >
-      <FreezeModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent} />
-      <SendReminderModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent} />
-      <ChangeCenterModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent} />
-      <ChangeBatchModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent} />
-      <AttendanceModal selectedComponent={selectedComponent} setSelectedComponent={setSelectedComponent} />
+      </div>
+      <FreezeModal
+        selectedComponent={selectedComponent}
+        setSelectedComponent={setSelectedComponent}
+      />
+      <SendReminderModal
+        selectedComponent={selectedComponent}
+        setSelectedComponent={setSelectedComponent}
+      />
+      <ChangeCenterModal
+        selectedComponent={selectedComponent}
+        setSelectedComponent={setSelectedComponent}
+      />
+      <ChangeBatchModal
+        selectedComponent={selectedComponent}
+        setSelectedComponent={setSelectedComponent}
+      />
+      <AttendanceModal
+        selectedComponent={selectedComponent}
+        setSelectedComponent={setSelectedComponent}
+      />
     </>
   );
 };

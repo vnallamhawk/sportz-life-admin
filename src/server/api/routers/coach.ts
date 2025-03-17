@@ -6,21 +6,21 @@ import {
 } from "~/server/api/trpc";
 import { EXPERIENCE_LEVEL, GENDER_VALUES, TRAINING_LEVEL } from "~/types/coach";
 
-const certificatesSchema = z.array(
-  z.object({
-    instituteName: z.string(),
-    name: z.string(),
-    startDate: z.date(),
-    endDate: z.date(),
-  })
-);
+// const certificatesSchema = z.array(
+//   z.object({
+//     instituteName: z.string(),
+//     name: z.string(),
+//     startDate: z.date(),
+//     endDate: z.date(),
+//   })
+// );
 
-const coachingSportsSchema = z.array(
-  z.object({
-    label: z.string(),
-    value: z.union([z.string(), z.number()]),
-  })
-);
+// const coachingSportsSchema = z.array(
+//   z.object({
+//     label: z.string(),
+//     value: z.union([z.string(), z.number()]),
+//   })
+// );
 
 // Now add this object into an array
 
