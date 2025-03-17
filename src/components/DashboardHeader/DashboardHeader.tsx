@@ -17,7 +17,6 @@ export default function DashboardHeader({
 }) {
   const { data: sessionData } = useSession();
 
-  console.log(sessionData);
   return (
     <div className="px-6 py-7 dark:bg-black dark:text-white">
       <div className="flex items-center justify-between">
