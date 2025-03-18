@@ -15,44 +15,38 @@ export default function AddCoach() {
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
 
-  const { getValues, reset } = useForm<COACH_TYPES>({ mode: "onSubmit" });
-  const currentFormValues = getValues();
-  const hasExecuted = useRef(true);
   const { data: sports } = api.sports.getAllSports.useQuery();
-  const { data: staffPayroll } = api.staffPayroll.getAllPayroll.useQuery();
+  // const { data: staffPayroll } = api.staffPayroll.getAllPayroll.useQuery();
 
   const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     COACH_DETAILS_CONSTANTS
   );
+  // TODO: FIX THIS TS ERROR
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const updatedFormData = {
+    ...formData,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    coachingSports:
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-expect-error
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+      formData?.CoachSportsMaps?.map((coachSportsMaps) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+        coachSportsMaps["sportId"].toString()
+      ) ?? [],
+  };
 
   useEffect(() => {
     let updatedFormConstantValues: FormValues[] = formConstantValues;
     if (sports?.length) {
-      updatedFormConstantValues = formConstantValues.map((formConstant:FormValues) => {
-        if (formConstant.id === "coachingSports") {
-          return {
-            ...formConstant,
-            options: sports.map((sport: { name: string; id: number }) => ({
-              label: sport.name,
-              value: sport.id.toString(),
-            })),
-          };
-        } else {
-          return formConstant;
-        }
-      });
-      hasExecuted.current = false;
-    }
-    if (staffPayroll?.length && staffPayroll?.length > 0) {
-      updatedFormConstantValues = updatedFormConstantValues.map(
+      updatedFormConstantValues = formConstantValues.map(
         (formConstant: FormValues) => {
-          if (formConstant.id === "payroll") {
-            // console.log("payroll", payroll);
+          if (formConstant.id === "coachingSports") {
             return {
               ...formConstant,
-              options: staffPayroll?.map((payroll, index) => ({
-                label: payroll?.StaffDesignation?.designation,
-                value: payroll.id.toString(),
+              options: sports.map((sport: { name: string; id: number }) => ({
+                label: sport.name,
+                value: sport.id.toString(),
               })),
             };
           } else {
@@ -62,8 +56,50 @@ export default function AddCoach() {
       );
     }
     setFormConstantValues(updatedFormConstantValues);
-  }, [formConstantValues, sports, sports?.length,staffPayroll]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sports?.length]);
 
+  // useEffect(() => {
+  //   let updatedFormConstantValues: FormValues[] = formConstantValues;
+  //   if (sports?.length) {
+  //     console.log("inside");
+  //     updatedFormConstantValues = formConstantValues.map(
+  //       (formConstant: FormValues) => {
+  //         if (formConstant.id === "coachingSports") {
+  //           return {
+  //             ...formConstant,
+  //             options: sports.map((sport: { name: string; id: number }) => ({
+  //               label: sport.name,
+  //               value: sport.id.toString(),
+  //             })),
+  //           };
+  //         } else {
+  //           return formConstant;
+  //         }
+  //       }
+  //     );
+  //     hasExecuted.current = false;
+  //   }
+  //   if (staffPayroll?.length && staffPayroll?.length > 0) {
+  //     updatedFormConstantValues = updatedFormConstantValues.map(
+  //       (formConstant: FormValues) => {
+  //         if (formConstant.id === "payroll") {
+  //           // console.log("payroll", payroll);
+  //           return {
+  //             ...formConstant,
+  //             options: staffPayroll?.map((payroll, index) => ({
+  //               label: payroll?.StaffDesignation?.designation,
+  //               value: payroll.id.toString(),
+  //             })),
+  //           };
+  //         } else {
+  //           return formConstant;
+  //         }
+  //       }
+  //     );
+  //   }
+  //   setFormConstantValues(updatedFormConstantValues);
+  // }, [formConstantValues, sports, sports?.length, staffPayroll]);
 
   return (
     <>
@@ -75,7 +111,7 @@ export default function AddCoach() {
         buttonItems={{ next: true }}
         setFormData={setFormData}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        formData={formData}
+        formData={updatedFormData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
       />

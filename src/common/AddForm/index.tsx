@@ -145,6 +145,7 @@ const AddForm = ({
       setFormData && setFormData(obj);
     }
   }, [buttonItems, formData, getValues, nextClickHandler, setFormData]);
+
   const prevClickHandler = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     setCurrentStep && setCurrentStep(currentStep - 1);
@@ -244,74 +245,89 @@ const AddForm = ({
                 <Select
                   isMulti={props?.isMulti ?? false}
                   options={sanitizedOptions}
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                  // value={formData[id] || value}
+                  value={sanitizedOptions?.filter((option) =>
+                    Array.isArray(value)
+                      ? value.includes(option.value)
+                      : value === option.value
+                  )}
                   placeholder={placeHolder}
                   className="border-1 c-select w-full border-gray-300"
                   classNamePrefix="react-select"
-                  onChange={(
-                    newValue:
-                      | SingleValue<{ label: string; value: string | number }>
-                      | MultiValue<{ label: string; value: string | number }>,
-                    actionMeta: ActionMeta<{
-                      label: string;
-                      value: string | number;
-                    }>
-                  ) => {
-                    if (!newValue) return; // Handle null case
-
+                  onChange={(newValue) => {
                     if (Array.isArray(newValue)) {
-                      // Multi-select case
-                      // eslint-disable-next-line
-                      onChange(newValue.map((option) => option.value));
+                      // TODO: FIX THIS TS ERROR
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+                      onChange(newValue.map((option) => option.value)); // Multi-select
                     } else {
-                      // Single-select case
-                      onChange(
-                        Array.isArray(newValue)
-                          ? // eslint-disable-next-line
-                            newValue.map((item) => item.value) // Multi-select: extract values
-                          : (
-                              newValue as {
-                                label: string;
-                                value: string | number;
-                              }
-                            )?.value // Single-select: get value
-                      );
-                    }
-
-                    if (dependentKey && dependentKey === id) {
-                      // eslint-disable-next-line
-                      setDependentKey(
-                        newValue
-                          ? Array.isArray(newValue)
-                            ? // eslint-disable-next-line
-                              newValue[0].value
-                            : (
-                                newValue as {
-                                  label: string;
-                                  value: string | number;
-                                }
-                              )?.value
-                          : ""
-                      );
-                    }
-                    if (dependentKey1 && dependentKey1 === id) {
-                      // eslint-disable-next-line
-                      setDependentKey1(
-                        newValue
-                          ? Array.isArray(newValue)
-                            ? // eslint-disable-next-line
-                              newValue[0].value
-                            : (
-                                newValue as {
-                                  label: string;
-                                  value: string | number;
-                                }
-                              )?.value
-                          : ""
-                      );
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-expect-error
+                      onChange(newValue?.value); // Single-select
                     }
                   }}
+                  // value={value}
+                  // onChange={(
+                  //   newValue:
+                  //     | SingleValue<{ label: string; value: string | number }>
+                  //     | MultiValue<{ label: string; value: string | number }>,
+                  //   actionMeta: ActionMeta<{
+                  //     label: string;
+                  //     value: string | number;
+                  //   }>
+                  // ) => {
+                  //   if (!newValue) return; // Handle null case
+
+                  //   if (Array.isArray(newValue)) {
+                  //     // Multi-select case
+                  //     // eslint-disable-next-line
+                  //     onChange(newValue.map((option) => option.value));
+                  //   } else {
+                  //     // Single-select case
+                  //     onChange(
+                  //       Array.isArray(newValue)
+                  //         ? // eslint-disable-next-line
+                  //           newValue.map((item) => item.value) // Multi-select: extract values
+                  //         : (
+                  //             newValue as {
+                  //               label: string;
+                  //               value: string | number;
+                  //             }
+                  //           )?.value // Single-select: get value
+                  //     );
+                  //   }
+
+                  //   if (dependentKey && dependentKey === id) {
+                  //     // eslint-disable-next-line
+                  //     setDependentKey(
+                  //       newValue
+                  //         ? Array.isArray(newValue)
+                  //           ? // eslint-disable-next-line
+                  //             newValue[0].value
+                  //           : (
+                  //               newValue as {
+                  //                 label: string;
+                  //                 value: string | number;
+                  //               }
+                  //             )?.value
+                  //         : ""
+                  //     );
+                  //   }
+                  //   if (dependentKey1 && dependentKey1 === id) {
+                  //     // eslint-disable-next-line
+                  //     setDependentKey1(
+                  //       newValue
+                  //         ? Array.isArray(newValue)
+                  //           ? // eslint-disable-next-line
+                  //             newValue[0].value
+                  //           : (
+                  //               newValue as {
+                  //                 label: string;
+                  //                 value: string | number;
+                  //               }
+                  //             )?.value
+                  //         : ""
+                  //     );
+                  //   }
+                  // }}
                 />
               );
             }}

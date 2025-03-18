@@ -34,7 +34,7 @@ export default function AllCoach() {
   const [currentPage, setCurrentPage] = useState(1);
   const debouncedQuery = debounce((value: string) => {
     setDebouncedName(value);
-  }, 500);
+  }, 1000);
 
   const { data: coachesResponse, isLoading } =
     api.coach.getAllCoachesWithPagination.useQuery({

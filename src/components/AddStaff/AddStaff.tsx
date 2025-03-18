@@ -8,7 +8,11 @@ import { api } from "~/utils/api";
 import AddForm from "~/common/AddForm";
 import type { FormValues } from "~/types/common";
 
-const AddStaff = ({onDropCallback}:{onDropCallback:(files: Array<File>)=>void}) => {
+const AddStaff = ({
+  onDropCallback,
+}: {
+  onDropCallback: (files: Array<File>) => void;
+}) => {
   const {
     stepData: { currentStep, setCurrentStep },
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -28,20 +32,21 @@ const AddStaff = ({onDropCallback}:{onDropCallback:(files: Array<File>)=>void}) 
   useEffect(() => {
     let updatedFormConstantValues: FormValues[] = formConstantValues;
     if (payroll && payroll?.length > 0) {
-      updatedFormConstantValues = formConstantValues.map((formConstant:FormValues) => {
-        if (formConstant.id === "payroll") {
-          // console.log("payroll", payroll);
-          return {
-            ...formConstant,
-            options: payroll.map((payroll, index) => ({
-              label: payroll?.StaffDesignation?.designation,
-              value: payroll.id.toString(),
-            })),
-          };
-        } else {
-          return formConstant;
+      updatedFormConstantValues = formConstantValues.map(
+        (formConstant: FormValues) => {
+          if (formConstant.id === "payroll") {
+            return {
+              ...formConstant,
+              options: payroll.map((payroll, index) => ({
+                label: payroll?.StaffDesignation?.designation,
+                value: payroll.id.toString(),
+              })),
+            };
+          } else {
+            return formConstant;
+          }
         }
-      });
+      );
     }
     if (designation && designation?.length > 0) {
       updatedFormConstantValues = updatedFormConstantValues.map(

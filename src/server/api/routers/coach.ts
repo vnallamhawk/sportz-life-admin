@@ -107,7 +107,7 @@ export const coachRouter = createTRPCRouter({
             id: opts.input.id,
           },
           include: {
-            // CoachSportsMaps: true,
+            CoachSportsMaps: true,
             // batches: true,
             // centers: true,
             // certificates: true,

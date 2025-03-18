@@ -84,7 +84,7 @@ export const COACH_DETAILS_CONSTANTS: FormValues[] = [
   },
   {
     label: "Experience Level",
-    id: "experience_level",
+    id: "experienceLevel",
     type: "select",
     options: [
       {
@@ -158,23 +158,24 @@ export const COACH_DETAILS_CONSTANTS: FormValues[] = [
     id: "gender",
     type: "select",
     options: [
-      { label: "Male", value: "MALE" },
-      { label: "Female", value: "FEMALE" },
+      { label: "Male", value: "male" },
+      { label: "Female", value: "female" },
     ],
     placeHolder: "Select Gender",
     rules: {
       required: true,
     },
   },
-  {
-    label: "Select Payroll",
-    id: "payroll",
-    type: "select",
-    placeHolder: "Select Payroll",
-    rules: {
-      required: true,
-    },
-  },
+  // TODO: ADD PAYROLL FUNCTIONALITY IN NEXT PHASE
+  // {
+  //   label: "Select Payroll",
+  //   id: "payroll",
+  //   type: "select",
+  //   placeHolder: "Select Payroll",
+  //   rules: {
+  //     required: true,
+  //   },
+  // },
   {
     label: "Coaching Sports",
     id: "coachingSports",
