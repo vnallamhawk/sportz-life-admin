@@ -30,7 +30,7 @@ export const centerRouter = createTRPCRouter({
       where: {
         deletedAt: null,
         createdBy: ctx?.session?.token?.id,
-        academyId: Number(ctx?.session?. user.academyId),
+        academyId: Number(ctx?.session?.user.academyId),
       },
       include: {
         Batches: true,
@@ -59,7 +59,7 @@ export const centerRouter = createTRPCRouter({
         ctx.prisma.centers.findMany({
           where: {
             deletedAt: null,
-            createdBy: ctx?.session?.token?.id,
+            academyId: Number(ctx?.session?.user.academyId),
           },
           include: {
             Batches: true,
@@ -78,7 +78,7 @@ export const centerRouter = createTRPCRouter({
         ctx.prisma.centers.count({
           where: {
             deletedAt: null,
-            createdBy: ctx?.session?.token?.id,
+            academyId: Number(ctx?.session?.user.academyId),
           },
         }),
       ]);
