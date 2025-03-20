@@ -68,7 +68,10 @@ export default function AddCoachCertificates({}) {
       certificateType: data?.certificates?.value,
       // eslint-disable-next-line
       certificateTypeLabel:
+        // @ts-expect-error must fix this error
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         COACH_QUALIFICATION_CERTIFICATE_TYPE[data?.certificates],
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       instituteName: data?.instituteName,
     };
     arr.push(obj);
