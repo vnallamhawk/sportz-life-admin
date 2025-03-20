@@ -45,6 +45,9 @@ export const athleteRouter = createTRPCRouter({
           },
         }),
         ctx.prisma.athletes.count({
+          where: {
+            academyCode: Number(ctx?.session?. user.academyId),
+          },
         }),
       ]);
 

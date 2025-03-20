@@ -3,7 +3,10 @@ import React, { useContext, useEffect, useState } from "react";
 // import { COACH_CERTIFICATES_CONSTANTS } from "~/constants/coachConstants";
 // import { useForm } from "react-hook-form";
 import { type COACH_CERTIFICATE_TABLE_TYPES } from "~/types/coach";
-import type { CoachQualifications } from "@prisma/client";
+import {
+  CoachQualifications_certificateType,
+  type CoachQualifications,
+} from "@prisma/client";
 // import { CoachQualifications_certificateType } from "@prisma/client";
 
 import {
@@ -38,16 +41,6 @@ export default function AddCoachCertificates({}) {
     multiFormData: { formData, setFormData },
   } = useContext<FormContextTypes>(FormContext);
 
-  // const qualificationOptions = Object.keys(
-  //   CoachQualifications_certificateType
-  // ).map((key) => ({
-  //   label: key,
-  //   value:
-  //     CoachQualifications_certificateType[
-  //       key as keyof typeof CoachQualifications_certificateType
-  //     ],
-  // }));
-
   type CoachQualificationsUpdated = Pick<
     CoachQualifications,
     "id" | "instituteName" | "startDate" | "endDate"
@@ -74,7 +67,9 @@ export default function AddCoachCertificates({}) {
       // eslint-disable-next-line
       certificateType: data?.certificates?.value,
       // eslint-disable-next-line
-      certificateTypeLabel: data?.certificates?.label,
+      certificateTypeLabel:
+        COACH_QUALIFICATION_CERTIFICATE_TYPE[data?.certificates],
+      instituteName: data?.instituteName,
     };
     arr.push(obj);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

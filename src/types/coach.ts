@@ -111,6 +111,7 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   coachId?: number;
   CoachQualifications: CoachQualifications[]
   Batches: Batches
+  centerId?: string
 }
 
 // export interface batchWithCenter extends CoachesOnBatches {

@@ -93,10 +93,14 @@ const AddForm = ({
     getValues,
     reset,
     trigger,
+    watch,
     formState: { errors },
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   } = useForm<any>({ mode: "onSubmit", values: formData });
+  console.log(JSON.stringify(formData));
+  const values = watch();
+  console.log(JSON.stringify(values));
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [currentTableData, setCurrentTableData] = useState<{
@@ -135,6 +139,13 @@ const AddForm = ({
     tablekey,
     trigger,
   ]);
+
+  useEffect(() => {
+    const subscription = watch((values) => {
+      // eslint-disable-next-line no-console
+      setFormData(values);
+    });
+  }, [watch]);
 
   useEffect(() => {
     if (buttonItems && Object.keys(buttonItems).length === 0) {
@@ -590,6 +601,7 @@ const AddForm = ({
               type="button"
               onClick={(e) => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                console.log({ currentTableData, isFormTable, getValues });
                 addTableData(
                   tableFields ? currentTableData : isFormTable ? getValues() : e
                 );

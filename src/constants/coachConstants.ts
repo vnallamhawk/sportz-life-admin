@@ -271,12 +271,12 @@ export const COACH_CERTIFICATES_CONSTANTS = [
       required: true,
     },
   },
-];
+] as const
 
 export const COACH_BATCH_CONSTANTS = [
   {
     placeHolder: "Select Center",
-    id: "center",
+    id: "centerId",
     type: "select",
     options: [],
     rules: {

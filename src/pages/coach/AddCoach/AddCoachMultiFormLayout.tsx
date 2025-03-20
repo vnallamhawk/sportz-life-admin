@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import AddCoach from "../../../components/AddCoach/AddCoach";
 import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
 import AssignBatches from "~/components/AddCoach/AssignBatches";
@@ -44,6 +44,24 @@ const multiFormData: MULTI_FORM_TYPES = {
   isEditMode: false,
   coachId: undefined,
   coachBatches: [],
+  centerId: "",
+  CoachQualifications: [],
+  Batches: {
+    id: 0,
+    name: "",
+    capacity: 0,
+    remainingSeat: 0,
+    occupiedSeat: 0,
+    academyId: 0,
+    sportId: 0,
+    coachId: null,
+    centerId: 0,
+    status: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    feePlanId: 0,
+    trainingLevel: "beginner",
+  },
 };
 
 const defaultValues = {
@@ -70,10 +88,11 @@ export default function AddCoachMultiFormLayout() {
   const router = useRouter();
   const id = Number(router?.query?.id);
   const methods = useForm();
-  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [currentStep, setCurrentStep] = useState<number>(3);
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
+
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
   const [coachId, setCoachId] = useState<number>();
@@ -229,10 +248,12 @@ export default function AddCoachMultiFormLayout() {
 
       createMutateCoachCertificates(finalCertificates);
 
+      // @ts-expect-error
       const batchesData = formData?.batches;
 
       const finalCenterBatches = batchesData.map((v: any) => ({
-        centerId: formData.center?.value,
+        // @ts-expect-error
+        centerId: formData.centerId?.value,
         coachId,
         batchId: v.value,
         createdAt: new Date(),
@@ -290,70 +311,72 @@ export default function AddCoachMultiFormLayout() {
   };
 
   return (
-    <FormContext.Provider value={formProviderData}>
-      <div className="grid grid-cols-6 grid-rows-1">
-        <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
-          {currentStep === 1 && <AddCoach />}
-          {currentStep === 2 && <AddCoachCertificates />}
-          {currentStep === 3 && (
-            <AssignBatches
-              // TODO: fix this TS error
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore: Unreachable code error
-              finalFormSubmissionHandler={finalFormSubmissionHandler}
-            />
-          )}
-        </Card>
-        <Card className="col-span-2 hidden !rounded-l-none rounded-r-xl bg-stone-100 px-7 lg:block">
-          <div className="mb-10 font-heading text-2xl font-medium uppercase">
-            Coach Image
-          </div>
-
-          <div>
-            {preview.length ? (
-              preview.map((upFile, index) => {
-                return (
-                  <div
-                    className="previewImage mb-5 flex justify-center rounded-full"
-                    key={index}
-                  >
-                    <ImageWithFallback
-                      className="mx-auto mb-6 rounded-full"
-                      src={upFile.preview}
-                      alt="preview"
-                      height={205}
-                      width={205}
-                      fallbackSrc="/images/fallback-1.png"
-                    />
-                  </div>
-                );
-              })
-            ) : (
-              <div className="previewImage">
-                <ImageWithFallback
-                  src={""}
-                  alt="preview"
-                  height={205}
-                  width={205}
-                  className="mx-auto mb-6 rounded-full"
-                  fallbackSrc="/images/fallback-1.png"
-                />
-              </div>
+    <FormProvider {...methods}>
+      <FormContext.Provider value={formProviderData}>
+        <div className="grid grid-cols-6 grid-rows-1">
+          <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
+            {currentStep === 1 && <AddCoach />}
+            {currentStep === 2 && <AddCoachCertificates />}
+            {currentStep === 3 && (
+              <AssignBatches
+                // TODO: fix this TS error
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore: Unreachable code error
+                finalFormSubmissionHandler={finalFormSubmissionHandler}
+              />
             )}
-            <div className="mb-14 flex justify-center">
-              <FileUpload onDropCallback={onDropCallback} />{" "}
+          </Card>
+          <Card className="col-span-2 hidden !rounded-l-none rounded-r-xl bg-stone-100 px-7 lg:block">
+            <div className="mb-10 font-heading text-2xl font-medium uppercase">
+              Coach Image
             </div>
-          </div>
-          <div>
-            <div className="mb-5 font-bold">Note</div>
-            <ul className="list-disc pl-5 text-gray-500">
-              <li>Please upload jpg, png, .tiff file formats only</li>
-              <li>Maximum Size 100 MB</li>
-              <li>Minimum dimension 500px width by 500px height</li>
-            </ul>
-          </div>
-        </Card>
-      </div>
-    </FormContext.Provider>
+
+            <div>
+              {preview.length ? (
+                preview.map((upFile, index) => {
+                  return (
+                    <div
+                      className="previewImage mb-5 flex justify-center rounded-full"
+                      key={index}
+                    >
+                      <ImageWithFallback
+                        className="mx-auto mb-6 rounded-full"
+                        src={upFile.preview}
+                        alt="preview"
+                        height={205}
+                        width={205}
+                        fallbackSrc="/images/fallback-1.png"
+                      />
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="previewImage">
+                  <ImageWithFallback
+                    src={""}
+                    alt="preview"
+                    height={205}
+                    width={205}
+                    className="mx-auto mb-6 rounded-full"
+                    fallbackSrc="/images/fallback-1.png"
+                  />
+                </div>
+              )}
+              <div className="mb-14 flex justify-center">
+                <FileUpload onDropCallback={onDropCallback} />{" "}
+              </div>
+            </div>
+            <div>
+              <div className="mb-5 font-bold">Note</div>
+              <ul className="list-disc pl-5 text-gray-500">
+                <li>Please upload jpg, png, .tiff file formats only</li>
+                <li>Maximum Size 100 MB</li>
+                <li>Minimum dimension 500px width by 500px height</li>
+              </ul>
+            </div>
+          </Card>
+        </div>
+      </FormContext.Provider>
+    </FormProvider>
   );
 }

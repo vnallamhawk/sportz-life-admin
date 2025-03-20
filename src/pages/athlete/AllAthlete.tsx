@@ -25,7 +25,7 @@ export default function Athlete() {
     filterByName == ""
       ? api.athlete.getAllAthletesWithPagination.useQuery({
           page: currentPage,
-          limit: 1,
+          limit: 10,
         })
       : api.athlete.getAthleteByName.useQuery({ name: filterByName });
   const { data: sports } = api.sports.getAllSports.useQuery();

@@ -6,37 +6,35 @@ import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import { api } from "~/utils/api";
 import AddForm from "~/common/AddForm";
 import { COACH_BATCH_CONSTANTS } from "~/constants/coachConstants";
+import { useForm, useFormContext, useWatch } from "react-hook-form";
 
 export default function AssignBatches({
   finalFormSubmissionHandler,
 }: {
   finalFormSubmissionHandler: (data: MULTI_FORM_TYPES) => void;
 }) {
-  // const {
-  //   control,
-  //   formState: { errors },
-  //   getValues,
-  //   reset,
-  //   trigger,
-  // } = useForm({
-  //   defaultValues: {
-  //     centerName: undefined,
-  //     batchName: undefined,
-  //   },
-  // });
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [formConstantValues, setFormConstantValues] = useState<any>(
     COACH_BATCH_CONSTANTS
   );
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [tableData, setTableData] = useState<any>([]);
-  const [centerId, setCenterId] = useState<number>();
+  // const [centerId, setCenterId] = useState<number>();
   const {
     stepData: { currentStep, setCurrentStep },
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
+  console.log(JSON.stringify(formData));
+  const {
+    getValues,
+    watch,
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  } = useForm<any>({ mode: "onSubmit", values: formData });
+
+  const values = watch();
+  console.log(JSON.stringify(values));
   const { data: centers } = api.center.getAllCenters.useQuery();
   const { data: batches } = api.batches.getAllBatches.useQuery();
 
@@ -46,7 +44,7 @@ export default function AssignBatches({
       const updatedFormConstantValues: unknown = formConstantValues?.map(
         (formConstant: any) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          if (formConstant.id === "center") {
+          if (formConstant.id === "centerId") {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return {
               ...formConstant,
@@ -63,11 +61,13 @@ export default function AssignBatches({
       );
       setFormConstantValues(updatedFormConstantValues);
     }
-  }, [formConstantValues, centers, centers?.length, batches]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [centers?.length]);
 
   useEffect(() => {
-    if (centerId) {
-      const center = centers?.find((item) => item?.id == centerId);
+    console.log(formData.centerId);
+    if (formData.centerId) {
+      const center = centers?.find((item) => item?.id == formData.centerId);
       if (center?.Batches?.length && center?.Batches?.length > 0) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         const updatedFormConstantValues: unknown = formConstantValues?.map(
@@ -93,8 +93,31 @@ export default function AssignBatches({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         setFormConstantValues(updatedFormConstantValues);
       }
+    } else {
+      console.log("insnde else");
+      const updatedFormConstantValues: unknown = formConstantValues?.map(
+        (formConstant: any) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          if (formConstant.id === "batches") {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            return {
+              ...formConstant,
+              options: batches?.map((batch: { name: string; id: number }) => ({
+                label: batch.name,
+                value: batch.id,
+              })),
+            };
+          } else {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            return formConstant;
+          }
+        }
+      );
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      setFormConstantValues(updatedFormConstantValues);
     }
-  }, [centerId, centers, formConstantValues]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.centerId]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -117,6 +140,7 @@ export default function AssignBatches({
 
   // eslint-disable-next-line @typescript-eslint/require-await
   const onAddBatchHandler = async (data: any) => {
+    console.log(data);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const arr = [...tableData];
     const batches =
