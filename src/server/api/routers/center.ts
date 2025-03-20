@@ -29,7 +29,8 @@ export const centerRouter = createTRPCRouter({
     const allCenters = ctx?.prisma.centers?.findMany({
       where: {
         deletedAt: null,
-        createdBy: ctx?.session?.token?.id
+        createdBy: ctx?.session?.token?.id,
+        academyId: Number(ctx?.session?. user.academyId),
       },
       include: {
         Batches: true,
