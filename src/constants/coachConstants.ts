@@ -282,6 +282,7 @@ export const COACH_BATCH_CONSTANTS = [
     rules: {
       required: true,
     },
+    isDisabled: false
   },
   {
     placeHolder: "Select Batches",
@@ -292,6 +293,7 @@ export const COACH_BATCH_CONSTANTS = [
     rules: {
       required: true,
     },
+    isDisabled: false
   },
 ];
 

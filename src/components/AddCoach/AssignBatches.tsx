@@ -66,6 +66,7 @@ export default function AssignBatches({
               // eslint-disable-next-line @typescript-eslint/no-unsafe-return
               return {
                 ...formConstant,
+                isDisabled: false,
                 options: center?.Batches.map(
                   (batch: { name: string; id: number }) => ({
                     label: batch.name,
@@ -91,6 +92,7 @@ export default function AssignBatches({
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return {
               ...formConstant,
+              isDisabled: true,
               options: batches?.map((batch: { name: string; id: number }) => ({
                 label: batch.name,
                 value: batch.id,

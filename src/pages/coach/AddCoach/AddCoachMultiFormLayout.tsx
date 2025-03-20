@@ -88,7 +88,7 @@ export default function AddCoachMultiFormLayout() {
   const router = useRouter();
   const id = Number(router?.query?.id);
   const methods = useForm();
-  const [currentStep, setCurrentStep] = useState<number>(3);
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
@@ -286,16 +286,17 @@ export default function AddCoachMultiFormLayout() {
       } else {
         finalForm.centerId = finalForm.center?.value;
         setFormData({ ...finalForm });
+        console.log(finalForm);
+        console.log(finalForm.gender);
 
         createMutate({
           name: finalForm.name,
           phone: finalForm.phone,
           email: finalForm.email,
-          designation: finalForm.designation?.value,
-          gender: finalForm.gender.value.toLowerCase(),
+          designation: finalForm.designation,
+          gender: finalForm.gender,
           dateOfBirth: new Date(finalForm.dateOfBirth),
-          trainingLevel: finalForm.trainingLevel
-            .value as (typeof TRAINING_LEVEL)[number],
+          trainingLevel: finalForm.trainingLevel,
           createdBy: parseInt(createdBy as string),
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -303,7 +304,7 @@ export default function AddCoachMultiFormLayout() {
           image: uploadUrl,
           experience: finalForm.experience,
           about: "",
-          experienceLevel: finalForm.experience_level?.value,
+          experienceLevel: finalForm.experienceLevel,
           centerId: finalForm.centerId,
         });
       }

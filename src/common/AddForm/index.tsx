@@ -257,6 +257,7 @@ const AddForm = ({
               return (
                 <Select
                   isMulti={props?.isMulti ?? false}
+                  isDisabled={props.isDisabled}
                   options={sanitizedOptions}
                   value={sanitizedOptions?.filter((option) =>
                     Array.isArray(value)
