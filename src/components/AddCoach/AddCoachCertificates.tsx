@@ -12,7 +12,10 @@ import {
 } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import { dateFormat } from "~/helpers/date";
 import AddForm from "~/common/AddForm";
-import { COACH_QUALIFICATION_CERTIFICATE_TYPE } from "~/constants/coachConstants";
+import {
+  COACH_CERTIFICATES_CONSTANTS,
+  COACH_QUALIFICATION_CERTIFICATE_TYPE,
+} from "~/constants/coachConstants";
 
 export default function AddCoachCertificates({}) {
   // const {
@@ -107,7 +110,7 @@ export default function AddCoachCertificates({}) {
       <AddForm
         cardTitle="ADD COACH"
         cardSubTitle="ADD CERTIFICATES"
-        // formConstantValues={formConstantValues}
+        formConstantValues={COACH_CERTIFICATES_CONSTANTS}
         buttonItems={{ prevNext: true }}
         setFormData={setFormData}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
