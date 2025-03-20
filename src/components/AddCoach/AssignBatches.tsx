@@ -6,7 +6,6 @@ import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import { api } from "~/utils/api";
 import AddForm from "~/common/AddForm";
 import { COACH_BATCH_CONSTANTS } from "~/constants/coachConstants";
-import { useForm, useFormContext, useWatch } from "react-hook-form";
 
 export default function AssignBatches({
   finalFormSubmissionHandler,
@@ -25,16 +24,6 @@ export default function AssignBatches({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
-  console.log(JSON.stringify(formData));
-  const {
-    getValues,
-    watch,
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  } = useForm<any>({ mode: "onSubmit", values: formData });
-
-  const values = watch();
-  console.log(JSON.stringify(values));
   const { data: centers } = api.center.getAllCenters.useQuery();
   const { data: batches } = api.batches.getAllBatches.useQuery();
 
@@ -65,8 +54,8 @@ export default function AssignBatches({
   }, [centers?.length]);
 
   useEffect(() => {
-    console.log(formData.centerId);
     if (formData.centerId) {
+      // @ts-expect-error need to fix this logic
       const center = centers?.find((item) => item?.id == formData.centerId);
       if (center?.Batches?.length && center?.Batches?.length > 0) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
@@ -94,7 +83,7 @@ export default function AssignBatches({
         setFormConstantValues(updatedFormConstantValues);
       }
     } else {
-      console.log("insnde else");
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       const updatedFormConstantValues: unknown = formConstantValues?.map(
         (formConstant: any) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -140,7 +129,6 @@ export default function AssignBatches({
 
   // eslint-disable-next-line @typescript-eslint/require-await
   const onAddBatchHandler = async (data: any) => {
-    console.log(data);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const arr = [...tableData];
     const batches =
@@ -202,7 +190,7 @@ export default function AssignBatches({
         addTableData={onAddBatchHandler}
         finalFormSubmissionHandler={submitCallback}
         dependentKey="center"
-        setDependentKey={(value: number) => setCenterId(value)}
+        // setDependentKey={(value: number) => setCenterId(value)}
         onRemoveTableButton={removeAssignBatches}
       />
     </div>

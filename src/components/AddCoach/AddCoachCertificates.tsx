@@ -3,10 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 // import { COACH_CERTIFICATES_CONSTANTS } from "~/constants/coachConstants";
 // import { useForm } from "react-hook-form";
 import { type COACH_CERTIFICATE_TABLE_TYPES } from "~/types/coach";
-import {
-  CoachQualifications_certificateType,
-  type CoachQualifications,
-} from "@prisma/client";
+import { type CoachQualifications } from "@prisma/client";
 // import { CoachQualifications_certificateType } from "@prisma/client";
 
 import {

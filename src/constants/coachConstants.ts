@@ -271,7 +271,7 @@ export const COACH_CERTIFICATES_CONSTANTS = [
       required: true,
     },
   },
-] as const
+] 
 
 export const COACH_BATCH_CONSTANTS = [
   {
