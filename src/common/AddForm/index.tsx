@@ -10,7 +10,7 @@ import Remove from "../../images/remove.svg";
 import { Switch } from "@material-tailwind/react";
 import AddFile from "../../images/add-file.svg";
 import { Controller, useForm } from "react-hook-form";
-import type { ActionMeta, MultiValue, SingleValue } from "react-select";
+// import type { ActionMeta, MultiValue, SingleValue } from "react-select";
 import Select from "react-select";
 import Button from "~/components/Button";
 import { Dropdown, Textarea } from "flowbite-react";
@@ -138,9 +138,15 @@ const AddForm = ({
 
   useEffect(() => {
     const subscription = watch((values) => {
-      // eslint-disable-next-line no-console
+      // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
       setFormData(values);
     });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [watch]);
 
   useEffect(() => {
@@ -597,7 +603,6 @@ const AddForm = ({
               type="button"
               onClick={(e) => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                console.log({ currentTableData, isFormTable, getValues });
                 addTableData(
                   tableFields ? currentTableData : isFormTable ? getValues() : e
                 );
