@@ -73,6 +73,7 @@ export const coachRouter = createTRPCRouter({
               },
             },
             Batches: true, // Direct relation with batches
+            CoachQualifications: true
           },
           skip,
           take: limit,
@@ -107,7 +108,12 @@ export const coachRouter = createTRPCRouter({
             id: opts.input.id,
           },
           include: {
-            CoachSportsMaps: true,
+            CoachSportsMaps: {
+              include: {
+                Sports: true, // Fetch the associated sports
+              },
+            },
+            CoachQualifications: true
             // batches: true,
             // centers: true,
             // certificates: true,

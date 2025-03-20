@@ -1,3 +1,4 @@
+import { CoachQualifications_certificateType } from "@prisma/client";
 import { type COACH_DETAILS_CONSTANTS_TYPES } from "~/types/coach";
 import type { FormValues } from "~/types/common";
 
@@ -339,5 +340,13 @@ export const CENTER_BATCH_TABLE_HEADERS = [
     id: "action",
   },
 ];
+
+export const COACH_QUALIFICATION_CERTIFICATE_TYPE: Record<CoachQualifications_certificateType, string> = {
+  'masters_degree_in_sports_or_fitness_training' : "masters degree in sports or fitness training",
+  'bachelor_degree_in_sports_or_fitness_training' : "bachelor degree in sports or fitness training",
+  'diploma_in_sports_coaching_or_fitness_training' : "diploma in sports coaching or fitness training",
+  'coaching_license' : "coaching license",
+  'certification_in_sports_coaching_or_fitness_training' : "certification in sports coaching or fitness training"
+}
 
 

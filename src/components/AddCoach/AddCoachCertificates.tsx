@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 // import { COACH_CERTIFICATES_CONSTANTS } from "~/constants/coachConstants";
 // import { useForm } from "react-hook-form";
 import { type COACH_CERTIFICATE_TABLE_TYPES } from "~/types/coach";
+import type { CoachQualifications } from "@prisma/client";
+// import { CoachQualifications_certificateType } from "@prisma/client";
 
 import {
   FormContext,
@@ -10,6 +12,7 @@ import {
 } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import { dateFormat } from "~/helpers/date";
 import AddForm from "~/common/AddForm";
+import { COACH_QUALIFICATION_CERTIFICATE_TYPE } from "~/constants/coachConstants";
 
 export default function AddCoachCertificates({}) {
   // const {
@@ -26,21 +29,36 @@ export default function AddCoachCertificates({}) {
   //     endDate: "",
   //   },
   // });
-
   const {
     stepData: { currentStep, setCurrentStep },
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext<FormContextTypes>(FormContext);
 
+  // const qualificationOptions = Object.keys(
+  //   CoachQualifications_certificateType
+  // ).map((key) => ({
+  //   label: key,
+  //   value:
+  //     CoachQualifications_certificateType[
+  //       key as keyof typeof CoachQualifications_certificateType
+  //     ],
+  // }));
+
+  type CoachQualificationsUpdated = Pick<
+    CoachQualifications,
+    "id" | "instituteName" | "startDate" | "endDate"
+  > & {
+    certificateTypeLabel: string;
+  };
+
   const [certificates, setCertificates] = useState<
-    COACH_CERTIFICATE_TABLE_TYPES[]
+    CoachQualificationsUpdated[]
   >([]);
-  // const [formConstantValues, setFormConstantValues] = useState(
-  //   COACH_CERTIFICATES_CONSTANTS
-  // );
 
   const onAddHandler = (data: any) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     const arr: COACH_CERTIFICATE_TABLE_TYPES[] = [...certificates];
 
     // eslint-disable-next-line
@@ -56,23 +74,33 @@ export default function AddCoachCertificates({}) {
       certificateTypeLabel: data?.certificates?.label,
     };
     arr.push(obj);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     setCertificates(arr);
   };
 
   const removeCertificate = (index: number) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     const arr = [...certificates];
     arr.splice(index, 1);
     setCertificates(arr);
   };
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (formData?.certificates) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-      setCertificates(formData.certificates);
+    if (formData?.CoachQualifications) {
+      setCertificates(
+        formData?.CoachQualifications.map(
+          (qualification: CoachQualifications) => ({
+            ...qualification,
+            certificateTypeLabel:
+              COACH_QUALIFICATION_CERTIFICATE_TYPE[
+                qualification.certificateType
+              ],
+          })
+        )
+      );
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  }, [formData?.certificates]);
+  }, [formData?.certificates, formData?.CoachQualifications]);
 
   return (
     <>

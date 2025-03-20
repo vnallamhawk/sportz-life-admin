@@ -1,4 +1,4 @@
-import type { Sports } from "@prisma/client";
+import type { CoachQualifications, Sports } from "@prisma/client";
 import {
   type Coaches,
   type Batches,
@@ -40,7 +40,7 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
 
 export interface COACH_CERTIFICATE_TABLE_TYPES {
   instituteName: string;
-  name: string;
+  // name: string;
   startDate: string;
   endDate: string;
 }
@@ -109,6 +109,8 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   // selectSports?: any[];
   isEditMode: boolean;
   coachId?: number;
+  CoachQualifications: CoachQualifications[]
+  Batches: Batches
 }
 
 // export interface batchWithCenter extends CoachesOnBatches {

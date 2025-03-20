@@ -39,7 +39,8 @@ export default function DashboardHeader({
           </div>
         </div>
         <div className="flex items-center">
-          <div className=" hidden rounded-lg bg-white text-black  focus:outline-none lg:block">
+          {/* TODO: ADD BELOW FUNCTIONALITY IN NEXT PHASE */}
+          {/* <div className=" hidden rounded-lg bg-white text-black  focus:outline-none lg:block">
             <Search />
           </div>
           <button className="relative ml-4 hidden rounded-lg px-3 py-2 md:block">
@@ -63,7 +64,7 @@ export default function DashboardHeader({
               height="20"
               className="w-4 md:w-full"
             />
-          </button>
+          </button> */}
           <Dropdown
             label="Dropdown button"
             dismissOnClick={false}
