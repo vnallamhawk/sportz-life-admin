@@ -91,23 +91,11 @@ const AllData = ({
 
   const handleOpen = () => setOpen(!open);
 
-  // const debouncedFilter = useCallback(
-  //   debounce((value: string) => {
-  //     console.log("inside debounce");
-  //     setFilterByName(value);
-  //   }, 300), // 300ms delay before firing
-  //   [] // Empty array ensures it's only created once
-  // );
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFilterByName?.(value); // Update filterByName immediately
     debouncedQuery?.(value); // Trigger debouncedQuery after delay
   };
-
-  // const debouncedQuery = debounce((value: string) => {
-  //   setFilterByName(value); // Update debouncedName after delay
-  // }, 500); // 500ms delay (adjust as needed)
 
   return (
     <>

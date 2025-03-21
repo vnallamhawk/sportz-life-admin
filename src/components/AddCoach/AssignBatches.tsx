@@ -48,7 +48,6 @@ export default function AssignBatches({
           }
         }
       );
-      console.log({ updatedFormConstantValues });
       setFormConstantValues(updatedFormConstantValues);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,7 +79,6 @@ export default function AssignBatches({
         }
       );
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      console.log({ formConstantValues });
       setFormConstantValues(updatedFormConstantValues);
     } else {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
@@ -160,7 +158,6 @@ export default function AssignBatches({
     setTableData(arr);
   };
 
-  console.log({ formConstantValues });
   return (
     <div>
       <AddForm

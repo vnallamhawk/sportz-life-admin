@@ -139,26 +139,6 @@ const AddForm = ({
     trigger,
   ]);
 
-  // useEffect(() => {
-  //   const subscription = watch((values) => {
-  //     // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
-  //     console.log(values);
-  //     setFormData(values);
-  //   });
-
-  //   return () => {
-  //     subscription.unsubscribe();
-  //   };
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [watch]);
-
-  // useEffect(() => {
-  //   if (prevValues && !isEqual(prevValues, values)) {
-  //     setFormData(values);
-  //   }
-  // }, [prevValues, setFormData, values]);
-
   useEffect(() => {
     if (buttonItems && Object.keys(buttonItems).length === 0) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
