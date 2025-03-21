@@ -236,15 +236,6 @@ const AddForm = ({
       options,
     } = props;
 
-    const sanitizedOptions = options
-      ?.filter(
-        (option) => option.label !== undefined && option.value !== undefined
-      ) // Remove undefined values
-      ?.map((option) => ({
-        label: option.label ?? "", // Ensure label is always a string
-        value: option.value ?? "", // Ensure value is always a string or number
-      }));
-
     switch (type) {
       case "select":
         inputElement = (
@@ -260,8 +251,8 @@ const AddForm = ({
                   // @ts-expect-error TODO ; fix this error
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   isDisabled={props.isDisabled}
-                  options={sanitizedOptions}
-                  value={sanitizedOptions?.filter((option) =>
+                  options={options}
+                  value={options?.filter((option) =>
                     Array.isArray(value)
                       ? value.includes(option.value)
                       : value === option.value
