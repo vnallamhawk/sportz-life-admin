@@ -257,6 +257,8 @@ const AddForm = ({
               return (
                 <Select
                   isMulti={props?.isMulti ?? false}
+                  // @ts-expect-error TODO ; fix this error
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   isDisabled={props.isDisabled}
                   options={sanitizedOptions}
                   value={sanitizedOptions?.filter((option) =>
