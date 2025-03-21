@@ -29,6 +29,7 @@ import { dateFormat } from "~/helpers/date";
 import { type MultiSelectOption } from "~/types/select";
 import { useSession } from "next-auth/react";
 import { prisma } from "~/server/db";
+import { parse } from "date-fns";
 
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: "",
@@ -306,13 +307,18 @@ export default function AddCoachMultiFormLayout() {
           centerId: finalForm.centerId,
           sports: finalForm.coachingSports.map((sport: any) => Number(sport)),
           coachQualifications: finalForm.CoachQualifications.map(
-            (coachQualification: {
-              startDate: string | number | Date;
-              endDate: string | number | Date;
-            }) => ({
+            (coachQualification: { startDate: string; endDate: string }) => ({
               ...coachQualification,
-              startDate: new Date(coachQualification.startDate),
-              endDate: new Date(coachQualification.endDate),
+              startDate: parse(
+                coachQualification.startDate,
+                "dd/MM/yyyy",
+                new Date()
+              ),
+              endDate: parse(
+                coachQualification.endDate,
+                "dd/MM/yyyy",
+                new Date()
+              ),
               fileUrl: "",
               fileType: "link",
             })
