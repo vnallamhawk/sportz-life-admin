@@ -114,11 +114,6 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   centerId?: string
 }
 
-// export interface batchWithCenter extends CoachesOnBatches {
-//   batch: Batches;
-//   center: Centers;
-// }
-
 export enum TrainingLevelEnum {
   BEGINNER = "Beginner",
   DEVELOPER = "Developer",

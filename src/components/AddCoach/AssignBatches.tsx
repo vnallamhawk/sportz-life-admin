@@ -6,6 +6,7 @@ import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
 import { api } from "~/utils/api";
 import AddForm from "~/common/AddForm";
 import { COACH_BATCH_CONSTANTS } from "~/constants/coachConstants";
+import { useFormContext } from "react-hook-form";
 
 export default function AssignBatches({
   finalFormSubmissionHandler,
@@ -26,6 +27,10 @@ export default function AssignBatches({
   } = useContext(FormContext);
   const { data: centers } = api.center.getAllCenters.useQuery();
   const { data: batches } = api.batches.getAllBatches.useQuery();
+  console.log(batches);
+  const { watch } = useFormContext();
+  const selectedValue = watch("centerId"); // Replace with actual field name
+  console.log("Selected Value:", selectedValue);
 
   useEffect(() => {
     if (centers?.length && centers?.length > 0) {
@@ -57,33 +62,6 @@ export default function AssignBatches({
     if (formData.centerId) {
       // @ts-expect-error need to fix this logic
       const center = centers?.find((item) => item?.id == formData.centerId);
-      if (center?.Batches?.length && center?.Batches?.length > 0) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        const updatedFormConstantValues: unknown = formConstantValues?.map(
-          (formConstant: any) => {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            if (formConstant.id === "batches") {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-              return {
-                ...formConstant,
-                isDisabled: false,
-                options: center?.Batches.map(
-                  (batch: { name: string; id: number }) => ({
-                    label: batch.name,
-                    value: batch.id,
-                  })
-                ),
-              };
-            } else {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-              return formConstant;
-            }
-          }
-        );
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        setFormConstantValues(updatedFormConstantValues);
-      }
-    } else {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       const updatedFormConstantValues: unknown = formConstantValues?.map(
         (formConstant: any) => {
@@ -92,11 +70,12 @@ export default function AssignBatches({
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return {
               ...formConstant,
-              isDisabled: true,
-              options: batches?.map((batch: { name: string; id: number }) => ({
-                label: batch.name,
-                value: batch.id,
-              })),
+              // isDisabled: false,
+              options:
+                center?.Batches?.map((batch: { name: string; id: number }) => ({
+                  label: batch.name,
+                  value: batch.id,
+                })) ?? [],
             };
           } else {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -107,6 +86,30 @@ export default function AssignBatches({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       setFormConstantValues(updatedFormConstantValues);
     }
+    // else {
+    //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+    //   const updatedFormConstantValues: unknown = formConstantValues?.map(
+    //     (formConstant: any) => {
+    //       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    //       if (formConstant.id === "batches") {
+    //         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    //         return {
+    //           ...formConstant,
+    //           // isDisabled: true,
+    //           options: batches?.map((batch: { name: string; id: number }) => ({
+    //             label: batch.name,
+    //             value: batch.id,
+    //           })),
+    //         };
+    //       } else {
+    //         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    //         return formConstant;
+    //       }
+    //     }
+    //   );
+    //   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    //   setFormConstantValues(updatedFormConstantValues);
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.centerId]);
 

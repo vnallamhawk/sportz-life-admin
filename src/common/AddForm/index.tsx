@@ -15,6 +15,8 @@ import Select from "react-select";
 import Button from "~/components/Button";
 import { Dropdown, Textarea } from "flowbite-react";
 import type { FormValues, TableFields } from "~/types/common";
+import { usePrevious } from "~/hooks/usePrevious";
+import { isEqual } from "lodash";
 
 interface AddForm {
   cardTitle?: string;
@@ -94,9 +96,13 @@ const AddForm = ({
     trigger,
     watch,
     formState: { errors },
-
+    setValue,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   } = useForm<any>({ mode: "onSubmit", values: formData });
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const values = getValues();
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const prevValues = usePrevious(values);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [currentTableData, setCurrentTableData] = useState<{
@@ -136,18 +142,25 @@ const AddForm = ({
     trigger,
   ]);
 
-  useEffect(() => {
-    const subscription = watch((values) => {
-      // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
-      setFormData(values);
-    });
+  // useEffect(() => {
+  //   const subscription = watch((values) => {
+  //     // eslint-disable-next-line no-console, @typescript-eslint/no-unsafe-call
+  //     console.log(values);
+  //     setFormData(values);
+  //   });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+  //   return () => {
+  //     subscription.unsubscribe();
+  //   };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watch]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [watch]);
+
+  // useEffect(() => {
+  //   if (prevValues && !isEqual(prevValues, values)) {
+  //     setFormData(values);
+  //   }
+  // }, [prevValues, setFormData, values]);
 
   useEffect(() => {
     if (buttonItems && Object.keys(buttonItems).length === 0) {
@@ -261,14 +274,22 @@ const AddForm = ({
                   className="border-1 c-select w-full border-gray-300"
                   classNamePrefix="react-select"
                   onChange={(newValue) => {
-                    if (Array.isArray(newValue)) {
-                      // TODO: FIX THIS TS ERROR
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-                      onChange(newValue.map((option) => option.value)); // Multi-select
-                    } else {
-                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                      // @ts-expect-error
-                      onChange(newValue?.value); // Single-select
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    const value = Array.isArray(newValue)
+                      ? // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+                        newValue.map((option) => option.value)
+                      : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-expect-error
+                        newValue?.value;
+                    onChange(value);
+                    if (id === "centerId") {
+                      // @ts-expect-error TODO: fix this ts error
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
+                      setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                        [id]: value,
+                      }));
                     }
                   }}
                 />
