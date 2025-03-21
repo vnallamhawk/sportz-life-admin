@@ -89,7 +89,7 @@ export default function AddCoachMultiFormLayout() {
   const router = useRouter();
   const id = Number(router?.query?.id);
   const methods = useForm();
-  const [currentStep, setCurrentStep] = useState<number>(3);
+  const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );

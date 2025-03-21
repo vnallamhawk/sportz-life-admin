@@ -347,7 +347,7 @@ const AddForm = ({
         inputElement = (
           <Controller
             control={control}
-            render={({ field: { onChange, value } }) => {
+            render={({ field: { value } }) => {
               return (
                 <Switch
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
