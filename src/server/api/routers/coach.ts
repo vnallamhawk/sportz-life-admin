@@ -168,7 +168,8 @@ export const coachRouter = createTRPCRouter({
         experience: z.string(),
         about: z.string(),
         experienceLevel: z.enum(EXPERIENCE_LEVEL),
-        centerId: z.number()
+        centerId: z.number(),
+        sports: z.array(z.number())
       })
     )
     .mutation(
@@ -188,7 +189,8 @@ export const coachRouter = createTRPCRouter({
           experience,
           about,
           experienceLevel,
-          centerId
+          centerId,
+          sports
         },
         ctx,
       }) => {
@@ -209,7 +211,14 @@ export const coachRouter = createTRPCRouter({
             experience,
             about,
             experienceLevel,
-            centerId
+            centerId,
+            CoachSportsMaps: {
+              create: sports.map((sportId) => ({
+                createdAt,
+                updatedAt,
+                Sports: { connect: { id: sportId } },
+              })),
+            },
           },
         });
         return response;

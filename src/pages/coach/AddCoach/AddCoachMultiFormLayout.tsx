@@ -28,6 +28,7 @@ import { type BatchTableData } from "~/types/batch";
 import { dateFormat } from "~/helpers/date";
 import { type MultiSelectOption } from "~/types/select";
 import { useSession } from "next-auth/react";
+import { prisma } from "~/server/db";
 
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: "",
@@ -108,7 +109,6 @@ export default function AddCoachMultiFormLayout() {
   const [file, setFile] = useState<File | null>(null);
   const [uploadUrl, setUploadUrl] = useState<string>("");
   const uploadImage = api.upload.uploadImage.useMutation();
-
   const coachData = id && api.coach.getCoachById.useQuery({ id });
 
   useEffect(() => {
@@ -132,7 +132,7 @@ export default function AddCoachMultiFormLayout() {
       console.log("response data is ", response);
       setCoachId(response?.id);
       setOpenToast(true);
-      router.push("/coach").then(() => window.location.reload());
+      router.push("/coach");
       return response;
     },
   });
@@ -267,48 +267,91 @@ export default function AddCoachMultiFormLayout() {
   }, [coachId, formData]);
 
   const finalFormSubmissionHandler = (finalForm: any) => {
-    if (createdBy && academyId) {
-      if (formData.isEditMode) {
-        editMutate({
-          name: finalForm.name,
-          phone: finalForm.phone,
-          email: finalForm.email,
-          designation: finalForm.designation?.value,
-          gender: finalForm.gender.value.toLowerCase(),
-          dateOfBirth: new Date(finalForm.dateOfBirth),
-          trainingLevel: finalForm.trainingLevel
-            .value as (typeof TRAINING_LEVEL)[number],
-          updatedAt: new Date(),
-          academyId: parseInt(academyId as string),
-          image: uploadUrl,
-          coachId: id,
-        });
-      } else {
-        finalForm.centerId = finalForm.center?.value;
-        setFormData({ ...finalForm });
-        console.log(finalForm);
-        console.log(finalForm.gender);
+    // if (createdBy && academyId) {
+    const isEditMode = router.asPath.includes("edit");
+    console.log(finalForm);
+    console.log(typeof finalForm.coachingSports[0]);
+    if (isEditMode) {
+      editMutate({
+        name: finalForm.name,
+        phone: finalForm.phone,
+        email: finalForm.email,
+        designation: finalForm.designation?.value,
+        gender: finalForm.gender.value.toLowerCase(),
+        dateOfBirth: new Date(finalForm.dateOfBirth),
+        trainingLevel: finalForm.trainingLevel
+          .value as (typeof TRAINING_LEVEL)[number],
+        updatedAt: new Date(),
+        academyId: parseInt(academyId as string),
+        image: uploadUrl,
+        coachId: id,
+      });
+    } else {
+      createMutate({
+        name: finalForm.name,
+        phone: finalForm.phone,
+        email: finalForm.email,
+        designation: finalForm.designation,
+        gender: finalForm.gender,
+        dateOfBirth: new Date(finalForm.dateOfBirth),
+        trainingLevel: finalForm.trainingLevel,
+        createdBy: parseInt(createdBy as string),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        academyId: parseInt(academyId as string),
+        image: uploadUrl,
+        experience: finalForm.experience,
+        about: "",
+        experienceLevel: finalForm.experienceLevel,
+        centerId: finalForm.centerId,
+        sports: finalForm.coachingSports.map((sport: any) => Number(sport)),
+      });
+      // const {
+      //   name,
+      //   phone,
+      //   email,
+      //   designation,
+      //   gender,
+      //   dateOfBirth,
+      //   trainingLevel,
+      //   experience,
+      //   experienceLevel,
+      //   centerId,
+      // } = finalForm;
 
-        createMutate({
-          name: finalForm.name,
-          phone: finalForm.phone,
-          email: finalForm.email,
-          designation: finalForm.designation,
-          gender: finalForm.gender,
-          dateOfBirth: new Date(finalForm.dateOfBirth),
-          trainingLevel: finalForm.trainingLevel,
-          createdBy: parseInt(createdBy as string),
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          academyId: parseInt(academyId as string),
-          image: uploadUrl,
-          experience: finalForm.experience,
-          about: "",
-          experienceLevel: finalForm.experienceLevel,
-          centerId: finalForm.centerId,
-        });
-      }
+      // const newCoach = await prisma.coaches.create({
+      //   data: {
+      //     name,
+      //     phone,
+      //     email,
+      //     designation,
+      //     gender,
+      //     dateOfBirth: new Date(dateOfBirth),
+      //     trainingLevel,
+      //     experience,
+      //     about: "",
+      //     experienceLevel,
+      //     centerId,
+      //     academyId: Number(academyId),
+      //     createdAt: new Date(),
+      //     updatedAt: new Date(),
+      //     image: uploadUrl,
+
+      //     // ✅ Create related CoachSportsMaps records
+      //     CoachSportsMaps: {
+      //       create: finalForm.sports.map((sportId: number) => ({
+      //         sportId, // ✅ Prisma will automatically link with Sports model
+      //       })),
+      //     },
+      //   },
+      //   include: {
+      //     CoachSportsMaps: {
+      //       include: { Sports: true },
+      //     },
+      //   },
+      // });
     }
+    // }
   };
 
   return (

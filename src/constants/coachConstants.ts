@@ -105,7 +105,7 @@ export const COACH_DETAILS_CONSTANTS: FormValues[] = [
     label: "Experience",
     id: "experience",
     type: "textbox",
-    placeHolder: "Experience",
+    placeHolder: "Years of Experience",
     rules: {
       required: true,
       maxLength: {
