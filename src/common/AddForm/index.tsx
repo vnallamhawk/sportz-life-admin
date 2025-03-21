@@ -15,7 +15,6 @@ import Select from "react-select";
 import Button from "~/components/Button";
 import { Dropdown, Textarea } from "flowbite-react";
 import type { FormValues, TableFields } from "~/types/common";
-import { usePrevious } from "~/hooks/usePrevious";
 
 interface AddForm {
   cardTitle?: string;
@@ -81,10 +80,10 @@ const AddForm = ({
   prevButtonText = "Prev",
   finishButtonText = "Finish",
   prevButtonClick,
-  dependentKey,
-  setDependentKey,
-  dependentKey1,
-  setDependentKey1,
+  // dependentKey,
+  // setDependentKey,
+  // dependentKey1,
+  // setDependentKey1,
   onDropCallback,
   uploadUrl,
 }: AddForm) => {
@@ -96,11 +95,6 @@ const AddForm = ({
     formState: { errors },
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   } = useForm<any>({ mode: "onSubmit", values: formData });
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const values = getValues();
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const prevValues = usePrevious(values);
-
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [currentTableData, setCurrentTableData] = useState<{
     [key: string]: any;
@@ -260,9 +254,8 @@ const AddForm = ({
                         newValue?.value;
                     onChange(value);
                     if (id === "centerId") {
-                      // @ts-expect-error TODO: fix this ts error
                       // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
-                      setFormData((prevFormData) => ({
+                      setFormData((prevFormData: any) => ({
                         ...prevFormData,
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         [id]: value,
@@ -348,7 +341,7 @@ const AddForm = ({
         inputElement = (
           <Controller
             control={control}
-            render={({ field: { onChange, value } }) => {
+            render={() => {
               return (
                 <Timepicker
                   placeHolder={props.placeHolder}

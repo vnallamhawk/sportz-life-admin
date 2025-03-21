@@ -1,4 +1,4 @@
-import type { CoachQualifications, Sports } from "@prisma/client";
+import type { CoachQualifications, CoachQualifications_certificateType, Sports } from "@prisma/client";
 import {
   type Coaches,
   type Batches,
@@ -41,6 +41,8 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
 export interface COACH_CERTIFICATE_TABLE_TYPES {
   instituteName: string;
   // name: string;
+  certificateType: CoachQualifications_certificateType
+  certificateTypeLabel: string
   startDate: string;
   endDate: string;
 }

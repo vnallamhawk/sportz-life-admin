@@ -1,3 +1,4 @@
+import { CoachQualifications_certificateType, CoachQualifications_fileType } from "@prisma/client";
 import { z } from "zod";
 import {
   createTRPCRouter,
@@ -169,7 +170,18 @@ export const coachRouter = createTRPCRouter({
         about: z.string(),
         experienceLevel: z.enum(EXPERIENCE_LEVEL),
         centerId: z.number(),
-        sports: z.array(z.number())
+        sports: z.array(z.number()),
+        coachQualifications: z.array(
+          z.object({
+            certificateType: z.nativeEnum(CoachQualifications_certificateType),
+            startDate: z.coerce.date(), 
+            endDate: z.coerce.date(),
+            fileUrl: z.string(),
+            instituteName:  z.string(),
+            fileType: z.nativeEnum(CoachQualifications_fileType), 
+            fileName: z.string().optional()
+          })
+        )
       })
     )
     .mutation(
@@ -190,7 +202,8 @@ export const coachRouter = createTRPCRouter({
           about,
           experienceLevel,
           centerId,
-          sports
+          sports,
+          coachQualifications
         },
         ctx,
       }) => {
@@ -219,6 +232,22 @@ export const coachRouter = createTRPCRouter({
                 Sports: { connect: { id: sportId } },
               })),
             },
+            CoachQualifications: {
+              create: coachQualifications.map(
+              ({ startDate, endDate, certificateType, fileUrl, instituteName, fileType, fileName }) => ({
+                startDate,
+                endDate,
+                certificateType,
+                fileUrl,         // Required field
+                instituteName,   // Required field
+                fileType,        // Required field
+                fileName,        // Optional field
+                createdAt,
+                updatedAt,
+              })
+            ),
+          }
+          
           },
         });
         return response;

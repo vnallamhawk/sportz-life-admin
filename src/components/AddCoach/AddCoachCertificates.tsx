@@ -56,13 +56,12 @@ export default function AddCoachCertificates({}) {
 
     // eslint-disable-next-line
     const obj: COACH_CERTIFICATE_TABLE_TYPES = {
-      ...data,
       // eslint-disable-next-line
       startDate: dateFormat(new Date(data.startDate)),
       // eslint-disable-next-line
       endDate: dateFormat(new Date(data.endDate)),
       // eslint-disable-next-line
-      certificateType: data?.certificates?.value,
+      certificateType: data.certificates,
       // eslint-disable-next-line
       certificateTypeLabel:
         // @ts-expect-error must fix this error
@@ -75,6 +74,13 @@ export default function AddCoachCertificates({}) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     setCertificates(arr);
+    // @ts-expect-error // TODO: FIX THIS TS ERROR
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    setFormData?.((prevFormData) => ({
+      ...prevFormData,
+      instituteName: "",
+      CoachQualifications: arr,
+    }));
   };
 
   const removeCertificate = (index: number) => {

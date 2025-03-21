@@ -210,7 +210,7 @@ export const COACH_CERTIFICATES_CONSTANTS = [
     id: "certificates",
     type: "select",
     rules: {
-      required: true,
+      required: false,
     },
     options: [
       {
@@ -246,7 +246,7 @@ export const COACH_CERTIFICATES_CONSTANTS = [
     placeHolder: "Institute Name",
     type: "textbox",
     rules: {
-      required: true,
+      required: false,
       maxLength: {
         value: 35,
         message: "Too Many Characters",
@@ -259,7 +259,7 @@ export const COACH_CERTIFICATES_CONSTANTS = [
     type: "calendar",
     placeHolder: "Start Date",
     rules: {
-      required: true,
+      required: false,
     },
   },
   {
@@ -268,7 +268,7 @@ export const COACH_CERTIFICATES_CONSTANTS = [
     type: "calendar",
     placeHolder: "End Date",
     rules: {
-      required: true,
+      required: false,
     },
   },
 ] 

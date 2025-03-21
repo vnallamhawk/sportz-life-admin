@@ -285,6 +285,8 @@ export default function AddCoachMultiFormLayout() {
           coachId: id,
         });
       } else {
+        console.log(finalForm);
+        console.log(finalForm.CoachQualifications);
         createMutate({
           name: finalForm.name,
           phone: finalForm.phone,
@@ -303,6 +305,18 @@ export default function AddCoachMultiFormLayout() {
           experienceLevel: finalForm.experienceLevel,
           centerId: finalForm.centerId,
           sports: finalForm.coachingSports.map((sport: any) => Number(sport)),
+          coachQualifications: finalForm.CoachQualifications.map(
+            (coachQualification: {
+              startDate: string | number | Date;
+              endDate: string | number | Date;
+            }) => ({
+              ...coachQualification,
+              startDate: new Date(coachQualification.startDate),
+              endDate: new Date(coachQualification.endDate),
+              fileUrl: "",
+              fileType: "link",
+            })
+          ),
         });
       }
     }
