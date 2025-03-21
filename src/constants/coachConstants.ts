@@ -1,5 +1,5 @@
 import type { CoachQualifications_certificateType } from "@prisma/client";
-import { type COACH_DETAILS_CONSTANTS_TYPES } from "~/types/coach";
+// import { type COACH_DETAILS_CONSTANTS_TYPES } from "~/types/coach";
 import type { FormValues } from "~/types/common";
 
 export const COACH_TABLE_HEADERS = [
