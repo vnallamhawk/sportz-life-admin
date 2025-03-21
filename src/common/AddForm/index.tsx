@@ -16,7 +16,6 @@ import Button from "~/components/Button";
 import { Dropdown, Textarea } from "flowbite-react";
 import type { FormValues, TableFields } from "~/types/common";
 import { usePrevious } from "~/hooks/usePrevious";
-import { isEqual } from "lodash";
 
 interface AddForm {
   cardTitle?: string;
@@ -94,9 +93,7 @@ const AddForm = ({
     control,
     getValues,
     trigger,
-    watch,
     formState: { errors },
-    setValue,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   } = useForm<any>({ mode: "onSubmit", values: formData });
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
