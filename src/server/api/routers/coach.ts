@@ -238,10 +238,10 @@ export const coachRouter = createTRPCRouter({
                 startDate,
                 endDate,
                 certificateType,
-                fileUrl,         // Required field
-                instituteName,   // Required field
-                fileType,        // Required field
-                fileName,        // Optional field
+                fileUrl,       
+                instituteName,  
+                fileType,     
+                fileName,       
                 createdAt,
                 updatedAt,
               })
