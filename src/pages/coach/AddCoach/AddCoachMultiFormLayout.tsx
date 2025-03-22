@@ -130,7 +130,6 @@ export default function AddCoachMultiFormLayout() {
   };
   const { mutate: createMutate } = api.coach.createCoach.useMutation({
     onSuccess: (response) => {
-      console.log("response data is ", response);
       setCoachId(response?.id);
       setOpenToast(true);
       router.push("/coach");
@@ -174,6 +173,10 @@ export default function AddCoachMultiFormLayout() {
               filename: uploadedFile.name,
               mimetype: uploadedFile.type,
             });
+            // setFormData((previousFormData) => ({
+            //   ...previousFormData,
+            //   image: response.url,
+            // }));
             setUploadUrl(response.url);
           } catch (err) {
             console.error("Upload failed:", err);
@@ -187,7 +190,7 @@ export default function AddCoachMultiFormLayout() {
   const { mutate: createMutateCoachSports } =
     api.coachSports.createCoachSports.useMutation({
       onSuccess: (response) => {
-        console.log("response data is ", response);
+        // console.log("response data is ", response);
 
         return response;
       },
@@ -195,7 +198,7 @@ export default function AddCoachMultiFormLayout() {
   const { mutate: createMutateCoachCertificates } =
     api.coachCertificate.createCoachCertificates.useMutation({
       onSuccess: (response) => {
-        console.log("response data is ", response);
+        // console.log("response data is ", response);
         return response;
       },
     });
@@ -203,7 +206,7 @@ export default function AddCoachMultiFormLayout() {
   const { mutate: createMutateCoachBatches } =
     api.coachBatches.createCoachbatches.useMutation({
       onSuccess: (response) => {
-        console.log("response data is ", response);
+        // console.log("response data is ", response);
         // router.push(`/coach/${coachId ?? ""}`);
 
         return response;
@@ -382,7 +385,7 @@ export default function AddCoachMultiFormLayout() {
                 </div>
               )}
               <div className="mb-14 flex justify-center">
-                <FileUpload onDropCallback={onDropCallback} />{" "}
+                <FileUpload onDropCallback={onDropCallback} />
               </div>
             </div>
             <div>

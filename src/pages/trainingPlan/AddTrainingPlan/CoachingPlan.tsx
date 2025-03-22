@@ -81,8 +81,6 @@ export default function AddInjuryMultiFormLayout() {
     },
   });
 
-
-
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
     if (acceptedFiles && acceptedFiles.length > 0) {
       setPreview(
@@ -97,16 +95,15 @@ export default function AddInjuryMultiFormLayout() {
         : null;
       setFile(uploadedFile);
       if (!uploadedFile) {
-        alert('Please select a valid file');
+        alert("Please select a valid file");
         return;
-      }else  {
+      } else {
         const fileReader = new FileReader();
         fileReader.onloadend = async () => {
           const base64String = fileReader.result as string;
-    
 
           try {
-            const response  = await uploadImage.mutateAsync({
+            const response = await uploadImage.mutateAsync({
               file: base64String,
               filename: uploadedFile.name,
               mimetype: uploadedFile.type,
@@ -116,14 +113,12 @@ export default function AddInjuryMultiFormLayout() {
             console.error("Upload failed:", err);
           }
         };
-        fileReader.readAsDataURL(uploadedFile)      
+        fileReader.readAsDataURL(uploadedFile);
       }
     }
   }, []);
 
-  const finalFormSubmissionHandler = (
-    finalForm:any
-  ) => {
+  const finalFormSubmissionHandler = (finalForm: any) => {
     if (formData.isEditMode) {
       // editMutate({
       //   name: finalForm.name,
@@ -149,9 +144,8 @@ export default function AddInjuryMultiFormLayout() {
       // });
     } else {
       // eslint-disable-next-line no-console
-      console.log(finalForm);
       // eslint-disable-next-line no-console
-      console.log(finalForm, "djbsdbfn");
+      // console.log(finalForm, "djbsdbfn");
       // createMutate({
       //   name: finalForm.name,
       //   phone: finalForm.phone,
@@ -173,7 +167,7 @@ export default function AddInjuryMultiFormLayout() {
       <FormContext.Provider value={formProviderData}>
         <div className="relative grid grid-cols-6 grid-rows-1">
           <Card className="relative col-span-12 h-full !rounded-r-none rounded-l-xl bg-white p-0 pt-10 lg:col-span-4">
-            {currentStep === 1 && <AddInjury search={""}/>}
+            {currentStep === 1 && <AddInjury search={""} />}
             {currentStep === 2 && (
               <AddGeneralDetails
                 finalFormSubmissionHandler={finalFormSubmissionHandler}

@@ -77,13 +77,10 @@ export default function AddInjuryMultiFormLayout() {
   const uploadImage = api.upload.uploadImage.useMutation();
   const { mutate: createMutate } = api.athlete.createAthlete.useMutation({
     onSuccess: (response) => {
-      console.log("response data is ", response);
       setOpenToast(true);
       void router.push(`/athlete/${response?.id ?? ""}`);
     },
   });
-
-
 
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
     if (acceptedFiles && acceptedFiles.length > 0) {
@@ -99,16 +96,15 @@ export default function AddInjuryMultiFormLayout() {
         : null;
       setFile(uploadedFile);
       if (!uploadedFile) {
-        alert('Please select a valid file');
+        alert("Please select a valid file");
         return;
-      }else  {
+      } else {
         const fileReader = new FileReader();
         fileReader.onloadend = async () => {
           const base64String = fileReader.result as string;
-    
 
           try {
-            const response  = await uploadImage.mutateAsync({
+            const response = await uploadImage.mutateAsync({
               file: base64String,
               filename: uploadedFile.name,
               mimetype: uploadedFile.type,
@@ -118,14 +114,12 @@ export default function AddInjuryMultiFormLayout() {
             console.error("Upload failed:", err);
           }
         };
-        fileReader.readAsDataURL(uploadedFile)      
+        fileReader.readAsDataURL(uploadedFile);
       }
     }
   }, []);
 
-  const finalFormSubmissionHandler = (
-    finalForm:any
-  ) => {
+  const finalFormSubmissionHandler = (finalForm: any) => {
     if (formData.isEditMode) {
       // editMutate({
       //   name: finalForm.name,
@@ -151,9 +145,9 @@ export default function AddInjuryMultiFormLayout() {
       // });
     } else {
       // eslint-disable-next-line no-console
-      console.log(finalForm);
+      // console.log(finalForm);
       // eslint-disable-next-line no-console
-      console.log(finalForm, "djbsdbfn");
+      // console.log(finalForm, "djbsdbfn");
       // createMutate({
       //   name: finalForm.name,
       //   phone: finalForm.phone,

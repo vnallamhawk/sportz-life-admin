@@ -181,16 +181,35 @@ export default function Page({ coach }: { coach: Coach; sports: Sports[] }) {
   }, [coach]);
 
   // eslint-disable-next-line @typescript-eslint/require-await
+  // const getSignedUrlForImage = async (key: string) => {
+  //   try {
+  //     const s3info = s3.getSignedUrl("getObject", {
+  //       Bucket: process.env.BUCKET_NAME,
+  //       Key: key,
+  //       Expires: 60,
+  //     });
+  //     // eslint-disable-next-line no-console
+  //     console.log({ s3info });
+  //     setImageUrl(s3info);
+  //   } catch (error) {
+  //     console.error(error);
+  //     return null;
+  //   }
+  // };
+
   const getSignedUrlForImage = async (key: string) => {
     try {
-      const s3info = s3.getSignedUrl("getObject", {
-        Bucket: process.env.S3_BUCKET_NAME,
-        Key: key,
-        Expires: 60,
-      });
-      setImageUrl(s3info);
+      const response = await fetch(
+        `/api/aws/getAwsSignedURL?key=${encodeURIComponent(key)}`
+      );
+      if (!response.ok) throw new Error("Failed to fetch signed URL");
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { url } = await response.json();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      setImageUrl(url);
     } catch (error) {
-      return null;
+      console.error("Error fetching signed URL:", error);
     }
   };
 

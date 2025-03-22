@@ -139,7 +139,7 @@ export default function Page({ center }: { center: CenterDetails }) {
   const getSignedUrlForImage = async (key: string) => {
     try {
       const s3info = s3.getSignedUrl("getObject", {
-        Bucket: process.env.S3_BUCKET_NAME,
+        Bucket: process.env.BUCKET_NAME,
         Key: key,
         Expires: 60,
       });
@@ -218,12 +218,12 @@ export default function Page({ center }: { center: CenterDetails }) {
       TABLE_HEAD = CENTER_DASH_INVENTORY_TABLE_HEADERS;
       TABLE_ROWS = center?.CenterInventories
         ? center?.CenterInventories.map((data) => {
-          return {
-            ...center,
-            name: data?.Inventories?.name,
-            // batches: center?.Batches?.length,
-          };
-        })
+            return {
+              ...center,
+              name: data?.Inventories?.name,
+              // batches: center?.Batches?.length,
+            };
+          })
         : [];
     }
     const component = (

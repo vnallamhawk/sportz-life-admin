@@ -4,7 +4,6 @@ import { z } from "zod";
 import {
   createTRPCRouter,
   publicProcedure,
-  // protectedProcedure,
 } from "~/server/api/trpc";
 
 
@@ -24,7 +23,6 @@ export const uploadRouter = createTRPCRouter({
     .mutation(
       async ({
         input,
-        ctx,
       }) => {
         const { file, filename, mimetype } = input;
 
