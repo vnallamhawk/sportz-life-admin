@@ -130,23 +130,31 @@ export default function AssignBatches({
     const batches =
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
       data?.batches && data?.batches.length > 0 ? [...data?.batches] : [];
-    for (let i = 0; i < batches.length; i++) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const obj = {
-        ...data,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-        centerId: parseInt(data?.center?.value),
-        // eslint-disable-next-line
-        centerLabel: data?.center?.label,
+    // for (let i = 0; i < batches.length; i++) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    console.log(batches);
+    console.log(data);
+    console.log(batches.filter((batch) => data.batches.includes(batch.id)));
+    const center = centers?.find((center) => center.id === data.centerId);
+    console.log(center);
+    const obj = {
+      ...data,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      // centerId: parseInt(data.centerId),
+      // eslint-disable-next-line
+      centerLabel: center?.name,
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-        batchId: parseInt(data?.batches[i]?.value),
-        // eslint-disable-next-line
-        batchLabel: data?.batches[i]?.label,
-      };
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      arr.push(obj);
-    }
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      // batchId: parseInt(data?.batches[i]?.value),
+      // eslint-disable-next-line
+      batchLabel: center?.Batches.filter((batch) =>
+        data.batches.includes(batch.id)
+      ).map(({ name }) => name),
+    };
+    // };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    arr.push(obj);
+    // }
 
     setTableData(arr);
   };
@@ -188,6 +196,8 @@ export default function AssignBatches({
         dependentKey="center"
         // setDependentKey={(value: number) => setCenterId(value)}
         onRemoveTableButton={removeAssignBatches}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        shouldDisableAddTableButton={tableData?.length === 1}
       />
     </div>
   );

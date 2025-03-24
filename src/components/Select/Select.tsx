@@ -37,12 +37,12 @@ const Select = ({
   useEffect(() => {
     if (searchable && searchTerm?.length > 0) {
       const filteredOptions =
-        options &&
-        options?.length > 0 ?
-        options?.filter((option:Options) =>
-          option.label.toLowerCase().includes(searchTerm.toLowerCase())
-        ):[];
-        
+        options && options?.length > 0
+          ? options?.filter((option: Options) =>
+              option.label.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+          : [];
+
       setFinalOptions(filteredOptions);
     } else {
       setFinalOptions(options);
@@ -104,23 +104,18 @@ const Select = ({
             </div>
           )}
           <SelectPrimitive.Group>
-            {finalOptions?.map(
-              (
-                { label, value }: Options,
-                index: number
-              ) => (
-                <SelectPrimitive.Item
-                  key={`${label}-${index}`}
-                  value={value ? value.toString() : ""}
-                  className="w-200 radix-disabled:opacity-50 relative flex rounded-md px-8 py-2 text-sm font-medium text-gray-700 focus:bg-gray-100 focus:outline-none dark:text-gray-300 dark:focus:bg-gray-900"
-                >
-                  <SelectPrimitive.ItemText>{label}</SelectPrimitive.ItemText>
-                  <SelectPrimitive.ItemIndicator className="absolute left-2 inline-flex items-center">
-                    <CheckIcon />
-                  </SelectPrimitive.ItemIndicator>
-                </SelectPrimitive.Item>
-              )
-            )}
+            {finalOptions?.map(({ label, value }: Options, index: number) => (
+              <SelectPrimitive.Item
+                key={`${label}-${index}`}
+                value={value ? value.toString() : ""}
+                className="w-200 radix-disabled:opacity-50 relative flex rounded-md px-8 py-2 text-sm font-medium text-gray-700 focus:bg-gray-100 focus:outline-none dark:text-gray-300 dark:focus:bg-gray-900"
+              >
+                <SelectPrimitive.ItemText>{label}</SelectPrimitive.ItemText>
+                <SelectPrimitive.ItemIndicator className="absolute left-2 inline-flex items-center">
+                  <CheckIcon />
+                </SelectPrimitive.ItemIndicator>
+              </SelectPrimitive.Item>
+            ))}
           </SelectPrimitive.Group>
         </SelectPrimitive.Viewport>
         <SelectPrimitive.ScrollDownButton className="flex items-center justify-center text-gray-700 dark:text-gray-300">

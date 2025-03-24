@@ -15,6 +15,7 @@ import Select from "react-select";
 import Button from "~/components/Button";
 import { Dropdown, Textarea } from "flowbite-react";
 import type { FormValues, TableFields } from "~/types/common";
+import { table } from "console";
 
 interface AddForm {
   cardTitle?: string;
@@ -49,6 +50,7 @@ interface AddForm {
   prevButtonClick?: any;
   dependentKey?: string;
   setDependentKey?: any;
+  shouldDisableAddTableButton?: boolean;
   dependentKey1?: string;
   setDependentKey1?: any;
   onDropCallback?: (files: Array<File>) => void;
@@ -75,6 +77,7 @@ const AddForm = ({
   tableFields,
   addTableButtonText,
   addTableButton,
+  shouldDisableAddTableButton,
   onRemoveTableButton,
   isFormTable = false,
   prevButtonText = "Prev",
@@ -102,6 +105,7 @@ const AddForm = ({
   const [selectedPlaceholders, setSelectedPlaceholders] = useState<{
     [key: string]: string;
   }>({});
+  console.log({ addTableButtonText });
 
   const nextClickHandler = useCallback(async () => {
     const result = await trigger();
@@ -253,7 +257,7 @@ const AddForm = ({
                         // @ts-expect-error
                         newValue?.value;
                     onChange(value);
-                    if (id === "centerId") {
+                    if (id === "centerId" || id === "batchIds") {
                       // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
                       setFormData((prevFormData: any) => ({
                         ...prevFormData,
@@ -428,6 +432,7 @@ const AddForm = ({
 
     return inputElement;
   };
+  console.log({ tableData, TableHeadings });
 
   return (
     <>
@@ -506,14 +511,14 @@ const AddForm = ({
             </div>
 
             {addTableButtonText && (
-              <button
+              <Button
                 type="button"
                 className="cursor-pointer rounded-lg bg-[#F3476D] px-4 py-2 text-center text-white"
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 onClick={addTableButton}
               >
                 {addTableButtonText}
-              </button>
+              </Button>
             )}
           </div>
           <div className="mt-4 flex flex-col items-start lg:flex-row">
@@ -587,12 +592,23 @@ const AddForm = ({
               className="border-1 ml-7 hidden rounded-md border-blush-light px-8 py-3 text-lg font-bold text-[#FF9678] hover:border-blush-dark hover:text-blush-dark lg:block"
               type="button"
               onClick={(e) => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                addTableData(
-                  tableFields ? currentTableData : isFormTable ? getValues() : e
-                );
+                shouldDisableAddTableButton
+                  ? undefined
+                  : // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                    addTableData(
+                      tableFields
+                        ? currentTableData
+                        : isFormTable
+                        ? getValues()
+                        : e
+                    );
                 setCurrentTableData({});
               }}
+              disabled={
+                shouldDisableAddTableButton
+                  ? shouldDisableAddTableButton
+                  : false
+              }
             >
               Add
             </Button>
