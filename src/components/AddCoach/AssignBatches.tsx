@@ -127,27 +127,15 @@ export default function AssignBatches({
   const onAddBatchHandler = async (data: any) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const arr = [...tableData];
-    const batches =
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-      data?.batches && data?.batches.length > 0 ? [...data?.batches] : [];
     // for (let i = 0; i < batches.length; i++) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    console.log(batches);
-    console.log(data);
-    console.log(batches.filter((batch) => data.batches.includes(batch.id)));
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const center = centers?.find((center) => center.id === data.centerId);
-    console.log(center);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const obj = {
       ...data,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-      // centerId: parseInt(data.centerId),
-      // eslint-disable-next-line
       centerLabel: center?.name,
-
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-      // batchId: parseInt(data?.batches[i]?.value),
-      // eslint-disable-next-line
       batchLabel: center?.Batches.filter((batch) =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         data.batches.includes(batch.id)
       ).map(({ name }) => name),
     };

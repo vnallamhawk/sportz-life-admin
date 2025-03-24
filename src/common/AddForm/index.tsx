@@ -105,7 +105,6 @@ const AddForm = ({
   const [selectedPlaceholders, setSelectedPlaceholders] = useState<{
     [key: string]: string;
   }>({});
-  console.log({ addTableButtonText });
 
   const nextClickHandler = useCallback(async () => {
     const result = await trigger();
@@ -432,7 +431,6 @@ const AddForm = ({
 
     return inputElement;
   };
-  console.log({ tableData, TableHeadings });
 
   return (
     <>
