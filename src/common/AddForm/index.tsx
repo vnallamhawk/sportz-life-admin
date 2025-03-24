@@ -15,7 +15,6 @@ import Select from "react-select";
 import Button from "~/components/Button";
 import { Dropdown, Textarea } from "flowbite-react";
 import type { FormValues, TableFields } from "~/types/common";
-import { table } from "console";
 
 interface AddForm {
   cardTitle?: string;

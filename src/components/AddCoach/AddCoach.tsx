@@ -1,8 +1,6 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
-import { type COACH_TYPES } from "~/types/coach";
 import { FormContext } from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
-import { useForm } from "react-hook-form";
 
 import { api } from "~/utils/api";
 import AddForm from "~/common/AddForm";
