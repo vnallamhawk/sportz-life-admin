@@ -172,7 +172,6 @@ export const centerRouter = createTRPCRouter({
           mobile,
           email,
           address,
-          createdBy,
           academyId,
           createdAt,
           updatedAt

@@ -56,7 +56,7 @@ export const coachRouter = createTRPCRouter({
             contains: name,
           },
         }),
-        academyId: Number(ctx?.session?. user.academyId),
+        academyId: Number(ctx?.session?.user.academyId),
       };
 
       const [coaches, total] = await Promise.all([

@@ -18,43 +18,25 @@ import {
 } from "~/constants/coachConstants";
 
 export default function AddCoachCertificates({}) {
-  // const {
-  //   control,
-  //   reset,
-  //   trigger,
-  //   formState: { errors },
-  //   getValues,
-  // } = useForm({
-  //   defaultValues: {
-  //     name: "",
-  //     instituteName: "",
-  //     startDate: "",
-  //     endDate: "",
-  //   },
-  // });
   const {
     stepData: { currentStep, setCurrentStep },
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext<FormContextTypes>(FormContext);
 
-  type CoachQualificationsUpdated = Pick<
-    CoachQualifications,
-    "id" | "instituteName" | "startDate" | "endDate"
-  > & {
-    certificateTypeLabel: string;
-  };
+  // type CoachQualificationsUpdated = Pick<
+  //   CoachQualifications,
+  //   "id" | "instituteName" | "startDate" | "endDate"
+  // > & {
+  //   certificateTypeLabel: string;
+  // };
 
   const [certificates, setCertificates] = useState<
-    CoachQualificationsUpdated[]
+    COACH_CERTIFICATE_TABLE_TYPES[]
   >([]);
 
   const onAddHandler = (data: any) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     const arr: COACH_CERTIFICATE_TABLE_TYPES[] = [...certificates];
-
-    // eslint-disable-next-line
     const obj: COACH_CERTIFICATE_TABLE_TYPES = {
       // eslint-disable-next-line
       startDate: dateFormat(new Date(data.startDate)),
@@ -71,8 +53,6 @@ export default function AddCoachCertificates({}) {
       instituteName: data?.instituteName,
     };
     arr.push(obj);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
     setCertificates(arr);
     // @ts-expect-error // TODO: FIX THIS TS ERROR
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -93,6 +73,7 @@ export default function AddCoachCertificates({}) {
   useEffect(() => {
     if (formData?.CoachQualifications) {
       setCertificates(
+        // @ts-expect-error TODO: fix this error
         formData?.CoachQualifications.map(
           (qualification: CoachQualifications) => ({
             ...qualification,

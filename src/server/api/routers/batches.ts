@@ -4,7 +4,12 @@ import { ATHELETE_TRAININGLEVEL } from "~/types/batch";
 
 export const batchRouter = createTRPCRouter({
   getAllBatches: publicProcedure.query(({ ctx }) => {
-    return ctx?.prisma?.batches?.findMany();
+    const academyId =  Number(ctx?.session?.user.academyId)
+    return ctx?.prisma?.batches?.findMany({
+      where: {
+        academyId: academyId,
+      },
+    });
   }),
   createBatch: publicProcedure
     .input(
