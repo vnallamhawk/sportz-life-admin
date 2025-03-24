@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import React, { useContext,  useEffect,  useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import CoachImg from "../../images/CoachesImg.png";
 import BatchImg from "../../images/BatchesImg.png";
@@ -9,7 +9,7 @@ import InventoryImg from "../../images/InventoryImg.png";
 
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import type { AthleteBatchesMaps, AthleteSportsMaps, Athletes, Batches, Sports } from "@prisma/client";
+import type { AthleteBatchesMaps, AthleteSportsMaps, Athletes, Batches, Centers, Coaches, FeePlans, FeePlans_recurringType, Sports } from "@prisma/client";
 import s3 from "../../lib/aws";
 
 import DetailPage from "~/common/DetailPage";
@@ -19,6 +19,7 @@ import { ASSESSMENT_TABLE_HEADERS } from "~/constants/assessment";
 import { ATHLETE_BATCH_TABLE_HEADERS, ATHLETE_MEDICAL_TABLE_HEADERS } from "~/constants/athleteConstants";
 import Attendance from "~/components/Attendance";
 import type { TabType, TableHead } from "~/types/common";
+import { calculateAge } from "~/utils/common";
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
@@ -29,14 +30,20 @@ export const getServerSideProps = async (
       id: id ? Number(id) : undefined,
     },
     include: {
-      AthleteSportsMaps:{
-        include:{
-          Sports:true
+      AthleteSportsMaps: {
+        include: {
+          Sports: true
         }
       },
-      AthleteBatchesMaps:{
-        include:{
-          Batches:true
+      AthleteBatchesMaps: {
+        include: {
+          Batches: {
+            include: {
+              Coaches: true,
+              FeePlans: true
+            }
+          },
+          Sports: true
         }
       },
     },
@@ -50,14 +57,14 @@ export const getServerSideProps = async (
   };
 };
 
-const tabs :TabType[]= [
+const tabs: TabType[] = [
   {
     label: "Attendance",
     name: "attendance",
     value: "60%",
     image: CoachImg,
     allLabel: "ATTENDANCE",
-   
+
   },
   {
     label: "Batches",
@@ -94,71 +101,82 @@ type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
-interface AthleteBatchesMapsType extends AthleteBatchesMaps{
-  Batches?:Batches
+interface BatchesType extends Batches {
+  Coaches: Coaches,
+  FeePlans: FeePlans,
+  Sports: Sports,
+  Centers: Centers
 }
 
-interface AthleteSportsMapsType extends AthleteSportsMaps{
-  Sports?:Sports
+interface AthleteBatchesMapsType extends AthleteBatchesMaps {
+  Batches?: BatchesType,
+  Sports?: Sports
+}
+
+interface AthleteSportsMapsType extends AthleteSportsMaps {
+  Sports?: Sports
 }
 
 
 type Athlete = Athletes & {
   AthleteSportsMaps: AthleteSportsMapsType[];
-  AthleteBatchesMaps:AthleteBatchesMapsType[]
+  AthleteBatchesMaps: AthleteBatchesMapsType[]
 };
 
 
 export default function Page({ athlete }: { athlete: Athlete }) {
+
+  console.log([athlete])
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const [selectedComponent,setSelectedComponent]=useState<any>()
-  const [selectedTab, setSelectedTab] = useState<string|undefined>(tabs[0]?.name);
+  const [selectedComponent, setSelectedComponent] = useState<any>()
+  const [selectedTab, setSelectedTab] = useState<string | undefined>(tabs[0]?.name);
 
   const [loading, setLoading] = useState(true);
   const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [batchesData, setBatchesData] = useState<AthleteBatchesMapsType[] | null>(null);
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    if(athlete && athlete.image){
+    if (athlete && athlete.image) {
       void getSignedUrlForImage(athlete.image)
     }
 
 
-  },[athlete])
+  }, [athlete])
 
   // eslint-disable-next-line @typescript-eslint/require-await
-  const getSignedUrlForImage = async (key:string) => {
+  const getSignedUrlForImage = async (key: string) => {
     try {
-        const s3info = s3.getSignedUrl("getObject", {
-            Bucket: process.env.S3_BUCKET_NAME,
-            Key: key,
-            Expires: 60,
-        });
-        setImageUrl(s3info);
+      const s3info = s3.getSignedUrl("getObject", {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: key,
+        Expires: 60,
+      });
+      setImageUrl(s3info);
     } catch (error) {
-        return null;
+      return null;
     }
-};
+  };
 
   useEffect(() => {
     if (finalTabs && finalTabs.length > 0 && Object.keys(athlete).length > 0) {
-      const arr:TabType[]= [...finalTabs];
-      const medical_historyIndex = arr.findIndex((item:TabType) => item.name === "medical_history");
+      const arr: TabType[] = [...finalTabs];
+      const medical_historyIndex = arr.findIndex((item: TabType) => item.name === "medical_history");
       if (medical_historyIndex > -1 && athlete?.medicalHistory) {
-        const obj:TabType={...arr[medical_historyIndex]}
-        obj.value =  0;
-        arr[medical_historyIndex]=obj
+        const obj: TabType = { ...arr[medical_historyIndex] }
+        obj.value = 0;
+        arr[medical_historyIndex] = obj
       }
-      const batchIndex = arr.findIndex((item:TabType) => item.name === "batches");
+      const batchIndex = arr.findIndex((item: TabType) => item.name === "batches");
       if (batchIndex > -1 && athlete?.AthleteBatchesMaps) {
-        const batchObj:TabType={...arr[batchIndex]}
+        const batchObj: TabType = { ...arr[batchIndex] }
 
-        batchObj.value = athlete?.AthleteBatchesMaps?athlete?.AthleteBatchesMaps?.length:0;
-        arr[batchIndex]=batchObj
+        batchObj.value = athlete?.AthleteBatchesMaps ? athlete?.AthleteBatchesMaps?.length : 0;
+        arr[batchIndex] = batchObj
 
       }
-      if(JSON.stringify(finalTabs)!==JSON.stringify(arr)){
+      if (JSON.stringify(finalTabs) !== JSON.stringify(arr)) {
         setFinalTabs(arr);
 
       }
@@ -170,36 +188,54 @@ export default function Page({ athlete }: { athlete: Athlete }) {
     setLoading(isLoading);
   };
 
- 
+
 
   const handleClick = (tab: TabType) => {
     let component
-    let TABLE_HEAD:TableHead=[]
-    const TABLE_ROWS: never[]=[]
+    let TABLE_HEAD: TableHead = []
+    let TABLE_ROWS: AthleteBatchesMapsType[] = []
     if (tab?.name === "attendance") {
-      component=<Attendance/>
-      
-    } else{
+      component = <Attendance />
+
+    } else {
       if (tab?.name === "batches") {
         TABLE_HEAD = ATHLETE_BATCH_TABLE_HEADERS
-  
+
+
+        if (athlete && athlete?.AthleteBatchesMaps && athlete?.AthleteBatchesMaps?.length > 0) {
+          const batches = athlete?.AthleteBatchesMaps.map((batch) => {
+            return {
+              ...batch,
+              batchName: batch.Batches?.name,
+              sport: batch.Sports?.name,
+              coach: batch.Batches?.Coaches?.name,
+              students: batch.Batches?.occupiedSeat,
+              batchFee: `${batch.Batches?.FeePlans?.amount}/${batch.Batches?.FeePlans?.recurringType}`
+            };
+          });
+
+          TABLE_ROWS = batches
+
+          setBatchesData(TABLE_ROWS)
+        }
+
       } else if (tab?.name === "payment_history") {
         TABLE_HEAD = PAYMENT_HISTORY_TABLE_HEADERS
       } else if (tab?.name === "assessment_report") {
         TABLE_HEAD = ASSESSMENT_TABLE_HEADERS
-      } 
+      }
       else if (tab?.name === "medical_history") {
         TABLE_HEAD = ATHLETE_MEDICAL_TABLE_HEADERS
-      } 
-      component= <AllData
-        title={tab?.allLabel?tab?.allLabel:""}
+      }
+      component = <AllData
+        title={tab?.allLabel ? tab?.allLabel : ""}
         dropdownItems={{}}
         TABLE_HEAD={TABLE_HEAD}
         TABLE_ROWS={TABLE_ROWS}
         rowSelection={false} />
     }
-   setSelectedComponent(component)
-   setSelectedTab(tab?.name);
+    setSelectedComponent(component)
+    setSelectedTab(tab?.name);
 
   };
 
@@ -212,11 +248,31 @@ export default function Page({ athlete }: { athlete: Athlete }) {
         editText={"Edit Athlete"}
         tabs={finalTabs}
         handleTabClick={handleClick}
-        data={{...athlete,imageUrl}}
-        badgeData={athlete?.AthleteSportsMaps ||[]}
+        data={{ ...athlete, imageUrl }}
+        badgeData={athlete?.AthleteSportsMaps || []}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         selectedComponent={selectedComponent}
-        selectedTab={selectedTab}       />
+        selectedTab={selectedTab}
+        gridColumns={3}
+        details={[
+          {
+            items: [
+              {
+                label: "Blood Group",
+                value: athlete?.bloodGroup || "",
+              },
+              { label: "Height", value: athlete?.height || "" },
+              { label: "Weight", value: athlete?.weight || "" },
+              { label: "Contact Number", value: athlete?.phone || "" },
+              { label: "Email", value: athlete?.email || "" },
+              { label: "Age", value: calculateAge(athlete?.dob) || "" },
+              { label: "Father's Name", value: athlete?.fatherName || "" },
+              { label: "Residential Address", value: athlete?.address || "" },
+              { label: "Gender", value: athlete?.gender || "" }
+            ],
+          },
+        ]}
+      />
     </>
   );
 }

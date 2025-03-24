@@ -27,6 +27,8 @@ const TableListView = ({
   onHandlePageChange?: (page: number) => void
 }) => {
 
+  // console.log({ TABLE_ROWS })
+
   return (
     <>
       <div className="hidden lg:block">

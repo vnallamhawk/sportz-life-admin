@@ -6,7 +6,7 @@ import {
 } from "~/constants/athleteConstants";
 
 import { FormContext } from "~/pages/athlete/AddAthlete/AddAthleteMultiFormLayout";
-import {  useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 import AddForm from "~/common/AddForm";
 import type { FormValues } from "~/types/common";
@@ -29,6 +29,8 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
   const [centerId, setCenterId] = useState<number>();
   const [sportIds, setSportIds] = useState<number[]>([]);
 
+  // console.log({ centers })
+
   const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     ATHLETE_GENRAL_CONSTANTS
   );
@@ -39,10 +41,10 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
 
   useEffect(() => {
     if (centers?.length) {
-      let updatedFormConstantValues: FormValues[]=formConstantValues;
+      let updatedFormConstantValues: FormValues[] = formConstantValues;
 
-      updatedFormConstantValues = formConstantValues?.map((formConstant:FormValues) => {
-        if (formConstant.id === "centerId" &&formConstant?.options &&  formConstant?.options.length==0) {
+      updatedFormConstantValues = formConstantValues?.map((formConstant: FormValues) => {
+        if (formConstant.id === "centerId" && formConstant?.options && formConstant?.options.length == 0) {
           return {
             ...formConstant,
             options: centers.map((center) => ({
@@ -58,20 +60,38 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
 
     }
 
-    }, [formConstantValues, centers, centers?.length]);
+  }, [formConstantValues, centers, centers?.length]);
 
   useEffect(() => {
-    if (centerId && formConstantValues && formConstantValues.length>0) {
+    if (centerId && formConstantValues && formConstantValues.length > 0) {
       const center = centers?.find((item) => item?.id == centerId);
-      let updatedFormConstantValues: FormValues[]=formConstantValues;
-      if (center?.CenterSports && center?.CenterSports?.length>0) {
-        updatedFormConstantValues = formConstantValues?.map((formConstant:FormValues) => {
-          if (formConstant.id === "sportId" &&formConstant?.options &&  formConstant?.options.length==0) {
-            return {
+      let updatedFormConstantValues: FormValues[] = formConstantValues;
+      if (center?.CenterSports && center?.CenterSports?.length > 0) {
+        updatedFormConstantValues = formConstantValues?.map((formConstant: FormValues) => {
+          if (formConstant.id === "sportId" && formConstant?.options && formConstant?.options.length == 0) {
+            const data = {
               ...formConstant,
               options: center.CenterSports.map((CenterSport) => ({
                 label: CenterSport?.Sports?.name,
                 value: CenterSport?.Sports?.id.toString(),
+              })),
+            };
+
+            return data;
+          } else {
+            return formConstant;
+          }
+        });
+      }
+
+      if (center?.Batches && center?.Batches?.length > 0) {
+        updatedFormConstantValues = updatedFormConstantValues?.map((formConstant: FormValues) => {
+          if (formConstant.id === "batch" && formConstant?.options && formConstant?.options.length == 0) {
+            return {
+              ...formConstant,
+              options: center.Batches.map((batch) => ({
+                label: batch?.name,
+                value: batch?.id.toString(),
               })),
             };
           } else {
@@ -79,21 +99,21 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
           }
         });
       }
-     
+
       setFormConstantValues(updatedFormConstantValues);
     }
   }, [centers, centerId, formConstantValues]);
 
 
-  useEffect(()=>{
-    if (sportIds && sportIds.length>0 && formConstantValues && formConstantValues.length>0) {
-      let updatedFormConstantValues: FormValues[]=formConstantValues;
+  useEffect(() => {
+    if (sportIds && sportIds.length > 0 && formConstantValues && formConstantValues.length > 0) {
+      let updatedFormConstantValues: FormValues[] = formConstantValues;
       const center = centers?.find((item) => item?.id == centerId);
-      const finalBatches=center?.Batches?.filter((item)=> sportIds.includes(item?.sportId))
+      const finalBatches = center?.Batches?.filter((item) => sportIds.includes(item?.sportId))
 
       updatedFormConstantValues = updatedFormConstantValues?.map(
         (formConstant: FormValues) => {
-          if (formConstant.id === "batch"&&formConstant?.options &&  formConstant?.options.length==0) {
+          if (formConstant.id === "batch" && formConstant?.options && formConstant?.options.length == 0) {
             return {
               ...formConstant,
               options: finalBatches?.map(
@@ -112,8 +132,10 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
 
     }
 
-  },[centerId, centers, formConstantValues, sportIds])
+  }, [centerId, centers, formConstantValues, sportIds])
 
+
+  // console.log({ formConstantValues, centerId })
   return (
     <>
       <AddForm
@@ -128,7 +150,7 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
         dependentKey="centerId"
         dependentKey1="sportId"
         setDependentKey1={(value: string) => {
-          const arr:number[]=[...sportIds]
+          const arr: number[] = [...sportIds]
           arr.push(parseInt(value))
           setSportIds(arr)
         }
@@ -147,7 +169,7 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
         setCurrentStep={setCurrentStep}
         buttonItems={{ prevFinish: true }}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        finalFormSubmissionHandler={finalFormSubmissionHandler}      />
+        finalFormSubmissionHandler={finalFormSubmissionHandler} />
     </>
   );
 }

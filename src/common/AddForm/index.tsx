@@ -83,7 +83,7 @@ const AddForm = ({
   finishButtonText = "Finish",
   prevButtonClick,
   // dependentKey,
-  // setDependentKey,
+  setDependentKey,
   // dependentKey1,
   // setDependentKey1,
   onDropCallback,
@@ -250,12 +250,22 @@ const AddForm = ({
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const value = Array.isArray(newValue)
                       ? // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-                        newValue.map((option) => option.value)
+                      newValue.map((option) => option.value)
                       : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-expect-error
-                        newValue?.value;
+                      // @ts-expect-error
+                      newValue?.value;
                     onChange(value);
+
                     if (id === "centerId" || id === "batchIds") {
+                      if (id === "centerId") {
+                        if (!newValue) return; // Ensure newValue is not null
+
+                        if (!Array.isArray(newValue) && "value" in newValue) {
+                          setDependentKey(newValue.value); // Single value
+                        } else if (Array.isArray(newValue)) {
+                          setDependentKey(newValue.map((item) => item.value)); // Multi select
+                        }
+                      }
                       // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
                       setFormData((prevFormData: any) => ({
                         ...prevFormData,
@@ -373,7 +383,7 @@ const AddForm = ({
                     value
                       ? new Date(value as string)
                       : // eslint-disable-next-line
-                        new Date(formData[id] as string)
+                      new Date(formData[id] as string)
                   }
                   className="h-12"
                   onChangeHandler={onChange}
@@ -592,13 +602,13 @@ const AddForm = ({
                 shouldDisableAddTableButton
                   ? undefined
                   : // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                    addTableData(
-                      tableFields
-                        ? currentTableData
-                        : isFormTable
+                  addTableData(
+                    tableFields
+                      ? currentTableData
+                      : isFormTable
                         ? getValues()
                         : e
-                    );
+                  );
                 setCurrentTableData({});
               }}
               disabled={

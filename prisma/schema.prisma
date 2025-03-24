@@ -42,6 +42,7 @@ model Centers {
   deletedAt                DateTime?                  @db.DateTime(0)
   email                    String?                    @db.VarChar(255)
   createdBy                Int?
+  Athletes                 Athletes[]
   AssessmentCenters        AssessmentCenters[]
   AthleteAttendances       AthleteAttendances[]
   AthleteOrders            AthleteOrders[]
@@ -335,6 +336,7 @@ model Athletes {
   status                     Int?                         @default(1) @db.TinyInt
   createdAt                  DateTime                     @db.DateTime(0)
   updatedAt                  DateTime                     @db.DateTime(0)
+  centerId                   Int?
   buildingNumber             String?                      @db.VarChar(255)
   apartmentNumber            String?                      @db.VarChar(255)
   AssessmentAssignedAthletes AssessmentAssignedAthletes[]
@@ -351,6 +353,8 @@ model Athletes {
   Ratings                    Ratings[]
   TicketMessages             TicketMessages[]
   Tickets                    Tickets[]
+  Centers                    Centers                      @relation(fields: [centerId], references: [id], onDelete: Cascade, map: "AthleteAttendances_ibfk_787")
+
 
   @@index([academyCode], map: "academyCode")
 }
@@ -839,7 +843,7 @@ model Payments {
   batchId           Int
   price             Float                   @db.Float
   amountToBePaid    Float                   @db.Float
-  gst               Payments_gst            @default(dbgenerated("18"))
+  gst               Payments_gst            @default(EIGHTEEN)
   gstAmount         Float?                  @default(0) @db.Float
   paidAmount        Float?                  @default(0) @db.Float
   planType          Payments_planType
@@ -1296,7 +1300,7 @@ model Athlete_Orders {
   orderDate   DateTime               @db.Date
   updateDate  DateTime               @db.Date
   dueDate     DateTime               @db.Date
-  gst         Athlete_Orders_gst     @default(dbgenerated("18"))
+  gst         Athlete_Orders_gst     @default(EIGHTEEN)
   baseFee     Float                  @db.Float
   totalAmount Float                  @db.Float
   lateFee     Float?                 @default(0) @db.Float

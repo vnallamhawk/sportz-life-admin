@@ -108,7 +108,6 @@ export default function AddAthleteMultiFormLayout() {
       console.log("response data is ", response);
       setOpenToast(true);
       setAthleteId(response?.id)
-      router.push("/athlete").then(() => window.location.reload());
 
       return response
     },
@@ -135,7 +134,7 @@ export default function AddAthleteMultiFormLayout() {
     api.athleteBatches.createAthletebatches.useMutation({
       onSuccess: (response) => {
         console.log("response data in athelete batches ", response);
-        // router.push(`/athlete/${athleteId ?? ""}`);
+        router.push("/athlete").then(() => window.location.reload());
 
         return response;
       },
@@ -188,13 +187,14 @@ export default function AddAthleteMultiFormLayout() {
       formData?.batch &&
       athleteId
     ) {
+
       const finalCoachSports = [
         {
-          sportsId: parseInt(formData.sportId?.value),
-          batchId: parseInt(formData.batch?.value),
+          sportsId: parseInt(formData.sportId),
+          batchId: parseInt(formData.batch),
           athleteId: athleteId,
-          centerId: parseInt(formData.centerId?.value),
-          trainingLevel: formData.training_level?.value,
+          centerId: parseInt(formData.centerId),
+          trainingLevel: formData.training_level,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -202,11 +202,11 @@ export default function AddAthleteMultiFormLayout() {
 
       const finalAtheleteBatches = [
         {
-          sportId: parseInt(formData.sportId?.value),
-          batchId: parseInt(formData.batch?.value),
+          sportId: parseInt(formData.sportId),
+          batchId: parseInt(formData.batch),
           athleteId: athleteId,
-          centerId: parseInt(formData.centerId?.value),
-          trainingLevel: formData.training_level?.value,
+          centerId: parseInt(formData.centerId),
+          trainingLevel: formData.training_level,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -245,14 +245,12 @@ export default function AddAthleteMultiFormLayout() {
         });
       } else {
         // eslint-disable-next-line no-console
-        console.log(finalForm);
-        // eslint-disable-next-line no-console
         createMutate({
           name: finalForm.name,
           phone: finalForm.phone,
           email: finalForm.email,
-          bloodGroup: finalForm.bloodGroup.value,
-          gender: finalForm.gender.value as (typeof GENDER_VALUES)[number],
+          bloodGroup: finalForm.bloodGroup,
+          gender: finalForm.gender,
           dob: new Date(finalForm.dob),
           height: parseInt(finalForm.height),
           weight: parseInt(finalForm.weight),

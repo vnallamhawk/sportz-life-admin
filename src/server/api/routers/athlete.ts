@@ -37,8 +37,16 @@ export const athleteRouter = createTRPCRouter({
           skip,
           take: limit,
           include: {
-            AthleteBatchesMaps: true,
-            AthleteSportsMaps: true
+            AthleteBatchesMaps: {
+              include: {
+                Batches: true, // Include Batches associated with the coach
+              },
+            },
+            AthleteSportsMaps: {
+              include: {
+                Centers: true, // Include Batches associated with the coach
+              },
+            }
           },
           orderBy: {
             createdAt: sortOrder, // Sort by createdAt (ascending or descending)
@@ -46,7 +54,7 @@ export const athleteRouter = createTRPCRouter({
         }),
         ctx.prisma.athletes.count({
           where: {
-            academyCode: Number(ctx?.session?. user.academyId),
+            academyCode: Number(ctx?.session?.user.academyId),
           },
         }),
       ]);
