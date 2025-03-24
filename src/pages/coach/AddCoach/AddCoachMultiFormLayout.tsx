@@ -290,7 +290,6 @@ export default function AddCoachMultiFormLayout() {
         });
       } else {
         console.log(finalForm);
-        console.log(finalForm.CoachQualifications);
         createMutate({
           name: finalForm.name,
           phone: finalForm.phone,
@@ -326,6 +325,7 @@ export default function AddCoachMultiFormLayout() {
               fileType: "link",
             })
           ),
+          batches: finalForm.batches,
         });
       }
     }

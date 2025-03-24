@@ -181,7 +181,8 @@ export const coachRouter = createTRPCRouter({
             fileType: z.nativeEnum(CoachQualifications_fileType), 
             fileName: z.string().optional()
           })
-        )
+        ),
+        batches: z.array(z.number())
       })
     )
     .mutation(
@@ -203,7 +204,8 @@ export const coachRouter = createTRPCRouter({
           experienceLevel,
           centerId,
           sports,
-          coachQualifications
+          coachQualifications,
+          batches
         },
         ctx,
       }) => {
@@ -225,6 +227,15 @@ export const coachRouter = createTRPCRouter({
             about,
             experienceLevel,
             centerId,
+            CoachCentersBatches: {
+              create: batches.map((batchId) => ({
+                batchId,
+                centerId,
+                status: 1,
+                createdAt,
+                updatedAt,
+              })),
+            },
             CoachSportsMaps: {
               create: sports.map((sportId) => ({
                 createdAt,
@@ -246,6 +257,7 @@ export const coachRouter = createTRPCRouter({
                 updatedAt,
               })
             ),
+           
           }
           
           },
