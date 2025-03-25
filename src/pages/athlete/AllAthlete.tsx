@@ -3,13 +3,35 @@ import AllData from "~/common/AllData";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
-import type { Athletes } from "@prisma/client";
+import type { AthleteBatchesMaps, Athletes, AthleteSportsMaps, Batches, Centers, Coaches, FeePlans, Sports } from "@prisma/client";
+
+interface BatchesType extends Batches {
+  Coaches?: Coaches,
+  FeePlans?: FeePlans,
+  Sports?: Sports,
+  Centers?: Centers
+}
+
+interface AthleteBatchesMapsType extends AthleteBatchesMaps {
+  Batches?: BatchesType
+}
+
+interface AthleteSportsMapsType extends AthleteSportsMaps {
+  Sports?: Sports,
+  Centers?: Centers
+}
+
+
+type AthletesType = Athletes & {
+  AthleteSportsMaps: AthleteSportsMapsType[];
+  AthleteBatchesMaps: AthleteBatchesMapsType[]
+};
 
 const TABLE_HEAD = [
   { label: "Athlete Name", id: "name" },
-  { label: "Training Level", id: "t_level" },
+  // { label: "Training Level", id: "t_level" },
   { label: "Center", id: "center" },
-  { label: "Batch", id: "batch" },
+  { label: "Batch", id: "batches" },
   { label: "Fee Status of the Month", id: "status" },
   { label: "Action", id: "action" },
 ];
@@ -24,9 +46,9 @@ export default function Athlete() {
   const athletesData: any =
     filterByName == ""
       ? api.athlete.getAllAthletesWithPagination.useQuery({
-          page: currentPage,
-          limit: 10,
-        })
+        page: currentPage,
+        limit: 10,
+      })
       : api.athlete.getAthleteByName.useQuery({ name: filterByName });
   const { data: sports } = api.sports.getAllSports.useQuery();
   const { data: centers } = api.center.getAllCenters.useQuery();
@@ -34,6 +56,8 @@ export default function Athlete() {
 
   // eslint-disable-next-line
   const athletes = athletesData?.data?.data ?? []; // Ensure it's an array
+
+  console.log({ athletes })
   // eslint-disable-next-line
   const totalPages = athletesData?.data?.totalPages ?? 1; // Ensure a valid number
 
@@ -70,9 +94,15 @@ export default function Athlete() {
     // eslint-disable-next-line
     if (athletes && athletes?.length > 0) {
       // eslint-disable-next-line
-      const updatedAthletes: Athletes[] = athletes.map((athletes: Athletes) => {
+      const updatedAthletes: AthletesType[] = athletes.map((athletes: AthletesType) => {
         return {
           ...athletes,
+          batches: athletes?.AthleteBatchesMaps.map(
+            // eslint-disable-next-line
+            (map: any) => map.Batches.name
+          ).join(", "),
+          center: athletes?.AthleteSportsMaps[0]?.Centers?.name
+
           // status: athlete?.designation,
         };
       });
@@ -144,22 +174,19 @@ export default function Athlete() {
           },
         ]}
         applyFilters={() =>
-          // appliedFilters: { [key: string]: any }
-          {
-            // handleFilters(appliedFilters);
-          }
+        // appliedFilters: { [key: string]: any }
+        {
+          // handleFilters(appliedFilters);
+        }
         }
         // eslint-disable-next-line
         onViewClick={(id: number) =>
-          router
-            .replace(`/athlete/${id ?? ""}`)
-            .then(() => window.location.reload())
+          router.replace(`/athlete/${id}`).then(() => router.reload())
         }
         // eslint-disable-next-line
         onEditClick={(id: number) =>
-          router
-            .replace(`/edit-athlete-${id}`)
-            .then(() => window.location.reload())
+          router.replace(`/edit-athlete-${id}`).then(() => router.reload())
+
         }
         onDeleteClick={(id: number) => deleteAthlete(id)}
         rowSelection={true}
