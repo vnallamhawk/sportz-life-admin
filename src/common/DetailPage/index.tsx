@@ -130,8 +130,6 @@ const DetailPage = ({
     ],
   };
 
-  console.log({ details, data });
-
   return (
     <>
       <Card className="h-100 mx-5 bg-gradient-to-r from-[#2D323D] to-[#141720] md:bg-white md:bg-none">
