@@ -30,7 +30,7 @@ interface Detail {
   selectedTab: string | undefined;
   badgeData?: {
     [key: string]: any;
-    Sports?: { name: string;[key: string]: any };
+    Sports?: { name: string; [key: string]: any };
   }[];
 }
 
@@ -113,7 +113,7 @@ const DetailPage = ({
             <img
               className="h-[150px] w-[150px] rounded-full object-cover"
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              src={data?.imageUrl ? data?.imageUrl : "/images/rugby.jpg"}
+              src={data?.imageUrl ? data?.imageUrl : ""}
               alt="S3 Image"
               width="200"
               height="150"
@@ -170,13 +170,21 @@ const DetailPage = ({
 
             <div className="mt-5 grid grid-cols-5 gap-4">
               {details && details.length > 0 && (
-                <div className="col-span-12 flex flex-wrap md:grid md:grid-cols-5 text-gray-600">
+                <div className="col-span-12 flex flex-wrap text-gray-600 md:grid md:grid-cols-5">
                   {details.map((row, rowIndex: number) => {
                     return row.items.map(
-                      (item: { label: string; value: string | number }, index: number) => {
+                      (
+                        item: { label: string; value: string | number },
+                        index: number
+                      ) => {
                         return (
-                          <div className="md:col-span-1 text-center" key={`${rowIndex}-${index}`}>
-                            <div className="mb-1 text-sm text-gray-400">{item.label}</div>
+                          <div
+                            className="text-center md:col-span-1"
+                            key={`${rowIndex}-${index}`}
+                          >
+                            <div className="mb-1 text-sm text-gray-400">
+                              {item.label}
+                            </div>
                             <div className="font-bold">{item.value}</div>
                           </div>
                         );
@@ -186,7 +194,6 @@ const DetailPage = ({
                 </div>
               )}
             </div>
-
           </div>
         </div>
         <div className="tab-slider mt-8">
@@ -194,8 +201,9 @@ const DetailPage = ({
             {tabs?.map((tab: TabType, index: number) => {
               return (
                 <div
-                  className={`${selectedTab === tab?.key ? "active" : ""
-                    }rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px]`}
+                  className={`${
+                    selectedTab === tab?.key ? "active" : ""
+                  }rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px]`}
                   onClick={() => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                     handleTabClick(tab);

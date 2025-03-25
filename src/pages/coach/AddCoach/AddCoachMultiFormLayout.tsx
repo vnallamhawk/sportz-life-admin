@@ -165,18 +165,19 @@ export default function AddCoachMultiFormLayout() {
       } else {
         const fileReader = new FileReader();
         fileReader.onloadend = async () => {
-          const base64String = fileReader.result as string;
+          let base64String = fileReader.result as string;
+
+          if (base64String.startsWith("data:")) {
+            base64String = base64String.split(",")[1] as string; // Get the part after the comma
+          }
 
           try {
             const response = await uploadImage.mutateAsync({
               file: base64String,
               filename: uploadedFile.name,
               mimetype: uploadedFile.type,
+              key: "coach",
             });
-            // setFormData((previousFormData) => ({
-            //   ...previousFormData,
-            //   image: response.url,
-            // }));
             setUploadUrl(response.url);
           } catch (err) {
             console.error("Upload failed:", err);
