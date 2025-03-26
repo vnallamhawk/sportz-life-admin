@@ -30,6 +30,7 @@ import { type MultiSelectOption } from "~/types/select";
 import { useSession } from "next-auth/react";
 import { prisma } from "~/server/db";
 import { parse } from "date-fns";
+import { isEqual } from "lodash";
 
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: "",
@@ -306,19 +307,48 @@ export default function AddCoachMultiFormLayout() {
     if (createdBy && academyId) {
       const isEditMode = router.asPath.includes("edit");
       if (isEditMode) {
+        const hasCertificatedUpdated =
+          finalForm.CoachQualifications.length !==
+            coachData?.data?.CoachQualifications.length ||
+          finalForm.CoachQualifications?.[0]?.certificateType !==
+            // @ts-expect-error
+            coachData.data?.CoachQualifications?.[0].certificateType;
+
         editMutate({
           name: finalForm.name,
           phone: finalForm.phone,
           email: finalForm.email,
-          designation: finalForm.designation?.value,
-          gender: finalForm.gender.value.toLowerCase(),
+          designation: finalForm.designation,
+          gender: finalForm.gender.toLowerCase(),
           dateOfBirth: new Date(finalForm.dateOfBirth),
-          trainingLevel: finalForm.trainingLevel
-            .value as (typeof TRAINING_LEVEL)[number],
+          trainingLevel: finalForm.trainingLevel,
           updatedAt: new Date(),
+          createdAt: new Date(),
           academyId: Number(academyId),
           image: uploadUrl,
           coachId: id,
+          coachQualifications: hasCertificatedUpdated
+            ? finalForm.CoachQualifications.map(
+                (coachQualification: {
+                  startDate: string;
+                  endDate: string;
+                }) => ({
+                  ...coachQualification,
+                  startDate: parse(
+                    coachQualification.startDate,
+                    "dd/MM/yyyy",
+                    new Date()
+                  ),
+                  endDate: parse(
+                    coachQualification.endDate,
+                    "dd/MM/yyyy",
+                    new Date()
+                  ),
+                  fileUrl: "",
+                  fileType: "link",
+                })
+              )
+            : [],
         });
       } else {
         console.log(finalForm);
