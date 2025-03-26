@@ -115,7 +115,8 @@ export const coachRouter = createTRPCRouter({
                 Sports: true, // Fetch the associated sports
               },
             },
-            CoachQualifications: true
+            CoachQualifications: true,
+            CoachCentersBatches: true
             // batches: true,
             // centers: true,
             // certificates: true,

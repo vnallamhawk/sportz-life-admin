@@ -51,7 +51,6 @@ const DetailPage = ({
   selectedTab,
   badgeData,
   name,
-  gridColumns,
 }: Detail) => {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
