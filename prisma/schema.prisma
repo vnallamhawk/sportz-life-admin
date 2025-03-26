@@ -1551,14 +1551,14 @@ enum Tickets_ticketStatus {
 }
 
 enum Athletes_bloodGroup {
-  A_POS  @map("A+")
-  A_NEG  @map("A-")
-  B_POS  @map("B+")
-  B_NEG  @map("B-")
-  AB_POS @map("AB+")
-  AB_NEG @map("AB-")
-  O_POS  @map("O+")
-  O_NEG  @map("O-")
+  APos  @map("A+")
+  ANeg  @map("A-")
+  BPos  @map("B+")
+  BNeg  @map("B-")
+  ABPos @map("AB+")
+  ABNeg @map("AB-")
+  OPos  @map("O+")
+  ONeg  @map("O-")
 }
 
 enum CoachAttendances_attendance {
