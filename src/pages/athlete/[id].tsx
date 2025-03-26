@@ -126,7 +126,6 @@ type Athlete = Athletes & {
 
 export default function Page({ athlete }: { athlete: Athlete }) {
 
-  console.log([athlete])
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [selectedComponent, setSelectedComponent] = useState<any>()
   const [selectedTab, setSelectedTab] = useState<string | undefined>(tabs[0]?.name);
@@ -206,11 +205,12 @@ export default function Page({ athlete }: { athlete: Athlete }) {
           const batches = athlete?.AthleteBatchesMaps.map((batch) => {
             return {
               ...batch,
-              batchName: batch.Batches?.name,
-              sport: batch.Sports?.name,
-              coach: batch.Batches?.Coaches?.name,
-              students: batch.Batches?.occupiedSeat,
-              batchFee: `${batch.Batches?.FeePlans?.amount}/${batch.Batches?.FeePlans?.recurringType}`
+              batchName: batch.Batches?.name ?? "N/A",  // Handle undefined
+              sport: batch.Sports?.name ?? "N/A",
+              coach: batch.Batches?.Coaches?.name ?? "N/A",
+              students: batch.Batches?.occupiedSeat ?? 0,
+              batchFee: `${batch.Batches?.FeePlans?.amount ?? 0}/${batch.Batches?.FeePlans?.recurringType ?? "N/A"
+                }`,
             };
           });
 
