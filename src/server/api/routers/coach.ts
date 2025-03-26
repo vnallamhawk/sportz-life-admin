@@ -115,7 +115,8 @@ export const coachRouter = createTRPCRouter({
                 Sports: true, // Fetch the associated sports
               },
             },
-            CoachQualifications: true
+            CoachQualifications: true,
+            CoachCentersBatches: true
             // batches: true,
             // centers: true,
             // certificates: true,
@@ -278,7 +279,19 @@ export const coachRouter = createTRPCRouter({
         updatedAt: z.date(),
         academyId: z.number(),
         image: z.string(),
-        coachId: z.number()
+        coachId: z.number(),
+        createdAt: z.date(),
+        coachQualifications: z.array(
+          z.object({
+            certificateType: z.nativeEnum(CoachQualifications_certificateType),
+            startDate: z.coerce.date(), 
+            endDate: z.coerce.date(),
+            fileUrl: z.string(),
+            instituteName:  z.string(),
+            fileType: z.nativeEnum(CoachQualifications_fileType), 
+            fileName: z.string().optional()
+          })
+        ),
       })
     )
     .mutation(
@@ -294,7 +307,9 @@ export const coachRouter = createTRPCRouter({
           updatedAt,
           academyId,
           image,
-          coachId
+          coachId,
+          coachQualifications,
+          createdAt,
         },
         ctx,
       }) => {
@@ -312,14 +327,30 @@ export const coachRouter = createTRPCRouter({
             trainingLevel: trainingLevel,
             updatedAt,
             academyId,
-            image
+            image,
+            CoachQualifications: coachQualifications && coachQualifications.length > 0
+              ? {
+                  create: coachQualifications.map(
+                    ({ startDate, endDate, certificateType, fileUrl, instituteName, fileType, fileName }) => ({
+                      startDate,
+                      endDate,
+                      certificateType,
+                      fileUrl,
+                      instituteName,
+                      fileType,
+                      fileName,
+                      createdAt,
+                      updatedAt,
+                    })
+                  ),
+                }
+              : undefined, 
           },
         });
-
+    
         return response;
       }
     ),
-
   deleteCoach: publicProcedure
     .input(
       z.object({

@@ -30,6 +30,7 @@ import { type MultiSelectOption } from "~/types/select";
 import { useSession } from "next-auth/react";
 import { prisma } from "~/server/db";
 import { parse } from "date-fns";
+import { isEqual } from "lodash";
 
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: "",
@@ -97,6 +98,7 @@ export default function AddCoachMultiFormLayout() {
 
   const { setOpenToast } = useContext(ToastContext);
   const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
+  console.log(preview);
   const [coachId, setCoachId] = useState<number>();
   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCoachUseEffectRun = useRef(false);
@@ -110,7 +112,27 @@ export default function AddCoachMultiFormLayout() {
   const [file, setFile] = useState<File | null>(null);
   const [uploadUrl, setUploadUrl] = useState<string>("");
   const uploadImage = api.upload.uploadImage.useMutation();
-  const coachData = id && api.coach.getCoachById.useQuery({ id });
+  const coachData = id ? api.coach.getCoachById.useQuery({ id }) : undefined;
+  const data = coachData?.data;
+  const image = data?.image;
+  const [imageUrl, setImageUrl] = useState("");
+  console.log({ imageUrl });
+
+  const getSignedUrlForImage = async (key: string) => {
+    try {
+      const response = await fetch(
+        `/api/aws/getAwsSignedURL?key=${encodeURIComponent(key)}`
+      );
+      if (!response.ok) throw new Error("Failed to fetch signed URL");
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { url } = await response.json();
+      console.log(url);
+      setImageUrl(url);
+    } catch (error) {
+      console.error("Error fetching signed URL:", error);
+    }
+  };
 
   useEffect(() => {
     if (coachData && coachData.data && !hasCoachUseEffectRun.current) {
@@ -122,6 +144,16 @@ export default function AddCoachMultiFormLayout() {
       hasCoachUseEffectRun.current = true;
     }
   }, [coachData]);
+
+  useEffect(() => {
+    const fetchSignedUrl = async () => {
+      if (image) {
+        await getSignedUrlForImage(image);
+      }
+    };
+
+    fetchSignedUrl();
+  }, [image]);
 
   const formProviderData = {
     ...methods,
@@ -165,18 +197,19 @@ export default function AddCoachMultiFormLayout() {
       } else {
         const fileReader = new FileReader();
         fileReader.onloadend = async () => {
-          const base64String = fileReader.result as string;
+          let base64String = fileReader.result as string;
+
+          if (base64String.startsWith("data:")) {
+            base64String = base64String.split(",")[1] as string; // Get the part after the comma
+          }
 
           try {
             const response = await uploadImage.mutateAsync({
               file: base64String,
               filename: uploadedFile.name,
               mimetype: uploadedFile.type,
+              key: "coach",
             });
-            // setFormData((previousFormData) => ({
-            //   ...previousFormData,
-            //   image: response.url,
-            // }));
             setUploadUrl(response.url);
           } catch (err) {
             console.error("Upload failed:", err);
@@ -274,19 +307,48 @@ export default function AddCoachMultiFormLayout() {
     if (createdBy && academyId) {
       const isEditMode = router.asPath.includes("edit");
       if (isEditMode) {
+        const hasCertificatedUpdated =
+          finalForm.CoachQualifications.length !==
+            coachData?.data?.CoachQualifications.length ||
+          finalForm.CoachQualifications?.[0]?.certificateType !==
+            // @ts-expect-error
+            coachData.data?.CoachQualifications?.[0].certificateType;
+
         editMutate({
           name: finalForm.name,
           phone: finalForm.phone,
           email: finalForm.email,
-          designation: finalForm.designation?.value,
-          gender: finalForm.gender.value.toLowerCase(),
+          designation: finalForm.designation,
+          gender: finalForm.gender.toLowerCase(),
           dateOfBirth: new Date(finalForm.dateOfBirth),
-          trainingLevel: finalForm.trainingLevel
-            .value as (typeof TRAINING_LEVEL)[number],
+          trainingLevel: finalForm.trainingLevel,
           updatedAt: new Date(),
+          createdAt: new Date(),
           academyId: Number(academyId),
           image: uploadUrl,
           coachId: id,
+          coachQualifications: hasCertificatedUpdated
+            ? finalForm.CoachQualifications.map(
+                (coachQualification: {
+                  startDate: string;
+                  endDate: string;
+                }) => ({
+                  ...coachQualification,
+                  startDate: parse(
+                    coachQualification.startDate,
+                    "dd/MM/yyyy",
+                    new Date()
+                  ),
+                  endDate: parse(
+                    coachQualification.endDate,
+                    "dd/MM/yyyy",
+                    new Date()
+                  ),
+                  fileUrl: "",
+                  fileType: "link",
+                })
+              )
+            : [],
         });
       } else {
         console.log(finalForm);
@@ -354,24 +416,16 @@ export default function AddCoachMultiFormLayout() {
             </div>
 
             <div>
-              {preview.length ? (
-                preview.map((upFile, index) => {
-                  return (
-                    <div
-                      className="previewImage mb-5 flex justify-center rounded-full"
-                      key={index}
-                    >
-                      <ImageWithFallback
-                        className="mx-auto mb-6 rounded-full"
-                        src={upFile.preview}
-                        alt="preview"
-                        height={205}
-                        width={205}
-                        fallbackSrc="/images/fallback-1.png"
-                      />
-                    </div>
-                  );
-                })
+              {imageUrl ? (
+                <div className="previewImage mb-5 flex justify-center rounded-full">
+                  <img
+                    className="mx-auto mb-6 rounded-full"
+                    src={imageUrl}
+                    alt="preview"
+                    height={205}
+                    width={205}
+                  />
+                </div>
               ) : (
                 <div className="previewImage">
                   <ImageWithFallback
