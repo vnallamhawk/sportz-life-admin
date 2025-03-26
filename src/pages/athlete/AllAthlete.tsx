@@ -57,7 +57,6 @@ export default function Athlete() {
   // eslint-disable-next-line
   const athletes = athletesData?.data?.data ?? []; // Ensure it's an array
 
-  console.log({ athletes })
   // eslint-disable-next-line
   const totalPages = athletesData?.data?.totalPages ?? 1; // Ensure a valid number
 
