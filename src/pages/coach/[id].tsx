@@ -39,7 +39,6 @@ import // DATE_TIME_FORMAT,
 // import { dateFormat } from "~/helpers/date";
 // import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 // import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
-import s3 from "../../lib/aws";
 import { calculateAge } from "~/utils/common";
 import { COACH_DASH_BATCH_TABLE_HEADERS } from "~/constants/centerDashTables";
 import { STAFF_DASH_PAYROLL_TABLE_HEADERS } from "~/constants/staffConstants";
