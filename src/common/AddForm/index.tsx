@@ -134,6 +134,7 @@ const AddForm = ({
     tablekey,
     trigger,
   ]);
+  console.log("test");
 
   useEffect(() => {
     if (buttonItems && Object.keys(buttonItems).length === 0) {

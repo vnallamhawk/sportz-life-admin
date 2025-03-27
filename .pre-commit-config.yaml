@@ -1,0 +1,10 @@
+-   repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.0.0  # Make sure to use the correct eslint version
+    hooks:
+    -   id: eslint
+        name: eslint
+        entry: yarn lint --fix --max-warnings=0
+        language: system
+        types: [python, javascript, typescript]
+        files: \.(ts|tsx|js|jsx)$  # Limit it to TypeScript and JavaScript files
+        args: ["--only-changed"]  # Only lint changed files
