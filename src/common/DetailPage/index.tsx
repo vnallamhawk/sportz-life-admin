@@ -58,7 +58,6 @@ const DetailPage = ({
   const [displayAttendance, setDisplayAttendance] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
   const [value, onChange] = useState<Value>(new Date());
-  console.log("tsest");
 
   const handleCertificateClick = () =>
     setDisplayCertificate(!displayCertificate);
