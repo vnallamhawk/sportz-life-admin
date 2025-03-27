@@ -300,11 +300,11 @@ export const COACH_BATCH_CONSTANTS = [
 export const COACH_CERTIFICATE_TABLE_HEADERS = [
   {
     label: "Certificate",
-    id: "certificate",
+    id: "certificateType",
   },
   {
     label: "Institute",
-    id: "institute",
+    id: "instituteName",
   },
   {
     label: "Start Date",
