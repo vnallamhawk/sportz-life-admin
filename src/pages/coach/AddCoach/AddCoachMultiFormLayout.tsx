@@ -351,7 +351,6 @@ export default function AddCoachMultiFormLayout() {
             : [],
         });
       } else {
-        console.log(finalForm);
         createMutate({
           name: finalForm.name,
           phone: finalForm.phone,

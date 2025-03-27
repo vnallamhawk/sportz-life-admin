@@ -254,8 +254,6 @@ export default function Page({ coach }: { coach: Coach; sports: Sports[] }) {
           ? coach?.CoachQualifications
           : [];
       }
-      console.log(TABLE_ROWS);
-      console.log(TABLE_HEAD);
       component = (
         <AllData
           title={tab?.allLabel ? tab?.allLabel : ""}
