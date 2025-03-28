@@ -176,7 +176,6 @@ export default function AddCoachMultiFormLayout() {
   });
 
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
-    console.log(acceptedFiles);
     if (acceptedFiles && acceptedFiles.length > 0) {
       const uploadedFile: File | null = acceptedFiles[0]
         ? acceptedFiles[0]
@@ -222,7 +221,6 @@ export default function AddCoachMultiFormLayout() {
   const { mutate: createMutateCoachCertificates } =
     api.coachCertificate.createCoachCertificates.useMutation({
       onSuccess: (response) => {
-        // console.log("response data is ", response);
         return response;
       },
     });
