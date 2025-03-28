@@ -97,8 +97,6 @@ export default function AddCoachMultiFormLayout() {
   );
 
   const { setOpenToast } = useContext(ToastContext);
-  const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
-  console.log({ preview });
   const [coachId, setCoachId] = useState<number>();
   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCoachUseEffectRun = useRef(false);
@@ -109,16 +107,14 @@ export default function AddCoachMultiFormLayout() {
   const academyId = sessionData?.token
     ? sessionData?.token?.academyId
     : sessionData?.user?.academyId;
-  // const [file, setFile] = useState<File | null>(null);
   const [uploadUrl, setUploadUrl] = useState<string>("");
   const uploadImage = api.upload.uploadImage.useMutation();
   const coachData = id ? api.coach.getCoachById.useQuery({ id }) : undefined;
   const data = coachData?.data;
   const image = data?.image;
-  console.log({ image });
   const [imageUrl, setImageUrl] = useState(image === null ? undefined : image);
   const [signedS3Url, setSignedS3Url] = useState("");
-  console.log({ imageUrl, signedS3Url });
+  const [previewUrl, setPreviewUrl] = useState("");
 
   const getSignedUrlForImage = async (key: string) => {
     try {
@@ -129,7 +125,6 @@ export default function AddCoachMultiFormLayout() {
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { url } = await response.json();
-      console.log(url);
       setSignedS3Url(url);
     } catch (error) {
       console.error("Error fetching signed URL:", error);
@@ -183,21 +178,14 @@ export default function AddCoachMultiFormLayout() {
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
     console.log(acceptedFiles);
     if (acceptedFiles && acceptedFiles.length > 0) {
-      setPreview(
-        acceptedFiles.map((upFile: File) =>
-          Object.assign(upFile, {
-            preview: URL.createObjectURL(upFile),
-          })
-        )
-      );
       const uploadedFile: File | null = acceptedFiles[0]
         ? acceptedFiles[0]
         : null;
-      // setFile(uploadedFile);
       if (!uploadedFile) {
         alert("Please select a valid file");
         return;
       } else {
+        setPreviewUrl(URL.createObjectURL(uploadedFile));
         const fileReader = new FileReader();
         fileReader.onloadend = async () => {
           let base64String = fileReader.result as string;
@@ -213,8 +201,6 @@ export default function AddCoachMultiFormLayout() {
               mimetype: uploadedFile.type,
               key: "coach",
             });
-            console.log("inside");
-            console.log(response);
             setImageUrl(response.url);
           } catch (err) {
             console.error("Upload failed:", err);
@@ -244,9 +230,6 @@ export default function AddCoachMultiFormLayout() {
   const { mutate: createMutateCoachBatches } =
     api.coachBatches.createCoachbatches.useMutation({
       onSuccess: (response) => {
-        // console.log("response data is ", response);
-        // router.push(`/coach/${coachId ?? ""}`);
-
         return response;
       },
     });
@@ -420,11 +403,11 @@ export default function AddCoachMultiFormLayout() {
             </div>
 
             <div>
-              {signedS3Url ? (
+              {previewUrl || signedS3Url ? (
                 <div className="previewImage mb-5 flex justify-center rounded-full">
                   <img
                     className="mx-auto mb-6 rounded-full"
-                    src={signedS3Url}
+                    src={previewUrl}
                     alt="preview"
                     height={205}
                     width={205}
