@@ -4,11 +4,18 @@ import { useDropzone } from "react-dropzone";
 
 export default function FileUpload({
   onDropCallback,
+  multiple = false,
 }: {
   onDropCallback: (acceptedFiles: Array<File>) => void;
+  multiple?: boolean;
 }) {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: onDropCallback,
+    multiple,
+    accept: {
+      "image/jpeg": [".jpg", ".jpeg"],
+      "image/png": [".png"],
+    },
   });
 
   const className = classNames("wfp--dropzone__input text-red-700", {

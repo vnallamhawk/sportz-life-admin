@@ -166,7 +166,7 @@ export const coachRouter = createTRPCRouter({
         createdAt: z.date(),
         updatedAt: z.date(),
         academyId: z.number(),
-        image: z.string(),
+        image: z.string().optional(),
         experience: z.string(),
         about: z.string(),
         experienceLevel: z.enum(EXPERIENCE_LEVEL),
@@ -278,7 +278,7 @@ export const coachRouter = createTRPCRouter({
         trainingLevel: z.enum(TRAINING_LEVEL),
         updatedAt: z.date(),
         academyId: z.number(),
-        image: z.string(),
+        image: z.string().optional(),
         coachId: z.number(),
         createdAt: z.date(),
         coachQualifications: z.array(
