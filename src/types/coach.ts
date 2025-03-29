@@ -1,4 +1,4 @@
-import type { CoachQualifications, CoachQualifications_certificateType, Sports } from "@prisma/client";
+import type { Coaches_experienceLevel, Coaches_gender, Coaches_trainingLevel, CoachQualifications, CoachQualifications_certificateType, Sports } from "@prisma/client";
 import {
   type Coaches,
   type Batches,
@@ -79,13 +79,15 @@ export interface COACH_TYPES {
   about: string;
   designation: string;
   contactNumber: string;
+  phone: string;
   email: string;
-  dateOfBirth?: string;
-  gender?: MultiSelectOption;
+  dateOfBirth: string;
+  gender: Coaches_gender ;
   payroll?: string;
   coachingSports: MultiSelectOption[];
-  trainingLevel?: MultiSelectOption;
-  experienceLevel?: MultiSelectOption;
+  trainingLevel: Coaches_trainingLevel
+  experienceLevel:  Coaches_experienceLevel
+  image: string
 }
 export interface CENTER_TYPES {
   centerName: string;

@@ -5,27 +5,12 @@ import { FormProvider, useForm } from "react-hook-form";
 import AddCoach from "../../../components/AddCoach/AddCoach";
 import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
 import AssignBatches from "~/components/AddCoach/AssignBatches";
-import {
-  type TRAINING_LEVEL,
-  type GENDER_VALUES,
-  type MULTI_FORM_TYPES,
-  type EXPERIENCE_LEVEL,
-  type CoachWithRelationsEditForm,
-} from "~/types/coach";
+import { type MULTI_FORM_TYPES } from "~/types/coach";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
-// import { ToastContext } from "~/contexts/Contexts";
 import FileUpload from "~/components/FileUpload";
-import { getSportsDictionaryServices } from "~/services/sportServices";
-import { type BatchTableData } from "~/types/batch";
-import { dateFormat } from "~/helpers/date";
-import { type MultiSelectOption } from "~/types/select";
 import { useSession } from "next-auth/react";
-import { prisma } from "~/server/db";
 import { parse } from "date-fns";
-import { isEqual } from "lodash";
-import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
-import Image from "next/image";
 
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: "",
@@ -33,7 +18,7 @@ const multiFormData: MULTI_FORM_TYPES = {
   designation: "",
   email: "",
   about: "",
-  dateOfBirth: undefined,
+  dateOfBirth: "",
   payroll: "",
   coachingSports: [],
   certificates: [],
@@ -60,6 +45,11 @@ const multiFormData: MULTI_FORM_TYPES = {
     feePlanId: 0,
     trainingLevel: "beginner",
   },
+  phone: "",
+  gender: "male",
+  trainingLevel: "beginner",
+  experienceLevel: "zero_one",
+  image: "",
 };
 
 const defaultValues = {
@@ -104,7 +94,6 @@ export default function AddCoachMultiFormLayout() {
   const academyId = sessionData?.token
     ? sessionData?.token?.academyId
     : sessionData?.user?.academyId;
-  const [uploadUrl, setUploadUrl] = useState<string>("");
   const uploadImage = api.upload.uploadImage.useMutation();
   const coachData = id ? api.coach.getCoachById.useQuery({ id }) : undefined;
   const data = coachData?.data;
@@ -134,7 +123,6 @@ export default function AddCoachMultiFormLayout() {
     }
   };
 
-  console.log(formData);
   useEffect(() => {
     if (formData.isEditMode && coachData?.data) {
       // @ts-expect-error // TODO : FIX THIS TS ERROR
@@ -181,8 +169,6 @@ export default function AddCoachMultiFormLayout() {
 
   const { mutate: editMutate } = api.coach.editCoach.useMutation({
     onSuccess: (response) => {
-      // setOpenToast(true);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       void router
         .push(`/coach/${response?.id ?? ""}`)
         .then(() => window.location.reload());
@@ -315,17 +301,12 @@ export default function AddCoachMultiFormLayout() {
 
         editMutate({
           name: finalForm.name,
-          // @ts-expect-error TODO: FIX THIS ERROR
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           phone: finalForm.phone,
           email: finalForm.email,
           designation: finalForm.designation,
-          // @ts-expect-error TODO: FIX THIS ERROR
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-          gender: finalForm.gender.toLowerCase(),
-          // @ts-expect-error TODO: FIX THIS ERROR
+          gender: finalForm.gender,
           dateOfBirth: new Date(finalForm.dateOfBirth),
-          // @ts-expect-error TODO: FIX THIS ERROR
+          experienceLevel: finalForm.experienceLevel,
           trainingLevel: finalForm.trainingLevel,
           updatedAt: new Date(),
           createdAt: new Date(),
@@ -360,31 +341,18 @@ export default function AddCoachMultiFormLayout() {
       } else {
         createMutate({
           name: finalForm.name,
-          // @ts-expect-error FIX THIS ERROR
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           phone: finalForm.phone,
           email: finalForm.email,
           designation: finalForm.designation,
-          // @ts-expect-error FIX THIS ERROR
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           gender: finalForm.gender,
-          // @ts-expect-error FIX THIS ERROR
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           dateOfBirth: new Date(finalForm.dateOfBirth),
-          // @ts-expect-error FIX THIS ERROR
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           trainingLevel: finalForm.trainingLevel,
           createdBy: parseInt(createdBy as string),
           createdAt: new Date(),
           updatedAt: new Date(),
           academyId: Number(academyId),
-          image: uploadUrl,
-          // @ts-expect-error FIX THIS ERROR
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          experience: finalForm.experience,
+          image: finalForm.image,
           about: "",
-          // @ts-expect-error FIX THIS ERROR
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           experienceLevel: finalForm.experienceLevel,
           // @ts-expect-error FIX THIS ERROR
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
