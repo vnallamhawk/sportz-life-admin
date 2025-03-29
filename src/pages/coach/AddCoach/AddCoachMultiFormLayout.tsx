@@ -168,10 +168,10 @@ export default function AddCoachMultiFormLayout() {
     multiFormData: { formData, setFormData },
   };
   const { mutate: createMutate } = api.coach.createCoach.useMutation({
-    onSuccess: (response) => {
+    onSuccess: async (response) => {
       setCoachId(response?.id);
       setOpenToast(true);
-      router.push("/coach");
+      await router.push("/coach");
       return response;
     },
   });
@@ -179,7 +179,8 @@ export default function AddCoachMultiFormLayout() {
   const { mutate: editMutate } = api.coach.editCoach.useMutation({
     onSuccess: (response) => {
       setOpenToast(true);
-      router
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      void router
         .push(`/coach/${response?.id ?? ""}`)
         .then(() => window.location.reload());
     },
@@ -242,11 +243,11 @@ export default function AddCoachMultiFormLayout() {
       },
     });
 
-  const validDate = (dateString: any) => {
-    const [day, month, year] = dateString.split("/");
-    const validDate = new Date(`${year}-${month}-${day}`);
-    return validDate;
-  };
+  // const validDate = (dateString: any) => {
+  //   const [day, month, year] = dateString.split("/");
+  //   const validDate = new Date(`${year}-${month}-${day}`);
+  //   return validDate;
+  // };
 
   // useEffect(() => {
   //   if (
