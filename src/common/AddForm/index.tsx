@@ -262,10 +262,10 @@ const AddForm = ({
 
                         if (!Array.isArray(newValue) && "value" in newValue) {
                           // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                          setDependentKey(newValue.value); // Single value
+                          setDependentKey?.(newValue.value); // Single value
                         } else if (Array.isArray(newValue)) {
                           // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-                          setDependentKey(newValue.map((item) => item.value)); // Multi select
+                          setDependentKey?.(newValue.map((item) => item.value)); // Multi select
                         }
                       }
                       // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return

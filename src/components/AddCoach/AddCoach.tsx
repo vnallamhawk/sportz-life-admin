@@ -12,6 +12,8 @@ export default function AddCoach() {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: { formData, setFormData },
   } = useContext(FormContext);
+  // const isEditMode = router.asPath.includes("edit");
+  const { isEditMode } = formData;
 
   const { data: sports } = api.sports.getAllSports.useQuery();
   // const { data: staffPayroll } = api.staffPayroll.getAllPayroll.useQuery();
@@ -102,7 +104,7 @@ export default function AddCoach() {
   return (
     <>
       <AddForm
-        cardTitle="ADD COACH"
+        cardTitle={isEditMode ? "EDIT COACH" : "ADD COACH"}
         cardSubTitle="COACH DETAILS"
         formConstantValues={formConstantValues}
         imageTitle="Coach Image"

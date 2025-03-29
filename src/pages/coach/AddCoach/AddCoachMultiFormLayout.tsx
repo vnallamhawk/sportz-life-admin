@@ -1,11 +1,4 @@
-/* eslint-disable */
-import React, {
-  useState,
-  useContext,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { FormProvider, useForm } from "react-hook-form";
@@ -21,7 +14,7 @@ import {
 } from "~/types/coach";
 import { api } from "~/utils/api";
 import { useRouter } from "next/router";
-import { ToastContext } from "~/contexts/Contexts";
+// import { ToastContext } from "~/contexts/Contexts";
 import FileUpload from "~/components/FileUpload";
 import { getSportsDictionaryServices } from "~/services/sportServices";
 import { type BatchTableData } from "~/types/batch";
@@ -31,6 +24,8 @@ import { useSession } from "next-auth/react";
 import { prisma } from "~/server/db";
 import { parse } from "date-fns";
 import { isEqual } from "lodash";
+import AddCoachSuccessToast from "~/components/AddCoach/AddCoachSuccessToast";
+import Image from "next/image";
 
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: "",
@@ -44,11 +39,11 @@ const multiFormData: MULTI_FORM_TYPES = {
   certificates: [],
   batchIds: [],
   centerIds: [],
-  isEditMode: false,
   coachId: undefined,
   coachBatches: [],
   centerId: "",
   CoachQualifications: [],
+  isEditMode: false,
   Batches: {
     id: 0,
     name: "",
@@ -95,8 +90,10 @@ export default function AddCoachMultiFormLayout() {
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
+  const [openToast, setOpenToast] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
-  const { setOpenToast } = useContext(ToastContext);
+  // const { setOpenToast } = useContext(ToastContext);
   const [coachId, setCoachId] = useState<number>();
   const { data: batches } = api.batches.getAllBatches.useQuery();
   const hasCoachUseEffectRun = useRef(false);
@@ -112,9 +109,18 @@ export default function AddCoachMultiFormLayout() {
   const coachData = id ? api.coach.getCoachById.useQuery({ id }) : undefined;
   const data = coachData?.data;
   const image = data?.image;
-  const [imageUrl, setImageUrl] = useState(image === null ? undefined : image);
+  console.log(data);
+  console.log(image);
+  const [imageUrl, setImageUrl] = useState(image);
   const [signedS3Url, setSignedS3Url] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
+  console.log(imageUrl);
+
+  useEffect(() => {
+    if (image) {
+      setImageUrl(image);
+    }
+  }, [image]); // Runs whenever image changes
 
   const getSignedUrlForImage = async (key: string) => {
     try {
@@ -141,6 +147,17 @@ export default function AddCoachMultiFormLayout() {
       hasCoachUseEffectRun.current = true;
     }
   }, [coachData]);
+
+  useEffect(() => {
+    if (router.isReady) {
+      if (router.asPath.includes("edit")) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          isEditMode: true,
+        }));
+      }
+    }
+  }, [router.isReady, router.asPath]);
 
   useEffect(() => {
     const fetchSignedUrl = async () => {
@@ -291,7 +308,6 @@ export default function AddCoachMultiFormLayout() {
 
   const finalFormSubmissionHandler = (finalForm: any) => {
     if (createdBy && academyId) {
-      const isEditMode = router.asPath.includes("edit");
       if (isEditMode) {
         const hasCertificatedUpdated =
           finalForm.CoachQualifications.length !==
@@ -374,6 +390,7 @@ export default function AddCoachMultiFormLayout() {
           ),
           batches: finalForm.batches,
         });
+        setOpenToast(true);
       }
     }
   };
@@ -382,6 +399,7 @@ export default function AddCoachMultiFormLayout() {
   return (
     <FormProvider {...methods}>
       <FormContext.Provider value={formProviderData}>
+        <AddCoachSuccessToast open={openToast} />
         <div className="grid grid-cols-6 grid-rows-1">
           <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
             {currentStep === 1 && <AddCoach />}
@@ -405,7 +423,7 @@ export default function AddCoachMultiFormLayout() {
                 <div className="previewImage mb-5 flex justify-center rounded-full">
                   <img
                     className="mx-auto mb-6 rounded-full"
-                    src={previewUrl}
+                    src={previewUrl || signedS3Url}
                     alt="preview"
                     height={205}
                     width={205}

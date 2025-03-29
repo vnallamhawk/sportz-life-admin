@@ -108,12 +108,11 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   batchTableData?: BatchTableData[];
   batchIds?: number[];
   centerIds?: number[];
-  // selectSports?: any[];
-  isEditMode: boolean;
   coachId?: number;
   CoachQualifications: CoachQualifications[]
   Batches: Batches
   centerId?: string
+  isEditMode ?:boolean
 }
 
 export enum TrainingLevelEnum {

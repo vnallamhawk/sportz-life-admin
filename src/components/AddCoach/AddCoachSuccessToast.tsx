@@ -7,7 +7,7 @@ export default function AddCoachSuccessToast({
   setOpen,
 }: {
   open: boolean;
-  setOpen: (open: boolean) => void;
+  setOpen?: (open: boolean) => void;
 }) {
   return (
     <Toast.Provider swipeDirection="right">
@@ -19,7 +19,7 @@ export default function AddCoachSuccessToast({
       >
         <Toast.Title className={styles.ToastTitle}>Coach added</Toast.Title>
         <Toast.Description className={styles.ToastDescription} asChild>
-          Addedd successfully
+          Added successfully
         </Toast.Description>
       </Toast.Root>
       <Toast.Viewport className={styles.ToastViewport} />
