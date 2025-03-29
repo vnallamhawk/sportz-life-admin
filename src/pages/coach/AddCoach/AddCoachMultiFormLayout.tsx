@@ -26,7 +26,6 @@ const multiFormData: MULTI_FORM_TYPES = {
   centerIds: [],
   coachId: undefined,
   coachBatches: [],
-  centerId: "",
   CoachQualifications: [],
   isEditMode: false,
   Batches: {
@@ -46,9 +45,6 @@ const multiFormData: MULTI_FORM_TYPES = {
     trainingLevel: "beginner",
   },
   phone: "",
-  gender: "male",
-  trainingLevel: "beginner",
-  experienceLevel: "zero_one",
   image: "",
 };
 
@@ -290,7 +286,8 @@ export default function AddCoachMultiFormLayout() {
   // }, [coachId, formData]);
 
   const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
-    if (createdBy && academyId) {
+    const { gender, trainingLevel, experienceLevel, centerId } = finalForm;
+    if (createdBy && academyId && gender && trainingLevel && experienceLevel) {
       if (formData.isEditMode) {
         const hasCertificatedUpdated =
           finalForm.CoachQualifications.length !==
@@ -304,10 +301,10 @@ export default function AddCoachMultiFormLayout() {
           phone: finalForm.phone,
           email: finalForm.email,
           designation: finalForm.designation,
-          gender: finalForm.gender,
+          gender,
           dateOfBirth: new Date(finalForm.dateOfBirth),
-          experienceLevel: finalForm.experienceLevel,
-          trainingLevel: finalForm.trainingLevel,
+          experienceLevel,
+          trainingLevel,
           updatedAt: new Date(),
           createdAt: new Date(),
           academyId: Number(academyId),
@@ -339,51 +336,53 @@ export default function AddCoachMultiFormLayout() {
             : [],
         });
       } else {
-        createMutate({
-          name: finalForm.name,
-          phone: finalForm.phone,
-          email: finalForm.email,
-          designation: finalForm.designation,
-          gender: finalForm.gender,
-          dateOfBirth: new Date(finalForm.dateOfBirth),
-          trainingLevel: finalForm.trainingLevel,
-          createdBy: parseInt(createdBy as string),
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          academyId: Number(academyId),
-          image: finalForm.image,
-          about: "",
-          experienceLevel: finalForm.experienceLevel,
-          // @ts-expect-error FIX THIS ERROR
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          centerId: finalForm.centerId,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          sports: finalForm.coachingSports?.map((sport: any) => Number(sport)),
-          // @ts-expect-error FIX THIS ERROR
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          coachQualifications: finalForm.CoachQualifications.map(
+        if (centerId) {
+          createMutate({
+            name: finalForm.name,
+            phone: finalForm.phone,
+            email: finalForm.email,
+            designation: finalForm.designation,
+            gender,
+            dateOfBirth: new Date(finalForm.dateOfBirth),
+            trainingLevel,
+            createdBy: parseInt(createdBy as string),
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            academyId: Number(academyId),
+            image: finalForm.image,
+            about: "",
+            experienceLevel,
+            centerId,
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            sports: finalForm.coachingSports?.map((sport: any) =>
+              Number(sport)
+            ),
             // @ts-expect-error FIX THIS ERROR
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            (coachQualification: { startDate: string; endDate: string }) => ({
-              ...coachQualification,
-              startDate: parse(
-                coachQualification.startDate,
-                "dd/MM/yyyy",
-                new Date()
-              ),
-              endDate: parse(
-                coachQualification.endDate,
-                "dd/MM/yyyy",
-                new Date()
-              ),
-              fileUrl: "",
-              fileType: "link",
-            })
-          ),
-          // @ts-expect-error FIX THIS ERROR
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          batches: finalForm.batches,
-        });
+            coachQualifications: finalForm.CoachQualifications.map(
+              // @ts-expect-error FIX THIS ERROR
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              (coachQualification: { startDate: string; endDate: string }) => ({
+                ...coachQualification,
+                startDate: parse(
+                  coachQualification.startDate,
+                  "dd/MM/yyyy",
+                  new Date()
+                ),
+                endDate: parse(
+                  coachQualification.endDate,
+                  "dd/MM/yyyy",
+                  new Date()
+                ),
+                fileUrl: "",
+                fileType: "link",
+              })
+            ),
+            // @ts-expect-error FIX THIS ERROR
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            batches: finalForm.batches,
+          });
+        }
         // setOpenToast(true);
       }
     }

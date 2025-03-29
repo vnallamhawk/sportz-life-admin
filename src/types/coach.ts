@@ -82,11 +82,11 @@ export interface COACH_TYPES {
   phone: string;
   email: string;
   dateOfBirth: string;
-  gender: Coaches_gender ;
+  gender?: Coaches_gender ;
   payroll?: string;
   coachingSports: MultiSelectOption[];
-  trainingLevel: Coaches_trainingLevel
-  experienceLevel:  Coaches_experienceLevel
+  trainingLevel?: Coaches_trainingLevel
+  experienceLevel?:  Coaches_experienceLevel
   image: string
 }
 export interface CENTER_TYPES {
@@ -113,7 +113,7 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   coachId?: number;
   CoachQualifications: CoachQualifications[]
   Batches: Batches
-  centerId?: string
+  centerId?: number
   isEditMode ?:boolean
 }
 
