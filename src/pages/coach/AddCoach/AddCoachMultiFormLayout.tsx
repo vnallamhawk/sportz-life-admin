@@ -46,6 +46,7 @@ const multiFormData: MULTI_FORM_TYPES = {
   },
   phone: "",
   image: "",
+  batches: [],
 };
 
 const defaultValues = {
@@ -76,13 +77,8 @@ export default function AddCoachMultiFormLayout() {
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
-  // const [openToast, setOpenToast] = useState(false);
-  // const [isEditMode, setIsEditMode] = useState(false);
-
-  // const { setOpenToast } = useContext(ToastContext);
   const [coachId, setCoachId] = useState<number>();
   const { data: batches } = api.batches.getAllBatches.useQuery();
-  const hasCoachUseEffectRun = useRef(false);
   const { data: sessionData } = useSession();
   const createdBy = sessionData?.token
     ? sessionData?.token?.id
@@ -353,10 +349,7 @@ export default function AddCoachMultiFormLayout() {
             about: "",
             experienceLevel,
             centerId,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            sports: finalForm.coachingSports?.map((sport: any) =>
-              Number(sport)
-            ),
+            sports: finalForm.coachingSports?.map((sport) => Number(sport)),
             // @ts-expect-error FIX THIS ERROR
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             coachQualifications: finalForm.CoachQualifications.map(
@@ -378,21 +371,16 @@ export default function AddCoachMultiFormLayout() {
                 fileType: "link",
               })
             ),
-            // @ts-expect-error FIX THIS ERROR
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             batches: finalForm.batches,
           });
         }
-        // setOpenToast(true);
       }
     }
   };
-  // const methods = useForm({ defaultValues: multiFormData });
 
   return (
     <FormProvider {...methods}>
       <FormContext.Provider value={formProviderData}>
-        {/* <AddCoachSuccessToast open={openToast} /> */}
         <div className="grid grid-cols-6 grid-rows-1">
           <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
             {currentStep === 1 && <AddCoach />}

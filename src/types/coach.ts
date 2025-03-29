@@ -84,10 +84,11 @@ export interface COACH_TYPES {
   dateOfBirth: string;
   gender?: Coaches_gender ;
   payroll?: string;
-  coachingSports: MultiSelectOption[];
+  coachingSports: number[];
   trainingLevel?: Coaches_trainingLevel
   experienceLevel?:  Coaches_experienceLevel
   image: string
+  batches: number[]
 }
 export interface CENTER_TYPES {
   centerName: string;
