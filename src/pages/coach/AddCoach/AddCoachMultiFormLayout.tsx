@@ -67,7 +67,7 @@ export interface FormContextTypes {
   };
   multiFormData: {
     formData: MULTI_FORM_TYPES;
-    setFormData?: React.Dispatch<React.SetStateAction<any>>;
+    setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>;
   };
 }
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
