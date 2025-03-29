@@ -96,7 +96,7 @@ export default function AddCoachMultiFormLayout() {
     if (image) {
       setImageUrl(image);
     }
-  }, [image]); // Runs whenever image changes
+  }, [image]);
 
   const getSignedUrlForImage = async (key: string) => {
     try {
