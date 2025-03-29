@@ -178,7 +178,6 @@ export default function AddCoachMultiFormLayout() {
   const { mutate: createMutate } = api.coach.createCoach.useMutation({
     onSuccess: async (response) => {
       setCoachId(response?.id);
-      // setOpenToast(true);
       await router.push("/coach");
       return response;
     },
