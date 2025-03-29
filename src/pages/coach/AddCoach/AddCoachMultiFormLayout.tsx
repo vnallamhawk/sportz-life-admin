@@ -145,12 +145,9 @@ export default function AddCoachMultiFormLayout() {
     }
   }, [coachData?.data, formData.isEditMode]);
 
-  console.log(router.isReady);
-  console.log(router.asPath.includes("edit"));
   useEffect(() => {
     if (router.isReady) {
       if (router.asPath.includes("edit")) {
-        console.log("insdie edit moe");
         setFormData((prevFormData) => ({
           ...prevFormData,
           isEditMode: true,
@@ -158,7 +155,6 @@ export default function AddCoachMultiFormLayout() {
       }
     }
   }, [router.isReady, router.asPath]);
-  console.log(formData);
 
   useEffect(() => {
     const fetchSignedUrl = async () => {
