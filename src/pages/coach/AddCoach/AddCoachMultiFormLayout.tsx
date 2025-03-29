@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Card from "~/components/Card";
 import ImageWithFallback from "~/components/ImageWithFallback";
 import { FormProvider, useForm } from "react-hook-form";
@@ -107,9 +107,8 @@ export default function AddCoachMultiFormLayout() {
       );
       if (!response.ok) throw new Error("Failed to fetch signed URL");
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const { url } = await response.json();
-      setSignedS3Url(url as string);
+      const data = (await response.json()) as { url: string }; // Type assertion here
+      setSignedS3Url(data.url);
     } catch (error) {
       console.error("Error fetching signed URL:", error);
     }
@@ -117,10 +116,13 @@ export default function AddCoachMultiFormLayout() {
 
   useEffect(() => {
     if (formData.isEditMode && coachData?.data) {
-      // @ts-expect-error // TODO : FIX THIS TS ERROR
       setFormData((prevData) => ({
         ...prevData,
         ...coachData?.data,
+        centerId: coachData?.data?.centerId ?? undefined,
+        phone: coachData?.data?.phone ?? undefined,
+        email: coachData?.data?.email ?? undefined,
+        image: coachData?.data?.image ?? undefined,
       }));
     }
   }, [coachData?.data, formData.isEditMode]);
@@ -282,8 +284,17 @@ export default function AddCoachMultiFormLayout() {
   // }, [coachId, formData]);
 
   const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
-    const { gender, trainingLevel, experienceLevel, centerId } = finalForm;
-    if (createdBy && academyId && gender && trainingLevel && experienceLevel) {
+    const { gender, trainingLevel, experienceLevel, centerId, phone, email } =
+      finalForm;
+    if (
+      createdBy &&
+      academyId &&
+      gender &&
+      trainingLevel &&
+      experienceLevel &&
+      phone &&
+      email
+    ) {
       if (formData.isEditMode) {
         const hasCertificatedUpdated =
           finalForm.CoachQualifications.length !==
@@ -294,8 +305,8 @@ export default function AddCoachMultiFormLayout() {
 
         editMutate({
           name: finalForm.name,
-          phone: finalForm.phone,
-          email: finalForm.email,
+          phone: phone,
+          email: email,
           designation: finalForm.designation,
           gender,
           dateOfBirth: new Date(finalForm.dateOfBirth),
@@ -335,8 +346,8 @@ export default function AddCoachMultiFormLayout() {
         if (centerId) {
           createMutate({
             name: finalForm.name,
-            phone: finalForm.phone,
-            email: finalForm.email,
+            phone: phone,
+            email: email,
             designation: finalForm.designation,
             gender,
             dateOfBirth: new Date(finalForm.dateOfBirth),

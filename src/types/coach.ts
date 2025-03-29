@@ -79,15 +79,15 @@ export interface COACH_TYPES {
   about: string;
   designation: string;
   contactNumber: string;
-  phone: string;
-  email: string;
-  dateOfBirth: string;
+  phone?: string;
+  email?: string;
+  dateOfBirth: string | Date;
   gender?: Coaches_gender ;
   payroll?: string;
   coachingSports: number[];
   trainingLevel?: Coaches_trainingLevel
   experienceLevel?:  Coaches_experienceLevel
-  image: string
+  image?: string
   batches: number[]
 }
 export interface CENTER_TYPES {
