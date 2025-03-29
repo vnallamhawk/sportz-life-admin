@@ -12,11 +12,11 @@ const TableListView = ({
   onDeleteClick,
   totalPages,
   currentPage,
-  onHandlePageChange
+  onHandlePageChange,
 }: {
   TABLE_HEAD: TableHead;
   // TABLE_ROWS: TableRows;
-  TABLE_ROWS: { [key: string]: any, id: number }[],
+  TABLE_ROWS: { [key: string]: any; id: number }[];
   rowSelection: boolean;
   showImage: boolean;
   onViewClick?: (id: number) => void;
@@ -24,11 +24,8 @@ const TableListView = ({
   onDeleteClick?: (id: number) => void;
   totalPages?: number;
   currentPage?: number;
-  onHandlePageChange?: (page: number) => void
+  onHandlePageChange?: (page: number) => void;
 }) => {
-
-  // console.log({ TABLE_ROWS })
-
   return (
     <>
       <div className="hidden lg:block">
@@ -50,11 +47,13 @@ const TableListView = ({
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           TABLE_ROWS.length > 0 &&
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-          TABLE_ROWS.map((item: { [key: string]: any, id: number }, index: number) => {
-            return (
-              <CommonList item={item} key={index} onViewClick={onViewClick} />
-            );
-          })}
+          TABLE_ROWS.map(
+            (item: { [key: string]: any; id: number }, index: number) => {
+              return (
+                <CommonList item={item} key={index} onViewClick={onViewClick} />
+              );
+            }
+          )}
       </div>
     </>
   );
