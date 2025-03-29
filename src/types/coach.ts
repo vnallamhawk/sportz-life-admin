@@ -81,6 +81,7 @@ export interface COACH_TYPES {
   contactNumber: string;
   phone?: string;
   email?: string;
+  experience?: string
   dateOfBirth: string | Date;
   gender?: Coaches_gender ;
   payroll?: string;

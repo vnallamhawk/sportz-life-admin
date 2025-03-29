@@ -284,8 +284,15 @@ export default function AddCoachMultiFormLayout() {
   // }, [coachId, formData]);
 
   const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
-    const { gender, trainingLevel, experienceLevel, centerId, phone, email } =
-      finalForm;
+    const {
+      gender,
+      trainingLevel,
+      experience,
+      experienceLevel,
+      centerId,
+      phone,
+      email,
+    } = finalForm;
     if (
       createdBy &&
       academyId &&
@@ -300,8 +307,7 @@ export default function AddCoachMultiFormLayout() {
           finalForm.CoachQualifications.length !==
             coachData?.data?.CoachQualifications.length ||
           finalForm.CoachQualifications?.[0]?.certificateType !==
-            // @ts-expect-error TODO: FIX THIS ERROR
-            coachData.data?.CoachQualifications?.[0].certificateType;
+            coachData.data?.CoachQualifications?.[0]?.certificateType;
 
         editMutate({
           name: finalForm.name,
@@ -338,16 +344,18 @@ export default function AddCoachMultiFormLayout() {
                   ),
                   fileUrl: "",
                   fileType: "link",
+                  fileName: null,
                 })
               )
             : [],
         });
       } else {
-        if (centerId) {
+        if (centerId && experience) {
           createMutate({
             name: finalForm.name,
             phone: phone,
             email: email,
+            experience,
             designation: finalForm.designation,
             gender,
             dateOfBirth: new Date(finalForm.dateOfBirth),
@@ -361,25 +369,22 @@ export default function AddCoachMultiFormLayout() {
             experienceLevel,
             centerId,
             sports: finalForm.coachingSports?.map((sport) => Number(sport)),
-            // @ts-expect-error FIX THIS ERROR
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             coachQualifications: finalForm.CoachQualifications.map(
-              // @ts-expect-error FIX THIS ERROR
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              (coachQualification: { startDate: string; endDate: string }) => ({
+              (coachQualification) => ({
                 ...coachQualification,
                 startDate: parse(
-                  coachQualification.startDate,
+                  coachQualification.startDate.toISOString(),
                   "dd/MM/yyyy",
                   new Date()
                 ),
                 endDate: parse(
-                  coachQualification.endDate,
+                  coachQualification.endDate.toISOString(),
                   "dd/MM/yyyy",
                   new Date()
                 ),
                 fileUrl: "",
                 fileType: "link",
+                fileName: null,
               })
             ),
             batches: finalForm.batches,
@@ -398,9 +403,6 @@ export default function AddCoachMultiFormLayout() {
             {currentStep === 2 && <AddCoachCertificates />}
             {currentStep === 3 && (
               <AssignBatches
-                // TODO: fix this TS error
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore: Unreachable code error
                 finalFormSubmissionHandler={finalFormSubmissionHandler}
               />
             )}

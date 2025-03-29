@@ -175,12 +175,12 @@ export const coachRouter = createTRPCRouter({
         coachQualifications: z.array(
           z.object({
             certificateType: z.nativeEnum(CoachQualifications_certificateType),
-            startDate: z.coerce.date(), 
-            endDate: z.coerce.date(),
+            startDate: z.date(), 
+            endDate: z.date(),
             fileUrl: z.string(),
             instituteName:  z.string(),
             fileType: z.nativeEnum(CoachQualifications_fileType), 
-            fileName: z.string().optional()
+            fileName: z.string().nullable()
           })
         ),
         batches: z.array(z.number())
