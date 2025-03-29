@@ -90,8 +90,8 @@ export default function AddCoachMultiFormLayout() {
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
-  const [openToast, setOpenToast] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
+  // const [openToast, setOpenToast] = useState(false);
+  // const [isEditMode, setIsEditMode] = useState(false);
 
   // const { setOpenToast } = useContext(ToastContext);
   const [coachId, setCoachId] = useState<number>();
@@ -134,16 +134,23 @@ export default function AddCoachMultiFormLayout() {
     }
   };
 
+  console.log(formData);
   useEffect(() => {
     if (formData.isEditMode && coachData?.data) {
       // @ts-expect-error // TODO : FIX THIS TS ERROR
-      setFormData(coachData?.data);
+      setFormData((prevData) => ({
+        ...prevData,
+        ...coachData?.data,
+      }));
     }
   }, [coachData?.data, formData.isEditMode]);
 
+  console.log(router.isReady);
+  console.log(router.asPath.includes("edit"));
   useEffect(() => {
     if (router.isReady) {
       if (router.asPath.includes("edit")) {
+        console.log("insdie edit moe");
         setFormData((prevFormData) => ({
           ...prevFormData,
           isEditMode: true,
@@ -151,6 +158,7 @@ export default function AddCoachMultiFormLayout() {
       }
     }
   }, [router.isReady, router.asPath]);
+  console.log(formData);
 
   useEffect(() => {
     const fetchSignedUrl = async () => {
@@ -170,7 +178,7 @@ export default function AddCoachMultiFormLayout() {
   const { mutate: createMutate } = api.coach.createCoach.useMutation({
     onSuccess: async (response) => {
       setCoachId(response?.id);
-      setOpenToast(true);
+      // setOpenToast(true);
       await router.push("/coach");
       return response;
     },
@@ -178,7 +186,7 @@ export default function AddCoachMultiFormLayout() {
 
   const { mutate: editMutate } = api.coach.editCoach.useMutation({
     onSuccess: (response) => {
-      setOpenToast(true);
+      // setOpenToast(true);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       void router
         .push(`/coach/${response?.id ?? ""}`)
@@ -302,7 +310,7 @@ export default function AddCoachMultiFormLayout() {
 
   const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
     if (createdBy && academyId) {
-      if (isEditMode) {
+      if (formData.isEditMode) {
         const hasCertificatedUpdated =
           finalForm.CoachQualifications.length !==
             coachData?.data?.CoachQualifications.length ||
@@ -387,7 +395,7 @@ export default function AddCoachMultiFormLayout() {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           centerId: finalForm.centerId,
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          sports: finalForm.coachingSports.map((sport: any) => Number(sport)),
+          sports: finalForm.coachingSports?.map((sport: any) => Number(sport)),
           // @ts-expect-error FIX THIS ERROR
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           coachQualifications: finalForm.CoachQualifications.map(
@@ -413,7 +421,7 @@ export default function AddCoachMultiFormLayout() {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           batches: finalForm.batches,
         });
-        setOpenToast(true);
+        // setOpenToast(true);
       }
     }
   };
@@ -422,7 +430,7 @@ export default function AddCoachMultiFormLayout() {
   return (
     <FormProvider {...methods}>
       <FormContext.Provider value={formProviderData}>
-        <AddCoachSuccessToast open={openToast} />
+        {/* <AddCoachSuccessToast open={openToast} /> */}
         <div className="grid grid-cols-6 grid-rows-1">
           <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
             {currentStep === 1 && <AddCoach />}
