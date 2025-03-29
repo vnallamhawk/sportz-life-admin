@@ -77,8 +77,6 @@ export default function AddCoachMultiFormLayout() {
   const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
     defaultValues.multiFormData.formData
   );
-  const [coachId, setCoachId] = useState<number>();
-  const { data: batches } = api.batches.getAllBatches.useQuery();
   const { data: sessionData } = useSession();
   const createdBy = sessionData?.token
     ? sessionData?.token?.id
@@ -155,7 +153,6 @@ export default function AddCoachMultiFormLayout() {
   };
   const { mutate: createMutate } = api.coach.createCoach.useMutation({
     onSuccess: async (response) => {
-      setCoachId(response?.id);
       await router.push("/coach");
       return response;
     },
@@ -226,63 +223,6 @@ export default function AddCoachMultiFormLayout() {
       },
     });
 
-  // const validDate = (dateString: any) => {
-  //   const [day, month, year] = dateString.split("/");
-  //   const validDate = new Date(`${year}-${month}-${day}`);
-  //   return validDate;
-  // };
-
-  // useEffect(() => {
-  //   if (
-  //     formData &&
-  //     Object.keys(formData)?.length > 0 &&
-  //     formData?.coachingSports &&
-  //     formData?.certificates &&
-  //     formData?.coachBatches &&
-  //     coachId
-  //   ) {
-  //     const finalCoachSports = formData?.coachingSports?.map((v: any) => ({
-  //       sportId: parseInt(v.value),
-  //       ...v,
-  //       coachId,
-  //       createdAt: new Date(),
-  //       updatedAt: new Date(),
-  //     }));
-
-  //     createMutateCoachSports(finalCoachSports);
-
-  //     const finalCertificates = formData?.certificates?.map((v: any) => ({
-  //       ...v,
-  //       startDate: validDate(v.startDate),
-  //       endDate: validDate(v.endDate),
-  //       coachId,
-  //       createdAt: new Date(),
-  //       updatedAt: new Date(),
-  //       fileType: "link",
-  //       fileName: "",
-  //       fileUrl: "",
-  //     }));
-
-  //     createMutateCoachCertificates(finalCertificates);
-
-  //     // @ts-expect-error
-  //     const batchesData = formData?.batches;
-
-  //     const finalCenterBatches = batchesData?.map((v: any) => ({
-  //       // @ts-expect-error
-  //       centerId: formData.centerId?.value,
-  //       coachId,
-  //       batchId: v.value,
-  //       createdAt: new Date(),
-  //       updatedAt: new Date(),
-  //     }));
-
-  //     console.log({ finalCenterBatches });
-
-  //     createMutateCoachBatches(finalCenterBatches);
-  //   }
-  // }, [coachId, formData]);
-
   const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
     const {
       gender,
@@ -323,30 +263,23 @@ export default function AddCoachMultiFormLayout() {
           academyId: Number(academyId),
           image: imageUrl ? imageUrl : undefined,
           coachId: id,
-          // @ts-expect-error TODO: FIX THIS ERROR
           coachQualifications: hasCertificatedUpdated
-            ? finalForm.CoachQualifications.map(
-                // @ts-expect-error FIX THIS ERROR
-                (coachQualification: {
-                  startDate: string;
-                  endDate: string;
-                }) => ({
-                  ...coachQualification,
-                  startDate: parse(
-                    coachQualification.startDate,
-                    "dd/MM/yyyy",
-                    new Date()
-                  ),
-                  endDate: parse(
-                    coachQualification.endDate,
-                    "dd/MM/yyyy",
-                    new Date()
-                  ),
-                  fileUrl: "",
-                  fileType: "link",
-                  fileName: null,
-                })
-              )
+            ? finalForm.CoachQualifications.map((coachQualification) => ({
+                ...coachQualification,
+                startDate: parse(
+                  coachQualification.startDate.toISOString(),
+                  "dd/MM/yyyy",
+                  new Date()
+                ),
+                endDate: parse(
+                  coachQualification.endDate.toISOString(),
+                  "dd/MM/yyyy",
+                  new Date()
+                ),
+                fileUrl: "",
+                fileType: "link",
+                fileName: null,
+              }))
             : [],
         });
       } else {
