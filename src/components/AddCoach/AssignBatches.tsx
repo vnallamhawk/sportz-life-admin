@@ -55,7 +55,6 @@ export default function AssignBatches({
 
   useEffect(() => {
     if (formData.centerId) {
-      // @ts-expect-error need to fix this logic
       const center = centers?.find((item) => item?.id == formData.centerId);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       const updatedFormConstantValues: unknown = formConstantValues?.map(
