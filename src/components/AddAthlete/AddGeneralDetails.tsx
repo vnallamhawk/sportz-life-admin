@@ -29,8 +29,6 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
   const [centerId, setCenterId] = useState<number>();
   const [sportIds, setSportIds] = useState<number[]>([]);
 
-  // console.log({ centers })
-
   const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     ATHLETE_GENRAL_CONSTANTS
   );
@@ -43,23 +41,27 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
     if (centers?.length) {
       let updatedFormConstantValues: FormValues[] = formConstantValues;
 
-      updatedFormConstantValues = formConstantValues?.map((formConstant: FormValues) => {
-        if (formConstant.id === "centerId" && formConstant?.options && formConstant?.options.length == 0) {
-          return {
-            ...formConstant,
-            options: centers.map((center) => ({
-              label: center.name,
-              value: center?.id.toString(),
-            })),
-          };
-        } else {
-          return formConstant;
+      updatedFormConstantValues = formConstantValues?.map(
+        (formConstant: FormValues) => {
+          if (
+            formConstant.id === "centerId" &&
+            formConstant?.options &&
+            formConstant?.options.length == 0
+          ) {
+            return {
+              ...formConstant,
+              options: centers.map((center) => ({
+                label: center.name,
+                value: center?.id.toString(),
+              })),
+            };
+          } else {
+            return formConstant;
+          }
         }
-      });
+      );
       setFormConstantValues(updatedFormConstantValues);
-
     }
-
   }, [formConstantValues, centers, centers?.length]);
 
   useEffect(() => {
@@ -67,53 +69,75 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
       const center = centers?.find((item) => item?.id == centerId);
       let updatedFormConstantValues: FormValues[] = formConstantValues;
       if (center?.CenterSports && center?.CenterSports?.length > 0) {
-        updatedFormConstantValues = formConstantValues?.map((formConstant: FormValues) => {
-          if (formConstant.id === "sportId" && formConstant?.options && formConstant?.options.length == 0) {
-            const data = {
-              ...formConstant,
-              options: center.CenterSports.map((CenterSport) => ({
-                label: CenterSport?.Sports?.name,
-                value: CenterSport?.Sports?.id.toString(),
-              })),
-            };
+        updatedFormConstantValues = formConstantValues?.map(
+          (formConstant: FormValues) => {
+            if (
+              formConstant.id === "sportId" &&
+              formConstant?.options &&
+              formConstant?.options.length == 0
+            ) {
+              const data = {
+                ...formConstant,
+                options: center.CenterSports.map((CenterSport) => ({
+                  label: CenterSport?.Sports?.name,
+                  value: CenterSport?.Sports?.id.toString(),
+                })),
+              };
 
-            return data;
-          } else {
-            return formConstant;
+              return data;
+            } else {
+              return formConstant;
+            }
           }
-        });
+        );
       }
 
       if (center?.Batches && center?.Batches?.length > 0) {
-        updatedFormConstantValues = updatedFormConstantValues?.map((formConstant: FormValues) => {
-          if (formConstant.id === "batch" && formConstant?.options && formConstant?.options.length == 0) {
-            return {
-              ...formConstant,
-              options: center.Batches.map((batch) => ({
-                label: batch?.name,
-                value: batch?.id.toString(),
-              })),
-            };
-          } else {
-            return formConstant;
+        updatedFormConstantValues = updatedFormConstantValues?.map(
+          (formConstant: FormValues) => {
+            if (
+              formConstant.id === "batch" &&
+              formConstant?.options &&
+              formConstant?.options.length == 0
+            ) {
+              return {
+                ...formConstant,
+                options: center.Batches.map((batch) => ({
+                  label: batch?.name,
+                  value: batch?.id.toString(),
+                })),
+              };
+            } else {
+              return formConstant;
+            }
           }
-        });
+        );
       }
 
       setFormConstantValues(updatedFormConstantValues);
     }
   }, [centers, centerId, formConstantValues]);
 
-
   useEffect(() => {
-    if (sportIds && sportIds.length > 0 && formConstantValues && formConstantValues.length > 0) {
+    if (
+      sportIds &&
+      sportIds.length > 0 &&
+      formConstantValues &&
+      formConstantValues.length > 0
+    ) {
       let updatedFormConstantValues: FormValues[] = formConstantValues;
       const center = centers?.find((item) => item?.id == centerId);
-      const finalBatches = center?.Batches?.filter((item) => sportIds.includes(item?.sportId))
+      const finalBatches = center?.Batches?.filter((item) =>
+        sportIds.includes(item?.sportId)
+      );
 
       updatedFormConstantValues = updatedFormConstantValues?.map(
         (formConstant: FormValues) => {
-          if (formConstant.id === "batch" && formConstant?.options && formConstant?.options.length == 0) {
+          if (
+            formConstant.id === "batch" &&
+            formConstant?.options &&
+            formConstant?.options.length == 0
+          ) {
             return {
               ...formConstant,
               options: finalBatches?.map(
@@ -129,11 +153,8 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
         }
       );
       setFormConstantValues(updatedFormConstantValues);
-
     }
-
-  }, [centerId, centers, formConstantValues, sportIds])
-
+  }, [centerId, centers, formConstantValues, sportIds]);
 
   // console.log({ formConstantValues, centerId })
   return (
@@ -150,12 +171,10 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
         dependentKey="centerId"
         dependentKey1="sportId"
         setDependentKey1={(value: string) => {
-          const arr: number[] = [...sportIds]
-          arr.push(parseInt(value))
-          setSportIds(arr)
-        }
-        }
-
+          const arr: number[] = [...sportIds];
+          arr.push(parseInt(value));
+          setSportIds(arr);
+        }}
         setDependentKey={(value: number) => setCenterId(value)}
         buttonItems={{}}
       />
@@ -169,7 +188,8 @@ export default function AddGeneralDetails({ finalFormSubmissionHandler }: any) {
         setCurrentStep={setCurrentStep}
         buttonItems={{ prevFinish: true }}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        finalFormSubmissionHandler={finalFormSubmissionHandler} />
+        finalFormSubmissionHandler={finalFormSubmissionHandler}
+      />
     </>
   );
 }
