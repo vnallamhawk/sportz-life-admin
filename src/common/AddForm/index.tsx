@@ -1,59 +1,60 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, {useEffect, useState, useCallback} from 'react'
 
-import Datepicker from "~/components/DatePicker/DatePickerWrapper";
-import Textbox from "~/components/Textbox";
-import Timepicker from "~/components/TimePicker/TimePickerWrapper";
-import CardTitle from "~/components/Card/CardTitle";
-import Image from "next/image";
-import Plus from "../../images/plus.svg";
-import Remove from "../../images/remove.svg";
-import { Switch } from "@material-tailwind/react";
-import AddFile from "../../images/add-file.svg";
-import { Controller, useForm } from "react-hook-form";
+import Datepicker from '~/components/DatePicker/DatePickerWrapper'
+import Textbox from '~/components/Textbox'
+import Timepicker from '~/components/TimePicker/TimePickerWrapper'
+import CardTitle from '~/components/Card/CardTitle'
+import Image from 'next/image'
+import Plus from '../../images/plus.svg'
+import Remove from '../../images/remove.svg'
+import {Switch} from '@material-tailwind/react'
+import AddFile from '../../images/add-file.svg'
+import {Controller, useForm} from 'react-hook-form'
 // import type { ActionMeta, MultiValue, SingleValue } from "react-select";
-import Select from "react-select";
-import Button from "~/components/Button";
-import { Dropdown, Textarea } from "flowbite-react";
-import type { FormValues, TableFields } from "~/types/common";
+import Select from 'react-select'
+import Button from '~/components/Button'
+import {Dropdown, Textarea} from 'flowbite-react'
+import type {FormValues, TableFields} from '~/types/common'
+import type {MULTI_FORM_TYPES} from '~/types/coach'
 
 interface AddForm {
-  cardTitle?: string;
-  cardSubTitle?: string;
-  formConstantValues?: FormValues[];
-  imageTitle?: string;
-  tableTitle?: string;
-  tableDescription?: string;
-  mobileAddButtonText?: string;
-  TableHeadings?: { label: string; id: string }[];
-  addTableData?: any;
-  tableData?: { [key: string]: any }[];
-  tablekey?: string;
+  cardTitle?: string
+  cardSubTitle?: string
+  formConstantValues?: FormValues[]
+  imageTitle?: string
+  tableTitle?: string
+  tableDescription?: string
+  mobileAddButtonText?: string
+  TableHeadings?: {label: string; id: string}[]
+  addTableData?: any
+  tableData?: {[key: string]: any}[]
+  tablekey?: string
   buttonItems?: {
-    prevNext?: boolean;
-    prevFinish?: boolean;
-    next?: boolean;
-    finish?: boolean;
-  };
-  setFormData: any;
-  formData: any;
-  setCurrentStep: any;
-  currentStep: number;
-  finalFormSubmissionHandler?: any;
-  tableFields?: TableFields[];
-  addTableButtonText?: string;
-  addTableButton?: any;
-  onRemoveTableButton?: any;
-  isFormTable?: boolean;
-  prevButtonText?: string;
-  finishButtonText?: string;
-  prevButtonClick?: any;
-  dependentKey?: string;
-  setDependentKey?: any;
-  shouldDisableAddTableButton?: boolean;
-  dependentKey1?: string;
-  setDependentKey1?: any;
-  onDropCallback?: (files: Array<File>) => void;
-  uploadUrl?: string;
+    prevNext?: boolean
+    prevFinish?: boolean
+    next?: boolean
+    finish?: boolean
+  }
+  setFormData: any
+  formData: MULTI_FORM_TYPES
+  setCurrentStep: any
+  currentStep: number
+  finalFormSubmissionHandler?: any
+  tableFields?: TableFields[]
+  addTableButtonText?: string
+  addTableButton?: any
+  onRemoveTableButton?: any
+  isFormTable?: boolean
+  prevButtonText?: string
+  finishButtonText?: string
+  prevButtonClick?: any
+  dependentKey?: string
+  setDependentKey?: any
+  shouldDisableAddTableButton?: boolean
+  dependentKey1?: string
+  setDependentKey1?: any
+  onDropCallback?: (files: Array<File>) => void
+  uploadUrl?: string
 }
 const AddForm = ({
   cardTitle,
@@ -76,51 +77,53 @@ const AddForm = ({
   tableFields,
   addTableButtonText,
   addTableButton,
-  shouldDisableAddTableButton,
+  shouldDisableAddTableButton = false,
   onRemoveTableButton,
   isFormTable = false,
-  prevButtonText = "Prev",
-  finishButtonText = "Finish",
+  prevButtonText = 'Prev',
+  finishButtonText = 'Finish',
   prevButtonClick,
   // dependentKey,
-  setDependentKey,
+  // setDependentKey,
   // dependentKey1,
   // setDependentKey1,
   onDropCallback,
   uploadUrl,
 }: AddForm) => {
-  let inputElement;
+  let inputElement
   const {
     control,
     getValues,
     trigger,
-    formState: { errors },
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  } = useForm<any>({ mode: "onSubmit", values: formData });
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    formState: {errors},
+    reset,
+  } = useForm<MULTI_FORM_TYPES>({mode: 'onSubmit', values: formData})
   const [currentTableData, setCurrentTableData] = useState<{
-    [key: string]: any;
-  }>({});
+    [key: string]: any
+  }>({})
   const [selectedPlaceholders, setSelectedPlaceholders] = useState<{
-    [key: string]: string;
-  }>({});
+    [key: string]: string
+  }>({})
+
+  useEffect(() => {
+    reset({
+      centerId: undefined,
+    }) // Reset form values on mount
+  }, [reset])
 
   const nextClickHandler = useCallback(async () => {
-    const result = await trigger();
+    const result = await trigger()
     if (result) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const currentFormValues = getValues();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const obj: any = { ...formData, ...currentFormValues };
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const currentFormValues = getValues()
+      const obj: MULTI_FORM_TYPES = {...formData, ...currentFormValues}
       if ((buttonItems?.prevNext || buttonItems?.next) && tablekey) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        tablekey && (obj[tablekey] = tableData);
+        tablekey && (obj[tablekey] = tableData)
       }
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      setFormData && setFormData(obj);
+      setFormData && setFormData(obj)
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      setCurrentStep && setCurrentStep(currentStep + 1);
+      setCurrentStep && setCurrentStep(currentStep + 1)
     }
   }, [
     buttonItems?.next,
@@ -133,80 +136,77 @@ const AddForm = ({
     tableData,
     tablekey,
     trigger,
-  ]);
+  ])
 
   useEffect(() => {
     if (buttonItems && Object.keys(buttonItems).length === 0) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const currentFormValues = getValues();
-      const obj: unknown = { ...formData, ...currentFormValues };
+      const currentFormValues = getValues()
+      const obj: unknown = {...formData, ...currentFormValues}
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      setFormData && setFormData(obj);
+      setFormData && setFormData(obj)
     }
-  }, [buttonItems, formData, getValues, nextClickHandler, setFormData]);
+  }, [buttonItems, formData, getValues, nextClickHandler, setFormData])
 
   const prevClickHandler = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    setCurrentStep && setCurrentStep(currentStep - 1);
-  };
+    setCurrentStep && setCurrentStep(currentStep - 1)
+  }
 
   const handleChangeCurrentData = (
     name: string,
-    data: { label: string; value: string } | null,
+    data: {label: string; value: string} | null,
     value: string | number,
     placeholder: string // Accept placeholder as a parameter
   ) => {
-    const obj: { [key: string]: string | number } = { ...currentTableData };
+    const obj: {[key: string]: string | number} = {...currentTableData}
 
     if (data && data?.label && data?.value) {
-      obj["value"] = data.value;
-      obj["name"] = data.label;
+      obj['value'] = data.value
+      obj['name'] = data.label
 
       // Update the placeholder dynamically
       setSelectedPlaceholders((prev) => ({
         ...prev,
         [name]: data.label,
-      }));
+      }))
     } else {
-      obj[name] = value;
+      obj[name] = value
 
       // Reset placeholder using the passed placeholder value
       setSelectedPlaceholders((prev) => ({
         ...prev,
         [name]: placeholder,
-      }));
+      }))
     }
 
-    setCurrentTableData(obj);
-  };
+    setCurrentTableData(obj)
+  }
 
   const submitCallback = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const currentFormValues = getValues();
+    const currentFormValues = getValues()
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const finalFormData = {
       ...formData,
       ...currentFormValues,
-    };
+    }
     if (tablekey) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      finalFormData[tablekey] = tableData;
+      finalFormData[tablekey] = tableData
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    finalFormSubmissionHandler(finalFormData);
-  };
+    finalFormSubmissionHandler(finalFormData)
+  }
 
-  const handleChangeTime = (
-    value: string | boolean | unknown,
-    name: string
-  ) => {
+  const handleChangeTime = (value: string | boolean | unknown, name: string) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const obj: { [key: string]: string | boolean | unknown } = { ...formData };
-    obj[name] = value;
+    const obj: {[key: string]: string | boolean | unknown} = {...formData}
+    obj[name] = value
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    setFormData(obj);
-  };
+    setFormData(obj)
+  }
 
   const getInputElement = (props: FormValues) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -220,17 +220,17 @@ const AddForm = ({
       dropdownKey,
       dropdownLabel,
       options,
-    } = props;
+    } = props
 
     switch (type) {
-      case "select":
+      case 'select':
         inputElement = (
           <Controller
             control={control}
             name={id}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
-            render={({ field: { onChange, value } }) => {
+            render={({field: {onChange, value}}) => {
               return (
                 <Select
                   isMulti={props?.isMulti ?? false}
@@ -239,13 +239,11 @@ const AddForm = ({
                   isDisabled={props.isDisabled}
                   options={options}
                   value={options?.filter((option) =>
-                    Array.isArray(value)
-                      ? value.includes(option.value)
-                      : value === option.value
+                    Array.isArray(value) ? value.includes(option.value) : value === option.value
                   )}
                   placeholder={placeHolder}
-                  className="border-1 c-select w-full border-gray-300"
-                  classNamePrefix="react-select"
+                  className='border-1 c-select w-full border-gray-300'
+                  classNamePrefix='react-select'
                   onChange={(newValue) => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const value = Array.isArray(newValue)
@@ -253,57 +251,51 @@ const AddForm = ({
                         newValue.map((option) => option.value)
                       : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-expect-error
-                        newValue?.value;
-                    onChange(value);
+                        newValue?.value
+                    onChange(value)
 
-                    if (id === "centerId" || id === "batchIds") {
-                      if (id === "centerId") {
-                        if (!newValue) return; // Ensure newValue is not null
+                    // if (id === 'centerId' || id === 'batchIds') {
+                    //   if (id === 'centerId') {
+                    //     if (!newValue) return // Ensure newValue is not null
 
-                        if (!Array.isArray(newValue) && "value" in newValue) {
-                          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                          setDependentKey?.(newValue.value); // Single value
-                        } else if (Array.isArray(newValue)) {
-                          // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-                          setDependentKey?.(newValue.map((item) => item.value)); // Multi select
-                        }
-                      }
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
-                      setFormData((prevFormData: any) => ({
-                        ...prevFormData,
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                        [id]: value,
-                      }));
-                    }
+                    //     if (!Array.isArray(newValue) && 'value' in newValue) {
+                    //       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                    //       setDependentKey?.(newValue.value) // Single value
+                    //     } else if (Array.isArray(newValue)) {
+                    //       // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+                    //       setDependentKey?.(newValue.map((item) => item.value)) // Multi select
+                    //     }
+                    //   }
+                    // }
                   }}
                 />
-              );
+              )
             }}
           />
-        );
-        break;
+        )
+        break
 
-      case "inputDropdown":
+      case 'inputDropdown':
         inputElement = (
           <Controller
             control={control}
-            render={({ field: { onChange, value } }) => {
+            render={({field: {onChange, value}}) => {
               return (
-                <div className="relative">
+                <div className='relative'>
                   <Textbox
-                    className="h-12 w-full"
+                    className='h-12 w-full'
                     placeHolder={placeHolder}
                     onChangeHandler={onChange}
                     // TODO: FIX THIS TS ERROR
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
                     value={(formData[id] as string) || value}
                   />
-                  <div className="dropdown absolute right-0.5 top-2/4 inline-flex h-12 -translate-y-2/4 items-center justify-center border-l p-3">
+                  <div className='dropdown absolute right-0.5 top-2/4 inline-flex h-12 -translate-y-2/4 items-center justify-center border-l p-3'>
                     <Dropdown
                       label={dropdownLabel}
                       inline={true}
                       dismissOnClick={false}
-                      className="text-black"
+                      className='text-black'
                     >
                       {dropdownKey &&
                         options?.map((item) => {
@@ -311,47 +303,45 @@ const AddForm = ({
                           return (
                             // eslint-disable-next-line react/jsx-key
                             <Dropdown.Item
-                              onClick={() =>
-                                handleChangeTime(item.value, dropdownKey)
-                              }
+                              onClick={() => handleChangeTime(item.value, dropdownKey)}
                             >
                               {item.label}
                             </Dropdown.Item>
-                          );
+                          )
                         })}
                     </Dropdown>
                   </div>
                 </div>
-              );
+              )
             }}
             name={id}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
           />
-        );
-        break;
-      case "switch":
+        )
+        break
+      case 'switch':
         inputElement = (
           <Controller
             control={control}
-            render={({ field: { value } }) => {
+            render={({field: {value}}) => {
               return (
                 <Switch
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                  value={formData["taxable"] || value}
-                  onChange={(e) =>
-                    handleChangeTime(e.target.checked, "taxable")
-                  }
+                  // @ts-expect-error TODO: FIX THIS ERROR
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  value={formData['taxable'] || value}
+                  onChange={(e) => handleChangeTime(e.target.checked, 'taxable')}
                 />
-              );
+              )
             }}
+            // @ts-expect-error todo: fix this error
             name={id}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
           />
-        );
-        break;
-      case "time":
+        )
+        break
+      case 'time':
         inputElement = (
           <Controller
             control={control}
@@ -360,23 +350,25 @@ const AddForm = ({
                 <Timepicker
                   placeHolder={props.placeHolder}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                  value={formData[id] ? formData[id] : "10:00"}
-                  className="h-12 "
+                  // @ts-expect-error TODO: FIX THIS TS ERROR
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  value={formData[id] ? formData[id] : undefined}
+                  className='h-12 '
                   onChangeHandler={(value) => handleChangeTime(value, id)}
                 />
-              );
+              )
             }}
             name={id}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
           />
-        );
-        break;
-      case "calendar":
+        )
+        break
+      case 'calendar':
         inputElement = (
           <Controller
             control={control}
-            render={({ field: { onChange, value } }) => {
+            render={({field: {onChange, value}}) => {
               return (
                 <Datepicker
                   placeHolder={props.placeHolder}
@@ -385,27 +377,28 @@ const AddForm = ({
                     value
                       ? new Date(value as string)
                       : // eslint-disable-next-line
+                        // @ts-expect-error
                         new Date(formData[id] as string)
                   }
-                  className="h-12"
+                  className='h-12'
                   onChangeHandler={onChange}
                 />
-              );
+              )
             }}
             name={id}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
           />
-        );
-        break;
-      case "textarea":
+        )
+        break
+      case 'textarea':
         inputElement = (
           <Controller
             control={control}
             name={id}
-            render={({ field: { onChange, value } }) => (
+            render={({field: {onChange, value}}) => (
               <Textarea
-                className="h-20 w-full"
+                className='h-20 w-full'
                 placeholder={placeHolder}
                 onChange={onChange}
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
@@ -414,40 +407,41 @@ const AddForm = ({
             )}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
-            {...(pattern ? { pattern } : {})}
+            {...(pattern ? {pattern} : {})}
           />
-        );
-        break;
+        )
+        break
       default:
         inputElement = (
           <Controller
             control={control}
             name={id}
-            render={({ field: { onChange, value } }) => (
+            render={({field: {onChange, value}}) => (
               <Textbox
-                className="h-12 w-full"
+                className='h-12 w-full'
                 placeHolder={placeHolder}
                 onChangeHandler={onChange}
                 // TODO: FIX THIS TS ERROR
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                // @ts-expect-error // FIX THIS TS ERROR
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 value={value || formData[id]}
               />
             )}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
-            {...(pattern ? { pattern } : {})}
+            {...(pattern ? {pattern} : {})}
           />
-        );
+        )
     }
 
-    return inputElement;
-  };
+    return inputElement
+  }
 
   return (
     <>
       {cardTitle && <CardTitle title={cardTitle} />}
       {cardSubTitle && (
-        <div className=" text-center font-heading text-3xl font-medium uppercase lg:text-left">
+        <div className=' text-center font-heading text-3xl font-medium uppercase lg:text-left'>
           {cardSubTitle}
         </div>
       )}
@@ -460,14 +454,12 @@ const AddForm = ({
             <div key={formValues.id}>
               {getInputElement(formValues)}
 
-              <span className="text-red-800">
-                {errors[formValues.id]?.type === "required" && (
-                  <div>This field is required</div>
-                )}
-                {errors[formValues.id]?.type === "pattern" && (
+              <span className='text-red-800'>
+                {errors[formValues.id]?.type === 'required' && <div>This field is required</div>}
+                {errors[formValues.id]?.type === 'pattern' && (
                   <div> This field is not matching the pattern</div>
                 )}
-                {errors[formValues.id]?.type === "maxLength" && (
+                {errors[formValues.id]?.type === 'maxLength' && (
                   <div>{`This field is exceeding the max. character limit`}</div>
                 )}
               </span>
@@ -476,17 +468,17 @@ const AddForm = ({
         </div>
       )}
       {imageTitle && (
-        <label className="col-span-2 mt-5 flex h-48 flex-col justify-center rounded-lg border-2 border-dashed border-gray-300 bg-stone-100 text-center lg:hidden">
-          <div className="mb-3 flex items-center justify-center">
+        <label className='col-span-2 mt-5 flex h-48 flex-col justify-center rounded-lg border-2 border-dashed border-gray-300 bg-stone-100 text-center lg:hidden'>
+          <div className='mb-3 flex items-center justify-center'>
             <input
-              type="file"
-              className="hidden"
+              type='file'
+              className='hidden'
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 if (imageTitle && onDropCallback && e.target.files) {
                   const uploadedFile: File | null | undefined =
-                    e.target.files.length > 0 ? e.target.files[0] : null;
+                    e.target.files.length > 0 ? e.target.files[0] : null
                   if (uploadedFile) {
-                    onDropCallback([uploadedFile]);
+                    onDropCallback([uploadedFile])
                   }
                 }
               }}
@@ -495,34 +487,30 @@ const AddForm = ({
               width={0}
               height={0}
               src={uploadUrl ? uploadUrl : AddFile}
-              className="mr-2 h-auto w-auto"
-              alt=""
+              className='mr-2 h-auto w-auto'
+              alt=''
             />
-            <div className="text-base font-medium text-gray-500">
-              {imageTitle}
-            </div>
+            <div className='text-base font-medium text-gray-500'>{imageTitle}</div>
           </div>
-          <div className="text-sm text-gray-300">
-            The file size not more than 10 MB.
-          </div>
-          <div className="text-sm text-gray-300">JPEG, PNG, Video</div>
+          <div className='text-sm text-gray-300'>The file size not more than 10 MB.</div>
+          <div className='text-sm text-gray-300'>JPEG, PNG, Video</div>
         </label>
       )}
 
       {tableData && TableHeadings && (
-        <div className="">
-          <div className="hidden text-lg font-medium text-gray-400 lg:block">
+        <div className=''>
+          <div className='hidden text-lg font-medium text-gray-400 lg:block'>
             {tableDescription}
           </div>
-          <div className="mb-10 flex items-center justify-between">
-            <div className="text-center font-heading text-3xl font-medium uppercase lg:text-left">
+          <div className='mb-10 flex items-center justify-between'>
+            <div className='text-center font-heading text-3xl font-medium uppercase lg:text-left'>
               {tableTitle}
             </div>
 
             {addTableButtonText && (
               <Button
-                type="button"
-                className="cursor-pointer rounded-lg bg-[#F3476D] px-4 py-2 text-center text-white"
+                type='button'
+                className='cursor-pointer rounded-lg bg-[#F3476D] px-4 py-2 text-center text-white'
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 onClick={addTableButton}
               >
@@ -530,120 +518,98 @@ const AddForm = ({
               </Button>
             )}
           </div>
-          <div className="mt-4 flex flex-col items-start lg:flex-row">
+          <div className='mt-4 flex flex-col items-start lg:flex-row'>
             {tableFields &&
               tableFields.length > 0 &&
               tableFields?.map((item: TableFields) => {
                 return (
                   <>
-                    {item?.type === "textarea" ? (
+                    {item?.type === 'textarea' ? (
                       <textarea
                         placeholder={item?.placeholder}
-                        className="border-1 h-12 w-full grow rounded-lg border-gray-300 pl-5 focus:border-gray-600 focus:outline-none focus:ring-0 lg:h-20"
+                        className='border-1 h-12 w-full grow rounded-lg border-gray-300 pl-5 focus:border-gray-600 focus:outline-none focus:ring-0 lg:h-20'
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         value={currentTableData[item?.name]}
                         onChange={(e) => {
                           handleChangeCurrentData(
                             item?.name,
-                            { label: "", value: "" },
+                            {label: '', value: ''},
                             e.target.value,
-                            item?.placeholder ?? "" // Pass placeholder as the fourth argument
-                          );
+                            item?.placeholder ?? '' // Pass placeholder as the fourth argument
+                          )
                         }}
                       />
-                    ) : item?.type === "select" ? (
+                    ) : item?.type === 'select' ? (
                       <Select
                         isMulti={item?.isMulti ?? false}
                         options={item?.options}
                         // eslint-disable-next-line
                         value={currentTableData[item?.name]}
-                        placeholder={
-                          selectedPlaceholders[item?.name] || item?.placeholder
-                        }
-                        className="border-1 c-select h-12 w-full border-gray-300"
-                        classNamePrefix="react-select"
+                        placeholder={selectedPlaceholders[item?.name] || item?.placeholder}
+                        className='border-1 c-select h-12 w-full border-gray-300'
+                        classNamePrefix='react-select'
                         onChange={(element) =>
                           handleChangeCurrentData(
                             item?.name,
                             // eslint-disable-next-line
                             element,
-                            "",
-                            item?.placeholder ?? ""
+                            '',
+                            item?.placeholder ?? ''
                           )
                         }
                       />
                     ) : (
-                      <div className="relative mt-3 lg:mt-0">
+                      <div className='relative mt-3 lg:mt-0'>
                         <input
-                          className="w-34 h-12 rounded-lg border border-gray-300 p-2 pr-9 text-center focus:border-gray-600 focus:outline-none focus:ring-0 lg:ml-7 lg:w-20"
+                          className='w-34 h-12 rounded-lg border border-gray-300 p-2 pr-9 text-center focus:border-gray-600 focus:outline-none focus:ring-0 lg:ml-7 lg:w-20'
                           // eslint-disable-next-line
                           value={currentTableData[item?.name]}
                           onChange={(e) => {
                             handleChangeCurrentData(
                               item?.name,
-                              { label: "", value: "" },
-                              item?.type === "number"
-                                ? parseInt(e.target.value)
-                                : e.target.value,
-                              item?.placeholder ?? "" // Pass placeholder as the fourth argument
-                            );
+                              {label: '', value: ''},
+                              item?.type === 'number' ? parseInt(e.target.value) : e.target.value,
+                              item?.placeholder ?? '' // Pass placeholder as the fourth argument
+                            )
                           }}
                         />
-                        <span className="absolute right-3 top-3.5 text-sm text-gray-400">
-                          Qty
-                        </span>
+                        <span className='absolute right-3 top-3.5 text-sm text-gray-400'>Qty</span>
                       </div>
                     )}
                   </>
-                );
+                )
               })}
             <Button
-              className="border-1 ml-7 hidden rounded-md border-blush-light px-8 py-3 text-lg font-bold text-[#FF9678] hover:border-blush-dark hover:text-blush-dark lg:block"
-              type="button"
+              className='border-1 ml-7 hidden rounded-md border-blush-light px-8 py-3 text-lg font-bold text-[#FF9678] hover:border-blush-dark hover:text-blush-dark lg:block'
+              type='button'
               onClick={(e) => {
                 shouldDisableAddTableButton
                   ? undefined
                   : // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                    addTableData(
-                      tableFields
-                        ? currentTableData
-                        : isFormTable
-                        ? getValues()
-                        : e
-                    );
-                setCurrentTableData({});
+                    addTableData(tableFields ? currentTableData : isFormTable ? getValues() : e)
+                setCurrentTableData({})
               }}
-              disabled={
-                shouldDisableAddTableButton
-                  ? shouldDisableAddTableButton
-                  : false
-              }
+              disabled={shouldDisableAddTableButton ? shouldDisableAddTableButton : false}
             >
               Add
             </Button>
 
-            <button className="mt-5 flex items-center lg:hidden">
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-black p-3">
-                <Image
-                  width={0}
-                  height={0}
-                  src={Plus}
-                  className="h-auto w-auto"
-                  alt=""
-                />
+            <button className='mt-5 flex items-center lg:hidden'>
+              <div className='inline-flex h-10 w-10 items-center justify-center rounded-full bg-black p-3'>
+                <Image width={0} height={0} src={Plus} className='h-auto w-auto' alt='' />
               </div>
-              <div className="ml-3">{mobileAddButtonText}</div>
+              <div className='ml-3'>{mobileAddButtonText}</div>
             </button>
           </div>
-          <div className="scroll mt-5 hidden max-h-[370px] overflow-auto px-0 lg:block">
-            <table className="common-table w-full table-fixed border-separate border-spacing-y-2 text-left">
+          <div className='scroll mt-5 hidden max-h-[370px] overflow-auto px-0 lg:block'>
+            <table className='common-table w-full table-fixed border-separate border-spacing-y-2 text-left'>
               <thead>
                 <tr>
                   {TableHeadings?.map((head, index) => (
                     <th
                       key={index}
-                      className="pl-7 font-medium text-gray-400"
-                      style={{ minWidth: "150px", wordBreak: "break-word" }} // Prevents text overflow
+                      className='pl-7 font-medium text-gray-400'
+                      style={{minWidth: '150px', wordBreak: 'break-word'}} // Prevents text overflow
                     >
                       {head.label}
                     </th>
@@ -653,18 +619,18 @@ const AddForm = ({
               <tbody>
                 {tableData?.length > 0 &&
                   tableData.map((data, dataIndex) => (
-                    <tr key={dataIndex} className="border-b border-gray-100">
+                    <tr key={dataIndex} className='border-b border-gray-100'>
                       {TableHeadings.map((head, headIndex) => (
                         <td
                           key={headIndex}
-                          className="border-gray-100 p-4"
-                          style={{ minWidth: "150px", wordBreak: "break-word" }} // Ensures text wraps properly
+                          className='border-gray-100 p-4'
+                          style={{minWidth: '150px', wordBreak: 'break-word'}} // Ensures text wraps properly
                         >
-                          {head.id !== "action" ? (
+                          {head.id !== 'action' ? (
                             <span>{data[head.id]}</span>
                           ) : (
                             <span
-                              className="cursor-pointer font-medium text-gray-400 hover:text-red-500"
+                              className='cursor-pointer font-medium text-gray-400 hover:text-red-500'
                               // eslint-disable-next-line
                               onClick={() => onRemoveTableButton(dataIndex)}
                             >
@@ -679,52 +645,34 @@ const AddForm = ({
             </table>
           </div>
           {/* mobile view ------------------*/}
-          <div className="invent-mobile relative mt-10 rounded-t-[40px] bg-[#FFE5DE] px-5 py-10 lg:hidden">
-            <CardTitle title="INVENTORIES" />
-            <div className="max-h-[345px] overflow-auto">
-              <div className="mb-3 flex justify-between rounded-lg bg-white p-3">
+          <div className='invent-mobile relative mt-10 rounded-t-[40px] bg-[#FFE5DE] px-5 py-10 lg:hidden'>
+            <CardTitle title='INVENTORIES' />
+            <div className='max-h-[345px] overflow-auto'>
+              <div className='mb-3 flex justify-between rounded-lg bg-white p-3'>
                 <div>
-                  <div className="text-base font-bold">Wristle</div>
-                  <div className="text-base">10 Pieces</div>
+                  <div className='text-base font-bold'>Wristle</div>
+                  <div className='text-base'>10 Pieces</div>
                 </div>
                 <button>
-                  <Image
-                    width={0}
-                    height={0}
-                    src={Remove}
-                    className="h-auto w-auto"
-                    alt=""
-                  />
+                  <Image width={0} height={0} src={Remove} className='h-auto w-auto' alt='' />
                 </button>
               </div>
-              <div className="mb-3 flex justify-between rounded-lg bg-white p-3">
+              <div className='mb-3 flex justify-between rounded-lg bg-white p-3'>
                 <div>
-                  <div className="text-base font-bold">Wristle</div>
-                  <div className="text-base">10 Pieces</div>
+                  <div className='text-base font-bold'>Wristle</div>
+                  <div className='text-base'>10 Pieces</div>
                 </div>
                 <button>
-                  <Image
-                    width={0}
-                    height={0}
-                    src={Remove}
-                    className="h-auto w-auto"
-                    alt=""
-                  />
+                  <Image width={0} height={0} src={Remove} className='h-auto w-auto' alt='' />
                 </button>
               </div>
-              <div className="mb-3 flex justify-between rounded-lg bg-white p-3">
+              <div className='mb-3 flex justify-between rounded-lg bg-white p-3'>
                 <div>
-                  <div className="text-base font-bold">Wristle</div>
-                  <div className="text-base">10 Pieces</div>
+                  <div className='text-base font-bold'>Wristle</div>
+                  <div className='text-base'>10 Pieces</div>
                 </div>
                 <button>
-                  <Image
-                    width={0}
-                    height={0}
-                    src={Remove}
-                    className="h-auto w-auto"
-                    alt=""
-                  />
+                  <Image width={0} height={0} src={Remove} className='h-auto w-auto' alt='' />
                 </button>
               </div>
             </div>
@@ -732,10 +680,10 @@ const AddForm = ({
         </div>
       )}
       {buttonItems?.next && (
-        <div className="bottom-8 right-0 mb-10 mt-10 flex justify-end lg:absolute lg:mb-0 lg:mr-10">
+        <div className='bottom-8 right-0 mb-10 mt-10 flex justify-end lg:absolute lg:mb-0 lg:mr-10'>
           <button
-            className="w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
-            type="button"
+            className='w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
+            type='button'
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onClick={nextClickHandler}
           >
@@ -744,17 +692,17 @@ const AddForm = ({
         </div>
       )}
       {buttonItems?.prevNext && (
-        <div className="absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end">
+        <div className='absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end'>
           <Button
-            type="button"
-            className="w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
+            type='button'
+            className='w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
             onClick={prevClickHandler}
           >
             Prev
           </Button>
           <Button
-            type="button"
-            className="ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
+            type='button'
+            className='ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onClick={nextClickHandler}
           >
@@ -764,18 +712,18 @@ const AddForm = ({
       )}
 
       {buttonItems?.prevFinish && (
-        <div className="absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end">
+        <div className='absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end'>
           <Button
-            type="button"
-            className="w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
+            type='button'
+            className='w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             onClick={prevButtonClick ? prevButtonClick : prevClickHandler}
           >
             {prevButtonText}
           </Button>
           <Button
-            type="button"
-            className="ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
+            type='button'
+            className='ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
             onClick={submitCallback}
           >
             {finishButtonText}
@@ -783,10 +731,10 @@ const AddForm = ({
         </div>
       )}
       {buttonItems?.finish && (
-        <div className="absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end">
+        <div className='absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end'>
           <Button
-            type="button"
-            className="ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5"
+            type='button'
+            className='ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
             onClick={submitCallback}
           >
             {finishButtonText}
@@ -794,7 +742,7 @@ const AddForm = ({
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default AddForm;
+export default AddForm

@@ -1,4 +1,4 @@
-import type { Coaches_experienceLevel, Coaches_gender, Coaches_trainingLevel, CoachQualifications, CoachQualifications_certificateType, Sports } from "@prisma/client";
+import type { CoachCentersBatches, Coaches_experienceLevel, Coaches_gender, Coaches_trainingLevel, CoachQualifications, CoachQualifications_certificateType, Sports } from "@prisma/client";
 import {
   type Coaches,
   type Batches,
@@ -106,6 +106,11 @@ export interface BatchData {
   batchName: string;
 }
 
+type UpdatedCoachCentersBatches = CoachCentersBatches & {
+  Centers: {name: string}
+  Batches: {name: string}
+}
+
 export interface MULTI_FORM_TYPES extends COACH_TYPES {
   coachBatches?: any;
   certificates: COACH_CERTIFICATE_TABLE_TYPES[];
@@ -114,9 +119,11 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   centerIds?: number[];
   coachId?: number;
   CoachQualifications: CoachQualifications[]
+  CoachCentersBatches: UpdatedCoachCentersBatches[]
   Batches: Batches
   centerId?: number
   isEditMode ?:boolean
+   [key: string]: string | number | boolean | object | null | undefined;
 }
 
 export enum TrainingLevelEnum {
@@ -152,3 +159,20 @@ export const COACH_CERTIFICATE_FILE_TYPE = [
   "pdf",
   "video"
 ] as const;
+
+type Option = {
+  label: string;
+  value: string | number; // Assuming ID can be string or number
+};
+
+export type COACH_CENTER_BATCHES = {
+  placeHolder: string;
+  id:  'centerId' | 'batches';
+  type: "select";
+  options: Option[];
+  rules: {
+    required: boolean;
+  };
+  isDisabled: boolean;
+  isMulti?: boolean;
+};

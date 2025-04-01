@@ -1,25 +1,25 @@
-import React, { useState, useCallback, useEffect } from "react";
-import Card from "~/components/Card";
-import ImageWithFallback from "~/components/ImageWithFallback";
-import { FormProvider, useForm } from "react-hook-form";
-import AddCoach from "../../../components/AddCoach/AddCoach";
-import AddCoachCertificates from "~/components/AddCoach/AddCoachCertificates";
-import AssignBatches from "~/components/AddCoach/AssignBatches";
-import { type MULTI_FORM_TYPES } from "~/types/coach";
-import { api } from "~/utils/api";
-import { useRouter } from "next/router";
-import FileUpload from "~/components/FileUpload";
-import { useSession } from "next-auth/react";
-import { parse } from "date-fns";
+import React, {useState, useCallback, useEffect} from 'react'
+import Card from '~/components/Card'
+import ImageWithFallback from '~/components/ImageWithFallback'
+import {FormProvider, useForm} from 'react-hook-form'
+import AddCoach from '../../../components/AddCoach/AddCoach'
+import AddCoachCertificates from '~/components/AddCoach/AddCoachCertificates'
+import AssignBatches from '~/components/AddCoach/AssignBatches'
+import {type MULTI_FORM_TYPES} from '~/types/coach'
+import {api} from '~/utils/api'
+import {useRouter} from 'next/router'
+import FileUpload from '~/components/FileUpload'
+import {useSession} from 'next-auth/react'
+import {parse} from 'date-fns'
 
 const multiFormData: MULTI_FORM_TYPES = {
-  contactNumber: "",
-  name: "",
-  designation: "",
-  email: "",
-  about: "",
-  dateOfBirth: "",
-  payroll: "",
+  contactNumber: '',
+  name: '',
+  designation: '',
+  email: '',
+  about: '',
+  dateOfBirth: '',
+  payroll: '',
   coachingSports: [],
   certificates: [],
   batchIds: [],
@@ -30,7 +30,7 @@ const multiFormData: MULTI_FORM_TYPES = {
   isEditMode: false,
   Batches: {
     id: 0,
-    name: "",
+    name: '',
     capacity: 0,
     remainingSeat: 0,
     occupiedSeat: 0,
@@ -42,12 +42,13 @@ const multiFormData: MULTI_FORM_TYPES = {
     createdAt: new Date(),
     updatedAt: new Date(),
     feePlanId: 0,
-    trainingLevel: "beginner",
+    trainingLevel: 'beginner',
   },
-  phone: "",
-  image: "",
+  phone: '',
+  image: '',
   batches: [],
-};
+  CoachCentersBatches: [],
+}
 
 const defaultValues = {
   stepData: {
@@ -56,61 +57,55 @@ const defaultValues = {
   multiFormData: {
     formData: multiFormData,
   },
-};
+}
 export interface FormContextTypes {
   stepData: {
-    currentStep: number;
-    setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
-  };
+    currentStep: number
+    setCurrentStep?: React.Dispatch<React.SetStateAction<number>>
+  }
   multiFormData: {
-    formData: MULTI_FORM_TYPES;
-    setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>;
-  };
+    formData: MULTI_FORM_TYPES
+    setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>
+  }
 }
-export const FormContext = React.createContext<FormContextTypes>(defaultValues);
+export const FormContext = React.createContext<FormContextTypes>(defaultValues)
 
 export default function AddCoachMultiFormLayout() {
-  const router = useRouter();
-  const id = Number(router?.query?.id);
-  const methods = useForm();
-  const [currentStep, setCurrentStep] = useState<number>(1);
-  const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
-    defaultValues.multiFormData.formData
-  );
-  const { data: sessionData } = useSession();
-  const createdBy = sessionData?.token
-    ? sessionData?.token?.id
-    : sessionData?.user?.id;
+  const router = useRouter()
+  const id = Number(router?.query?.id)
+  const methods = useForm()
+  const [currentStep, setCurrentStep] = useState<number>(1)
+  const [formData, setFormData] = useState<MULTI_FORM_TYPES>(defaultValues.multiFormData.formData)
+  const {data: sessionData} = useSession()
+  const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
   const academyId = sessionData?.token
     ? sessionData?.token?.academyId
-    : sessionData?.user?.academyId;
-  const uploadImage = api.upload.uploadImage.useMutation();
-  const coachData = id ? api.coach.getCoachById.useQuery({ id }) : undefined;
-  const data = coachData?.data;
-  const image = data?.image;
-  const [imageUrl, setImageUrl] = useState(image);
-  const [signedS3Url, setSignedS3Url] = useState("");
-  const [previewUrl, setPreviewUrl] = useState("");
+    : sessionData?.user?.academyId
+  const uploadImage = api.upload.uploadImage.useMutation()
+  const coachData = id ? api.coach.getCoachById.useQuery({id}) : undefined
+  const data = coachData?.data
+  const image = data?.image
+  const [imageUrl, setImageUrl] = useState(image)
+  const [signedS3Url, setSignedS3Url] = useState('')
+  const [previewUrl, setPreviewUrl] = useState('')
 
   useEffect(() => {
     if (image) {
-      setImageUrl(image);
+      setImageUrl(image)
     }
-  }, [image]);
+  }, [image])
 
   const getSignedUrlForImage = async (key: string) => {
     try {
-      const response = await fetch(
-        `/api/aws/getAwsSignedURL?key=${encodeURIComponent(key)}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch signed URL");
+      const response = await fetch(`/api/aws/getAwsSignedURL?key=${encodeURIComponent(key)}`)
+      if (!response.ok) throw new Error('Failed to fetch signed URL')
 
-      const data = (await response.json()) as { url: string }; // Type assertion here
-      setSignedS3Url(data.url);
+      const data = (await response.json()) as {url: string} // Type assertion here
+      setSignedS3Url(data.url)
     } catch (error) {
-      console.error("Error fetching signed URL:", error);
+      console.error('Error fetching signed URL:', error)
     }
-  };
+  }
 
   useEffect(() => {
     if (formData.isEditMode && coachData?.data) {
@@ -121,67 +116,63 @@ export default function AddCoachMultiFormLayout() {
         phone: coachData?.data?.phone ?? undefined,
         email: coachData?.data?.email ?? undefined,
         image: coachData?.data?.image ?? undefined,
-      }));
+      }))
     }
-  }, [coachData?.data, formData.isEditMode]);
+  }, [coachData?.data, formData.isEditMode])
 
   useEffect(() => {
     if (router.isReady) {
-      if (router.asPath.includes("edit")) {
+      if (router.asPath.includes('edit')) {
         setFormData((prevFormData) => ({
           ...prevFormData,
           isEditMode: true,
-        }));
+        }))
       }
     }
-  }, [router.isReady, router.asPath]);
+  }, [router.isReady, router.asPath])
 
   useEffect(() => {
     const fetchSignedUrl = async () => {
       if (imageUrl) {
-        await getSignedUrlForImage(imageUrl);
+        await getSignedUrlForImage(imageUrl)
       }
-    };
+    }
 
-    void fetchSignedUrl();
-  }, [imageUrl]);
+    void fetchSignedUrl()
+  }, [imageUrl])
 
   const formProviderData = {
     ...methods,
-    stepData: { currentStep, setCurrentStep },
-    multiFormData: { formData, setFormData },
-  };
-  const { mutate: createMutate } = api.coach.createCoach.useMutation({
+    stepData: {currentStep, setCurrentStep},
+    multiFormData: {formData, setFormData},
+  }
+  const {mutate: createMutate} = api.coach.createCoach.useMutation({
     onSuccess: async (response) => {
-      await router.push("/coach");
-      return response;
+      await router.push('/coach')
+      return response
     },
-  });
+  })
 
-  const { mutate: editMutate } = api.coach.editCoach.useMutation({
+  const {mutate: editMutate} = api.coach.editCoach.useMutation({
     onSuccess: (response) => {
-      void router
-        .push(`/coach/${response?.id ?? ""}`)
-        .then(() => window.location.reload());
+      void router.push(`/coach/${response?.id ?? ''}`).then(() => window.location.reload())
     },
-  });
+  })
 
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
     if (acceptedFiles && acceptedFiles.length > 0) {
-      const uploadedFile: File | null = acceptedFiles[0]
-        ? acceptedFiles[0]
-        : null;
+      const uploadedFile: File | null = acceptedFiles[0] ? acceptedFiles[0] : null
       if (!uploadedFile) {
-        alert("Please select a valid file");
-        return;
+        alert('Please select a valid file')
+        return
       } else {
-        setPreviewUrl(URL.createObjectURL(uploadedFile));
-        const fileReader = new FileReader();
+        setPreviewUrl(URL.createObjectURL(uploadedFile))
+        const fileReader = new FileReader()
         fileReader.onloadend = async () => {
-          let base64String = fileReader.result as string;
+          let base64String = fileReader.result as string
 
-          if (base64String.startsWith("data:")) {
-            base64String = base64String.split(",")[1] as string; // Get the part after the comma
+          if (base64String.startsWith('data:')) {
+            base64String = base64String.split(',')[1] as string // Get the part after the comma
           }
 
           try {
@@ -189,65 +180,46 @@ export default function AddCoachMultiFormLayout() {
               file: base64String,
               filename: uploadedFile.name,
               mimetype: uploadedFile.type,
-              key: "coach",
-            });
-            setImageUrl(response.url);
+              key: 'coach',
+            })
+            setImageUrl(response.url)
           } catch (err) {
-            console.error("Upload failed:", err);
+            console.error('Upload failed:', err)
           }
-        };
-        fileReader.readAsDataURL(uploadedFile);
+        }
+        fileReader.readAsDataURL(uploadedFile)
       }
     }
-  }, []);
+  }, [])
 
-  const { mutate: createMutateCoachSports } =
-    api.coachSports.createCoachSports.useMutation({
-      onSuccess: (response) => {
-        // console.log("response data is ", response);
+  const {mutate: createMutateCoachSports} = api.coachSports.createCoachSports.useMutation({
+    onSuccess: (response) => {
+      // console.log("response data is ", response);
 
-        return response;
-      },
-    });
-  const { mutate: createMutateCoachCertificates } =
+      return response
+    },
+  })
+  const {mutate: createMutateCoachCertificates} =
     api.coachCertificate.createCoachCertificates.useMutation({
       onSuccess: (response) => {
-        return response;
+        return response
       },
-    });
+    })
 
-  const { mutate: createMutateCoachBatches } =
-    api.coachBatches.createCoachbatches.useMutation({
-      onSuccess: (response) => {
-        return response;
-      },
-    });
+  const {mutate: createMutateCoachBatches} = api.coachBatches.createCoachbatches.useMutation({
+    onSuccess: (response) => {
+      return response
+    },
+  })
 
   const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
-    const {
-      gender,
-      trainingLevel,
-      experience,
-      experienceLevel,
-      centerId,
-      phone,
-      email,
-    } = finalForm;
-    if (
-      createdBy &&
-      academyId &&
-      gender &&
-      trainingLevel &&
-      experienceLevel &&
-      phone &&
-      email
-    ) {
+    const {gender, trainingLevel, experience, experienceLevel, centerId, phone, email} = finalForm
+    if (createdBy && academyId && gender && trainingLevel && experienceLevel && phone && email) {
       if (formData.isEditMode) {
         const hasCertificatedUpdated =
-          finalForm.CoachQualifications.length !==
-            coachData?.data?.CoachQualifications.length ||
+          finalForm.CoachQualifications.length !== coachData?.data?.CoachQualifications.length ||
           finalForm.CoachQualifications?.[0]?.certificateType !==
-            coachData.data?.CoachQualifications?.[0]?.certificateType;
+            coachData.data?.CoachQualifications?.[0]?.certificateType
 
         editMutate({
           name: finalForm.name,
@@ -268,20 +240,16 @@ export default function AddCoachMultiFormLayout() {
                 ...coachQualification,
                 startDate: parse(
                   coachQualification.startDate.toISOString(),
-                  "dd/MM/yyyy",
+                  'dd/MM/yyyy',
                   new Date()
                 ),
-                endDate: parse(
-                  coachQualification.endDate.toISOString(),
-                  "dd/MM/yyyy",
-                  new Date()
-                ),
-                fileUrl: "",
-                fileType: "link",
+                endDate: parse(coachQualification.endDate.toISOString(), 'dd/MM/yyyy', new Date()),
+                fileUrl: '',
+                fileType: 'link',
                 fileName: null,
               }))
             : [],
-        });
+        })
       } else {
         if (centerId && experience) {
           createMutate({
@@ -298,83 +266,73 @@ export default function AddCoachMultiFormLayout() {
             updatedAt: new Date(),
             academyId: Number(academyId),
             image: finalForm.image,
-            about: "",
+            about: '',
             experienceLevel,
             centerId,
             sports: finalForm.coachingSports?.map((sport) => Number(sport)),
-            coachQualifications: finalForm.CoachQualifications.map(
-              (coachQualification) => ({
-                ...coachQualification,
-                startDate: parse(
-                  coachQualification.startDate.toISOString(),
-                  "dd/MM/yyyy",
-                  new Date()
-                ),
-                endDate: parse(
-                  coachQualification.endDate.toISOString(),
-                  "dd/MM/yyyy",
-                  new Date()
-                ),
-                fileUrl: "",
-                fileType: "link",
-                fileName: null,
-              })
-            ),
+            coachQualifications: finalForm.CoachQualifications.map((coachQualification) => ({
+              ...coachQualification,
+              startDate: parse(
+                coachQualification.startDate.toISOString(),
+                'dd/MM/yyyy',
+                new Date()
+              ),
+              endDate: parse(coachQualification.endDate.toISOString(), 'dd/MM/yyyy', new Date()),
+              fileUrl: '',
+              fileType: 'link',
+              fileName: null,
+            })),
             batches: finalForm.batches,
-          });
+          })
         }
       }
     }
-  };
+  }
 
   return (
     <FormProvider {...methods}>
       <FormContext.Provider value={formProviderData}>
-        <div className="grid grid-cols-6 grid-rows-1">
-          <Card className="col-span-4 ml-10 h-full p-0 pl-10 pt-10">
+        <div className='grid grid-cols-6 grid-rows-1'>
+          <Card className='col-span-4 ml-10 h-full p-0 pl-10 pt-10'>
             {currentStep === 1 && <AddCoach />}
             {currentStep === 2 && <AddCoachCertificates />}
             {currentStep === 3 && (
-              <AssignBatches
-                finalFormSubmissionHandler={finalFormSubmissionHandler}
-              />
+              <AssignBatches finalFormSubmissionHandler={finalFormSubmissionHandler} />
             )}
           </Card>
-          <Card className="col-span-2 hidden !rounded-l-none rounded-r-xl bg-stone-100 px-7 lg:block">
-            <div className="mb-10 font-heading text-2xl font-medium uppercase">
-              Coach Image
-            </div>
+          <Card className='col-span-2 hidden !rounded-l-none rounded-r-xl bg-stone-100 px-7 lg:block'>
+            <div className='mb-10 font-heading text-2xl font-medium uppercase'>Coach Image</div>
 
             <div>
               {previewUrl || signedS3Url ? (
-                <div className="previewImage mb-5 flex justify-center rounded-full">
+                <div className='previewImage mb-5 flex justify-center rounded-full'>
                   <img
-                    className="mx-auto mb-6 rounded-full"
+                    className='mx-auto mb-6 rounded-full'
                     src={previewUrl || signedS3Url}
-                    alt="preview"
+                    alt='preview'
                     height={205}
                     width={205}
                   />
                 </div>
               ) : (
-                <div className="previewImage">
+                <div className='previewImage'>
                   <ImageWithFallback
-                    src={""}
-                    alt="preview"
+                    src={''}
+                    alt='preview'
                     height={205}
                     width={205}
-                    className="mx-auto mb-6 rounded-full"
-                    fallbackSrc="/images/fallback-1.png"
+                    className='mx-auto mb-6 rounded-full'
+                    fallbackSrc='/images/fallback-1.png'
                   />
                 </div>
               )}
-              <div className="mb-14 flex justify-center">
+              <div className='mb-14 flex justify-center'>
                 <FileUpload onDropCallback={onDropCallback} multiple={false} />
               </div>
             </div>
             <div>
-              <div className="mb-5 font-bold">Note</div>
-              <ul className="list-disc pl-5 text-gray-500">
+              <div className='mb-5 font-bold'>Note</div>
+              <ul className='list-disc pl-5 text-gray-500'>
                 <li>Please upload jpg, png, .tiff file formats only</li>
                 <li>Maximum Size 100 MB</li>
                 <li>Minimum dimension 500px width by 500px height</li>
@@ -384,5 +342,5 @@ export default function AddCoachMultiFormLayout() {
         </div>
       </FormContext.Provider>
     </FormProvider>
-  );
+  )
 }
