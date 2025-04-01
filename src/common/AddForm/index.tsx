@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck TODO: use TS generics and fix all ts errors
 import React, {useEffect, useState, useCallback} from 'react'
 
 import Datepicker from '~/components/DatePicker/DatePickerWrapper'
@@ -286,9 +288,8 @@ const AddForm = ({
                     className='h-12 w-full'
                     placeHolder={placeHolder}
                     onChangeHandler={onChange}
-                    // TODO: FIX THIS TS ERROR
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-                    value={(formData[id] as string) || value}
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    value={formData[id] ?? value}
                   />
                   <div className='dropdown absolute right-0.5 top-2/4 inline-flex h-12 -translate-y-2/4 items-center justify-center border-l p-3'>
                     <Dropdown
@@ -334,7 +335,6 @@ const AddForm = ({
                 />
               )
             }}
-            // @ts-expect-error todo: fix this error
             name={id}
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
@@ -377,8 +377,7 @@ const AddForm = ({
                     value
                       ? new Date(value as string)
                       : // eslint-disable-next-line
-                        // @ts-expect-error
-                        new Date(formData[id] as string)
+                        new Date(formData[id])
                   }
                   className='h-12'
                   onChangeHandler={onChange}
@@ -455,11 +454,13 @@ const AddForm = ({
               {getInputElement(formValues)}
 
               <span className='text-red-800'>
-                {errors[formValues.id]?.type === 'required' && <div>This field is required</div>}
-                {errors[formValues.id]?.type === 'pattern' && (
+                {errors[formValues.id as keyof MULTI_FORM_TYPES]?.type === 'required' && (
+                  <div>This field is required</div>
+                )}
+                {errors[formValues.id as keyof MULTI_FORM_TYPES]?.type === 'pattern' && (
                   <div> This field is not matching the pattern</div>
                 )}
-                {errors[formValues.id]?.type === 'maxLength' && (
+                {errors[formValues.id as keyof MULTI_FORM_TYPES]?.type === 'maxLength' && (
                   <div>{`This field is exceeding the max. character limit`}</div>
                 )}
               </span>

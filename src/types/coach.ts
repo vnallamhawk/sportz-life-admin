@@ -112,7 +112,6 @@ type UpdatedCoachCentersBatches = CoachCentersBatches & {
 }
 
 export interface MULTI_FORM_TYPES extends COACH_TYPES {
-  coachBatches?: any;
   certificates: COACH_CERTIFICATE_TABLE_TYPES[];
   batchTableData?: BatchTableData[];
   batchIds?: number[];
@@ -123,7 +122,6 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   Batches: Batches
   centerId?: number
   isEditMode ?:boolean
-   [key: string]: string | number | boolean | object | null | undefined;
 }
 
 export enum TrainingLevelEnum {
