@@ -20,6 +20,24 @@ export const athleteRouter = createTRPCRouter({
     return allAthletes;
   }),
 
+  getAthletesDataByAcademyId: publicProcedure.query(({ ctx }) => {
+    const allAthletes = ctx?.prisma.athletes?.findMany({
+      where: {
+        academyCode: Number(ctx?.session?.user.academyId)
+      },
+      include: {
+        AthleteSportsMaps: {
+          include: {
+            Centers: true, // Include Batches associated with the coach
+            Sports: true,
+            Batches: true,
+          },
+        }
+      },
+    });
+    return allAthletes;
+  }),
+
   getAllAthletesWithPagination: publicProcedure
     .input(
       z.object({

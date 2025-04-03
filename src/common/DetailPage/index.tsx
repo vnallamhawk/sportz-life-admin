@@ -16,6 +16,10 @@ import type { TabType } from "~/types/common";
 // Import required CSS for react-slick
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Chip } from "@material-tailwind/react";
+import { X, Check } from 'lucide-react';
+import TestCard from "~/components/Card/TestCard";
+
 
 type ValuePiece = Date | null;
 
@@ -28,15 +32,17 @@ interface Detail {
   editText?: string;
   data: { [key: string]: any };
   details?: { items: { label: string; value: string | any }[] }[];
-  tabs: TabType[];
+  tabs?: TabType[];
   handleTabClick: any;
   selectedComponent: any;
+  assessmentAsignedComponent?: any;
   selectedTab: string | undefined;
   badgeData?: {
     [key: string]: any;
-    Sports?: { name: string; [key: string]: any };
+    Sports?: { name: string;[key: string]: any };
   }[];
   gridColumns?: number;
+  showImage?: boolean;
 }
 
 const DetailPage = ({
@@ -51,6 +57,8 @@ const DetailPage = ({
   selectedTab,
   badgeData,
   name,
+  showImage = true,
+  assessmentAsignedComponent
 }: Detail) => {
   const router = useRouter();
   const [displayCertificate, setDisplayCertificate] = useState(false);
@@ -147,14 +155,17 @@ const DetailPage = ({
         </header>
         <div className="flex flex-col items-center lg:flex-row lg:items-start">
           <div>
-            <img
-              className="h-[150px] w-[150px] rounded-full object-cover"
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-              src={data?.imageUrl ? data?.imageUrl : ""}
-              alt="S3 Image"
-              width="200"
-              height="150"
-            />
+            {
+              showImage ?
+                <img
+                  className="h-[150px] w-[150px] rounded-full object-cover"
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  src={data?.imageUrl ? data?.imageUrl : ""}
+                  alt="S3 Image"
+                  width="200"
+                  height="150"
+                /> : <></>
+            }
             {data?.ranking && (
               <div className="mt-8 hidden border border-dashed border-tertiary-700 p-2 lg:block">
                 <div className="flex items-center justify-center border border-tertiary-400 bg-tertiary-200 p-2">
@@ -172,6 +183,14 @@ const DetailPage = ({
           <div className="mt-3 w-full lg:mt-0 lg:w-10/12 lg:pl-10">
             <div className="text-center font-heading text-3xl font-medium uppercase text-white md:text-black lg:text-start">
               {name ? name : data?.name}
+              {
+                data?.assessmentStatus && (
+                  <Chip
+                    value="Upcoming"
+                    className="w-max rounded-full border px-3 font-normal capitalize border-green-400 bg-green-50 text-green-400"
+                  />
+                )
+              }
             </div>
             <div className="flex justify-start">
               {badgeData &&
@@ -187,9 +206,142 @@ const DetailPage = ({
                   );
                 })}
             </div>
+
+            {data.assessmentDetails && (
+              // Assessment Details
+              <div className="grid grid-cols-3 gap-8 mb-6 mt-6">
+                <div>
+                  <p className="text-sm text-[#6e7280] mb-1">Sport</p>
+                  <p className="font-medium">{data?.assessmentDetails.sport}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-[#6e7280] mb-1">Training Level</p>
+                  <p className="font-medium">{data?.assessmentDetails.trainingLevel}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-[#6e7280] mb-1">Test Rank Type</p>
+                  <p className="font-medium">{data?.assessmentDetails.testRankType}</p>
+                </div>
+              </div>
+            )}
+
+            {
+              data?.assessmentDescription ?
+                <div className="mb-8">
+                  <p className="text-sm text-[#6e7280] mb-1">Description</p>
+                  <p className="text-sm text-[#404040]">
+                    {data?.assessmentDescription}
+                  </p>
+                </div> :
+                <div className="text-center text-base text-white md:text-blush-dark lg:text-start">
+                  {data?.description}
+                </div>
+            }
+
             <div className="text-center text-base text-white md:text-blush-dark lg:text-start">
               {data?.description}
             </div>
+
+
+            {data?.assessmentSchedule && (
+              <Card className="mb-8 p-6 border border-gray-300 rounded-lg shadow-sm">
+                <h3 className="text-lg font-bold uppercase mb-6">Assessment Schedule</h3>
+
+                <div className="grid grid-cols-4 gap-4 ">
+                  <Card>
+                    <p className="text-sm text-[#6e7280] mb-1">Assessment Duration</p>
+                    <p className="font-medium">{data?.assessmentSchedule.duration}</p>
+                  </Card>
+                  <Card>
+                    <p className="text-sm text-[#6e7280] mb-1">Recurring Type</p>
+                    <p className="font-medium">{data?.assessmentSchedule.type}</p>
+                  </Card>
+                  <Card>
+                    <p className="text-sm text-[#6e7280] mb-1">Start Date</p>
+                    <p className="font-medium">{data?.assessmentSchedule.startDate}</p>
+                  </Card>
+                  <Card>
+                    <p className="text-sm text-[#6e7280] mb-1">End Date</p>
+                    <p className="font-medium">{data?.assessmentSchedule.endDate}</p>
+                  </Card>
+                </div>
+              </Card>
+            )}
+
+
+            {data?.assessmentScoreAccess && (
+              <Card className="mb-8 p-6 border border-gray-300 rounded-lg shadow-sm">
+                <h3 className="text-lg font-bold uppercase mb-6">Score Access</h3>
+
+                <div className="grid grid-cols-2 gap-8">
+                  {/* Assessment Scoring Options */}
+                  <div>
+                    <p className="text-sm text-[#6e7280] mb-4">Assessment Scoring Options</p>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded flex items-center justify-center bg-[#f3476d]">
+                          <X size={14} className="text-white" />
+                        </div>
+                        <span className="text-sm">Allow Athlete to self-assess</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded flex items-center justify-center bg-[#00b65a]">
+                          <Check size={14} className="text-white" />
+                        </div>
+                        <span className="text-sm">Allow Coach to assess</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Coach's Feedback */}
+                  <div>
+                    <p className="text-sm text-[#6e7280] mb-4">Coach's Feedback</p>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded flex items-center justify-center bg-[#f3476d]">
+                          <X size={14} className="text-white" />
+                        </div>
+                        <span className="text-sm">Add Areas of Strength</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded flex items-center justify-center bg-[#00b65a]">
+                          <Check size={14} className="text-white" />
+                        </div>
+                        <span className="text-sm">Add Areas of Weakness</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded flex items-center justify-center bg-[#f3476d]">
+                          <X size={14} className="text-white" />
+                        </div>
+                        <span className="text-sm">Add Coach's comments</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            )}
+
+
+            {
+              data?.assessmentPerformanceTests && (
+                <Card className="mb-8 p-6 border border-gray-300 rounded-lg shadow-sm">
+                  <h3 className="text-lg font-bold uppercase mb-6">Physical Performance Tests</h3>
+
+                  <div className="grid grid-cols-3 gap-4">
+                    <TestCard title="4 km Endurance Test" subtitle="Agility" />
+                    <TestCard title="Agility Ladder Test" subtitle="Movement Coordination" />
+                    <TestCard title="Sit & Reach Flexibilit..." subtitle="Endurance" />
+                    <TestCard title="Beep Test" subtitle="Speed" />
+                    <TestCard title="Explosive Strength T..." subtitle="Agility" />
+                    <TestCard title="Acceleration Speed T..." subtitle="Cone Drill" />
+                    <TestCard title="Deceleration Speed T..." subtitle="Quick Passing" />
+                    <TestCard title="Beep Test" subtitle="Speed" />
+                    <TestCard title="Agility Ladder Test" subtitle="Movement Coordination" />
+                  </div>
+                </Card>
+              )
+            }
+
             {data?.ranking && (
               <div className="text-center lg:text-start">
                 <div className="mx-auto mt-4 inline-block border border-dashed border-orange-light p-2 lg:mt-8 lg:hidden">
@@ -235,47 +387,50 @@ const DetailPage = ({
             </div>
           </div>
         </div>
-        <div className="tab-slider mt-8">
-          {tabs && tabs.length > 0 ? (
-            <Slider {...settings} className="hidden md:block">
-              {tabs.map((tab: TabType, index: number) => (
-                <div
-                  className={`${
-                    selectedTab === tab?.key ? "active" : ""
-                  }rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px]`}
-                  onClick={() => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                    handleTabClick(tab);
-                  }}
-                  key={index}
-                >
-                  <div className="flex items-center">
-                    <div>
-                      <Image
-                        className="h-[56px] w-[56px] rounded-lg"
-                        src={tab.image ? tab.image : ""}
-                        alt={`${tab.name ? tab.name : ""}_img`}
-                        width={56}
-                        height={56}
-                      />
-                    </div>
-                    <div className="pl-3">
-                      <p className="text-base text-burgundy-light">
-                        {tab.label}
-                      </p>
-                      <div className="font-heading text-5xl leading-10">
-                        {tab.value}
+        {
+          tabs && (
+            <div className="tab-slider mt-8">
+              {tabs && tabs.length > 0 ? (
+                <Slider {...settings} className="hidden md:block">
+                  {tabs.map((tab: TabType, index: number) => (
+                    <div
+                      className={`${selectedTab === tab?.key ? "active" : ""
+                        }rounded-xl border-[1.5px] border-[#F6EAEF] p-4 hover:border-[2px]`}
+                      onClick={() => {
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                        handleTabClick(tab);
+                      }}
+                      key={index}
+                    >
+                      <div className="flex items-center">
+                        <div>
+                          <Image
+                            className="h-[56px] w-[56px] rounded-lg"
+                            src={tab.image ? tab.image : ""}
+                            alt={`${tab.name ? tab.name : ""}_img`}
+                            width={56}
+                            height={56}
+                          />
+                        </div>
+                        <div className="pl-3">
+                          <p className="text-base text-burgundy-light">
+                            {tab.label}
+                          </p>
+                          <div className="font-heading text-5xl leading-10">
+                            {tab.value}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </Slider>
-          ) : (
-            <p className="text-center text-gray-500">No tabs available</p>
-          )}
-        </div>
-      </Card>
+                  ))}
+                </Slider>
+              ) : (
+                <p className="text-center text-gray-500">No tabs available</p>
+              )}
+            </div>
+          )
+        }
+      </Card >
       {/* <Slider {...settings} className="tab-slider mt-10 block pl-6 md:hidden">
         {tabs?.map((tab: TabType, index: number) => {
           return (
@@ -300,6 +455,16 @@ const DetailPage = ({
         })}
       </Slider> */}
       {selectedComponent}
+
+      {
+        assessmentAsignedComponent && (
+          <>
+            {assessmentAsignedComponent}
+          </>
+        )
+      }
+
+
     </>
   );
 };

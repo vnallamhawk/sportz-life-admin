@@ -1,228 +1,269 @@
 import { useContext, useEffect, useState } from "react";
-
 import type { StaticImageData } from "next/image";
 import CoachImg from "../../images/CoachesImg.png";
 import BatchImg from "../../images/BatchesImg.png";
-import AtheleteImg from "../../images/AthelteImg.png";
+import AthleteImg from "../../images/AthelteImg.png";
 import InventoryImg from "../../images/InventoryImg.png";
 import { prisma } from "~/server/db";
 import { type GetServerSidePropsContext } from "next";
-import type { Athletes, BatchSchedules, Batches, CenterInventories, CenterSports, Centers, Coaches, Inventories, Sports } from "@prisma/client";
+import type { AssessmentAssignedAthletes, AssessmentAssignedCoaches, AssessmentBatches, AssessmentCenters, Assessments, AthleteBatchesMaps, Athletes, Batches, Centers, Coaches, Sports } from "@prisma/client";
 import { ToastContext } from "~/contexts/Contexts";
 import { useRouter } from "next/router";
 import DetailPage from "~/common/DetailPage";
 import AllData from "~/common/AllData";
-import {
-  CENTER_DASH_ATHLETE_TABLE_HEADERS,
-  CENTER_DASH_BATCH_TABLE_HEADERS,
-  CENTER_DASH_COACH_TABLE_HEADERS,
-  CENTER_DASH_INVENTORY_TABLE_HEADERS,
-} from "~/constants/centerDashTables";
+// import { ASSESSMENT_DASH_ATHLETE_TABLE_HEADERS, ASSESSMENT_DASH_BATCH_TABLE_HEADERS, ASSESSMENT_DASH_COACH_TABLE_HEADERS, ASSESSMENT_DASH_CENTER_TABLE_HEADERS } from "~/constants/assessmentDashTables";
 import type { TabType } from "~/types/common";
+import { ASSESSMENT_ASSIGNED_TABLE_HEADERS } from "~/constants/assessment";
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   const id = context?.params?.id;
-  // const sports = await prisma.sports.findMany();
-  const center = await prisma.centers.findUnique({
-    where: {
-      id: id ? Number(id) : undefined,
-    },
+  const assessment = await prisma.assessments.findUnique({
+    where: { id: id ? Number(id) : undefined },
     include: {
-      CenterSports: {
+      AssessmentAssignedAthletes: {
         include: {
-          Sports: true,
+          Athletes: {
+            include: {
+              AthleteBatchesMaps: {
+                include: {
+                  Batches: {
+                    include: {
+                      Coaches: true, // Assuming Coaches are linked to Batches
+                      Centers: true,
+                    },
+                  },
+                  Sports: true, // If you need sport info
+                },
+              },
+            },
+          },
         },
       },
-      // Athletes:true,
-      Coaches: true,
-      CenterInventories: {
+      AssessmentAssignedCoaches: true,
+      AssessmentBatches: true,
+      AssessmentCenters: {
         include: {
-          Inventories: true,
+          Centers: true,
         },
       },
-      Batches: {
+      AssessmentResults: {
         include: {
-          BatchSchedules: true,
-          Sports: true,
-        },
+          AssignedTests: {
+            include: {
+              AssignedTestBanks: true,
+              Tests: true
+            }
+          }
+        }
       },
+      AssessmentSports: true,
+      Academies: true,
+      Sports: true,
     },
   });
 
   return {
     props: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      center: JSON.parse(JSON.stringify(center)), // <== here is a solution
+      assessment: JSON.parse(JSON.stringify(assessment)), // <== Convert data to JSON-safe format
     },
   };
 };
 
 const tabs: TabType[] = [
-  {
-    label: "Coaches",
-    name: "coaches",
-    value: "05",
-    image: CoachImg,
-    allLabel: "All Coaches",
-  },
-  {
-    label: "Batches",
-    name: "batches",
-    value: "04",
-    image: BatchImg,
-    allLabel: "All Batches",
-  },
-  {
-    label: "Atheletes",
-    name: "athletes",
-    value: "66",
-    image: AtheleteImg,
-    allLabel: "All Athelte",
-  },
-  {
-    label: "Inventories",
-    name: "inventories",
-    value: "15",
-    image: InventoryImg,
-    allLabel: "All Inventory",
-  },
+  { label: "Athletes", name: "athletes", value: "0", image: AthleteImg, allLabel: "All Athletes" },
+  { label: "Coaches", name: "coaches", value: "0", image: CoachImg, allLabel: "All Coaches" },
+  { label: "Batches", name: "batches", value: "0", image: BatchImg, allLabel: "All Batches" },
+  { label: "Centers", name: "centers", value: "0", image: InventoryImg, allLabel: "All Centers" },
 ];
 
+interface AssessmentCentersType extends AssessmentCenters {
+  Centers?: Centers;
+}
 
+interface BatchesType extends Batches {
+  Coaches: Coaches
+}
+interface AthleteBatchesMapsType extends AthleteBatchesMaps {
+  Batches: BatchesType,
+}
+interface AthletesType extends Athletes {
+  AthleteBatchesMaps: AthleteBatchesMapsType[]
+}
+interface AssessmentAssignedAthletesType extends AssessmentAssignedAthletes {
+  Athletes: AthletesType
+}
 
-interface CenterSportsType extends CenterSports {
+interface AssessmentDetails extends Assessments {
+  AssessmentAssignedAthletes?: AssessmentAssignedAthletesType[];
+  AssessmentAssignedCoaches?: AssessmentAssignedCoaches[];
+  AssessmentBatches?: AssessmentBatches[];
+  AssessmentCenters?: AssessmentCentersType[];
   Sports?: Sports
 }
 
-interface CenterInventoriesType extends CenterInventories {
-  Inventories?: Inventories
-}
-interface BatchType extends Batches {
-  BatchSchedules?: BatchSchedules
-  Sports?: Sports
-
-}
-interface CenterDetails extends Centers {
-  CenterInventories?: CenterInventoriesType[],
-  Batches?: BatchType[]
-  CenterSports?: CenterSportsType[]
-  Athletes?: Athletes[]
-  Coaches?: Coaches[]
+interface SingleAssessment {
+  id: number;
+  name: string;
+  assessmentDetails: object;
+  assessmentDescription: string;
+  assessmentSchedule: object;
+  assessmentScoreAccess: object;
+  assessmentPerformanceTests: object;
 }
 
+interface AssessmentAssignedTableRow {
+  id: number; // Add an id field
+  athleteName: string;
+  batchName: string;
+  centerName: string;
+  coachName: string;
+}
 
 
-export default function Page({ center }: { center: CenterDetails }) {
+export default function Page({ assessment }: { assessment: AssessmentDetails }) {
   const router = useRouter();
-  const [displayCertificate, setDisplayCertificate] = useState(false);
-  const [displayBatch, setDisplayBatch] = useState(false);
-  const [displayAttendance, setDisplayAttendance] = useState(false);
   const { openToast, setOpenToast } = useContext(ToastContext);
   const [selectedTab, setSelectedTab] = useState<string | undefined>(tabs[0]?.name);
   const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>();
-
-  const handleCertificateClick = () =>
-    setDisplayCertificate(!displayCertificate);
-  const handleBatchClick = () => setDisplayBatch(!displayBatch);
-  const handleAttendanceClick = () => setDisplayAttendance(!displayAttendance);
-  const sportsArr: string[] = ["Rugby", "Baseball", "Tennis", "BasketBall"];
-  const [filterByName, setFilterByName] = useState("");
-  const [loading, setLoading] = useState(true);
   const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs);
+  const [finalData, setFinalData] = useState<SingleAssessment | null>(null);
+  const [finalAssignedData, setFinalAssignedData] = useState<AssessmentAssignedTableRow[]>([]);
+
+  console.log({ assessment });
 
   useEffect(() => {
-    if (finalTabs && finalTabs.length > 0 && Object.keys(center).length > 0) {
-      const arr: TabType[] = [...finalTabs];
-      const index = arr.findIndex((item: TabType) => item.name === "inventories");
-      if (index > -1 && center?.CenterInventories) {
-        const obj: TabType = { ...arr[index] }
-        obj.value = center?.CenterInventories ? center?.CenterInventories?.length : 0;
-        arr[index] = obj
-      }
-      const batchIndex = arr.findIndex((item: TabType) => item.name === "batches");
-      if (batchIndex > -1 && center?.Batches) {
-        const batchObj: TabType = { ...arr[batchIndex] }
+    if (assessment && Object.keys(assessment).length > 0) {
+      const newAssessment = {
+        id: assessment.id,
+        name: assessment.name,
+        assessmentDescription: assessment.description || "",
+        assessmentDetails: {
+          sport: assessment?.Sports?.name,
+          trainingLevel: assessment.level,
+          testRankType: "-"
+        },
+        assessmentSchedule: {
+          duration: assessment?.mode,
+          type: assessment?.interval,
+          startDate: assessment?.startDate
+            ? new Date(assessment.startDate).toLocaleDateString("en-US", {
+              month: "short",
+              day: "2-digit",
+              year: "numeric",
+            })
+            : "",
+          endDate: assessment?.endDate
+            ? new Date(assessment.startDate).toLocaleDateString("en-US", {
+              month: "short",
+              day: "2-digit",
+              year: "numeric",
+            })
+            : ""
+        },
+        assessmentScoreAccess: {},
+        assessmentPerformanceTests: {}
+      };
 
-        batchObj.value = center?.Batches ? center?.Batches?.length : 0;
-        arr[batchIndex] = batchObj
+      if (assessment?.AssessmentAssignedAthletes && assessment?.AssessmentAssignedAthletes.length) {
+        const formattedData: AssessmentAssignedTableRow[] = assessment?.AssessmentAssignedAthletes.map(
+          (assignedAthlete) => {
+            const athlete = assignedAthlete?.Athletes;
+            const batches = athlete?.AthleteBatchesMaps || [];
 
+            const batchName = batches.map((batchMap) => batchMap?.Batches?.name).filter(Boolean).join(", ");
+            const firstBatch = batches[0];
+            const coachName = firstBatch?.Batches?.Coaches?.name || "N/A";
+            const centerName = firstBatch?.centerId ? `Center ${firstBatch.centerId}` : "N/A";
+
+            return {
+              id: athlete?.id,
+              athleteName: athlete?.name || "N/A",
+              batchName: batchName || "N/A", // Changed from batchNames to batchName
+              centerName,
+              coachName,
+            };
+          }
+        );
+
+        console.log(formattedData);
+        setFinalAssignedData(formattedData);
+      } else {
+        setFinalAssignedData([]);
       }
-      setFinalTabs(arr);
+
+      setFinalData(newAssessment);
     }
-  }, [center, finalTabs]);
+  }, [assessment]);
 
-  const handleIsLoading = (isLoading: boolean) => {
-    setLoading(isLoading);
-  };
 
   const handleClick = (tab: TabType) => {
     let TABLE_HEAD;
     let TABLE_ROWS = [];
-    let tableProps
-    if (tab?.name === "batches") {
-      TABLE_HEAD = CENTER_DASH_BATCH_TABLE_HEADERS;
-      TABLE_ROWS = center?.Batches ? center?.Batches : []
-      tableProps = {
-        addButtonText: "Add Batch",
-        addButtonUrl: `/centers/Batch/${center?.id}`
-      }
-    } else if (tab?.name === "coaches") {
-      TABLE_HEAD = CENTER_DASH_COACH_TABLE_HEADERS;
-      TABLE_ROWS = center?.Coaches ? center?.Coaches : []
+    let tableProps = {};
 
-    } else if (tab?.name === "athletes") {
-      TABLE_HEAD = CENTER_DASH_ATHLETE_TABLE_HEADERS;
-      TABLE_ROWS = center?.Athletes ? center?.Athletes : []
+    // switch (tab?.name) {
+    //   case "athletes":
+    //     TABLE_HEAD = ASSESSMENT_DASH_ATHLETE_TABLE_HEADERS;
+    //     TABLE_ROWS = assessment?.AssessmentAssignedAthletes || [];
+    //     break;
+    //   case "coaches":
+    //     TABLE_HEAD = ASSESSMENT_DASH_COACH_TABLE_HEADERS;
+    //     TABLE_ROWS = assessment?.AssessmentAssignedCoaches || [];
+    //     break;
+    //   case "batches":
+    //     TABLE_HEAD = ASSESSMENT_DASH_BATCH_TABLE_HEADERS;
+    //     TABLE_ROWS = assessment?.AssessmentBatches || [];
+    //     break;
+    //   case "centers":
+    //     TABLE_HEAD = ASSESSMENT_DASH_CENTER_TABLE_HEADERS;
+    //     TABLE_ROWS = assessment?.AssessmentCenters?.map((data) => ({
+    //       ...assessment,
+    //       name: data?.Centers?.name || "Unknown",
+    //     })) || [];
+    //     break;
+    // }
 
-    } else {
-      TABLE_HEAD = CENTER_DASH_INVENTORY_TABLE_HEADERS;
-      TABLE_ROWS = center?.CenterInventories ? center?.CenterInventories.map((data) => {
-        return {
-          ...center, name: data?.Inventories?.name
-          // batches: center?.Batches?.length,
-        };
-      }) : [];
-    }
-    const component = (
+    setSelectedComponent(
       <AllData
-        title={tab?.allLabel ? tab?.allLabel : ""}
+        title={tab?.allLabel || ""}
         {...tableProps}
         dropdownItems={{}}
-        TABLE_HEAD={TABLE_HEAD}
-        TABLE_ROWS={TABLE_ROWS}
+        TABLE_HEAD={[]}
+        TABLE_ROWS={[]}
         rowSelection={false}
         showImage={false}
       />
     );
-
-    setSelectedComponent(component);
     setSelectedTab(tab?.name);
   };
 
   return (
-    <>
-      <DetailPage
-        cardTitle="CENTER DETAILS"
-        editButtonUrl={`/edit-center-${center?.id}`}
-        editText={"Edit Center"}
-        tabs={tabs}
-        handleTabClick={handleClick}
-        data={center}
-        selectedComponent={selectedComponent}
-        selectedTab={selectedTab}
-        badgeData={center?.CenterSports ? center?.CenterSports : []}
-        details={[
-          {
-            items: [
-              { label: "Contact Number", value: center?.mobile },
-              { label: "Email", value: center?.email },
-              { label: "Location", value: center?.address },
-            ],
-          },
-        ]}
-      />
-    </>
+    <DetailPage
+      cardTitle="ASSESSMENTS"
+      editButtonUrl={`/edit-assessment-${assessment?.id}`}
+      editText="Edit Assessment"
+      handleTabClick={handleClick}
+      data={finalData ?? {}}
+      selectedComponent={selectedComponent}
+      selectedTab={selectedTab}
+      showImage={false}
+      assessmentAsignedComponent={
+        <AllData
+          title={"Assessments"}
+          dropdownItems={{}}
+          TABLE_HEAD={ASSESSMENT_ASSIGNED_TABLE_HEADERS}
+          TABLE_ROWS={finalAssignedData}
+          rowSelection={false}
+          showImage={false}
+        />
+      }
+    // badgeData={assessment?.AssessmentSports || []}
+    // details={[
+    //   { items: [{ label: "Sport", value: assessment?.Sports?.name }] },
+    //   { items: [{ label: "Academy", value: assessment?.Academies?.name }] },
+    //   { items: [{ label: "Start Date", value: assessment?.startDate }] },
+    //   { items: [{ label: "End Date", value: assessment?.endDate }] },
+    // ]}
+    />
   );
 }

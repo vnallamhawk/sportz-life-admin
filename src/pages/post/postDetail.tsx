@@ -6,7 +6,18 @@ import User from "../../images/user.png";
 import Posts from "../../images/post-detail.png";
 import ArrowLeftBlue from "../../images/arrow-left-blue.svg";
 
-export default function PostDetail() {
+
+type PostDetailProps = {
+    post: {
+        id: number;
+        title: string;
+        imageLink: string;
+        postDetails: string;
+        createdAt: string;
+    };
+};
+
+export default function PostDetail({ post }: PostDetailProps) {
     return (
         <div className="bg-s-gray px-6 pb-7">
             <Card className="rounded-2xl shadow-sm lg:bg-white lg:p-6">
@@ -27,15 +38,15 @@ export default function PostDetail() {
                             <div className="text-[#6E7280] text-sm ml-2 font-medium">D. Alveraze</div>
                         </div>
                         <div className="font-heading text-4xl font-medium text-center pt-6 pb-4">
-                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                            {post.title}
                         </div>
-                        <div className="text-[#6E7280] text-sm font-medium text-center">Jun 18, 2023 at 01:14 PM</div>
-                        <div className="pt-6 "><Image src={Posts} alt="" width={0} height={0} sizes="100vw" className="w-full lg:h-[402px] h-[231px] object-cover rounded-lg" /></div>
-                        
+                        <div className="text-[#6E7280] text-sm font-medium text-center">
+                            {new Date(post.createdAt).toLocaleDateString()} at {new Date(post.createdAt).toLocaleTimeString()}
+                        </div>
+                        <div className="pt-6 "><Image src={post.imageLink} alt="" width={0} height={0} sizes="100vw" className="w-full lg:h-[402px] h-[231px] object-cover rounded-lg" /></div>
+
                         <div className="text-[#5A5A5A] text-center py-4">
-                            <p className="pt-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                            <p className="pt-3">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                            <p className="pt-3">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+                            {post.postDetails}
                         </div>
                     </div>
                     <div className="text-right lg:block hidden">

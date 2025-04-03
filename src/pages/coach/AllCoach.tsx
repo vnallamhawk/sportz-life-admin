@@ -7,7 +7,7 @@ import {
 } from "~/constants/coachConstants";
 import { api } from "~/utils/api";
 import moment from "moment-timezone";
-import type { Coaches, Prisma } from "@prisma/client";
+import type { Prisma, Coaches } from "@prisma/client";
 import { calculateAge } from "~/utils/common";
 import { debounce } from "lodash";
 type Modify<T, R> = Omit<T, keyof R> & R;
@@ -103,7 +103,7 @@ export default function AllCoach() {
         dropdownItems={{ reminder: true, freeze: true, changeBatch: true }}
         filter={false}
         TABLE_HEAD={COACH_TABLE_HEADERS}
-        TABLE_ROWS={finalData}
+        TABLE_ROWS={finalData ?? []}
         setFilterByName={setFilterByName}
         filterByName={filterByName}
         rowSelection={true}

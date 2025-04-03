@@ -52,6 +52,7 @@ interface AddForm {
   shouldDisableAddTableButton?: boolean;
   dependentKey1?: string;
   setDependentKey1?: any;
+  setDependentKey2?: any;
   onDropCallback?: (files: Array<File>) => void;
   uploadUrl?: string;
 }
@@ -85,10 +86,12 @@ const AddForm = ({
   // dependentKey,
   setDependentKey,
   // dependentKey1,
-  // setDependentKey1,
+  setDependentKey1,
+  setDependentKey2,
   onDropCallback,
   uploadUrl,
 }: AddForm) => {
+
   let inputElement;
   const {
     control,
@@ -112,6 +115,7 @@ const AddForm = ({
       const currentFormValues = getValues();
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const obj: any = { ...formData, ...currentFormValues };
+
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if ((buttonItems?.prevNext || buttonItems?.next) && tablekey) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
@@ -121,7 +125,7 @@ const AddForm = ({
       setFormData && setFormData(obj);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       setCurrentStep && setCurrentStep(currentStep + 1);
-    }
+    } ``
   }, [
     buttonItems?.next,
     buttonItems?.prevNext,
@@ -162,11 +166,20 @@ const AddForm = ({
       obj["value"] = data.value;
       obj["name"] = data.label;
 
+      if (placeholder === "Select Test Bank Type" || placeholder === "Select Center") {
+        setDependentKey?.(data.value);
+      } else if (placeholder === "Select Sport") {
+        setDependentKey1?.(data.value);
+      } else if (placeholder === "Select Batch") {
+        setDependentKey2?.(data.value);
+      }
+
       // Update the placeholder dynamically
       setSelectedPlaceholders((prev) => ({
         ...prev,
         [name]: data.label,
       }));
+
     } else {
       obj[name] = value;
 
@@ -220,6 +233,7 @@ const AddForm = ({
       dropdownKey,
       dropdownLabel,
       options,
+      label
     } = props;
 
     switch (type) {
@@ -250,10 +264,10 @@ const AddForm = ({
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const value = Array.isArray(newValue)
                       ? // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-                        newValue.map((option) => option.value)
+                      newValue.map((option) => option.value)
                       : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-expect-error
-                        newValue?.value;
+                      // @ts-expect-error
+                      newValue?.value;
                     onChange(value);
 
                     if (id === "centerId" || id === "batchIds") {
@@ -332,25 +346,30 @@ const AddForm = ({
         break;
       case "switch":
         inputElement = (
-          <Controller
-            control={control}
-            render={({ field: { value } }) => {
-              return (
-                <Switch
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                  value={formData["taxable"] || value}
-                  onChange={(e) =>
-                    handleChangeTime(e.target.checked, "taxable")
-                  }
-                />
-              );
-            }}
-            name={id}
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            rules={rules}
-          />
+          <div className="flex items-center space-x-2">
+            {label && <label htmlFor={id} className="text-gray-700">{label}</label>}
+            <Controller
+              control={control}
+              render={({ field: { value } }) => {
+                return (
+                  <Switch
+                    id={id}
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+                    value={formData["taxable"] || value}
+                    onChange={(e) =>
+                      handleChangeTime(e.target.checked, "taxable")
+                    }
+                  />
+                );
+              }}
+              name={id}
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              rules={rules}
+            />
+          </div>
         );
         break;
+
       case "time":
         inputElement = (
           <Controller
@@ -385,7 +404,7 @@ const AddForm = ({
                     value
                       ? new Date(value as string)
                       : // eslint-disable-next-line
-                        new Date(formData[id] as string)
+                      new Date(formData[id] as string)
                   }
                   className="h-12"
                   onChangeHandler={onChange}
@@ -604,13 +623,13 @@ const AddForm = ({
                 shouldDisableAddTableButton
                   ? undefined
                   : // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                    addTableData(
-                      tableFields
-                        ? currentTableData
-                        : isFormTable
+                  addTableData(
+                    tableFields
+                      ? currentTableData
+                      : isFormTable
                         ? getValues()
                         : e
-                    );
+                  );
                 setCurrentTableData({});
               }}
               disabled={
