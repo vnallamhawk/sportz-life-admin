@@ -1,4 +1,5 @@
 import type { CoachQualifications_certificateType } from "@prisma/client";
+import type { COACH_CENTER_BATCHES } from "~/types/coach";
 // import { type COACH_DETAILS_CONSTANTS_TYPES } from "~/types/coach";
 import type { FormValues } from "~/types/common";
 
@@ -273,7 +274,7 @@ export const COACH_CERTIFICATES_CONSTANTS = [
   },
 ] 
 
-export const COACH_BATCH_CONSTANTS = [
+export const COACH_BATCH_CONSTANTS : COACH_CENTER_BATCHES[] = [
   {
     placeHolder: "Select Center",
     id: "centerId",
@@ -295,7 +296,7 @@ export const COACH_BATCH_CONSTANTS = [
     },
     isDisabled: false
   },
-];
+] as const
 
 export const COACH_CERTIFICATE_TABLE_HEADERS = [
   {

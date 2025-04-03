@@ -133,7 +133,12 @@ export const coachRouter = createTRPCRouter({
               },
             },
             CoachQualifications: true,
-            CoachCentersBatches: true
+            CoachCentersBatches: {
+              include: {
+                Centers: { select: { name: true } }, 
+                Batches: { select: { name: true } },  
+              },
+            }
             // batches: true,
             // centers: true,
             // certificates: true,
