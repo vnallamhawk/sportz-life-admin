@@ -164,6 +164,8 @@ export default function AddCenterForm() {
 
   const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
     if (acceptedFiles && acceptedFiles.length > 0) {
+      console.log({ acceptedFiles })
+
       setPreview(
         acceptedFiles.map((upFile: File) =>
           Object.assign(upFile, {
@@ -174,6 +176,8 @@ export default function AddCenterForm() {
       const uploadedFile: File | null = acceptedFiles[0]
         ? acceptedFiles[0]
         : null;
+
+      console.log({ uploadedFile })
       setFile(uploadedFile);
       if (!uploadedFile) {
         alert('Please select a valid file');

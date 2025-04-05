@@ -19,6 +19,18 @@ export const staffRouter = createTRPCRouter({
     });
     return allStaffs;
   }),
+
+  getAllStaffsData: publicProcedure.query(async (opts) => {
+    const allStaffs = await opts.ctx?.prisma?.staffs?.findMany({
+      // include: {
+      //   // StaffDesignation:true,
+      //   Centers:true
+
+      // },
+    });
+    return allStaffs;
+  }),
+
   getStaffById: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async (opts) => {

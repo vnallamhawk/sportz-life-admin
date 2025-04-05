@@ -8,7 +8,7 @@ import { staffRouter } from "./routers/staff";
 import { centerInventoryRouter } from "./routers/centerInventory";
 import { inventoryRouter } from "./routers/inventory";
 
-import {centerSportsRouter} from "./routers/centerSports"
+import { centerSportsRouter } from "./routers/centerSports"
 import { adminUserRouter } from "./routers/adminUser";
 import { batchTimingRouter } from "./routers/batchTimings";
 import { staffPayrollRouter } from "./routers/staffPayroll";
@@ -25,6 +25,12 @@ import { assessmentRouter } from "./routers/assessment";
 import { uploadRouter } from "./routers/upload";
 import { injuryLogRouter } from "./routers/injurylog";
 import { feePlanRouter } from "./routers/feePlan";
+import { testBankRouter } from "./routers/testBanks";
+import { testsRouter } from "./routers/tests";
+import { assignedTestBankRouter } from "./routers/assignedTestBanks";
+import { assignedTestsRouter } from "./routers/assignedTests";
+import { assessmentAssignedAthletesRouter } from "./routers/assessmentAssignedAthletes";
+import { postRouter } from "./routers/post";
 
 /**
  * This is the primary router for your server.
@@ -39,24 +45,30 @@ export const appRouter = createTRPCRouter({
   batches: batchRouter,
   batchTimings: batchTimingRouter,
   staff: staffRouter,
-  inventory:inventoryRouter,
-  centerInventory:centerInventoryRouter,
-  centerSports:centerSportsRouter,
-  adminUser:adminUserRouter,
-  staffPayroll:staffPayrollRouter,
-  staffDesignation:staffDesignationRouter,
-  tabSlab:taxSlabRouter,
-  staffTimings:staffTimingRouter,
-  athlete:athleteRouter,
-  coachCertificate:coachCertificateRouter,
-  coachBatches:coachBatchesRouter,
-  coachSports:coachSportsRouter,
-  athleteSports:athleteSportsRouter,
-  athleteBatches:athleteBatchesRouter,
+  inventory: inventoryRouter,
+  centerInventory: centerInventoryRouter,
+  centerSports: centerSportsRouter,
+  adminUser: adminUserRouter,
+  staffPayroll: staffPayrollRouter,
+  staffDesignation: staffDesignationRouter,
+  tabSlab: taxSlabRouter,
+  staffTimings: staffTimingRouter,
+  athlete: athleteRouter,
+  coachCertificate: coachCertificateRouter,
+  coachBatches: coachBatchesRouter,
+  coachSports: coachSportsRouter,
+  athleteSports: athleteSportsRouter,
+  athleteBatches: athleteBatchesRouter,
   assessment: assessmentRouter,
-  upload:uploadRouter,
+  upload: uploadRouter,
   injuryLog: injuryLogRouter,
-  feePlan: feePlanRouter
+  feePlan: feePlanRouter,
+  testBank: testBankRouter,
+  test: testsRouter,
+  assignedTestBank: assignedTestBankRouter,
+  assignedTest: assignedTestsRouter,
+  assessmentAssignedAthlete: assessmentAssignedAthletesRouter,
+  post: postRouter
 });
 
 // export type definition of API

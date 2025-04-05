@@ -169,6 +169,54 @@ async function deleteAssessmentChilds({ ctx, assessmentId }: any) {
 }
 
 export const assessmentRouter = createTRPCRouter({
+  getAllAssessmentsWithPagination: publicProcedure
+    .input(
+      z.object({
+        page: z.number().min(1), // Ensures the page is at least 1
+        limit: z.number().min(1).max(100), // Controls the number of records per page
+        sortOrder: z.enum(["asc", "desc"]).optional().default("desc"), // Sorting order
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { page, limit, sortOrder } = input;
+      const skip = (page - 1) * limit; // Calculate the offset
+      const [assessments, total] = await Promise.all([
+        ctx.prisma.assessments.findMany({
+          skip,
+          take: limit,
+          include: {
+            AssessmentAssignedAthletes: true,
+            AssessmentAssignedCoaches: true,
+            AssessmentBatches: true,
+            AssessmentCenters: {
+              include: {
+                AssessmentCenterBatches: true,
+                AssessmentCenterSports: true,
+                Centers: true,
+              },
+            },
+            AssessmentResults: true,
+            AssessmentSports: true,
+            Academies: true,
+            Sports: true,
+            AssignedTestBanks: true,
+          },
+          orderBy: {
+            createdAt: sortOrder, // Sort by createdAt (ascending or descending)
+          },
+        }),
+        ctx.prisma.assessments.count({
+        }),
+      ]);
+
+      return {
+        data: assessments,
+        total,
+        page,
+        totalPages: Math.ceil(total / limit),
+      };
+    }),
+
   getAllAssessments: publicProcedure
     .input(
       z.object({
@@ -297,7 +345,7 @@ export const assessmentRouter = createTRPCRouter({
         return assessments;
       } catch (error) { }
     }),
-  createAssessment: publicProcedure
+  createAssessmentByChild: publicProcedure
     .input(
       z.object({
         name: z.string(),
@@ -507,4 +555,57 @@ export const assessmentRouter = createTRPCRouter({
 
       return response;
     }),
+
+  createAssessment: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        description: z.string(),
+        academyId: z.number(),
+        sportId: z.number(),
+        startDate: z.date(),
+        endDate: z.date(),
+        level: z.enum(TRAINING_LEVEL),
+        mode: z.enum(ASSESSMENT_MODE),
+        interval: z.enum(ASSESSMENT_INTERVAL),
+        assessmentStatus: z.enum(ASSESSMENT_STATUS),
+      })
+    )
+    .mutation(
+      async ({
+        input: {
+          name,
+          description,
+          academyId,
+          sportId,
+          startDate,
+          endDate,
+          level,
+          mode,
+          interval,
+          assessmentStatus
+        },
+        ctx,
+      }) => {
+        const response = await ctx.prisma.assessments.create({
+          data: {
+            name: name,
+            description: description,
+            academyId: academyId,
+            sportId: sportId,
+            startDate: startDate,
+            endDate: endDate,
+            level: level,
+            mode: mode,
+            interval: interval,
+            assessmentStatus: assessmentStatus,
+            status: true,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            assessmentTime: new Date()
+          },
+        });
+        return response;
+      }
+    ),
 });

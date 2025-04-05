@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "./node_modules/@prisma/client"
 }
 
 datasource db {
@@ -25,6 +26,7 @@ model Academies {
   CenterSports      CenterSports[]
   Centers           Centers[]
   Coaches           Coaches[]
+  Posts             Posts[]
   Sports            Sports[]
   Tests             Tests[]
 }
@@ -323,7 +325,7 @@ model Athlete_Orders {
   orderDate   DateTime               @db.Date
   updateDate  DateTime               @db.Date
   dueDate     DateTime               @db.Date
-  gst         Athlete_Orders_gst     @default(dbgenerated("18"))
+  gst         Athlete_Orders_gst     @default(GST_18)
   baseFee     Float                  @db.Float
   totalAmount Float                  @db.Float
   lateFee     Float?                 @default(0) @db.Float
@@ -399,7 +401,7 @@ model AthleteOrders {
   academyId   Int
   centerId    Int
   sportId     Int
-  gst         AthleteOrders_gst          @default(dbgenerated("18"))
+  gst         AthleteOrders_gst          @default(GST_18)
   gstAmount   Float?                     @default(0) @db.Float
   lateFeeType AthleteOrders_lateFeeType?
   planType    AthleteOrders_planType
@@ -967,7 +969,7 @@ model Payments {
   batchId           Int
   price             Float                   @db.Float
   amountToBePaid    Float                   @db.Float
-  gst               Payments_gst            @default(dbgenerated("18"))
+  gst               Payments_gst            @default(GST_18)
   gstAmount         Float?                  @default(0) @db.Float
   paidAmount        Float?                  @default(0) @db.Float
   planType          Payments_planType
@@ -1395,6 +1397,22 @@ model User {
   image         String?
   Account       Account[]
   Session       Session[]
+}
+
+model Posts {
+  id          Int        @id @default(autoincrement())
+  academyId   Int?
+  title       String     @db.VarChar(255)
+  imageLink   String     @db.VarChar(255)
+  postDetails String     @db.Text
+  showPost    Boolean    @default(true)
+  createdAt   DateTime   @db.DateTime(0)
+  deletedAt   DateTime?  @db.DateTime(0)
+  updatedAt   DateTime   @db.DateTime(0)
+  Academies   Academies? @relation(fields: [academyId], references: [id], map: "Academy_Post_FK")
+
+  @@index([academyId], map: "idx_academyId")
+  @@index([academyId, showPost], map: "idx_academyId_showPost")
 }
 
 enum AssignedDrillFitnessComponents_fitnessComponent {

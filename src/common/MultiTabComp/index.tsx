@@ -4,10 +4,8 @@ import Image from "next/image";
 import SearchIcon from "../../images/search.png";
 import Plus from "../../images/plus.svg";
 import FilterIcon from "../../images/filter-icon.svg";
-
 import Link from "next/link";
 import TableListView from "~/common/TableListView";
-// import Checkout from "";
 import {
   Tabs,
   TabsHeader,
@@ -20,16 +18,21 @@ import { useRouter } from "next/navigation";
 interface MultiTabCompProps {
   tab1label?: string;
   tab2label?: string;
+  tab3label?: string;
   addButtonText?: string;
   addButtonUrl?: string;
   dropdownItems?: any;
   table1show?: boolean;
   table2show?: boolean;
+  table3show?: boolean;
   table2Component?: any;
+  table3Component?: any;
   TABLE1_HEAD: { label: string; id: string }[];
   TABLE1_ROWS: { [key: string]: any; id: number }[];
   TABLE2_HEAD?: { label: string; id: string }[];
   TABLE2_ROWS?: { [key: string]: any; id: number }[];
+  TABLE3_HEAD?: { label: string; id: string }[];
+  TABLE3_ROWS?: { [key: string]: any; id: number }[];
   setFilterByName?: any;
   filterByName?: string;
   onViewClick?: (id: number) => void;
@@ -40,20 +43,28 @@ interface MultiTabCompProps {
   activeKey: string;
   setActiveKey: any;
   filter?: boolean;
+  totalPages?: number;
+  currentPage?: number;
+  onHandlePageChange?: (page: number) => void;
 }
+
 const MultiTabComp = ({
   tab1label,
   tab2label,
+  tab3label,
   addButtonText,
   addButtonUrl,
   table1show,
   table2show,
+  table3show,
   TABLE1_HEAD,
   filters,
   applyFilters,
   TABLE1_ROWS,
   TABLE2_HEAD,
   TABLE2_ROWS,
+  TABLE3_HEAD,
+  TABLE3_ROWS,
   setFilterByName,
   filterByName,
   filter = true,
@@ -63,20 +74,24 @@ const MultiTabComp = ({
   activeKey,
   setActiveKey,
   table2Component,
+  table3Component,
+  totalPages,
+  currentPage,
+  onHandlePageChange,
+  dropdownItems
 }: MultiTabCompProps) => {
   const router = useRouter();
 
-  const GiveTabValue = (val: string) => {
-    return val
-      .split(" ")
-      .map((item) => item.toLowerCase())
-      .join("_");
+  const GiveTabValue = (val?: string) => {
+    return val ? val.split(" ").map((item) => item.toLowerCase()).join("_") : "";
   };
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
   const tab1value = GiveTabValue(tab1label!);
   const tab2value = GiveTabValue(tab2label!);
+  const tab3value = GiveTabValue(tab3label!);
+
 
   return (
     <>
@@ -112,7 +127,19 @@ const MultiTabComp = ({
                 >
                   {tab2label}
                 </Tab>
+
+                <Tab
+                  value={tab3value}
+                  className={`${activeKey === "2" ? "active" : ""
+                    } text-nowrap ml-4 w-1/2 bg-[#EAEAEA] px-0 font-heading text-2xl lg:w-auto lg:bg-transparent lg:font-medium lg:uppercase`}
+                  key={"1"}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+                  onClick={() => setActiveKey("2")}
+                >
+                  {tab3label}
+                </Tab>
               </TabsHeader>
+
               <div className=" hidden items-center lg:flex ">
                 {filterByName && setFilterByName && (
                   <div className="relative">
@@ -168,6 +195,9 @@ const MultiTabComp = ({
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
                     onEditClick={onEditClick}
                     onDeleteClick={onDeleteClick}
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    onHandlePageChange={onHandlePageChange}
                   />
                 </TabPanel>
               ) : null}
@@ -183,11 +213,35 @@ const MultiTabComp = ({
                     onViewClick={onViewClick}
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
                     onEditClick={onEditClick}
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    onHandlePageChange={onHandlePageChange}
                   />
                 ) : (
                   table2Component
                 )}
               </TabPanel>
+
+              <TabPanel value={tab3value} className="px-2">
+                {table3show ? (
+                  <TableListView
+                    TABLE_HEAD={TABLE3_HEAD!}
+                    TABLE_ROWS={TABLE3_ROWS!}
+                    rowSelection={true}
+                    showImage={true}
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    onViewClick={onViewClick}
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
+                    onEditClick={onEditClick}
+                    totalPages={totalPages}
+                    currentPage={currentPage}
+                    onHandlePageChange={onHandlePageChange}
+                  />
+                ) : (
+                  table3Component
+                )}
+              </TabPanel>
+
             </TabsBody>
           </Tabs>
 

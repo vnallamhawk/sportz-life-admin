@@ -2,13 +2,13 @@ import React, {useEffect, useContext, useState, useRef} from 'react'
 
 import type {CENTER_TYPES} from '~/types/coach'
 
-import {FormContext} from '~/pages/centers/AddCenter/AddCenterForm'
 import {useForm} from 'react-hook-form'
 import {api} from '~/utils/api'
 
-import AddForm from '~/common/AddForm/AddForm'
+import AddForm from '~/common/AddForm'
 import type {FormValues} from '~/types/common'
 import {ASSESSMENT_DETAILS_CONSTANTS} from '~/constants/assessment'
+import {FormContext} from '~/pages/assessments/AddAssessment/AddAssessmentForm'
 
 export default function AddAssessment() {
   const {
@@ -17,18 +17,8 @@ export default function AddAssessment() {
     multiFormData: {formData, setFormData},
   } = useContext(FormContext)
 
-  const {
-    control,
-    getValues,
-    reset,
-    trigger,
-    formState: {errors},
-  } = useForm({mode: 'onSubmit'})
-  const currentFormValues = getValues()
   const hasExecuted = useRef(true)
   const {data: sports} = api.sports.getAllSports.useQuery()
-
-  const {data: coaches} = api.coach.getAllCoaches.useQuery()
 
   const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     ASSESSMENT_DETAILS_CONSTANTS

@@ -13,11 +13,11 @@ import { api } from "~/utils/api";
 import { useRouter } from "next/router";
 import { ToastContext } from "~/contexts/Contexts";
 import { useSession } from "next-auth/react";
-import { Centers } from "@prisma/client";
 import AddAssessment from "~/components/AddAssessment/AddAsessment";
 import AssignTestBank from "~/components/AddAssessment/AssignTestBank";
 import AddAssessmentScoring from "~/components/AddAssessment/AddAssessmentScoring";
 import AddAssessmentSchedule from "~/components/AddAssessment/AddAsessmentSchedule";
+import AssessmentParticipants from "../../../components/AddAssessment/AssessmentParticipants";
 const multiFormData = {
   name: "",
   image: "",
@@ -26,6 +26,9 @@ const multiFormData = {
   address: "",
   sports: [],
   isEditMode: false,
+  description: "",
+  level: "",
+  sportId: ""
 };
 
 const defaultValues = {
@@ -46,160 +49,174 @@ export interface FormContextTypes {
     setFormData?: React.Dispatch<React.SetStateAction<any>>;
   };
 }
+
+interface TestBank {
+  testBankId: number;
+}
+
+interface AssignedAthlete {
+  athleteId: number;
+}
+
+interface Tests {
+  testBankId: number;
+  testId: number;
+}
+
 export const FormContext = React.createContext<FormContextTypes>(defaultValues);
 
 export default function AddAssessmentForm() {
   const router = useRouter();
-  const id = Number(router?.query?.id);
   const { data: sessionData } = useSession();
-  const createdBy = sessionData?.token
-    ? sessionData?.token?.id
-    : sessionData?.user?.id;
+
   const academyId = sessionData?.token
     ? sessionData?.token?.academyId
     : sessionData?.user?.academyId;
+
+  const hasRun = useRef(false); // Track if useEffect has already run
 
   const methods = useForm();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<any>(
     defaultValues.multiFormData.formData
   );
-  const [center, setCenter] = useState<Centers>();
-  const [centerId, setCenterId] = useState<number>();
+  const [assessmentId, setAssessmentId] = useState<number>();
 
   const { setOpenToast } = useContext(ToastContext);
-  const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
-  const centerData = id && api.center.getCenterById.useQuery({ id });
 
-  //   const { data: batches } = api.batches.getAllBatches.useQuery();
-  const hasCenterUseEffectRun = useRef(false);
 
-  useEffect(() => {
-    if (centerData && centerData.data) {
-      if (centerData.data && !hasCenterUseEffectRun.current) {
-        let obj: any = { ...centerData.data };
-        obj.sports = centerData?.data?.CenterSports?.map((v: any) => ({
-          sportId: v.sportId,
-          id: v.id,
-        }));
-        obj.inventories = centerData?.data?.CenterInventories?.map(
-          (v: any) => ({
-            inventoryId: v.inventoryId,
-            id: v.id,
-          })
-        );
-        setFormData(obj);
-        hasCenterUseEffectRun.current = true;
-      }
-    }
-  }, [centerData]);
 
   const formProviderData = {
     ...methods,
     stepData: { currentStep, setCurrentStep },
     multiFormData: { formData, setFormData },
   };
-  const { mutate: createMutate } = api.center.createCenter.useMutation({
+
+  const { mutate: createMutate } = api.assessment.createAssessment.useMutation({
     onSuccess: (response) => {
       console.log("response data is ", response);
       setOpenToast(true);
-      setCenterId(response?.id);
-      return response?.id;
+      setAssessmentId(response?.id)
+
+      return response
     },
   });
-  const { mutate: createMutateInventories } =
-    api.centerInventory.createCenterInventory.useMutation({
-      onSuccess: (response) => {
-        console.log("response data is ", response);
-        router.push(`/centers/${centerId ?? ""}`);
-
-        return response;
-      },
-    });
-  const { mutate: createMutateCenterSports } =
-    api.centerSports.createCenterSports.useMutation({
-      onSuccess: (response) => {
-        console.log("response data is ", response);
-        return response;
-      },
-    });
-
-  const { mutate: editMutate } = api.center.editCenter.useMutation({
-    onSuccess: (response) => {
-      setOpenToast(true);
-      void router.push(`/centers/${response?.id ?? ""}`);
-    },
-  });
-
-  const onDropCallback = useCallback((acceptedFiles: Array<File>) => {
-    setPreview(
-      acceptedFiles.map((upFile) =>
-        Object.assign(upFile, {
-          preview: URL.createObjectURL(upFile),
-        })
-      )
-    );
-  }, []);
-
-  useEffect(() => {
-    if (
-      formData &&
-      Object.keys(formData)?.length > 0 &&
-      formData?.sports &&
-      formData?.inventories &&
-      centerId
-    ) {
-      const finalCenterSports = formData?.sports?.map((v: any) => ({
-        ...v,
-        centerId,
-        academyId: sessionData?.token?.academyId,
-      }));
-
-      createMutateCenterSports(finalCenterSports);
-
-      const finalInventories = formData?.inventories?.map((v: any) => ({
-        ...v,
-        centerId,
-      }));
-      createMutateInventories(finalInventories);
-    }
-  }, [centerId, formData]);
 
   const finalFormSubmissionHandler = async (finalForm: any) => {
-    if (formData?.isEditMode) {
-      editMutate({
-        ...finalForm,
-        mobile: finalForm?.mobile,
-        address: finalForm?.address,
-        image: "",
-        centerId: id,
-        updatedAt: new Date(),
-      });
-    } else {
-      const sportsId = finalForm?.selectSports?.map(function (obj: {
-        value: any;
-      }) {
-        return Number(obj.value);
-      });
-      setFormData({
-        ...finalForm,
-        mobile: finalForm?.mobile,
-        address: finalForm?.address,
-        image: "",
-        sportsId,
-      });
-      createMutate({
-        ...finalForm,
-        mobile: finalForm?.mobile,
-        address: finalForm?.address,
-        image: "",
-        createdBy: parseInt(createdBy as string),
-        academyId: parseInt(academyId as string),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+
+    if (academyId) {
+      if (formData.isEditMode) {
+      } else {
+        // eslint-disable-next-line no-console
+        createMutate({
+          name: finalForm.name,
+          academyId: parseInt(academyId as string),
+          sportId: parseInt(finalForm.sportId as string),
+          description: finalForm.description,
+          startDate: new Date(finalForm.startDate),
+          endDate: new Date(finalForm.endDate),
+          level: finalForm.level,
+          mode: finalForm.duration,
+          interval: finalForm.type,
+          assessmentStatus: 'ongoing',
+        });
+
+        setFormData(finalForm);
+      }
     }
   };
+
+  const { mutateAsync: createMutateAssignedTestBanks } =
+    api.assignedTestBank.createMany.useMutation({
+      onSuccess: (response) => {
+        console.log("response data in assigned test banks created", response);
+        // router.push("/athlete").then(() => window.location.reload());
+        return response;
+      },
+    });
+
+  const { mutate: createMutateAssignedTests } =
+    api.assignedTest.createMany.useMutation({
+      onSuccess: (response) => {
+        console.log("response data in assigned tests created", response);
+        // router.push("/athlete").then(() => window.location.reload());
+        return response;
+      },
+    });
+
+  const { mutate: createMutateAssignedAthletes } =
+    api.assessmentAssignedAthlete.createMany.useMutation({
+      onSuccess: (response) => {
+        console.log("response data in assigned tests created", response);
+        router.push("/assessments").then(() => window.location.reload());
+        return response;
+      },
+    });
+
+
+  useEffect(() => {
+    if (!hasRun.current && formData && assessmentId) {
+      if (formData.testBanks && formData.testBanks.length > 0) {
+        const testBanks = formData.testBanks.map(({ testBankId }: TestBank) => ({
+          testBankId,
+          assessmentId,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }));
+
+        // ✅ Wait for mutation to complete
+        createMutateAssignedTestBanks(testBanks)
+        hasRun.current = true;
+      }
+
+      if (formData.participants && formData.participants.length > 0) {
+        const assignedAthlete = formData.participants.map(({ athleteId }: AssignedAthlete) => ({
+          athleteId,
+          assessmentId,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }));
+
+        createMutateAssignedAthletes(assignedAthlete)
+
+      }
+    }
+  }, [assessmentId, JSON.stringify(formData)]);
+
+
+  const { data: assignedTestBanks } = api.assignedTestBank.getAssignedTestBanksByAssessmentId.useQuery(
+    {
+      id: assessmentId ?? 0,
+    }
+  );
+
+  useEffect(() => {
+    if (assignedTestBanks && assignedTestBanks.length > 0) {
+      console.log("Fetched Assigned Test Banks:", assignedTestBanks);
+      // 🔹 Map testBankId to assignedTestBankId
+      const testBankMap = assignedTestBanks.reduce((acc, item) => {
+        acc[item.testBankId] = item.id;
+        return acc;
+      }, {} as Record<number, number>);
+
+      // 🔹 Prepare assigned tests
+      const assignedTests = formData.testBanks.map(({ testBankId, testId }: Tests) => ({
+        assignedTestBankId: testBankMap[testBankId],
+        testId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }));
+
+      // 🔹 Call mutation to create assigned tests
+      createMutateAssignedTests(assignedTests);
+    }
+  }, [assignedTestBanks]);
+
+
+
+
+
+
   return (
     <FormContext.Provider value={formProviderData}>
       <div className="bg-s-gray lg:px-6 lg:pb-7">
@@ -208,17 +225,12 @@ export default function AddAssessmentForm() {
             {currentStep === 1 && <AddAssessment />}
             {currentStep === 2 && <AssignTestBank />}
             {currentStep === 3 && <AddAssessmentScoring />}
-            {currentStep === 4 && (
-              <AddAssessmentSchedule
+            {currentStep === 4 && <AddAssessmentSchedule />}
+            {currentStep === 5 && (
+              <AssessmentParticipants
                 finalFormSubmissionHandler={finalFormSubmissionHandler}
               />
             )}
-
-            {/* {currentStep === 3 && (
-              <AddInventory
-                finalFormSubmissionHandler={finalFormSubmissionHandler}
-              />
-            )}  */}
           </Card>
         </div>
       </div>

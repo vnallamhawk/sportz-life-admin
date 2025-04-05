@@ -58,6 +58,10 @@ const nextConfig = withImages({
         source: "/edit-plan-:id",
         destination: "/pricing/AddPlans?search=Fee+Plan", // FIXED
       },
+      {
+        source: "/edit-assessment-:id",
+        destination: "/assessments/AddAssessment?search=ALL+ASSESSMENTS",
+      },
     ];
   },
 });

@@ -8,15 +8,15 @@ export const ASSESSMENT_TABLE_HEADERS = [
 
   {
     label: "Sport",
-    id: "sport",
+    id: "sportName",
   },
   {
     label: "Training Level",
-    id: "trainingLevel",
+    id: "level",
   },
   {
     label: "Status",
-    id: "status",
+    id: "assessmentStatus",
   },
   {
     label: "Action",
@@ -32,11 +32,11 @@ export const PHYSICAL_TEST_TABLE_HEADERS = [
 
   {
     label: "Test Related To",
-    id: "test Related to",
+    id: "fitness_type",
   },
   {
     label: "Fitness Component",
-    id: "component",
+    id: "fitness_component",
   },
   {
     label: "Training Level",
@@ -57,11 +57,11 @@ export const SPORT_SPECIFIC_TABLE_HEADERS = [
 
   {
     label: "Sport",
-    id: "sport",
+    id: "sportName",
   },
   {
     label: "Test Type",
-    id: "type",
+    id: "test_type",
   },
   {
     label: "Training Level",
@@ -100,9 +100,17 @@ export const ASSESSMENT_DETAILS_CONSTANTS: FormValues[] = [
   {
     label: "Training level",
     id: "level",
-    type: "textbox",
+    type: "select",
     placeHolder: "Training level",
-
+    options: [
+      {
+        label: "Beginner",
+        value: "beginner",
+      },
+      { label: "Developer", value: "developer" },
+      { label: "Intermediate", value: "intermediate" },
+      { label: "Advanced", value: "advanced" },
+    ],
     rules: {
       required: true,
     },
@@ -135,13 +143,13 @@ export const PHYSICAL_TEST_BANK: FormValues[] = [
   },
   {
     label: "Test Related To",
-    id: "sportId",
+    id: "fitnessType",
     type: "select",
     placeHolder: "Test Related To",
     options: [
       {
         label: "General Fitness",
-        value: "General Fitness",
+        value: "general_fitness",
       },
     ],
     rules: {
@@ -150,19 +158,19 @@ export const PHYSICAL_TEST_BANK: FormValues[] = [
   },
   {
     label: "Fitness Component ",
-    id: "sportId",
+    id: "fitnessComponent",
     type: "select",
     placeHolder: "Fitness Component",
     options: [
       {
         label: "Endurance",
-        value: "Endurance",
+        value: "endurance",
       },
-      { label: "Speed", value: "Speed" },
-      { label: "Strength", value: "Strength" },
-      { label: "Agility", value: "Agility" },
-      { label: "Movement Coordination", value: "Movement Coordination" },
-      { label: "Balance", value: "Balance" },
+      { label: "Speed", value: "speed" },
+      { label: "Strength", value: "strength" },
+      { label: "Agility", value: "agility" },
+      { label: "Movement Coordination", value: "movement_coordination" },
+      { label: "Balance", value: "balance" },
       { label: "Flexiblity", value: "flexiblity" },
     ],
     rules: {
@@ -171,17 +179,17 @@ export const PHYSICAL_TEST_BANK: FormValues[] = [
   },
   {
     label: "Training level",
-    id: "level",
+    id: "trainingLevel",
     type: "select",
     placeHolder: "Training level",
     options: [
       {
         label: "Beginner",
-        value: "Beginner",
+        value: "beginner",
       },
-      { label: "Developer", value: "Developer" },
-      { label: "Intermediate", value: "Intermediate" },
-      { label: "Advanced", value: "Advanced" },
+      { label: "Developer", value: "developer" },
+      { label: "Intermediate", value: "intermediate" },
+      { label: "Advanced", value: "advanced" },
     ],
     rules: {
       required: true,
@@ -207,15 +215,15 @@ export const PHYSICAL_TEST_BANK: FormValues[] = [
   },
   {
     label: "Measure test as",
-    id: "measure_type",
+    id: "measureType",
     type: "select",
     placeHolder: "Measure test as",
     options: [
       {
         label: "Numeric value",
-        value: "Numeric value",
+        value: "numeric_value",
       },
-      { label: "Star Rating Index", value: "Star Rating Index" },
+      { label: "Star Rating Index", value: "star_rating_index" },
     ],
     rules: {
       required: true,
@@ -303,6 +311,17 @@ export const ASSIGN_TEST_BANK_TABLE_HEADERS = [
   },
 ];
 
+export const ASSIGN_PARTICIPANT_TABLE_HEADERS = [
+  {
+    id: "name",
+    label: "Participant Name",
+  },
+  {
+    label: "Action",
+    id: "action",
+  },
+]
+
 export const ASSESSMENT_SCORING_OPTIONS = [
   {
     label: "Allow Athletes to self-assess",
@@ -352,6 +371,13 @@ export const ASSESSMENT_SCHEDULE = [
     label: "Select Duration:Recurring",
     id: "duration",
     type: "select",
+    options: [
+      {
+        label: "Recurring",
+        value: "recurring",
+      },
+      { label: "One Time", value: "one_time" }
+    ],
     rules: {
       required: true,
     },
@@ -361,6 +387,13 @@ export const ASSESSMENT_SCHEDULE = [
     label: "Recurring Type",
     id: "type",
     type: "select",
+    options: [
+      {
+        label: "Monthly",
+        value: "monthly",
+      },
+      { label: "Weekly", value: "weekly" }
+    ],
     rules: {
       required: true,
     },
@@ -384,4 +417,25 @@ export const ASSESSMENT_SCHEDULE = [
       required: true,
     },
   },
+];
+
+
+export const ASSESSMENT_ASSIGNED_TABLE_HEADERS = [
+  {
+    label: "Athlete Name",
+    id: "athleteName",
+  },
+
+  {
+    label: "Batch",
+    id: "batchName",
+  },
+  {
+    label: "Center",
+    id: "centerName",
+  },
+  {
+    label: "Coach",
+    id: "coachName",
+  }
 ];

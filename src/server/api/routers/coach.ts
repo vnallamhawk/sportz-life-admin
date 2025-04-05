@@ -36,6 +36,23 @@ export const coachRouter = createTRPCRouter({
     return allCoaches;
   }),
 
+  getCoachesDataByAcademyId: publicProcedure.query(({ ctx }) => {
+    const allAthletes = ctx?.prisma.coaches?.findMany({
+      where: {
+        academyId: Number(ctx?.session?.user.academyId)
+      },
+      include: {
+        Centers: true,
+        CoachSportsMaps: {
+          include: {
+            Sports: true
+          }
+        }
+      },
+    });
+    return allAthletes;
+  }),
+
   getAllCoachesWithPagination: publicProcedure
     .input(
       z.object({
@@ -46,8 +63,8 @@ export const coachRouter = createTRPCRouter({
       })
     )
     .query(async ({ ctx, input }) => {
-      const { page, limit, sortOrder, name} = input;
-      const skip = (page - 1) * limit; 
+      const { page, limit, sortOrder, name } = input;
+      const skip = (page - 1) * limit;
 
       const whereCondition = {
         deletedAt: null,
@@ -162,11 +179,11 @@ export const coachRouter = createTRPCRouter({
         coachQualifications: z.array(
           z.object({
             certificateType: z.nativeEnum(CoachQualifications_certificateType),
-            startDate: z.date(), 
+            startDate: z.date(),
             endDate: z.date(),
             fileUrl: z.string(),
-            instituteName:  z.string(),
-            fileType: z.nativeEnum(CoachQualifications_fileType), 
+            instituteName: z.string(),
+            fileType: z.nativeEnum(CoachQualifications_fileType),
             fileName: z.string().nullable()
           })
         ),
@@ -233,21 +250,21 @@ export const coachRouter = createTRPCRouter({
             },
             CoachQualifications: {
               create: coachQualifications.map(
-              ({ startDate, endDate, certificateType, fileUrl, instituteName, fileType, fileName }) => ({
-                startDate,
-                endDate,
-                certificateType,
-                fileUrl,       
-                instituteName,  
-                fileType,     
-                fileName,       
-                createdAt,
-                updatedAt,
-              })
-            ),
-           
-          }
-          
+                ({ startDate, endDate, certificateType, fileUrl, instituteName, fileType, fileName }) => ({
+                  startDate,
+                  endDate,
+                  certificateType,
+                  fileUrl,
+                  instituteName,
+                  fileType,
+                  fileName,
+                  createdAt,
+                  updatedAt,
+                })
+              ),
+
+            }
+
           },
         });
         return response;
@@ -272,11 +289,11 @@ export const coachRouter = createTRPCRouter({
         coachQualifications: z.array(
           z.object({
             certificateType: z.nativeEnum(CoachQualifications_certificateType),
-            startDate: z.date(), 
+            startDate: z.date(),
             endDate: z.date(),
             fileUrl: z.string(),
-            instituteName:  z.string(),
-            fileType: z.nativeEnum(CoachQualifications_fileType), 
+            instituteName: z.string(),
+            fileType: z.nativeEnum(CoachQualifications_fileType),
             fileName: z.string().nullable()
           })
         ),
@@ -320,24 +337,24 @@ export const coachRouter = createTRPCRouter({
             image,
             CoachQualifications: coachQualifications && coachQualifications.length > 0
               ? {
-                  create: coachQualifications.map(
-                    ({ startDate, endDate, certificateType, fileUrl, instituteName, fileType, fileName }) => ({
-                      startDate,
-                      endDate,
-                      certificateType,
-                      fileUrl,
-                      instituteName,
-                      fileType,
-                      fileName,
-                      createdAt,
-                      updatedAt,
-                    })
-                  ),
-                }
-              : undefined, 
+                create: coachQualifications.map(
+                  ({ startDate, endDate, certificateType, fileUrl, instituteName, fileType, fileName }) => ({
+                    startDate,
+                    endDate,
+                    certificateType,
+                    fileUrl,
+                    instituteName,
+                    fileType,
+                    fileName,
+                    createdAt,
+                    updatedAt,
+                  })
+                ),
+              }
+              : undefined,
           },
         });
-    
+
         return response;
       }
     ),

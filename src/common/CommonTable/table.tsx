@@ -31,6 +31,8 @@ const CommonTable = ({
   currentPage = 1,
   onHandlePageChange,
 }: CommonTable) => {
+
+  console.log({ totalPages })
   const renderPages = () => {
     const pages: (number | string)[] = [];
     if (totalPages <= 5) {
@@ -97,6 +99,10 @@ const CommonTable = ({
           <tbody>
             {TABLE_ROWS?.map(
               (data: { [key: string]: any; id: number }, index: number) => {
+                console.log({ data })
+                console.log("status: ", data?.assessmentStatus)
+                console.log("status type: ", typeof data?.assessmentStatus);
+
                 const isLast = index === TABLE_ROWS.length - 1;
                 const classes = isLast
                   ? "p-4 border-y-2 border-gray-100"
@@ -124,11 +130,11 @@ const CommonTable = ({
                               <Typography variant="small" className="font-bold">
                                 {PLANNING_FEE_TYPE[
                                   data[
-                                    head?.id
+                                  head?.id
                                   ] as keyof typeof PLANNING_FEE_TYPE
                                 ] || "Unknown"}
                               </Typography>
-                            ) : head?.id !== "status" ? (
+                            ) : head?.id !== "status" && head?.id !== "assessmentStatus" ? (
                               head?.id !== "action" ? (
                                 columnIndex == 0 && data?.image && showImage ? (
                                   <div className="flex items-center gap-3">
@@ -214,20 +220,28 @@ const CommonTable = ({
                                     data?.status === 1
                                       ? "On"
                                       : data?.status === 2
-                                      ? "Off"
-                                      : "Unknown"
+                                        ? "Off"
+                                        : data?.assessmentStatus?.trim().toLowerCase() === "upcoming"
+                                          ? "Upcoming"
+                                          : data?.assessmentStatus?.trim().toLowerCase() === "completed"
+                                            ? "Completed"
+                                            : data?.assessmentStatus?.trim().toLowerCase() === "ongoing"
+                                              ? "Ongoing"
+                                              : "Unknown"
                                   }
                                   className={`rounded-full border px-3 font-normal capitalize 
-                                  ${
-                                    data?.status === 1
+                                  ${data?.status === 1
                                       ? "border-green-400 bg-green-50 text-green-400"
                                       : ""
-                                  } 
-                                  ${
-                                    data?.status === 2
+                                    } 
+                                  ${data?.status === 2
                                       ? "border-orange-400 bg-orange-50 text-orange-400"
                                       : ""
-                                  }`}
+                                    }
+                                    ${data?.assessmentStatus?.trim().toLowerCase() === "upcoming" ? "border-green-400 bg-green-50 text-green-400" : ""}
+                                    ${data?.assessmentStatus?.trim().toLowerCase() === "completed" ? "border-red-400 bg-red-50 text-red-400" : ""}
+                                    ${data?.assessmentStatus?.trim().toLowerCase() === "ongoing" ? "border-yellow-400 bg-yellow-50 text-yellow-400" : ""}
+                                    `}
                                 />
                               </div>
                             )}
@@ -250,9 +264,8 @@ const CommonTable = ({
                 key={index}
                 variant={currentPage === page ? "text" : "outlined"}
                 size="sm"
-                className={`mx-1 ${
-                  currentPage === page ? "bg-gray-700 text-white" : ""
-                }`}
+                className={`mx-1 ${currentPage === page ? "bg-gray-700 text-white" : ""
+                  }`}
                 onClick={() =>
                   typeof page === "number" && onHandlePageChange?.(page)
                 }
