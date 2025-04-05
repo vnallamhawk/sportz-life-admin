@@ -244,6 +244,7 @@ const AddForm = ({
       dropdownKey,
       dropdownLabel,
       options,
+      isDisabled,
     } = props
 
     switch (type) {
@@ -267,9 +268,7 @@ const AddForm = ({
                 <Select
                   {...rest}
                   isMulti={props?.isMulti ?? false}
-                  // @ts-expect-error TODO ; fix this error
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  isDisabled={props.isDisabled}
+                  isDisabled={isDisabled}
                   options={options}
                   value={options?.filter((option) =>
                     Array.isArray(value) ? value.includes(option.value) : value === option.value

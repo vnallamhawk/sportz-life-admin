@@ -11,8 +11,7 @@ import {useRouter} from 'next/router'
 import FileUpload from '~/components/FileUpload'
 import {useSession} from 'next-auth/react'
 import {parse} from 'date-fns'
-import {defaultValues, FormContext} from '~/hooks/useMultiStepFormContext'
-import {StepProvider, useStepContext} from '~/contexts/StepContexts'
+import {FormContext} from '~/hooks/useMultiStepFormContext'
 import Button from '~/components/Button'
 
 const multiFormData: MULTI_FORM_TYPES = {
@@ -82,7 +81,7 @@ export default function AddCoachMultiFormLayout() {
     defaultValues: multiFormData,
     shouldUnregister: false,
   })
-  const [currentStep, setCurrentStep] = useState<number>(1)
+  const [currentStep, setCurrentStep] = useState<number>(3)
   // const coachContext = useContext(FormContext)
   // console.log(coachContext)
   // const currentStep = coachContext?.currentStep

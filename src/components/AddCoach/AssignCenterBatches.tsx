@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useMemo, useState} from 'react'
 import {useForm, useFormContext} from 'react-hook-form'
 import type {COACH_CENTER_BATCHES} from '~/types/coach'
 import {type MULTI_FORM_TYPES} from '~/types/coach'
 import {api} from '~/utils/api'
 import AddForm from '~/common/AddForm/AddForm'
 import {COACH_BATCH_CONSTANTS} from '~/constants/coachConstants'
-import {defaultValues, FormContext} from '~/hooks/useMultiStepFormContext'
+import {FormContext} from '~/hooks/useMultiStepFormContext'
 import CenterBatchTable from './CenterBatchTable'
 import Button from '../Button'
 
@@ -36,25 +36,25 @@ export default function AssignBatches({
   } = useFormContext<MULTI_FORM_TYPES>()
   const formValues = getValues()
   const CoachCenterBatches = formValues?.CoachCentersBatches
-  // const {
-  //    {currentStep, setCurrentStep},
-  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  //   multiFormData: {formData, setFormData},
-  // } = useContext(FormContext)
   const {data: centers} = api.center.getAllCenters.useQuery()
   const {data: batches} = api.batches.getAllBatches.useQuery()
   const coachContext = useContext(FormContext)
-  const batchIds = CoachCenterBatches?.map((centerBatch) => centerBatch?.batchId)
-  console.log(CoachCenterBatches)
+  // const batchIds = CoachCenterBatches?.map((centerBatch) => centerBatch?.batchId)
+  const selectedBatches = formValues['batches']
+  const batchIds = useMemo(
+    () => CoachCenterBatches?.map((centerBatch) => centerBatch?.batchId),
+    [CoachCenterBatches] // Deep compare
+  )
 
   useEffect(() => {
-    if (centers?.length && centers?.length > 0 && batches?.length && batches?.length > 0) {
-      const updatedFormConstantValues: COACH_CENTER_BATCHES[] | undefined = formConstantValues?.map(
-        (formConstant) => {
+    if (centers?.length && batches?.length && batchIds) {
+      setFormConstantValues((prevValues) =>
+        prevValues?.map((formConstant) => {
           if (formConstant.id === 'centerId') {
             return {
               ...formConstant,
-              options: centers?.map((center: {name: string; id: number}) => ({
+              isDisabled: true,
+              options: centers.map((center: {name: string; id: number}) => ({
                 label: center.name,
                 value: center.id,
               })),
@@ -72,11 +72,10 @@ export default function AssignBatches({
           } else {
             return formConstant
           }
-        }
+        })
       )
-      setFormConstantValues(updatedFormConstantValues)
     }
-  }, [centers, batches])
+  }, [centers, batches, batchIds]) // No need for formConstantValues in dependencies
 
   // useEffect(() => {
   //   if (formData.centerId) {
@@ -176,16 +175,19 @@ export default function AssignBatches({
   }
 
   const onAddHandler = () => {
-    const center: MULTI_FORM_COACH_QUALIFICATION = {
-      startDate: startDate,
-      certificateTypeLabel: certificates
-        ? COACH_QUALIFICATION_CERTIFICATE_TYPE[certificates]
-        : undefined,
-      endDate: endDate,
-      instituteName: instituteName,
-    }
+    console.log(selectedBatches)
+    console.log(formValues)
+    // const center: MULTI_FORM_COACH_QUALIFICATION = {
+    //   startDate: startDate,
+    //   certificateTypeLabel: certificates
+    //     ? COACH_QUALIFICATION_CERTIFICATE_TYPE[certificates]
+    //     : undefined,
+    //   endDate: endDate,
+    //   instituteName: instituteName,
+    // }
+    console.log(batches)
 
-    setValue('CoachQualifications', [...coachQualification, newQualification])
+    // setValue('CoachQualifications', [...coachQualification, newQualification])
     // setTableData([...tableData, newQualification])
   }
 
@@ -213,7 +215,7 @@ export default function AssignBatches({
         // tableData={tableData}
         // isFormTable={true}
         // addTableData={onAddBatchHandler}
-        finalFormSubmissionHandler={submitCallback}
+        // finalFormSubmissionHandler={submitCallback}
         // dependentKey='center'
         // setDependentKey={(value: number) => setCenterId(value)}
         // onRemoveTableButton={removeAssignBatches}
@@ -223,7 +225,7 @@ export default function AssignBatches({
       <Button
         className='border-1 ml-7 hidden rounded-md border-blush-light px-8 py-3 text-lg font-bold text-[#FF9678] hover:border-blush-dark hover:text-blush-dark lg:block'
         type='button'
-        onClick={() => onAddHandler}
+        onClick={() => onAddHandler()}
       >
         Add
       </Button>

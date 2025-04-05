@@ -130,6 +130,7 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   startDate?: Date | string
   endDate ?: Date | string
   instituteName?: string
+  batches?: Batches['id'][]
 }
 
 export enum TrainingLevelEnum {
@@ -179,6 +180,6 @@ export type COACH_CENTER_BATCHES = {
   rules: {
     required: boolean;
   };
-  isDisabled: boolean;
+  isDisabled?: boolean;
   isMulti?: boolean;
 };

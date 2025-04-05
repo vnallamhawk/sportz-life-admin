@@ -25,6 +25,7 @@ export interface FormValues {
   options?: { label: string|undefined; value: string | number|undefined }[];
   dropdownLabel?:string|undefined
   dropdownKey?:string|undefined
+  isDisabled ?: boolean
 }
 export interface TableFields {
   type: string;

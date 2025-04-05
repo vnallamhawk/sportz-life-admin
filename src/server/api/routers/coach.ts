@@ -141,6 +141,8 @@ export const coachRouter = createTRPCRouter({
             }
           },
         });
+        console.log(coaches)
+        
 
 
 
@@ -151,7 +153,7 @@ export const coachRouter = createTRPCRouter({
         ...cb,
         centerName: cb.Centers?.name,
         batchName: cb.Batches?.name, 
-      })),
+      })),  
     };
       } catch (error) {
       }
