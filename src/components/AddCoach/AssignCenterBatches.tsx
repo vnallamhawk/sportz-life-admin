@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React, {useContext, useEffect, useState} from 'react'
-// import { useForm } from "react-hook-form";
+import {useForm, useFormContext} from 'react-hook-form'
 import type {COACH_CENTER_BATCHES} from '~/types/coach'
 import {type MULTI_FORM_TYPES} from '~/types/coach'
-import {FormContext} from '~/pages/coach/AddCoach/AddCoachMultiFormLayout'
 import {api} from '~/utils/api'
-import AddForm from '~/common/AddForm'
+import AddForm from '~/common/AddForm/AddForm'
 import {COACH_BATCH_CONSTANTS} from '~/constants/coachConstants'
+import {defaultValues, FormContext} from '~/hooks/useMultiStepFormContext'
+import CenterBatchTable from './CenterBatchTable'
+import Button from '../Button'
 
 export default function AssignBatches({
   finalFormSubmissionHandler,
@@ -19,14 +21,31 @@ export default function AssignBatches({
   )
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [tableData, setTableData] = useState<any>([])
+
   // const [centerId, setCenterId] = useState<number>();
+  // const {reset} = useForm({mode: 'onSubmit'})
   const {
-    stepData: {currentStep, setCurrentStep},
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    multiFormData: {formData, setFormData},
-  } = useContext(FormContext)
+    control, // For <Controller> components
+    register, // For native inputs
+    handleSubmit, // Submission handler
+    watch, // Track specific fields
+    getValues, // Get current field values
+    setValue, // Update a field programmatically
+    formState: {errors, isDirty, isValid}, // Form state
+    reset, // Reset the form
+  } = useFormContext<MULTI_FORM_TYPES>()
+  const formValues = getValues()
+  const CoachCenterBatches = formValues?.CoachCentersBatches
+  // const {
+  //    {currentStep, setCurrentStep},
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  //   multiFormData: {formData, setFormData},
+  // } = useContext(FormContext)
   const {data: centers} = api.center.getAllCenters.useQuery()
   const {data: batches} = api.batches.getAllBatches.useQuery()
+  const coachContext = useContext(FormContext)
+  const batchIds = CoachCenterBatches?.map((centerBatch) => centerBatch?.batchId)
+  console.log(CoachCenterBatches)
 
   useEffect(() => {
     if (centers?.length && centers?.length > 0 && batches?.length && batches?.length > 0) {
@@ -43,10 +62,12 @@ export default function AssignBatches({
           } else if (formConstant.id === 'batches') {
             return {
               ...formConstant,
-              options: batches?.map((center: {name: string; id: number}) => ({
-                label: center.name,
-                value: center.id,
-              })),
+              options: batches
+                .filter(({id}) => !batchIds.includes(id))
+                .map((batch) => ({
+                  label: batch.name,
+                  value: batch.id,
+                })),
             }
           } else {
             return formConstant
@@ -101,16 +122,23 @@ export default function AssignBatches({
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [formData.centerId])
 
-  useEffect(() => {
-    if (formData && formData?.coachBatches) {
-      setTableData(
-        formData?.CoachCentersBatches.map((coachCenterBatch) => ({
-          centerLabel: coachCenterBatch.Centers.name,
-          batchLabel: coachCenterBatch.Batches.name,
-        }))
-      )
-    }
-  }, [formData])
+  // useEffect(() => {
+  //   // Reset the form with default values when the component mounts
+  //   reset({
+  //     certificates: undefined,
+  //   })
+  // }, [reset])
+
+  // useEffect(() => {
+  //   if (formData && formData?.coachBatches) {
+  //     setTableData(
+  //       formData?.CoachCentersBatches.map((coachCenterBatch) => ({
+  //         centerLabel: coachCenterBatch.Centers.name,
+  //         batchLabel: coachCenterBatch.Batches.name,
+  //       }))
+  //     )
+  //   }
+  // }, [formData])
 
   const submitCallback = (finalData: MULTI_FORM_TYPES) => {
     const finalFormData = {
@@ -139,11 +167,26 @@ export default function AssignBatches({
     setTableData(arr)
   }
 
-  const removeAssignBatches = (index: number) => {
+  const removeCenterBatches = (index: number) => {
     // eslint-disable-next-line
     const arr = [...tableData]
     arr.splice(index, 1)
     setTableData(arr)
+    setValue('CoachQualifications', CoachCenterBatches.splice(index, 1))
+  }
+
+  const onAddHandler = () => {
+    const center: MULTI_FORM_COACH_QUALIFICATION = {
+      startDate: startDate,
+      certificateTypeLabel: certificates
+        ? COACH_QUALIFICATION_CERTIFICATE_TYPE[certificates]
+        : undefined,
+      endDate: endDate,
+      instituteName: instituteName,
+    }
+
+    setValue('CoachQualifications', [...coachQualification, newQualification])
+    // setTableData([...tableData, newQualification])
   }
 
   return (
@@ -152,31 +195,39 @@ export default function AssignBatches({
         cardTitle='ADD COACH'
         cardSubTitle='ASSIGN BATCHES'
         formConstantValues={formConstantValues}
-        buttonItems={{prevFinish: true}}
-        setFormData={setFormData}
-        formData={formData}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-        tableTitle='Batches'
-        mobileAddButtonText="Add another center's batch"
-        TableHeadings={[
-          {label: 'Center', id: 'centerLabel'},
-          {label: 'Batches', id: 'batchLabel'},
-          {label: 'Action', id: 'action'},
-        ]}
+        // buttonItems={{prevFinish: true}}
+        // setFormData={setFormData}
+        // formData={formData}
+        // currentStep={currentStep}
+        // setCurrentStep={setCurrentStep}
+        // tableTitle='Batches'
+        // mobileAddButtonText="Add another center's batch"
+        // TableHeadings={[
+        //   {label: 'Center', id: 'centerLabel'},
+        //   {label: 'Batches', id: 'batchLabel'},
+        //   {label: 'Action', id: 'action'},
+        // ]}
         // tableFields={formConstantValues}
-        tablekey='coachBatches'
+        // tablekey='coachBatches'
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        tableData={tableData}
-        isFormTable={true}
-        addTableData={onAddBatchHandler}
+        // tableData={tableData}
+        // isFormTable={true}
+        // addTableData={onAddBatchHandler}
         finalFormSubmissionHandler={submitCallback}
         // dependentKey='center'
         // setDependentKey={(value: number) => setCenterId(value)}
-        onRemoveTableButton={removeAssignBatches}
+        // onRemoveTableButton={removeAssignBatches}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        shouldDisableAddTableButton={tableData?.length === 1}
+        // shouldDisableAddTableButton={tableData?.length === 1}
       />
+      <Button
+        className='border-1 ml-7 hidden rounded-md border-blush-light px-8 py-3 text-lg font-bold text-[#FF9678] hover:border-blush-dark hover:text-blush-dark lg:block'
+        type='button'
+        onClick={() => onAddHandler}
+      >
+        Add
+      </Button>
+      <CenterBatchTable tableData={CoachCenterBatches} onRemoveTableButton={removeCenterBatches} />
     </div>
   )
 }

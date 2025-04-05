@@ -1,16 +1,19 @@
-import React, {useState, useCallback, useEffect} from 'react'
+import React, {useState, useCallback, useEffect, useContext} from 'react'
 import Card from '~/components/Card'
 import ImageWithFallback from '~/components/ImageWithFallback'
 import {FormProvider, useForm} from 'react-hook-form'
 import AddCoach from '../../../components/AddCoach/AddCoach'
 import AddCoachCertificates from '~/components/AddCoach/AddCoachCertificates'
-import AssignBatches from '~/components/AddCoach/AssignBatches'
+import AssignBatches from '~/components/AddCoach/AssignCenterBatches'
 import {type MULTI_FORM_TYPES} from '~/types/coach'
 import {api} from '~/utils/api'
 import {useRouter} from 'next/router'
 import FileUpload from '~/components/FileUpload'
 import {useSession} from 'next-auth/react'
 import {parse} from 'date-fns'
+import {defaultValues, FormContext} from '~/hooks/useMultiStepFormContext'
+import {StepProvider, useStepContext} from '~/contexts/StepContexts'
+import Button from '~/components/Button'
 
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: '',
@@ -50,32 +53,42 @@ const multiFormData: MULTI_FORM_TYPES = {
   CoachCentersBatches: [],
 }
 
-const defaultValues = {
-  stepData: {
-    currentStep: 1,
-  },
-  multiFormData: {
-    formData: multiFormData,
-  },
-}
-export interface FormContextTypes {
-  stepData: {
-    currentStep: number
-    setCurrentStep?: React.Dispatch<React.SetStateAction<number>>
-  }
-  multiFormData: {
-    formData: MULTI_FORM_TYPES
-    setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>
-  }
-}
-export const FormContext = React.createContext<FormContextTypes>(defaultValues)
+// const defaultValues = {
+//   stepData: {
+//     currentStep: 1,
+//     totalSteps: 3,
+//   },
+//   multiFormData: {
+//     formData: multiFormData,
+//   },
+// }
+// export interface FormContextTypes {
+//   stepData: {
+//     currentStep: number
+//     setCurrentStep?: React.Dispatch<React.SetStateAction<number>>
+//     totalSteps: number
+//   }
+// multiFormData: {
+//   formData: MULTI_FORM_TYPES
+//   setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>
+// }
+// }
+// export const FormContext = React.createContext<FormContextTypes>(defaultValues)
 
 export default function AddCoachMultiFormLayout() {
   const router = useRouter()
   const id = Number(router?.query?.id)
-  const methods = useForm()
+  const methods = useForm({
+    defaultValues: multiFormData,
+    shouldUnregister: false,
+  })
   const [currentStep, setCurrentStep] = useState<number>(1)
-  const [formData, setFormData] = useState<MULTI_FORM_TYPES>(defaultValues.multiFormData.formData)
+  // const coachContext = useContext(FormContext)
+  // console.log(coachContext)
+  // const currentStep = coachContext?.currentStep
+  // console.log(currentStep)
+  // const totalSteps = defaultValues.stepData.totalSteps
+  // const [formData, setFormData] = useState<MULTI_FORM_TYPES>(defaultValues.multiFormData.formData)
   const {data: sessionData} = useSession()
   const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
   const academyId = sessionData?.token
@@ -108,28 +121,56 @@ export default function AddCoachMultiFormLayout() {
   }
 
   useEffect(() => {
-    if (formData.isEditMode && coachData?.data) {
-      setFormData((prevData) => ({
-        ...prevData,
-        ...coachData?.data,
-        centerId: coachData?.data?.centerId ?? undefined,
-        phone: coachData?.data?.phone ?? undefined,
-        email: coachData?.data?.email ?? undefined,
-        image: coachData?.data?.image ?? undefined,
-      }))
+    if (methods.getValues('isEditMode') && coachData?.data) {
+      console.log(coachData.data)
+      console.log(coachData?.data?.CoachSportsMaps.map(({sportId}) => sportId))
+      methods.reset({
+        ...coachData.data,
+        centerId: coachData.data.centerId ?? undefined,
+        phone: coachData.data.phone ?? undefined,
+        email: coachData.data.email ?? undefined,
+        image: coachData.data.image ?? undefined,
+        coachingSports: coachData?.data?.CoachSportsMaps.map(({sportId}) => sportId),
+      })
     }
-  }, [coachData?.data, formData.isEditMode])
+  }, [coachData?.data, methods.getValues('isEditMode')])
+
+  // useEffect(() => {
+  //   if (formData.isEditMode && coachData?.data) {
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       ...coachData?.data,
+  //       centerId: coachData?.data?.centerId ?? undefined,
+  //       phone: coachData?.data?.phone ?? undefined,
+  //       email: coachData?.data?.email ?? undefined,
+  //       image: coachData?.data?.image ?? undefined,
+  //     }))
+  //   }
+  // }, [coachData?.data, formData.isEditMode])
+
+  // useEffect(() => {
+  //   if (router.isReady) {
+  //     if (router.asPath.includes('edit')) {
+  //       setFormData((prevFormData) => ({
+  //         ...prevFormData,
+  //         isEditMode: true,
+  //       }))
+  //     }
+  //   }
+  // }, [router.isReady, router.asPath])
 
   useEffect(() => {
-    if (router.isReady) {
-      if (router.asPath.includes('edit')) {
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          isEditMode: true,
-        }))
-      }
+    if (router.isReady && router.asPath.includes('edit')) {
+      // Option 1: Set just the isEditMode field
+      methods.setValue('isEditMode', true)
+
+      // Option 2: If you need to reset other fields too
+      // methods.reset({
+      //   ...methods.getValues(),
+      //   isEditMode: true
+      // });
     }
-  }, [router.isReady, router.asPath])
+  }, [router.isReady, router.asPath, methods.setValue])
 
   useEffect(() => {
     const fetchSignedUrl = async () => {
@@ -141,11 +182,10 @@ export default function AddCoachMultiFormLayout() {
     void fetchSignedUrl()
   }, [imageUrl])
 
-  const formProviderData = {
-    ...methods,
-    stepData: {currentStep, setCurrentStep},
-    multiFormData: {formData, setFormData},
-  }
+  // const formProviderData = {
+  // stepData: {currentStep, setCurrentStep, totalSteps},
+  // multiFormData: {formData, setFormData},
+  // }
   const {mutate: createMutate} = api.coach.createCoach.useMutation({
     onSuccess: async (response) => {
       await router.push('/coach')
@@ -215,7 +255,7 @@ export default function AddCoachMultiFormLayout() {
   const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
     const {gender, trainingLevel, experience, experienceLevel, centerId, phone, email} = finalForm
     if (createdBy && academyId && gender && trainingLevel && experienceLevel && phone && email) {
-      if (formData.isEditMode) {
+      if (methods.getValues('isEditMode')) {
         const hasCertificatedUpdated =
           finalForm.CoachQualifications.length !== coachData?.data?.CoachQualifications.length ||
           finalForm.CoachQualifications?.[0]?.certificateType !==
@@ -288,18 +328,56 @@ export default function AddCoachMultiFormLayout() {
       }
     }
   }
+  // const {currentStep} = useStepContext()
+  const totalSteps = 3
+  console.log(currentStep)
 
   return (
-    <FormProvider {...methods}>
-      <FormContext.Provider value={formProviderData}>
+    <FormContext.Provider value={{currentStep, setCurrentStep, totalSteps}}>
+      <FormProvider {...methods}>
+        {/* <FormContext.Provider> */}
         <div className='grid grid-cols-6 grid-rows-1'>
           <Card className='col-span-4 ml-10 h-full p-0 pl-10 pt-10'>
             {currentStep === 1 && <AddCoach />}
             {currentStep === 2 && <AddCoachCertificates />}
             {currentStep === 3 && (
-              <AssignBatches finalFormSubmissionHandler={finalFormSubmissionHandler} />
+              <AssignBatches
+              // finalFormSubmissionHandler={finalFormSubmissionHandler(methods.getValues())}
+              />
+            )}
+
+            {currentStep > 1 && (
+              <Button
+                type='button'
+                className='w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
+                onClick={() => setCurrentStep?.(currentStep - 1)}
+              >
+                Prev
+              </Button>
+            )}
+            {currentStep && totalSteps && currentStep < totalSteps && (
+              <Button
+                type='button'
+                className='ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                onClick={() => {
+                  setCurrentStep(currentStep + 1)
+                }}
+              >
+                Next
+              </Button>
+            )}
+            {currentStep === totalSteps && (
+              <Button
+                type='button'
+                className='ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
+                onClick={() => finalFormSubmissionHandler(methods.getValues())}
+              >
+                Finish
+              </Button>
             )}
           </Card>
+
           <Card className='col-span-2 hidden !rounded-l-none rounded-r-xl bg-stone-100 px-7 lg:block'>
             <div className='mb-10 font-heading text-2xl font-medium uppercase'>Coach Image</div>
 
@@ -340,7 +418,8 @@ export default function AddCoachMultiFormLayout() {
             </div>
           </Card>
         </div>
-      </FormContext.Provider>
-    </FormProvider>
+        {/* </FormContext.Provider> */}
+      </FormProvider>
+    </FormContext.Provider>
   )
 }

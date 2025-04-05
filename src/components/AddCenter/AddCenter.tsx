@@ -1,87 +1,77 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import React, {useEffect, useContext, useState, useRef} from 'react'
 
-import type {
-  CENTER_TYPES
-} from "~/types/coach";
+import type {CENTER_TYPES} from '~/types/coach'
 
-import { FormContext } from "~/pages/centers/AddCenter/AddCenterForm";
-import { useForm } from "react-hook-form";
-import { api } from "~/utils/api";
-import { CENTER_DETAILS_CONSTANTS } from "~/constants/centerConstants";
+import {FormContext} from '~/pages/centers/AddCenter/AddCenterForm'
+import {useForm} from 'react-hook-form'
+import {api} from '~/utils/api'
+import {CENTER_DETAILS_CONSTANTS} from '~/constants/centerConstants'
 
-import AddForm from "~/common/AddForm";
-import type { FormValues } from "~/types/common";
+import AddForm from '~/common/AddForm/AddForm'
+import type {FormValues} from '~/types/common'
 
 export default function AddCenter() {
   const {
-    stepData: { currentStep, setCurrentStep },
+    stepData: {currentStep, setCurrentStep},
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    multiFormData: { formData, setFormData },
-  } = useContext(FormContext);
+    multiFormData: {formData, setFormData},
+  } = useContext(FormContext)
 
   const {
     control,
     getValues,
     reset,
     trigger,
-    formState: { errors },
-  } = useForm<CENTER_TYPES>({ mode: "onSubmit" });
-  const currentFormValues = getValues();
-  const hasExecuted = useRef(true);
-  const { data: sports } = api.sports.getAllSports.useQuery();
+    formState: {errors},
+  } = useForm<CENTER_TYPES>({mode: 'onSubmit'})
+  const currentFormValues = getValues()
+  const hasExecuted = useRef(true)
+  const {data: sports} = api.sports.getAllSports.useQuery()
 
-  const { data: coaches } = api.coach.getAllCoaches.useQuery()
+  const {data: coaches} = api.coach.getAllCoaches.useQuery()
 
-  const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
-    CENTER_DETAILS_CONSTANTS
-  );
-
+  const [formConstantValues, setFormConstantValues] =
+    useState<FormValues[]>(CENTER_DETAILS_CONSTANTS)
 
   useEffect(() => {
-
     if (sports?.length && hasExecuted.current) {
-      const updatedFormConstantValues = formConstantValues.map(
-        (formConstant) => {
-          if (formConstant.id === "selectSports") {
-            return {
-              ...formConstant,
-              options: sports.map((sport: { name: string; id: number }) => ({
-                label: sport.name,
-                value: sport.id.toString(),
-              })),
-            };
-          } else {
-            return formConstant;
+      const updatedFormConstantValues = formConstantValues.map((formConstant) => {
+        if (formConstant.id === 'selectSports') {
+          return {
+            ...formConstant,
+            options: sports.map((sport: {name: string; id: number}) => ({
+              label: sport.name,
+              value: sport.id.toString(),
+            })),
           }
-
+        } else {
+          return formConstant
         }
-      );
-      hasExecuted.current = false;
-      setFormConstantValues(updatedFormConstantValues);
+      })
+      hasExecuted.current = false
+      setFormConstantValues(updatedFormConstantValues)
     }
-  }, [formConstantValues, sports, sports?.length]);
+  }, [formConstantValues, sports, sports?.length])
 
   useEffect(() => {
     if (coaches?.length && hasExecuted.current) {
-      const updatedFormConstantValues = formConstantValues.map(
-        (formConstant) => {
-          if (formConstant.id === "selectCoaches") {
-            return {
-              ...formConstant,
-              options: coaches.map((coach: { name: string; id: number }) => ({
-                label: coach.name,
-                value: coach.id.toString(),
-              })),
-            };
-          } else {
-            return formConstant;
+      const updatedFormConstantValues = formConstantValues.map((formConstant) => {
+        if (formConstant.id === 'selectCoaches') {
+          return {
+            ...formConstant,
+            options: coaches.map((coach: {name: string; id: number}) => ({
+              label: coach.name,
+              value: coach.id.toString(),
+            })),
           }
+        } else {
+          return formConstant
         }
-      );
-      hasExecuted.current = false;
-      setFormConstantValues(updatedFormConstantValues);
+      })
+      hasExecuted.current = false
+      setFormConstantValues(updatedFormConstantValues)
     }
-  }, [formConstantValues, coaches, coaches?.length]);
+  }, [formConstantValues, coaches, coaches?.length])
 
   //   useEffect(() => {
   //     // if (!isEditMode) {
@@ -98,11 +88,11 @@ export default function AddCenter() {
   return (
     <>
       <AddForm
-        cardTitle="ADD CENTER"
-        cardSubTitle="CENTER DETAILS"
+        cardTitle='ADD CENTER'
+        cardSubTitle='CENTER DETAILS'
         formConstantValues={formConstantValues}
-        imageTitle="Center Image"
-        buttonItems={{ next: true }}
+        imageTitle='Center Image'
+        buttonItems={{next: true}}
         setFormData={setFormData}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
@@ -140,5 +130,5 @@ export default function AddCenter() {
         </Button>
       </div> */}
     </>
-  );
+  )
 }

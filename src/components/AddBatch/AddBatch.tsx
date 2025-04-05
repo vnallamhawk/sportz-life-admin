@@ -1,62 +1,59 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
-import CardTitle from "~/components/Card/CardTitle";
+import React, {useEffect, useContext, useState, useRef} from 'react'
+import CardTitle from '~/components/Card/CardTitle'
 // import { COACH_DETAILS_CONSTANTS } from "~/constants/coachConstants";
-import Textbox from "~/components/Textbox";
-import { type BATCH_DETAILS_CONSTANTS_TYPES } from "~/types/batch";
-import { FormContext } from "../../pages/centers/Batch/[id]";
-import Button from "../Button";
-import { Controller, useForm } from "react-hook-form";
-import Datepicker from "~/components/DatePicker/DatePickerWrapper";
-import { api } from "~/utils/api";
-import Select from "react-select";
-import { BATCH_DETAILS_CONSTANTS } from "~/constants/batchConstant";
-import AddForm from "~/common/AddForm";
-import type { FormValues } from "~/types/common";
+import Textbox from '~/components/Textbox'
+import {type BATCH_DETAILS_CONSTANTS_TYPES} from '~/types/batch'
+import {FormContext} from '../../pages/centers/Batch/[id]'
+import Button from '../Button'
+import {Controller, useForm} from 'react-hook-form'
+import Datepicker from '~/components/DatePicker/DatePickerWrapper'
+import {api} from '~/utils/api'
+import Select from 'react-select'
+import {BATCH_DETAILS_CONSTANTS} from '~/constants/batchConstant'
+import AddForm from '~/common/AddForm/AddForm'
+import type {FormValues} from '~/types/common'
 
 export default function AddBatch() {
-  let inputElement;
+  let inputElement
   const {
-    stepData: { currentStep, setCurrentStep },
-    multiFormData: { formData, setFormData },
-  } = useContext(FormContext);
+    stepData: {currentStep, setCurrentStep},
+    multiFormData: {formData, setFormData},
+  } = useContext(FormContext)
 
   const {
     control,
     getValues,
     reset,
     trigger,
-    formState: { errors },
-  } = useForm<any>({ mode: "onSubmit" });
+    formState: {errors},
+  } = useForm<any>({mode: 'onSubmit', shouldUnregister: false})
 
   // useForm<CENTER_BATCH_TYPES>({ mode: "onSubmit" });
-  const hasExecuted = useRef(true);
-  const { data: sports } = api.sports.getAllSports.useQuery();
+  const hasExecuted = useRef(true)
+  const {data: sports} = api.sports.getAllSports.useQuery()
 
-  const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
-    BATCH_DETAILS_CONSTANTS
-  );
+  const [formConstantValues, setFormConstantValues] =
+    useState<FormValues[]>(BATCH_DETAILS_CONSTANTS)
 
   useEffect(() => {
     if (sports?.length) {
-      const updatedFormConstantValues = formConstantValues.map(
-        (formConstant) => {
-          if (formConstant.id === "selectSports") {
-            return {
-              ...formConstant,
-              options: sports.map((sport: { name: string; id: number }) => ({
-                label: sport.name,
-                value: sport.id.toString(),
-              })),
-            };
-          } else {
-            return formConstant;
+      const updatedFormConstantValues = formConstantValues.map((formConstant) => {
+        if (formConstant.id === 'selectSports') {
+          return {
+            ...formConstant,
+            options: sports.map((sport: {name: string; id: number}) => ({
+              label: sport.name,
+              value: sport.id.toString(),
+            })),
           }
+        } else {
+          return formConstant
         }
-      );
-      hasExecuted.current = false;
-      setFormConstantValues(updatedFormConstantValues);
+      })
+      hasExecuted.current = false
+      setFormConstantValues(updatedFormConstantValues)
     }
-  }, [formConstantValues, sports, sports?.length]);
+  }, [formConstantValues, sports, sports?.length])
 
   // const getInputElement = (props: BATCH_DETAILS_CONSTANTS_TYPES) => {
   //   const { type, rules, id, pattern, placeHolder } = props;
@@ -174,16 +171,16 @@ export default function AddBatch() {
       </div> */}
 
       <AddForm
-        cardTitle="ADD BATCH"
-        cardSubTitle="BATCH DETAILS"
+        cardTitle='ADD BATCH'
+        cardSubTitle='BATCH DETAILS'
         formConstantValues={formConstantValues}
-        imageTitle="Center Image"
-        buttonItems={{ next: true }}
+        imageTitle='Center Image'
+        buttonItems={{next: true}}
         setFormData={setFormData}
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
       />
     </>
-  );
+  )
 }

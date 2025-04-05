@@ -353,3 +353,15 @@ export const COACH_QUALIFICATION_CERTIFICATE_TYPE: Record<CoachQualifications_ce
 }
 
 
+export const COACH_CERTIFICAT_TABLE_HEADERS =  [
+    {label: 'Certificate', id: 'certificateTypeLabel'},
+    {label: 'Institute', id: 'instituteName'},
+    {label: 'Action', id: 'action'},
+] as const
+
+
+export const COACH_CENTER_BATCH_TABLE_HEADERS =  [
+  {label: 'Center Name', id: 'centerName'},
+  {label: 'Batch Name', id: 'batchName'},
+  {label: 'Action', id: 'action'},
+] as const

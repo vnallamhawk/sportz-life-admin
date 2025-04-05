@@ -112,7 +112,7 @@ export const coachRouter = createTRPCRouter({
           include: {
             CoachSportsMaps: {
               include: {
-                Sports: true, // Fetch the associated sports
+                Sports: true,
               },
             },
             CoachQualifications: true,
@@ -122,41 +122,23 @@ export const coachRouter = createTRPCRouter({
                 Batches: { select: { name: true } },  
               },
             }
-            // batches: true,
-            // centers: true,
-            // certificates: true,
           },
         });
 
-        return coaches;
+
+
+         // Keep all original data, but restructure CoachCentersBatches
+    return {
+      ...coaches,
+      CoachCentersBatches: coaches?.CoachCentersBatches?.map((cb) => ({
+        ...cb,
+        centerName: cb.Centers?.name,
+        batchName: cb.Batches?.name, 
+      })),
+    };
       } catch (error) {
       }
     }),
-  // getCoachesByName: publicProcedure
-  //   .input(
-  //     z.object({
-  //       name: z.string(),
-  //     })
-  //   )
-  //   .query(async (opts) => {
-  //     const coaches = await opts.ctx?.prisma?.coaches?.findMany({
-  //       where: {
-  //         name: {
-  //           contains: opts.input.name,
-  //         },
-  //       },
-  //       include: {
-  //         CoachSportsMaps: true,
-  //         Centers: true,
-  //         Batches: true,
-  //         // sports: true,
-  //         // batches: true,
-  //         // centers: true,
-  //       },
-  //     });
-
-  //     return coaches;
-  //   }),
   createCoach: publicProcedure
     .input(
       z.object({

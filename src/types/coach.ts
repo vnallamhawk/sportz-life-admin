@@ -40,11 +40,15 @@ export interface COACH_DETAILS_CONSTANTS_TYPES {
 
 export interface COACH_CERTIFICATE_TABLE_TYPES {
   instituteName: string;
-  // name: string;
   certificateType: CoachQualifications_certificateType
   certificateTypeLabel: string
   startDate: string;
   endDate: string;
+}
+
+export interface COACH_CENTER_BATCH_TABLE {
+  centerName: string;
+  batchName: string
 }
 
 export interface ASSIGN_BATCHES_TYPES {
@@ -111,17 +115,21 @@ type UpdatedCoachCentersBatches = CoachCentersBatches & {
   Batches: {name: string}
 }
 
+export type MULTI_FORM_COACH_QUALIFICATION = Partial<CoachQualifications & {certificateTypeLabel?: string}>
 export interface MULTI_FORM_TYPES extends COACH_TYPES {
-  certificates: COACH_CERTIFICATE_TABLE_TYPES[];
+  certificates?: CoachQualifications_certificateType;
   batchTableData?: BatchTableData[];
   batchIds?: number[];
   centerIds?: number[];
   coachId?: number;
-  CoachQualifications: CoachQualifications[]
+  CoachQualifications: Partial<MULTI_FORM_COACH_QUALIFICATION>[]
   CoachCentersBatches: UpdatedCoachCentersBatches[]
   Batches: Batches
   centerId?: number
   isEditMode ?:boolean
+  startDate?: Date | string
+  endDate ?: Date | string
+  instituteName?: string
 }
 
 export enum TrainingLevelEnum {

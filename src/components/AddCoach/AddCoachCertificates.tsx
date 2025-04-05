@@ -1,118 +1,126 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useContext, useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from 'react'
 // import { COACH_CERTIFICATES_CONSTANTS } from "~/constants/coachConstants";
 // import { useForm } from "react-hook-form";
-import { type COACH_CERTIFICATE_TABLE_TYPES } from "~/types/coach";
-import { type CoachQualifications } from "@prisma/client";
+import {type COACH_CERTIFICATE_TABLE_TYPES} from '~/types/coach'
+import {type CoachQualifications} from '@prisma/client'
 // import { CoachQualifications_certificateType } from "@prisma/client";
+import Button from '~/components/Button'
 
 import {
   FormContext,
+  multiFormData,
   type FormContextTypes,
-} from "~/pages/coach/AddCoach/AddCoachMultiFormLayout";
-import { dateFormat } from "~/helpers/date";
-import AddForm from "~/common/AddForm";
+} from '~/pages/coach/AddCoach/AddCoachMultiFormLayout'
+import {dateFormat} from '~/helpers/date'
+import AddForm from '~/common/AddForm/AddForm'
 import {
   COACH_CERTIFICATES_CONSTANTS,
   COACH_QUALIFICATION_CERTIFICATE_TYPE,
-} from "~/constants/coachConstants";
+} from '~/constants/coachConstants'
+import type {MULTI_FORM_COACH_QUALIFICATION, MULTI_FORM_TYPES} from '~/types/coach'
+import {useFieldArray, useForm, useFormContext} from 'react-hook-form'
+import CoachCertificateTable from './CoachCertificateTable'
 
 export default function AddCoachCertificates({}) {
+  // const {currentStep, setCurrentStep} =
+  //   // multiFormData: {formData, setFormData},
+  //   useContext<FormContextTypes>(FormContext)
+
   const {
-    stepData: { currentStep, setCurrentStep },
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    multiFormData: { formData, setFormData },
-  } = useContext<FormContextTypes>(FormContext);
+    control, // For <Controller> components
+    register, // For native inputs
+    handleSubmit, // Submission handler
+    watch, // Track specific fields
+    getValues, // Get current field values
+    setValue, // Update a field programmatically
+    formState: {errors, isDirty, isValid}, // Form state
+    reset, // Reset the form
+  } = useFormContext<MULTI_FORM_TYPES>() // Replace with your form type
+  const certificates = watch('certificates')
+  const instituteName = watch('instituteName')
+  const startDate = watch('startDate')
+  const endDate = watch('endDate')
+  const coachQualification = watch('CoachQualifications')
+  console.log(JSON.stringify(getValues()))
 
-  // type CoachQualificationsUpdated = Pick<
-  //   CoachQualifications,
-  //   "id" | "instituteName" | "startDate" | "endDate"
-  // > & {
-  //   certificateTypeLabel: string;
-  // };
+  const formData = getValues()
+  const [tableData, setTableData] = useState<Partial<COACH_CERTIFICATE_TABLE_TYPES>[] | undefined>()
 
-  const [certificates, setCertificates] = useState<
-    COACH_CERTIFICATE_TABLE_TYPES[]
-  >([]);
+  useEffect(() => {
+    const subscription = watch((value) => {})
+    return () => subscription.unsubscribe() // Cleanup
+  }, [watch])
 
-  const onAddHandler = (data: any) => {
-    const arr: COACH_CERTIFICATE_TABLE_TYPES[] = [...certificates];
-    const obj: COACH_CERTIFICATE_TABLE_TYPES = {
-      // eslint-disable-next-line
-      startDate: dateFormat(new Date(data.startDate)),
-      // eslint-disable-next-line
-      endDate: dateFormat(new Date(data.endDate)),
-      // eslint-disable-next-line
-      certificateType: data.certificates,
-      // eslint-disable-next-line
-      certificateTypeLabel:
-        // @ts-expect-error must fix this error
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        COACH_QUALIFICATION_CERTIFICATE_TYPE[data?.certificates],
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      instituteName: data?.instituteName,
-    };
-    arr.push(obj);
-    setCertificates(arr);
-    // @ts-expect-error // TODO: FIX THIS TS ERROR
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    setFormData?.((prevFormData) => ({
-      ...prevFormData,
-      instituteName: "",
-      CoachQualifications: arr,
-    }));
-  };
+  const onAddHandler = (data: MULTI_FORM_COACH_QUALIFICATION | undefined) => {
+    const newQualification: MULTI_FORM_COACH_QUALIFICATION = {
+      startDate: startDate,
+      certificateTypeLabel: certificates
+        ? COACH_QUALIFICATION_CERTIFICATE_TYPE[certificates]
+        : undefined,
+      endDate: endDate,
+      instituteName: instituteName,
+    }
+
+    setValue('CoachQualifications', [...coachQualification, newQualification])
+    // setTableData([...tableData, newQualification])
+  }
 
   const removeCertificate = (index: number) => {
+    // const coachQualification = [...formData.CoachQualifications]
+    // coachQualification.splice(index, 1)
+    // setFormData?.((prevFormData) => ({
+    //   ...prevFormData,
+    //   instituteName: undefined,
+    //   CoachQualifications: coachQualification,
+    // }))
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    const arr = [...certificates];
-    arr.splice(index, 1);
-    setCertificates(arr);
-  };
+    // const arr = [...certificates]
+    // arr.splice(index, 1)
+    // setCertificates(arr)
+    // console.log('inside rmove')
+    // console.log(coachQualification.splice(index, 1))
+    setValue('CoachQualifications', coachQualification.splice(index, 1))
+  }
 
   useEffect(() => {
     if (formData?.CoachQualifications) {
-      setCertificates(
-        // @ts-expect-error TODO: fix this error
-        formData?.CoachQualifications.map(
-          (qualification: CoachQualifications) => ({
-            ...qualification,
-            certificateTypeLabel:
-              COACH_QUALIFICATION_CERTIFICATE_TYPE[
-                qualification.certificateType
-              ],
-          })
-        )
-      );
+      const updatedQualifications = formData.CoachQualifications.map((qualification) => ({
+        ...qualification,
+        certificateTypeLabel: qualification.certificateType
+          ? COACH_QUALIFICATION_CERTIFICATE_TYPE[qualification.certificateType]
+          : undefined,
+      }))
+      // setTableData(updatedQualifications)
+      setValue('CoachQualifications', updatedQualifications)
     }
-  }, [formData?.certificates, formData?.CoachQualifications]);
+  }, [formData.certificates])
 
   return (
     <>
       <AddForm
-        cardTitle="ADD COACH"
-        cardSubTitle="ADD CERTIFICATES"
+        cardTitle='ADD COACH'
+        cardSubTitle='ADD CERTIFICATES'
         formConstantValues={COACH_CERTIFICATES_CONSTANTS}
-        buttonItems={{ prevNext: true }}
-        setFormData={setFormData}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        formData={formData}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-        tableTitle="Certificates"
-        mobileAddButtonText="Add another certificate"
-        TableHeadings={[
-          { label: "Certificate", id: "certificateTypeLabel" },
-          { label: "Institute", id: "instituteName" },
-          { label: "Action", id: "action" },
-        ]}
-        isFormTable={true}
-        // tableFields={formConstantValues}
-        tablekey="certificates"
-        tableData={certificates}
-        addTableData={onAddHandler}
+        // buttonItems={{prevNext: true}}
+        // mobileAddButtonText='Add another certificate'
+        // TableHeadings={[
+        //   {label: 'Certificate', id: 'certificateTypeLabel'},
+        //   {label: 'Institute', id: 'instituteName'},
+        //   {label: 'Action', id: 'action'},
+        // ]}
+      />
+      <Button
+        className='border-1 ml-7 hidden rounded-md border-blush-light px-8 py-3 text-lg font-bold text-[#FF9678] hover:border-blush-dark hover:text-blush-dark lg:block'
+        type='button'
+        onClick={() => onAddHandler}
+      >
+        Add
+      </Button>
+      <CoachCertificateTable
+        tableData={coachQualification}
         onRemoveTableButton={removeCertificate}
       />
     </>
-  );
+  )
 }

@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import React, { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { FormContext } from "~/pages/drills/AddDrills/AddFitnessDrills";
+import React, {useContext, useEffect, useState} from 'react'
+import {useRouter} from 'next/navigation'
+import {FormContext} from '~/pages/drills/AddDrills/AddFitnessDrills'
 // import AddInventoryModal from "./AddInventoryModal";
-import { api } from "~/utils/api";
-import { useSession } from "next-auth/react";
-import AddForm from "~/common/AddForm";
-import { DRILL_INVENTORY_TABLE_HEADERS } from "~/constants/inventoryConstant";
-import type { MultiSelectOption } from "~/types/select";
+import {api} from '~/utils/api'
+import {useSession} from 'next-auth/react'
+import AddForm from '~/common/AddForm/AddForm'
+import {DRILL_INVENTORY_TABLE_HEADERS} from '~/constants/inventoryConstant'
+import type {MultiSelectOption} from '~/types/select'
 
 const AddFitnessDrillInventory = (props: any) => {
-  const [inventories, setInventories] = useState<{ [key: string]: any }[]>([]);
-  const [finalOptions, setFinalOptions] = useState<MultiSelectOption[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const [inventories, setInventories] = useState<{[key: string]: any}[]>([])
+  const [finalOptions, setFinalOptions] = useState<MultiSelectOption[]>([])
+  const [showModal, setShowModal] = useState(false)
   const [inventoryDetails, setInventoryDetails] = useState({
-    name: "",
-    category: "",
-  });
+    name: '',
+    category: '',
+  })
   //   const { data: allInventories } = api.inventory.getAllInventories.useQuery();
-  const { data: sessionData } = useSession();
+  const {data: sessionData} = useSession()
 
   //   const { mutate: createMutate } = api.inventory.createInventory.useMutation({
   //     onSuccess: (response) => {
@@ -51,10 +51,10 @@ const AddFitnessDrillInventory = (props: any) => {
   //   }, [inventories, allInventories, finalOptions]);
 
   const {
-    stepData: { currentStep, setCurrentStep },
+    stepData: {currentStep, setCurrentStep},
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    multiFormData: { formData, setFormData },
-  } = useContext(FormContext);
+    multiFormData: {formData, setFormData},
+  } = useContext(FormContext)
 
   //   const submitCallback = () => {
   //     const finalFormData = {
@@ -109,38 +109,38 @@ const AddFitnessDrillInventory = (props: any) => {
         />
       )} */}
       <AddForm
-        cardTitle="ADD FITNESS DRILL"
-        tableTitle="ADD EQUIPMENT"
-        tableDescription={""}
+        cardTitle='ADD FITNESS DRILL'
+        tableTitle='ADD EQUIPMENT'
+        tableDescription={''}
         tableFields={[
           {
-            type: "select",
-            name: "value",
-            placeholder: "Select Equipment",
+            type: 'select',
+            name: 'value',
+            placeholder: 'Select Equipment',
             options: finalOptions,
           },
-          { type: "number", name: "quantity" },
+          {type: 'number', name: 'quantity'},
         ]}
         TableHeadings={DRILL_INVENTORY_TABLE_HEADERS}
-        tablekey="drill_inventory"
+        tablekey='drill_inventory'
         tableData={inventories}
         // addTableData={onSaveInventories}
-        buttonItems={{ prevFinish: true }}
+        buttonItems={{prevFinish: true}}
         setFormData={setFormData}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         formData={formData}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
-        addTableButtonText={"Add"}
+        addTableButtonText={'Add'}
         addTableButton={() => {
-          setShowModal(!showModal);
+          setShowModal(!showModal)
         }}
-        mobileAddButtonText="Add"
+        mobileAddButtonText='Add'
         // onRemoveTableButton={removeInventory}
         // finalFormSubmissionHandler={submitCallback}
       />
     </>
-  );
-};
+  )
+}
 
-export default AddFitnessDrillInventory;
+export default AddFitnessDrillInventory

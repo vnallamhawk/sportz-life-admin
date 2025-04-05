@@ -1,24 +1,24 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { FormContext } from "~/pages/competitions/AddCompetitions/AddCompetitionsMultiFormLayout";
-import { api } from "~/utils/api";
+import React, {useContext, useEffect, useState} from 'react'
+import {useForm} from 'react-hook-form'
+import {FormContext} from '~/pages/competitions/AddCompetitions/AddCompetitionsMultiFormLayout'
+import {api} from '~/utils/api'
 
-import AddForm from "~/common/AddForm";
-import type { FormValues } from "~/types/common";
-import { COMPETITION_DETAILS_CONSTANTS } from "~/constants/competitionConstants";
+import AddForm from '~/common/AddForm/AddForm'
+import type {FormValues} from '~/types/common'
+import {COMPETITION_DETAILS_CONSTANTS} from '~/constants/competitionConstants'
 
 const AddCompetition = () => {
   const {
-    stepData: { currentStep, setCurrentStep },
+    stepData: {currentStep, setCurrentStep},
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    multiFormData: { formData, setFormData },
-  } = useContext(FormContext);
+    multiFormData: {formData, setFormData},
+  } = useContext(FormContext)
 
-  const { getValues } = useForm<any>({ mode: "onSubmit" });
+  const {getValues} = useForm<any>({mode: 'onSubmit'})
 
   const [formConstantValues, setFormConstantValues] = useState<FormValues[]>(
     COMPETITION_DETAILS_CONSTANTS
-  );
+  )
   // useEffect(() => {
   //   let updatedFormConstantValues: any = formConstantValues;
   //   if (payroll && payroll?.length > 0) {
@@ -72,10 +72,10 @@ const AddCompetition = () => {
   return (
     <>
       <AddForm
-        cardTitle="ADD COMPETITION"
-        cardSubTitle="COMPETITION DETAILS"
+        cardTitle='ADD COMPETITION'
+        cardSubTitle='COMPETITION DETAILS'
         formConstantValues={formConstantValues}
-        buttonItems={{ next: true }}
+        buttonItems={{next: true}}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         setFormData={setFormData}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -84,7 +84,7 @@ const AddCompetition = () => {
         setCurrentStep={setCurrentStep}
       />
     </>
-  );
-};
+  )
+}
 
-export default AddCompetition;
+export default AddCompetition
