@@ -70,159 +70,15 @@ const AddForm = ({
   cardSubTitle,
   formConstantValues,
   imageTitle,
-  // tableTitle,
-  // tableDescription,
-  // mobileAddButtonText,
-  // TableHeadings,
-  // tableData,
-  // addTableData,
-  // tablekey,
-  // buttonItems,
-  // setFormData,
-  // formData,
-  // setCurrentStep,
-  // currentStep,
-  finalFormSubmissionHandler,
-  // tableFields,
-  // addTableButtonText,
-  // addTableButton,
-  // shouldDisableAddTableButton = false,
-  // onRemoveTableButton,
-  // isFormTable = false,
-  // prevButtonText = 'Prev',
-  // finishButtonText = 'Finish',
-  // prevButtonClick,
-  // dependentKey,
-  // setDependentKey,
-  // dependentKey1,
-  // setDependentKey1,
   onDropCallback,
   uploadUrl,
 }: AddForm) => {
   let inputElement
-  // const {totalSteps} = useFormContext()
-  const coachContext = useContext(FormContext)
-  console.log(coachContext)
-  const currentStep = coachContext?.currentStep
-  const setCurrentStep = coachContext?.setCurrentStep
-  const totalSteps = coachContext?.totalSteps
-  // const {
-  //   control,
-  //   getValues,
-  //   trigger,
-  //   formState: {errors},
-  //   reset,
-  // } = useForm<MULTI_FORM_TYPES>({mode: 'onSubmit', values: formData, shouldUnregister: false})
-  // const [currentTableData, setCurrentTableData] = useState<{
-  //   [key: string]: any
-  // }>({})
-  // const [selectedPlaceholders, setSelectedPlaceholders] = useState<{
-  //   [key: string]: string
-  // }>({})
+
   const {
     control,
-    getValues,
-    trigger,
     formState: {errors},
   } = useFormContext()
-
-  // console.log(formData)
-  // console.log({values: getValues()})
-
-  // useEffect(() => {
-  //   reset({
-  //     centerId: undefined,
-  //   }) // Reset form values on mount
-  // }, [reset])
-
-  // const nextClickHandler = useCallback(async () => {
-  //   const result = await trigger()
-  //   if (result) {
-  //     const currentFormValues = getValues()
-  // const obj: MULTI_FORM_TYPES = {...formData, ...currentFormValues}
-  // if ((buttonItems?.prevNext || buttonItems?.next) && tablekey) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-  // tablekey && (obj[tablekey] = tableData)
-  // }
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  // setFormData && setFormData(obj)
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  // setCurrentStep && setCurrentStep(currentStep + 1)
-  //   }
-  // }, [
-  // buttonItems?.next,
-  // buttonItems?.prevNext,
-  // currentStep,
-  // formData,
-  // getValues,
-  // setCurrentStep,
-  // setFormData,
-  // tableData,
-  // tablekey,
-  // trigger,
-  // ])
-
-  // useEffect(() => {
-  // if (buttonItems && Object.keys(buttonItems).length === 0) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  // const currentFormValues = getValues()
-  // const obj: unknown = {...formData, ...currentFormValues}
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  // setFormData && setFormData(obj)
-  // }
-  // }, [buttonItems, formData, getValues, nextClickHandler, setFormData])
-
-  // const prevClickHandler = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  //   setCurrentStep && setCurrentStep?.(currentStep - 1)
-  // }
-
-  // const handleChangeCurrentData = (
-  //   name: string,
-  //   data: {label: string; value: string} | null,
-  //   value: string | number,
-  //   placeholder: string // Accept placeholder as a parameter
-  // ) => {
-  //   const obj: {[key: string]: string | number} = {...currentTableData}
-
-  //   if (data && data?.label && data?.value) {
-  //     obj['value'] = data.value
-  //     obj['name'] = data.label
-
-  //     // Update the placeholder dynamically
-  //     setSelectedPlaceholders((prev) => ({
-  //       ...prev,
-  //       [name]: data.label,
-  //     }))
-  //   } else {
-  //     obj[name] = value
-
-  //     // Reset placeholder using the passed placeholder value
-  //     setSelectedPlaceholders((prev) => ({
-  //       ...prev,
-  //       [name]: placeholder,
-  //     }))
-  //   }
-
-  //   setCurrentTableData(obj)
-  // }
-
-  const submitCallback = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const currentFormValues = getValues()
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const finalFormData = {
-      ...getValues(),
-      ...currentFormValues,
-    }
-    if (tablekey) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      finalFormData[tablekey] = tableData
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    finalFormSubmissionHandler(finalFormData)
-  }
 
   const handleChangeTime = (value: string | boolean | unknown, name: string) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -527,48 +383,6 @@ const AddForm = ({
           <div className='text-sm text-gray-300'>JPEG, PNG, Video</div>
         </label>
       )}
-      {/* <div className='bottom-8 right-0 mb-10 mt-10 flex justify-end lg:absolute lg:mb-0 lg:mr-10'>
-        <button
-          className='w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
-          type='button'
-          onClick={setCurrentStep?.(currentStep + 1)}
-        >
-          Next
-        </button>
-      </div> */}
-
-      {/* <div className='absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end'> */}
-
-      {/* </div> */}
-
-      {/* <div className='absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end'>
-        <Button
-          type='button'
-          className='w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          onClick={setCurrentStep?.(currentStep - 1)}
-        >
-          Prev
-        </Button>
-        <Button
-          type='button'
-          className='ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
-          onClick={submitCallback}
-        >
-          Finish
-        </Button>
-      </div> */}
-
-      {/* <div className='absolute bottom-8 left-0 right-0 mx-10 mt-10 flex justify-end'>
-        <Button
-          type='button'
-          className='ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
-          onClick={submitCallback}
-        >
-          Finish
-        </Button>
-      </div> */}
-      {/* )} */}
     </>
   )
 }
