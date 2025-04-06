@@ -141,11 +141,7 @@ export const coachRouter = createTRPCRouter({
             }
           },
         });
-        console.log(coaches)
         
-
-
-
          // Keep all original data, but restructure CoachCentersBatches
     return {
       ...coaches,

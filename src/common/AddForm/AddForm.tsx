@@ -261,8 +261,7 @@ const AddForm = ({
                 <Datepicker
                   {...rest}
                   placeHolder={props.placeHolder}
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                  value={value ? new Date(value as string) : null}
+                  value={value ? new Date(value) : null}
                   className='h-12'
                   onChangeHandler={onChange}
                 />

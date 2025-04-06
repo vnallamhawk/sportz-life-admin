@@ -24,11 +24,10 @@ const multiFormData: MULTI_FORM_TYPES = {
   dateOfBirth: '',
   payroll: '',
   coachingSports: [],
-  certificates: [],
+  certificates: undefined,
   batchIds: [],
   centerIds: [],
   coachId: undefined,
-  coachBatches: [],
   CoachQualifications: [],
   Batches: {
     id: 0,
@@ -100,7 +99,7 @@ export default function AddCoachMultiFormLayout() {
         phone: coachData.data.phone ?? undefined,
         email: coachData.data.email ?? undefined,
         image: coachData.data.image ?? undefined,
-        coachingSports: coachData?.data?.CoachSportsMaps.map(({sportId}) => sportId),
+        coachingSports: coachData?.data?.CoachSportsMaps?.map(({sportId}) => sportId),
       })
     }
   }, [coachData?.data, methods.getValues('isEditMode')])
@@ -128,20 +127,6 @@ export default function AddCoachMultiFormLayout() {
   //     }
   //   }
   // }, [router.isReady, router.asPath])
-
-  useEffect(() => {
-    if (router.isReady && router.asPath.includes('edit')) {
-      // Option 1: Set just the isEditMode field
-      console.log('insde')
-      methods.setValue('isEditMode', true)
-
-      // Option 2: If you need to reset other fields too
-      // methods.reset({
-      //   ...methods.getValues(),
-      //   isEditMode: true
-      // });
-    }
-  }, [router.isReady, router.asPath, methods.setValue])
 
   useEffect(() => {
     const fetchSignedUrl = async () => {
@@ -224,11 +209,12 @@ export default function AddCoachMultiFormLayout() {
   })
 
   const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
-    const {gender, trainingLevel, experience, experienceLevel, centerId, phone, email} = finalForm
+    const {batches, gender, trainingLevel, experience, experienceLevel, centerId, phone, email} =
+      finalForm
     if (createdBy && academyId && gender && trainingLevel && experienceLevel && phone && email) {
       if (router.asPath.includes('edit')) {
         const hasCertificatedUpdated =
-          finalForm.CoachQualifications.length !== coachData?.data?.CoachQualifications.length ||
+          finalForm.CoachQualifications.length !== coachData?.data?.CoachQualifications?.length ||
           finalForm.CoachQualifications?.[0]?.certificateType !==
             coachData.data?.CoachQualifications?.[0]?.certificateType
 
@@ -250,7 +236,7 @@ export default function AddCoachMultiFormLayout() {
             ? finalForm.CoachQualifications.map((coachQualification) => ({
                 ...coachQualification,
                 startDate: parse(
-                  coachQualification.startDate.toISOString(),
+                  coachQualification.startDate?.toISOString(),
                   'dd/MM/yyyy',
                   new Date()
                 ),
@@ -262,9 +248,7 @@ export default function AddCoachMultiFormLayout() {
             : [],
         })
       } else {
-        if (centerId && experience) {
-          console.log(finalForm.CoachQualifications[0]?.startDate)
-          console.log(parse(finalForm.CoachQualifications[0]?.startDate, 'dd/MM/yyyy', new Date()))
+        if (centerId && experience && batches) {
           createMutate({
             name: finalForm.name,
             phone: phone,
@@ -291,7 +275,7 @@ export default function AddCoachMultiFormLayout() {
               fileType: 'link',
               fileName: null,
             })),
-            batches: finalForm.batches,
+            batches: batches,
           })
         }
       }

@@ -197,11 +197,11 @@ const DetailPage = ({
               <div className='mb-6 mt-6 grid grid-cols-3 gap-8'>
                 <div>
                   <p className='mb-1 text-sm text-[#6e7280]'>Sport</p>
-                  <p className='font-medium'>{data?.assessmentDetails.sport}</p>
+                  <p className='font-medium'>{data?.assessmentDetails?.sport}</p>
                 </div>
                 <div>
                   <p className='mb-1 text-sm text-[#6e7280]'>Training Level</p>
-                  <p className='font-medium'>{data?.assessmentDetails.trainingLevel}</p>
+                  <p className='font-medium'>{data?.assessmentDetails?.trainingLevel}</p>
                 </div>
                 <div>
                   <p className='mb-1 text-sm text-[#6e7280]'>Test Rank Type</p>

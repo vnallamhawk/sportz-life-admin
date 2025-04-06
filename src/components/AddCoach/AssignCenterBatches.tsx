@@ -58,7 +58,6 @@ export default function AssignBatches() {
     if (selectedBatches?.length === 0 || !selectedBatches) {
       setValue('CoachCentersBatches', [])
     } else if (selectedBatches.length && batches?.length && centers?.length) {
-      console.log('inside')
       const updatedBatches = selectedBatches?.map((id) => ({
         batchId: id,
         batchName: batches?.find((batch) => batch.id === id)?.name,
