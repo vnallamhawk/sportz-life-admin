@@ -123,8 +123,18 @@ export default function AddCoachMultiFormLayout() {
     if (methods.getValues('isEditMode') && coachData?.data) {
       console.log(coachData.data)
       console.log(coachData?.data?.CoachSportsMaps.map(({sportId}) => sportId))
+      console.log({
+        ...coachData.data,
+        batches: coachData?.data?.CoachCentersBatches?.map(({batchId}) => batchId),
+        centerId: coachData.data.centerId ?? undefined,
+        phone: coachData.data.phone ?? undefined,
+        email: coachData.data.email ?? undefined,
+        image: coachData.data.image ?? undefined,
+        coachingSports: coachData?.data?.CoachSportsMaps.map(({sportId}) => sportId),
+      })
       methods.reset({
         ...coachData.data,
+        batches: coachData?.data?.CoachCentersBatches?.map(({batchId}) => batchId),
         centerId: coachData.data.centerId ?? undefined,
         phone: coachData.data.phone ?? undefined,
         email: coachData.data.email ?? undefined,

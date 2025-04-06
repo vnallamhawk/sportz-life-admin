@@ -3,10 +3,10 @@ import type {COACH_CENTER_BATCH_TABLE} from '~/types/coach'
 
 const CenterBatchTable = ({
   tableData,
-  onRemoveTableButton,
+  onRemove,
 }: {
   tableData: COACH_CENTER_BATCH_TABLE[]
-  onRemoveTableButton: (index: number) => void
+  onRemove: (index: number) => void
 }) => (
   <div className='scroll mt-5 hidden max-h-[370px] overflow-auto px-0 lg:block'>
     <table className='common-table w-full table-fixed border-separate border-spacing-y-2 text-left'>
@@ -38,7 +38,7 @@ const CenterBatchTable = ({
                   ) : (
                     <span
                       className='cursor-pointer font-medium text-gray-400 hover:text-red-500'
-                      onClick={() => onRemoveTableButton(dataIndex)}
+                      onClick={() => onRemove(dataIndex)}
                     >
                       Remove
                     </span>

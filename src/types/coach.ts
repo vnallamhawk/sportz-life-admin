@@ -93,7 +93,7 @@ export interface COACH_TYPES {
   trainingLevel?: Coaches_trainingLevel
   experienceLevel?:  Coaches_experienceLevel
   image?: string
-  batches: number[]
+  batches?: number[]
 }
 export interface CENTER_TYPES {
   centerName: string;
@@ -110,10 +110,7 @@ export interface BatchData {
   batchName: string;
 }
 
-type UpdatedCoachCentersBatches = CoachCentersBatches & {
-  Centers: {name: string}
-  Batches: {name: string}
-}
+type UpdatedCoachCentersBatches = CoachCentersBatches & BatchData
 
 export type MULTI_FORM_COACH_QUALIFICATION = Partial<CoachQualifications & {certificateTypeLabel?: string}>
 export interface MULTI_FORM_TYPES extends COACH_TYPES {
@@ -123,7 +120,7 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   centerIds?: number[];
   coachId?: number;
   CoachQualifications: Partial<MULTI_FORM_COACH_QUALIFICATION>[]
-  CoachCentersBatches: UpdatedCoachCentersBatches[]
+  CoachCentersBatches: Partial<UpdatedCoachCentersBatches>[]
   Batches: Batches
   centerId?: number
   isEditMode ?:boolean
