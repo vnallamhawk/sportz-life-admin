@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import {COACH_DETAILS_CONSTANTS} from '~/constants/coachConstants'
-// import {FormContext} from '~/pages/coach/AddCoach/AddCoachMultiFormLayout'
 
 import {api} from '~/utils/api'
 import AddForm from '~/common/AddForm/AddForm'
