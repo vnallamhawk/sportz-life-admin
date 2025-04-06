@@ -105,8 +105,8 @@ export default function AddCoachCertificates({}) {
         ADD CERTIFICATES
       </div>
       <AddForm
-        cardTitle='ADD COACH'
-        cardSubTitle='ADD CERTIFICATES'
+        // cardTitle='ADD COACH'
+        // cardSubTitle='ADD CERTIFICATES'
         formConstantValues={COACH_CERTIFICATES_CONSTANTS}
         // buttonItems={{prevNext: true}}
         // mobileAddButtonText='Add another certificate'

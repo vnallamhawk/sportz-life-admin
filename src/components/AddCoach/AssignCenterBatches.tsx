@@ -88,8 +88,8 @@ export default function AssignBatches() {
         ASSIGN BATCHES
       </div>
       <AddForm
-        cardTitle='ADD COACH'
-        cardSubTitle='ASSIGN BATCHES'
+        // cardTitle='ADD COACH'
+        // cardSubTitle='ASSIGN BATCHES'
         formConstantValues={formConstantValues}
       />
       {/* <Button

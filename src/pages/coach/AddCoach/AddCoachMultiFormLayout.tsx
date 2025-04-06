@@ -10,9 +10,10 @@ import {api} from '~/utils/api'
 import {useRouter} from 'next/router'
 import FileUpload from '~/components/FileUpload'
 import {useSession} from 'next-auth/react'
-import {parse} from 'date-fns'
+import {format, parse} from 'date-fns'
 import {FormContext} from '~/hooks/useMultiStepFormContext'
 import Button from '~/components/Button'
+import CardTitle from '~/components/Card/CardTitle'
 
 const multiFormData: MULTI_FORM_TYPES = {
   contactNumber: '',
@@ -29,7 +30,6 @@ const multiFormData: MULTI_FORM_TYPES = {
   coachId: undefined,
   coachBatches: [],
   CoachQualifications: [],
-  isEditMode: false,
   Batches: {
     id: 0,
     name: '',
@@ -52,28 +52,6 @@ const multiFormData: MULTI_FORM_TYPES = {
   CoachCentersBatches: [],
 }
 
-// const defaultValues = {
-//   stepData: {
-//     currentStep: 1,
-//     totalSteps: 3,
-//   },
-//   multiFormData: {
-//     formData: multiFormData,
-//   },
-// }
-// export interface FormContextTypes {
-//   stepData: {
-//     currentStep: number
-//     setCurrentStep?: React.Dispatch<React.SetStateAction<number>>
-//     totalSteps: number
-//   }
-// multiFormData: {
-//   formData: MULTI_FORM_TYPES
-//   setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>
-// }
-// }
-// export const FormContext = React.createContext<FormContextTypes>(defaultValues)
-
 export default function AddCoachMultiFormLayout() {
   const router = useRouter()
   const id = Number(router?.query?.id)
@@ -81,13 +59,7 @@ export default function AddCoachMultiFormLayout() {
     defaultValues: multiFormData,
     shouldUnregister: false,
   })
-  const [currentStep, setCurrentStep] = useState<number>(3)
-  // const coachContext = useContext(FormContext)
-  // console.log(coachContext)
-  // const currentStep = coachContext?.currentStep
-  // console.log(currentStep)
-  // const totalSteps = defaultValues.stepData.totalSteps
-  // const [formData, setFormData] = useState<MULTI_FORM_TYPES>(defaultValues.multiFormData.formData)
+  const [currentStep, setCurrentStep] = useState<number>(1)
   const {data: sessionData} = useSession()
   const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
   const academyId = sessionData?.token
@@ -120,7 +92,7 @@ export default function AddCoachMultiFormLayout() {
   }
 
   useEffect(() => {
-    if (methods.getValues('isEditMode') && coachData?.data) {
+    if (router.asPath.includes('edit') && coachData?.data) {
       methods.reset({
         ...coachData.data,
         batches: coachData?.data?.CoachCentersBatches?.map(({batchId}) => batchId),
@@ -160,6 +132,7 @@ export default function AddCoachMultiFormLayout() {
   useEffect(() => {
     if (router.isReady && router.asPath.includes('edit')) {
       // Option 1: Set just the isEditMode field
+      console.log('insde')
       methods.setValue('isEditMode', true)
 
       // Option 2: If you need to reset other fields too
@@ -253,7 +226,7 @@ export default function AddCoachMultiFormLayout() {
   const finalFormSubmissionHandler = (finalForm: MULTI_FORM_TYPES) => {
     const {gender, trainingLevel, experience, experienceLevel, centerId, phone, email} = finalForm
     if (createdBy && academyId && gender && trainingLevel && experienceLevel && phone && email) {
-      if (methods.getValues('isEditMode')) {
+      if (router.asPath.includes('edit')) {
         const hasCertificatedUpdated =
           finalForm.CoachQualifications.length !== coachData?.data?.CoachQualifications.length ||
           finalForm.CoachQualifications?.[0]?.certificateType !==
@@ -290,6 +263,8 @@ export default function AddCoachMultiFormLayout() {
         })
       } else {
         if (centerId && experience) {
+          console.log(finalForm.CoachQualifications[0]?.startDate)
+          console.log(parse(finalForm.CoachQualifications[0]?.startDate, 'dd/MM/yyyy', new Date()))
           createMutate({
             name: finalForm.name,
             phone: phone,
@@ -310,12 +285,8 @@ export default function AddCoachMultiFormLayout() {
             sports: finalForm.coachingSports?.map((sport) => Number(sport)),
             coachQualifications: finalForm.CoachQualifications.map((coachQualification) => ({
               ...coachQualification,
-              startDate: parse(
-                coachQualification.startDate.toISOString(),
-                'dd/MM/yyyy',
-                new Date()
-              ),
-              endDate: parse(coachQualification.endDate.toISOString(), 'dd/MM/yyyy', new Date()),
+              startDate: coachQualification?.startDate,
+              endDate: coachQualification?.endDate,
               fileUrl: '',
               fileType: 'link',
               fileName: null,
@@ -326,16 +297,25 @@ export default function AddCoachMultiFormLayout() {
       }
     }
   }
-  // const {currentStep} = useStepContext()
   const totalSteps = 3
-  console.log(currentStep)
 
   return (
     <FormContext.Provider value={{currentStep, setCurrentStep, totalSteps}}>
       <FormProvider {...methods}>
         {/* <FormContext.Provider> */}
+        <CardTitle
+          className='ml-20'
+          title={router.asPath.includes('edit') ? 'EDIT COACH' : 'ADD COACH'}
+        />
+
         <div className='grid grid-cols-6 grid-rows-1'>
           <Card className='col-span-4 ml-10 h-full p-0 pl-10 pt-10'>
+            {/* <CardTitle title={'Add Coach'} />
+
+            <div className=' text-center font-heading text-3xl font-medium uppercase lg:text-left'>
+              {cardSubTitle}
+            </div> */}
+
             {currentStep === 1 && <AddCoach />}
             {currentStep === 2 && <AddCoachCertificates />}
             {currentStep === 3 && (

@@ -1,24 +1,36 @@
-import { useContext, useEffect, useState } from "react";
-import type { StaticImageData } from "next/image";
-import CoachImg from "../../images/CoachesImg.png";
-import BatchImg from "../../images/BatchesImg.png";
-import AthleteImg from "../../images/AthelteImg.png";
-import InventoryImg from "../../images/InventoryImg.png";
-import { prisma } from "~/server/db";
-import { type GetServerSidePropsContext } from "next";
-import type { AssessmentAssignedAthletes, AssessmentAssignedCoaches, AssessmentBatches, AssessmentCenters, Assessments, AthleteBatchesMaps, Athletes, Batches, Centers, Coaches, Sports } from "@prisma/client";
-import { ToastContext } from "~/contexts/Contexts";
-import { useRouter } from "next/router";
-import DetailPage from "~/common/DetailPage";
-import AllData from "~/common/AllData";
+import {useContext, useEffect, useState} from 'react'
+import type {StaticImageData} from 'next/image'
+import CoachImg from '../../images/CoachesImg.png'
+import BatchImg from '../../images/BatchesImg.png'
+import AthleteImg from '../../images/AthelteImg.png'
+import InventoryImg from '../../images/InventoryImg.png'
+import {prisma} from '~/server/db'
+import {type GetServerSidePropsContext} from 'next'
+import type {
+  AssessmentAssignedAthletes,
+  AssessmentAssignedCoaches,
+  AssessmentBatches,
+  AssessmentCenters,
+  Assessments,
+  AthleteBatchesMaps,
+  Athletes,
+  Batches,
+  Centers,
+  Coaches,
+  Sports,
+} from '@prisma/client'
+import {ToastContext} from '~/contexts/Contexts'
+import {useRouter} from 'next/router'
+import DetailPage from '~/common/DetailPage/DetailPage'
+import AllData from '~/common/AllData'
 // import { ASSESSMENT_DASH_ATHLETE_TABLE_HEADERS, ASSESSMENT_DASH_BATCH_TABLE_HEADERS, ASSESSMENT_DASH_COACH_TABLE_HEADERS, ASSESSMENT_DASH_CENTER_TABLE_HEADERS } from "~/constants/assessmentDashTables";
-import type { TabType } from "~/types/common";
-import { ASSESSMENT_ASSIGNED_TABLE_HEADERS } from "~/constants/assessment";
+import type {TabType} from '~/types/common'
+import {ASSESSMENT_ASSIGNED_TABLE_HEADERS} from '~/constants/assessment'
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
-  const id = context?.params?.id;
+  const id = context?.params?.id
   const assessment = await prisma.assessments.findUnique({
-    where: { id: id ? Number(id) : undefined },
+    where: {id: id ? Number(id) : undefined},
     include: {
       AssessmentAssignedAthletes: {
         include: {
@@ -51,40 +63,40 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
           AssignedTests: {
             include: {
               AssignedTestBanks: true,
-              Tests: true
-            }
-          }
-        }
+              Tests: true,
+            },
+          },
+        },
       },
       AssessmentSports: true,
       Academies: true,
       Sports: true,
     },
-  });
+  })
 
   return {
     props: {
       assessment: JSON.parse(JSON.stringify(assessment)), // <== Convert data to JSON-safe format
     },
-  };
-};
+  }
+}
 
 const tabs: TabType[] = [
-  { label: "Athletes", name: "athletes", value: "0", image: AthleteImg, allLabel: "All Athletes" },
-  { label: "Coaches", name: "coaches", value: "0", image: CoachImg, allLabel: "All Coaches" },
-  { label: "Batches", name: "batches", value: "0", image: BatchImg, allLabel: "All Batches" },
-  { label: "Centers", name: "centers", value: "0", image: InventoryImg, allLabel: "All Centers" },
-];
+  {label: 'Athletes', name: 'athletes', value: '0', image: AthleteImg, allLabel: 'All Athletes'},
+  {label: 'Coaches', name: 'coaches', value: '0', image: CoachImg, allLabel: 'All Coaches'},
+  {label: 'Batches', name: 'batches', value: '0', image: BatchImg, allLabel: 'All Batches'},
+  {label: 'Centers', name: 'centers', value: '0', image: InventoryImg, allLabel: 'All Centers'},
+]
 
 interface AssessmentCentersType extends AssessmentCenters {
-  Centers?: Centers;
+  Centers?: Centers
 }
 
 interface BatchesType extends Batches {
   Coaches: Coaches
 }
 interface AthleteBatchesMapsType extends AthleteBatchesMaps {
-  Batches: BatchesType,
+  Batches: BatchesType
 }
 interface AthletesType extends Athletes {
   AthleteBatchesMaps: AthleteBatchesMapsType[]
@@ -94,112 +106,112 @@ interface AssessmentAssignedAthletesType extends AssessmentAssignedAthletes {
 }
 
 interface AssessmentDetails extends Assessments {
-  AssessmentAssignedAthletes?: AssessmentAssignedAthletesType[];
-  AssessmentAssignedCoaches?: AssessmentAssignedCoaches[];
-  AssessmentBatches?: AssessmentBatches[];
-  AssessmentCenters?: AssessmentCentersType[];
+  AssessmentAssignedAthletes?: AssessmentAssignedAthletesType[]
+  AssessmentAssignedCoaches?: AssessmentAssignedCoaches[]
+  AssessmentBatches?: AssessmentBatches[]
+  AssessmentCenters?: AssessmentCentersType[]
   Sports?: Sports
 }
 
 interface SingleAssessment {
-  id: number;
-  name: string;
-  assessmentDetails: object;
-  assessmentDescription: string;
-  assessmentSchedule: object;
-  assessmentScoreAccess: object;
-  assessmentPerformanceTests: object;
+  id: number
+  name: string
+  assessmentDetails: object
+  assessmentDescription: string
+  assessmentSchedule: object
+  assessmentScoreAccess: object
+  assessmentPerformanceTests: object
 }
 
 interface AssessmentAssignedTableRow {
-  id: number; // Add an id field
-  athleteName: string;
-  batchName: string;
-  centerName: string;
-  coachName: string;
+  id: number // Add an id field
+  athleteName: string
+  batchName: string
+  centerName: string
+  coachName: string
 }
 
+export default function Page({assessment}: {assessment: AssessmentDetails}) {
+  const router = useRouter()
+  const {openToast, setOpenToast} = useContext(ToastContext)
+  const [selectedTab, setSelectedTab] = useState<string | undefined>(tabs[0]?.name)
+  const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>()
+  const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs)
+  const [finalData, setFinalData] = useState<SingleAssessment | null>(null)
+  const [finalAssignedData, setFinalAssignedData] = useState<AssessmentAssignedTableRow[]>([])
 
-export default function Page({ assessment }: { assessment: AssessmentDetails }) {
-  const router = useRouter();
-  const { openToast, setOpenToast } = useContext(ToastContext);
-  const [selectedTab, setSelectedTab] = useState<string | undefined>(tabs[0]?.name);
-  const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>();
-  const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs);
-  const [finalData, setFinalData] = useState<SingleAssessment | null>(null);
-  const [finalAssignedData, setFinalAssignedData] = useState<AssessmentAssignedTableRow[]>([]);
-
-  console.log({ assessment });
+  console.log({assessment})
 
   useEffect(() => {
     if (assessment && Object.keys(assessment).length > 0) {
       const newAssessment = {
         id: assessment.id,
         name: assessment.name,
-        assessmentDescription: assessment.description || "",
+        assessmentDescription: assessment.description || '',
         assessmentDetails: {
           sport: assessment?.Sports?.name,
           trainingLevel: assessment.level,
-          testRankType: "-"
+          testRankType: '-',
         },
         assessmentSchedule: {
           duration: assessment?.mode,
           type: assessment?.interval,
           startDate: assessment?.startDate
-            ? new Date(assessment.startDate).toLocaleDateString("en-US", {
-              month: "short",
-              day: "2-digit",
-              year: "numeric",
-            })
-            : "",
+            ? new Date(assessment.startDate).toLocaleDateString('en-US', {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric',
+              })
+            : '',
           endDate: assessment?.endDate
-            ? new Date(assessment.startDate).toLocaleDateString("en-US", {
-              month: "short",
-              day: "2-digit",
-              year: "numeric",
-            })
-            : ""
+            ? new Date(assessment.startDate).toLocaleDateString('en-US', {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric',
+              })
+            : '',
         },
         assessmentScoreAccess: {},
-        assessmentPerformanceTests: {}
-      };
+        assessmentPerformanceTests: {},
+      }
 
       if (assessment?.AssessmentAssignedAthletes && assessment?.AssessmentAssignedAthletes.length) {
-        const formattedData: AssessmentAssignedTableRow[] = assessment?.AssessmentAssignedAthletes.map(
-          (assignedAthlete) => {
-            const athlete = assignedAthlete?.Athletes;
-            const batches = athlete?.AthleteBatchesMaps || [];
+        const formattedData: AssessmentAssignedTableRow[] =
+          assessment?.AssessmentAssignedAthletes.map((assignedAthlete) => {
+            const athlete = assignedAthlete?.Athletes
+            const batches = athlete?.AthleteBatchesMaps || []
 
-            const batchName = batches.map((batchMap) => batchMap?.Batches?.name).filter(Boolean).join(", ");
-            const firstBatch = batches[0];
-            const coachName = firstBatch?.Batches?.Coaches?.name || "N/A";
-            const centerName = firstBatch?.centerId ? `Center ${firstBatch.centerId}` : "N/A";
+            const batchName = batches
+              .map((batchMap) => batchMap?.Batches?.name)
+              .filter(Boolean)
+              .join(', ')
+            const firstBatch = batches[0]
+            const coachName = firstBatch?.Batches?.Coaches?.name || 'N/A'
+            const centerName = firstBatch?.centerId ? `Center ${firstBatch.centerId}` : 'N/A'
 
             return {
               id: athlete?.id,
-              athleteName: athlete?.name || "N/A",
-              batchName: batchName || "N/A", // Changed from batchNames to batchName
+              athleteName: athlete?.name || 'N/A',
+              batchName: batchName || 'N/A', // Changed from batchNames to batchName
               centerName,
               coachName,
-            };
-          }
-        );
+            }
+          })
 
-        console.log(formattedData);
-        setFinalAssignedData(formattedData);
+        console.log(formattedData)
+        setFinalAssignedData(formattedData)
       } else {
-        setFinalAssignedData([]);
+        setFinalAssignedData([])
       }
 
-      setFinalData(newAssessment);
+      setFinalData(newAssessment)
     }
-  }, [assessment]);
-
+  }, [assessment])
 
   const handleClick = (tab: TabType) => {
-    let TABLE_HEAD;
-    let TABLE_ROWS = [];
-    let tableProps = {};
+    let TABLE_HEAD
+    let TABLE_ROWS = []
+    let tableProps = {}
 
     // switch (tab?.name) {
     //   case "athletes":
@@ -225,7 +237,7 @@ export default function Page({ assessment }: { assessment: AssessmentDetails }) 
 
     setSelectedComponent(
       <AllData
-        title={tab?.allLabel || ""}
+        title={tab?.allLabel || ''}
         {...tableProps}
         dropdownItems={{}}
         TABLE_HEAD={[]}
@@ -233,15 +245,15 @@ export default function Page({ assessment }: { assessment: AssessmentDetails }) 
         rowSelection={false}
         showImage={false}
       />
-    );
-    setSelectedTab(tab?.name);
-  };
+    )
+    setSelectedTab(tab?.name)
+  }
 
   return (
     <DetailPage
-      cardTitle="ASSESSMENTS"
+      cardTitle='ASSESSMENTS'
       editButtonUrl={`/edit-assessment-${assessment?.id}`}
-      editText="Edit Assessment"
+      editText='Edit Assessment'
       handleTabClick={handleClick}
       data={finalData ?? {}}
       selectedComponent={selectedComponent}
@@ -249,7 +261,7 @@ export default function Page({ assessment }: { assessment: AssessmentDetails }) 
       showImage={false}
       assessmentAsignedComponent={
         <AllData
-          title={"Assessments"}
+          title={'Assessments'}
           dropdownItems={{}}
           TABLE_HEAD={ASSESSMENT_ASSIGNED_TABLE_HEADERS}
           TABLE_ROWS={finalAssignedData}
@@ -257,13 +269,13 @@ export default function Page({ assessment }: { assessment: AssessmentDetails }) 
           showImage={false}
         />
       }
-    // badgeData={assessment?.AssessmentSports || []}
-    // details={[
-    //   { items: [{ label: "Sport", value: assessment?.Sports?.name }] },
-    //   { items: [{ label: "Academy", value: assessment?.Academies?.name }] },
-    //   { items: [{ label: "Start Date", value: assessment?.startDate }] },
-    //   { items: [{ label: "End Date", value: assessment?.endDate }] },
-    // ]}
+      // badgeData={assessment?.AssessmentSports || []}
+      // details={[
+      //   { items: [{ label: "Sport", value: assessment?.Sports?.name }] },
+      //   { items: [{ label: "Academy", value: assessment?.Academies?.name }] },
+      //   { items: [{ label: "Start Date", value: assessment?.startDate }] },
+      //   { items: [{ label: "End Date", value: assessment?.endDate }] },
+      // ]}
     />
-  );
+  )
 }
