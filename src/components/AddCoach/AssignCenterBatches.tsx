@@ -84,6 +84,9 @@ export default function AssignBatches() {
 
   return (
     <div>
+      <div className=' text-center font-heading text-3xl font-medium uppercase lg:text-left'>
+        ASSIGN BATCHES
+      </div>
       <AddForm
         cardTitle='ADD COACH'
         cardSubTitle='ASSIGN BATCHES'

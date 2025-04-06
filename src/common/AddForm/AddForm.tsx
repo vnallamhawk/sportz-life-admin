@@ -31,8 +31,8 @@ interface AddForm {
   cardSubTitle?: string
   formConstantValues?: FormValues[]
   imageTitle?: string
-  tableTitle?: string
-  tableDescription?: string
+  // tableTitle?: string
+  // tableDescription?: string
   // mobileAddButtonText?: string
   // TableHeadings?: {label: string; id: string}[]
   // addTableData?: any
@@ -324,12 +324,11 @@ const AddForm = ({
 
   return (
     <>
-      {cardTitle && <CardTitle title={cardTitle} />}
-      {cardSubTitle && (
+      {/* {cardSubTitle && (
         <div className=' text-center font-heading text-3xl font-medium uppercase lg:text-left'>
           {cardSubTitle}
         </div>
-      )}
+      )} */}
       {formConstantValues && formConstantValues.length > 0 && (
         <div
           className={`grid-col-1 mt-8 grid gap-x-8 gap-y-4 lg:grid-cols-2

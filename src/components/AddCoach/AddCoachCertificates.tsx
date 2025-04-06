@@ -52,15 +52,18 @@ export default function AddCoachCertificates({}) {
     return () => subscription.unsubscribe() // Cleanup
   }, [watch])
 
-  const onAddHandler = (data: MULTI_FORM_COACH_QUALIFICATION | undefined) => {
+  const onAddHandler = () => {
     const newQualification: MULTI_FORM_COACH_QUALIFICATION = {
       startDate: startDate,
+      certificateType: certificates,
       certificateTypeLabel: certificates
         ? COACH_QUALIFICATION_CERTIFICATE_TYPE[certificates]
         : undefined,
       endDate: endDate,
       instituteName: instituteName,
     }
+    console.log(newQualification)
+    console.log([...coachQualification, newQualification])
 
     setValue('CoachQualifications', [...coachQualification, newQualification])
     // setTableData([...tableData, newQualification])
@@ -98,6 +101,9 @@ export default function AddCoachCertificates({}) {
 
   return (
     <>
+      <div className=' text-center font-heading text-3xl font-medium uppercase lg:text-left'>
+        ADD CERTIFICATES
+      </div>
       <AddForm
         cardTitle='ADD COACH'
         cardSubTitle='ADD CERTIFICATES'
@@ -113,7 +119,7 @@ export default function AddCoachCertificates({}) {
       <Button
         className='border-1 ml-7 hidden rounded-md border-blush-light px-8 py-3 text-lg font-bold text-[#FF9678] hover:border-blush-dark hover:text-blush-dark lg:block'
         type='button'
-        onClick={() => onAddHandler}
+        onClick={() => onAddHandler()}
       >
         Add
       </Button>
