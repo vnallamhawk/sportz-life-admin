@@ -4,8 +4,7 @@ import type {COACH_CERTIFICATE_TABLE_TYPES} from '~/types/coach'
 const CoachCertificateTable = ({
   tableData,
   onRemoveTableButton,
-}: //
-{
+}: {
   tableData: Partial<COACH_CERTIFICATE_TABLE_TYPES>[]
   onRemoveTableButton: (index: number) => void
 }) => (

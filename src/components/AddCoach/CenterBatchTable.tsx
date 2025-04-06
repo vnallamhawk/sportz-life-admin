@@ -5,7 +5,7 @@ const CenterBatchTable = ({
   tableData,
   onRemove,
 }: {
-  tableData: COACH_CENTER_BATCH_TABLE[]
+  tableData: Partial<COACH_CENTER_BATCH_TABLE>[]
   onRemove: (index: number) => void
 }) => (
   <div className='scroll mt-5 hidden max-h-[370px] overflow-auto px-0 lg:block'>

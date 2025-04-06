@@ -39,12 +39,10 @@ export default function AssignBatches() {
           } else if (formConstant.id === 'batches') {
             return {
               ...formConstant,
-              options: batches
-                // .filter(({id}) => !batchIds.includes(id))
-                .map((batch) => ({
-                  label: batch.name,
-                  value: batch.id,
-                })),
+              options: batches.map((batch) => ({
+                label: batch.name,
+                value: batch.id,
+              })),
             }
           } else {
             return formConstant

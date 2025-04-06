@@ -31,7 +31,6 @@ export default function AddCoach() {
       })
     }
     setFormConstantValues(updatedFormConstantValues)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sports?.length])
 
   return (

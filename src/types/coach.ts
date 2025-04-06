@@ -42,8 +42,8 @@ export interface COACH_CERTIFICATE_TABLE_TYPES {
   instituteName: string;
   certificateType: CoachQualifications_certificateType
   certificateTypeLabel: string
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
 }
 
 export interface COACH_CENTER_BATCH_TABLE {
@@ -124,8 +124,8 @@ export interface MULTI_FORM_TYPES extends COACH_TYPES {
   Batches: Batches
   centerId?: number
   isEditMode ?:boolean
-  startDate?: Date | string
-  endDate ?: Date | string
+  startDate?: Date 
+  endDate ?: Date
   instituteName?: string
   batches?: Batches['id'][]
 }
