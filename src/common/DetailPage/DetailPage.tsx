@@ -18,6 +18,7 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import {Chip} from '@material-tailwind/react'
 import TestCard from '~/components/Card/TestCard'
+import {X, Check} from 'lucide-react'
 
 type ValuePiece = Date | null
 
