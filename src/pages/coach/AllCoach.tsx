@@ -57,7 +57,7 @@ export default function AllCoach() {
           batchesCount: coach?.CoachCentersBatches ? coach.CoachCentersBatches.length : 0,
           sportCoaching: coach?.CoachSportsMaps.map((map) => map.Sports.name).join(', '),
           designation:
-            COACH_DESIGNATION.find((d: any) => d.value === coach.designation)?.label ||
+            COACH_DESIGNATION.find((d) => d.value === coach.designation)?.label ||
             coach.designation,
         }
       })
