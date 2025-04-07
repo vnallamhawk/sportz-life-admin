@@ -190,8 +190,6 @@ export default function AddCoachMultiFormLayout() {
 
   const {mutate: createMutateCoachSports} = api.coachSports.createCoachSports.useMutation({
     onSuccess: (response) => {
-      // console.log("response data is ", response);
-
       return response
     },
   })

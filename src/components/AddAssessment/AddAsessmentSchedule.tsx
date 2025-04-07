@@ -30,8 +30,6 @@ export default function AddAssessmentSchedule() {
 
   const {data: coaches} = api.coach.getAllCoaches.useQuery()
 
-  const {data: coaches} = api.coach.getAllCoaches.useQuery()
-
   // useEffect(() => {
   //   if (sports?.length && hasExecuted.current) {
   //     const updatedFormConstantValues = formConstantValues.map(
