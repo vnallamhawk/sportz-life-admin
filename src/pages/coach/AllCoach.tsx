@@ -5,7 +5,7 @@ import {COACH_DESIGNATION, COACH_TABLE_HEADERS} from '~/constants/coachConstants
 import {api} from '~/utils/api'
 import moment from 'moment-timezone'
 import type {Prisma, Coaches} from '@prisma/client'
-import {calculateAge} from '~/utils/common'
+import {differenceInYears} from 'date-fns'
 import {debounce} from 'lodash'
 type Modify<T, R> = Omit<T, keyof R> & R
 
@@ -53,7 +53,7 @@ export default function AllCoach() {
         return {
           ...coach,
           status: coach?.designation,
-          age: calculateAge(coach?.dateOfBirth),
+          age: differenceInYears(new Date(), coach?.dateOfBirth),
           batchesCount: coach?.CoachCentersBatches ? coach.CoachCentersBatches.length : 0,
           sportCoaching: coach?.CoachSportsMaps.map((map) => map.Sports.name).join(', '),
           designation:
