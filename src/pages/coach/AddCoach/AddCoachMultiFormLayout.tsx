@@ -235,12 +235,8 @@ export default function AddCoachMultiFormLayout() {
           coachQualifications: hasCertificatedUpdated
             ? finalForm.CoachQualifications.map((coachQualification) => ({
                 ...coachQualification,
-                startDate: parse(
-                  coachQualification.startDate?.toISOString(),
-                  'dd/MM/yyyy',
-                  new Date()
-                ),
-                endDate: parse(coachQualification.endDate.toISOString(), 'dd/MM/yyyy', new Date()),
+                startDate: coachQualification.startDate,
+                endDate: coachQualification.endDate,
                 fileUrl: '',
                 fileType: 'link',
                 fileName: null,
@@ -267,14 +263,31 @@ export default function AddCoachMultiFormLayout() {
             experienceLevel,
             centerId,
             sports: finalForm.coachingSports?.map((sport) => Number(sport)),
-            coachQualifications: finalForm.CoachQualifications.map((coachQualification) => ({
-              ...coachQualification,
-              startDate: coachQualification?.startDate,
-              endDate: coachQualification?.endDate,
-              fileUrl: '',
-              fileType: 'link',
-              fileName: null,
-            })),
+            coachQualifications: finalForm.CoachQualifications.map((coachQualification) => {
+              if (!coachQualification.certificateType) {
+                throw new Error('Certificate type is required for all qualifications')
+              }
+              if (
+                !coachQualification.startDate ||
+                !coachQualification.endDate ||
+                !coachQualification.instituteName
+              ) {
+                throw new Error(
+                  'Institute Name, Start and end dates are required for all qualifications'
+                )
+              }
+
+              return {
+                ...coachQualification,
+                certificateType: coachQualification.certificateType,
+                startDate: coachQualification.startDate,
+                endDate: coachQualification.endDate,
+                instituteName: coachQualification.instituteName,
+                fileUrl: '',
+                fileType: 'link',
+                fileName: null,
+              }
+            }),
             batches: batches,
           })
         }
