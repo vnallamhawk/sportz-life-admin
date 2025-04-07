@@ -87,12 +87,12 @@ export default function AllCoach() {
         title='ALL COACHES'
         addButtonText='ADD NEW COACH'
         addButtonUrl='/coach/AddCoach'
-        dropdownItems={{reminder: true, freeze: true, changeBatch: true}}
+        // dropdownItems={{reminder: true, freeze: true, changeBatch: true}}
         filter={false}
         TABLE_HEAD={COACH_TABLE_HEADERS}
         TABLE_ROWS={finalData ?? []}
-        setFilterByName={setFilterByName}
-        filterByName={filterByName}
+        // setFilterByName={setFilterByName}
+        // filterByName={filterByName}F
         rowSelection={true}
         showImage={false}
         onViewClick={(id: number) => router.push(`/coach/${id ?? ''}`)}

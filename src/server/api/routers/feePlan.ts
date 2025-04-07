@@ -11,16 +11,25 @@ export const feePlanRouter = createTRPCRouter({
         search: z.string().optional(),
         feeTypes: z.array(z.string()).optional(),
         recurringTypes: z.array(z.string()).optional(),
-        isProrata: z.boolean().optional(),
+        is: z.boolean().optional(),
         status: z.number().optional()
       })
     )
     .query(
       ({
         ctx,
-        input: { page, limit, search, feeTypes, recurringTypes, isProrata, status },
+        input,
       }) => {
-        const listQuery: any = {
+        const {
+          page = 1,
+          limit = 10,
+          search,
+          feeTypes,
+          recurringTypes,
+          isFractionalFee,
+          status,
+        } = input;
+        const listQuery = {
           skip: (page - 1) * limit,
           take: limit,
           where: {},
@@ -28,73 +37,73 @@ export const feePlanRouter = createTRPCRouter({
             createdAt: "desc",
           },
         };
-        const countQuery: any = {
-          where: {},
-        };
-        const trimmedSearch = search?.trim();
-        if (trimmedSearch) {
-          const val = {
-            contains: trimmedSearch,
-          };
+        // const countQuery = {
+        //   where: {},
+        // };
+        // const trimmedSearch = search?.trim();
+        // if (trimmedSearch) {
+          // const val = {
+          //   contains: trimmedSearch,
+          // };
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          listQuery.where.description = val;
+          // listQuery.where?.description = val;
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          countQuery.where.description = val;
-        }
-        if (feeTypes?.length) {
-          const val = {
-            in: feeTypes,
-          };
+          // countQuery.where.description = val;
+        // }
+        // if (feeTypes?.length) {
+        //   const val = {
+        //     in: feeTypes,
+        //   };
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          listQuery.where.feeType = val;
+          // listQuery.where.feeType = val;
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          countQuery.where.feeType = val;
-        }
-        if (recurringTypes?.length) {
-          const val = {
-            in: recurringTypes,
-          };
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          listQuery.where.recurringType = val;
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          countQuery.where.recurringType = val;
-        }
-        if (typeof isProrata === "boolean") {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          listQuery.where.isProrata = isProrata;
-        }
+          // countQuery.where.feeType = val;
+        // }
+        // if (recurringTypes?.length) {
+        //   const val = {
+        //     in: recurringTypes,
+        //   };
+        //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        //   listQuery.where.recurringType = val;
+        //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        //   countQuery.where.recurringType = val;
+        // }
+        // if (typeof isProrata === "boolean") {
+        //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        //   listQuery.where.isProrata = isProrata;
+        // }
 
-        if (status) {
-          // eslint-disable-next-line
-          listQuery.where.status = status
-        }
+        // if (status) {
+        //   // eslint-disable-next-line
+        //   listQuery.where.status = status
+        // }
 
         return Promise.all([
           // Query the database for total items
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          ctx.prisma.feePlans.count(countQuery),
+          ctx.prisma.feePlans.count(),
 
           // Query the database for paginated items
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          ctx.prisma.feePlans.findMany({
+          ctx.prisma.feePlans.findMany(
+            // {
             // ...listQuery,
-            select: {
-              id: true,
-              name: true,
-              amount: true,
-              feeType: true,
-              // isProrata: true,
-              recurringType: true,
-              // isLate: true,
-              lateFeeType: true,
-              lateFee: true,
-              // createdBy: true,
-              currency: true,
-              status: true, // Ensure this field is explicitly selected
-              createdAt: true,
-              updatedAt: true,
-            },
-          }),
+            // select: {
+            //   id: true,
+            //   name: true,
+            //   amount: true,
+            //   feeType: true,
+            //   isFractionalFee: true,
+            //   recurringType: true,
+            //   lateFeeType: true,
+            //   lateFee: true,
+            //   currency: true,
+            //   status: true, // Ensure this field is explicitly selected
+            //   createdAt: true,
+            //   updatedAt: true,
+            // },
+          // }
+        ),
         ]).then((result) => {
           const totalItems = result[0];
           const data = result[1];
@@ -138,7 +147,7 @@ export const feePlanRouter = createTRPCRouter({
         name: z.string(),
         amount: z.number(),
         feeType: z.enum(FEE_PLAN_FEE_TYPE),
-        isProrata: z.boolean().optional(),
+        isFractionalFee: z.boolean().optional(),
         recurringType: z.enum(FEE_PLAN_RECURRING_TYPE),
         isLate: z.boolean().optional(),
         lateFeeType: z.enum(LATE_FEE_TYPE).optional(),
@@ -150,7 +159,7 @@ export const feePlanRouter = createTRPCRouter({
     )
     .mutation(
       async ({
-        input: { name, amount, feeType, isProrata, recurringType, isLate, lateFeeType, lateFee, currency, createdBy, status },
+        input: { name, amount, feeType, isFractionalFee, recurringType, isLate, lateFeeType, lateFee, currency, createdBy, status },
         ctx,
       }) => {
         const dataToSave = {
@@ -183,20 +192,20 @@ export const feePlanRouter = createTRPCRouter({
         name: z.string(),
         amount: z.number(),
         feeType: z.enum(FEE_PLAN_FEE_TYPE),
-        isProrata: z.boolean().optional(),
+        isFractionalFee: z.boolean().optional(),
         recurringType: z.enum(FEE_PLAN_RECURRING_TYPE).optional(),
       })
     )
     .mutation(
       async ({
-        input: { feePlanId, name, amount, feeType, isProrata, recurringType },
+        input: { feePlanId, name, amount, feeType, isFractionalFee, recurringType },
         ctx,
       }) => {
         const dataToSave: { [key: string]: any } = {
           name,
           amount,
           feeType,
-          isProrata: !!isProrata,
+          isFractionalFee: !!isFractionalFee,
           updatedAt: new Date(),
         };
 

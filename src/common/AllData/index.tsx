@@ -114,14 +114,14 @@ const AllData = ({
                     alt=''
                   />
                   {/* TODO : Not sure if we need this search */}
-                  {/* <input
+                  <input
                     type='search'
                     className='relative w-full rounded-lg border-2 border-gray-200 bg-transparent py-2 pl-4 pr-12 text-base text-gray-700 placeholder-gray-300 focus:border-gray-400 focus:outline-none focus:ring-0 2xl:min-w-[450px]'
                     placeholder='Search by name'
                     onChange={handleInputChange}
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     value={filterByName}
-                  /> */}
+                  />
                 </div>
               </>
               {/* )} */}
@@ -160,7 +160,7 @@ const AllData = ({
                 </button>
               )}
 
-              {Object.keys(dropdownItems).length > 0 && (
+              {dropdownItems && Object?.keys(dropdownItems)?.length > 0 && (
                 <div className='dropdown'>
                   <Dropdown
                     label='Late'
@@ -209,7 +209,7 @@ const AllData = ({
             </div>
           </div>
 
-          {Object.keys(dropdownItems).length > 0 && (
+          {dropdownItems && Object.keys(dropdownItems).length > 0 && (
             <div className='mb-3 hidden  lg:flex'>
               {Object.keys(dropdownItems).map((item: string) => {
                 return (
