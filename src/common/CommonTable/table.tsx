@@ -31,7 +31,6 @@ const CommonTable = ({
   currentPage = 1,
   onHandlePageChange,
 }: CommonTable) => {
-  console.log({totalPages})
   const renderPages = () => {
     const pages: (number | string)[] = []
     if (totalPages <= 5) {
@@ -186,9 +185,9 @@ const CommonTable = ({
                               size='sm'
                               variant='ghost'
                               value={
-                                data?.status === 1
+                                data?.status === true
                                   ? 'On'
-                                  : data?.status === 2
+                                  : data?.status === false
                                   ? 'Off'
                                   : data?.assessmentStatus?.trim().toLowerCase() === 'upcoming'
                                   ? 'Upcoming'

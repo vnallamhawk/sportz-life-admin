@@ -204,7 +204,7 @@ export default function Page({coach}: {coach: Coach; sports: Sports[]}) {
     } else {
       if (tab?.name === 'batches') {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        TABLE_HEAD = COACH_DASH_BATCH_TABLE_HEADERS
+        TABLE_HEAD = COACH_DASH_BATCH_TABLE_HEADERS.filter((header) => header.id !== 'action')
 
         // eslint-disable-next-line
         coach.CoachCentersBatches = coach?.CoachCentersBatches?.map(
@@ -229,7 +229,7 @@ export default function Page({coach}: {coach: Coach; sports: Sports[]}) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         TABLE_ROWS = coach?.StaffPayroll ? [coach?.StaffPayroll] : []
       } else if (tab?.name === 'certificates') {
-        TABLE_HEAD = COACH_CERTIFICATE_TABLE_HEADERS
+        TABLE_HEAD = COACH_CERTIFICATE_TABLE_HEADERS.filter((header) => header.id !== 'action')
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         TABLE_ROWS = coach?.CoachQualifications ? coach?.CoachQualifications : []
       }
