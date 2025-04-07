@@ -233,14 +233,30 @@ export default function AddCoachMultiFormLayout() {
           image: imageUrl ? imageUrl : undefined,
           coachId: id,
           coachQualifications: hasCertificatedUpdated
-            ? finalForm.CoachQualifications.map((coachQualification) => ({
-                ...coachQualification,
-                startDate: coachQualification.startDate,
-                endDate: coachQualification.endDate,
-                fileUrl: '',
-                fileType: 'link',
-                fileName: null,
-              }))
+            ? finalForm.CoachQualifications.map((coachQualification) => {
+                if (!coachQualification.certificateType) {
+                  throw new Error('Certificate type is required for all qualifications')
+                }
+                if (
+                  !coachQualification.startDate ||
+                  !coachQualification.endDate ||
+                  !coachQualification.instituteName
+                ) {
+                  throw new Error(
+                    'Institute Name, Start and end dates are required for all qualifications'
+                  )
+                }
+                return {
+                  ...coachQualification,
+                  certificateType: coachQualification.certificateType,
+                  startDate: coachQualification.startDate,
+                  endDate: coachQualification.endDate,
+                  instituteName: coachQualification.instituteName,
+                  fileUrl: '',
+                  fileType: 'link',
+                  fileName: null,
+                }
+              })
             : [],
         })
       } else {
@@ -299,7 +315,6 @@ export default function AddCoachMultiFormLayout() {
   return (
     <FormContext.Provider value={{currentStep, setCurrentStep, totalSteps}}>
       <FormProvider {...methods}>
-        {/* <FormContext.Provider> */}
         <CardTitle
           className='ml-20'
           title={router.asPath.includes('edit') ? 'EDIT COACH' : 'ADD COACH'}
@@ -307,19 +322,9 @@ export default function AddCoachMultiFormLayout() {
 
         <div className='grid grid-cols-6 grid-rows-1'>
           <Card className='col-span-4 ml-10 h-full p-0 pl-10 pt-10'>
-            {/* <CardTitle title={'Add Coach'} />
-
-            <div className=' text-center font-heading text-3xl font-medium uppercase lg:text-left'>
-              {cardSubTitle}
-            </div> */}
-
             {currentStep === 1 && <AddCoach />}
             {currentStep === 2 && <AddCoachCertificates />}
-            {currentStep === 3 && (
-              <AssignBatches
-              // finalFormSubmissionHandler={finalFormSubmissionHandler(methods.getValues())}
-              />
-            )}
+            {currentStep === 3 && <AssignBatches />}
 
             {currentStep > 1 && (
               <Button
@@ -334,7 +339,6 @@ export default function AddCoachMultiFormLayout() {
               <Button
                 type='button'
                 className='ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 onClick={() => {
                   setCurrentStep(currentStep + 1)
                 }}
