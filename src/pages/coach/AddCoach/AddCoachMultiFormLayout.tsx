@@ -324,35 +324,37 @@ export default function AddCoachMultiFormLayout() {
             {currentStep === 2 && <AddCoachCertificates />}
             {currentStep === 3 && <AssignBatches />}
 
-            {currentStep > 1 && (
-              <Button
-                type='button'
-                className='w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
-                onClick={() => setCurrentStep?.(currentStep - 1)}
-              >
-                Prev
-              </Button>
-            )}
-            {currentStep && totalSteps && currentStep < totalSteps && (
-              <Button
-                type='button'
-                className='ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
-                onClick={() => {
-                  setCurrentStep(currentStep + 1)
-                }}
-              >
-                Next
-              </Button>
-            )}
-            {currentStep === totalSteps && (
-              <Button
-                type='button'
-                className='ml-3 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
-                onClick={() => finalFormSubmissionHandler(methods.getValues())}
-              >
-                Finish
-              </Button>
-            )}
+            <div className='flex justify-end'>
+              {currentStep > 1 && (
+                <Button
+                  type='button'
+                  className='ml-3 mt-10 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
+                  onClick={() => setCurrentStep?.(currentStep - 1)}
+                >
+                  Prev
+                </Button>
+              )}
+              {currentStep && totalSteps && currentStep < totalSteps && (
+                <Button
+                  type='button'
+                  className='ml-3 mt-10 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
+                  onClick={() => {
+                    setCurrentStep(currentStep + 1)
+                  }}
+                >
+                  Next
+                </Button>
+              )}
+              {currentStep === totalSteps && (
+                <Button
+                  type='button'
+                  className='ml-3 mt-10 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
+                  onClick={() => finalFormSubmissionHandler(methods.getValues())}
+                >
+                  Finish
+                </Button>
+              )}
+            </div>
           </Card>
 
           <Card className='col-span-2 hidden !rounded-l-none rounded-r-xl bg-stone-100 px-7 lg:block'>

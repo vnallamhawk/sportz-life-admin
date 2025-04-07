@@ -4,10 +4,11 @@ import {COACH_DETAILS_CONSTANTS} from '~/constants/coachConstants'
 import {api} from '~/utils/api'
 import AddForm from '~/common/AddForm/AddForm'
 import type {FormValues} from '~/types/common'
-import router from 'next/router'
+import {useRouter} from 'next/router'
 
 export default function AddCoach() {
   const {data: sports} = api.sports.getAllSports.useQuery()
+  const router = useRouter()
 
   const [formConstantValues, setFormConstantValues] =
     useState<FormValues[]>(COACH_DETAILS_CONSTANTS)
@@ -35,7 +36,7 @@ export default function AddCoach() {
   return (
     <>
       <div className=' text-center font-heading text-3xl font-medium uppercase lg:text-left'>
-        {router?.asPath?.includes('edit') ? 'EDIT COACH DETAILS' : 'COACH DETAILS'}
+        {router?.pathname?.includes('edit') ? 'EDIT COACH DETAILS' : 'COACH DETAILS'}
       </div>
       <AddForm formConstantValues={formConstantValues} imageTitle='Coach Image' />
     </>
