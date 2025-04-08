@@ -228,9 +228,54 @@ const CommonTable = ({
                           </div>
                         )} */}
 
-                        <Typography variant='small' className='font-bold'>
-                          {data[head?.id]}
-                        </Typography>
+                        {head.id === 'action' ? (
+                          <Dropdown
+                            label=''
+                            dismissOnClick={false}
+                            placement='top'
+                            className='view-drop h-auto w-auto rounded-lg bg-black'
+                            renderTrigger={() => (
+                              <button className='py-2'>
+                                <Image width={20} height={20} src={Dots} alt='' />
+                              </button>
+                            )}
+                          >
+                            <DropdownHeader>
+                              <div className='flex items-center'>
+                                {onEditClick && (
+                                  <button
+                                    className='mx-1 text-white'
+                                    onClick={() => {
+                                      onEditClick(data?.id)
+                                    }}
+                                  >
+                                    Edit
+                                  </button>
+                                )}
+                                {onViewClick && (
+                                  <button
+                                    className='mx-1 text-white'
+                                    onClick={() => onViewClick(data?.id)}
+                                  >
+                                    View
+                                  </button>
+                                )}
+                                {onDeleteClick && (
+                                  <button
+                                    className='mx-1 text-white'
+                                    onClick={() => onDeleteClick(data?.id)}
+                                  >
+                                    Delete
+                                  </button>
+                                )}
+                              </div>
+                            </DropdownHeader>
+                          </Dropdown>
+                        ) : (
+                          <Typography variant='small' className='font-bold'>
+                            {data[head?.id]}
+                          </Typography>
+                        )}
                       </td>
                     )
                   })}
