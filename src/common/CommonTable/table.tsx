@@ -110,7 +110,7 @@ const CommonTable = ({
                   {TABLE_HEAD?.map((head: {label: string; id: string}, columnIndex: number) => {
                     return (
                       <td className={classes} key={columnIndex}>
-                        {head?.id === 'feeType' ? (
+                        {/* {head?.id === 'feeType' ? (
                           <Typography variant='small' className='font-bold'>
                             {PLANNING_FEE_TYPE[data[head?.id] as keyof typeof PLANNING_FEE_TYPE] ||
                               'Unknown'}
@@ -226,7 +226,11 @@ const CommonTable = ({
                                     `}
                             />
                           </div>
-                        )}
+                        )} */}
+
+                        <Typography variant='small' className='font-bold'>
+                          {data[head?.id]}
+                        </Typography>
                       </td>
                     )
                   })}
