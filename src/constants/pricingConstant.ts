@@ -1,3 +1,5 @@
+import { FeePlans_feeType } from "@prisma/client";
+
 export const PRICING_TABLE_HEADER = [
   { label: "Fee Plan Name", id: "name" },
   { label: "Fee Type", id: "feeType" },
@@ -7,7 +9,7 @@ export const PRICING_TABLE_HEADER = [
 ];
 
 
-export const PLANNING_FEE_TYPE = {
+export const PLANNING_FEE_TYPE: Record<FeePlans_feeType,string> = {
   "one_time": "One Time",
   "recurring": "Recurring",
   "free": "Free"

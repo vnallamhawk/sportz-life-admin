@@ -80,11 +80,11 @@ export const SIDE_NAV_ITEMS = [
     route: '/feePlan',
     icon: <PlanAndPricingIcon />,
   },
-  // {
-  //   label: 'Plan and Pricing',
-  //   route: '/pricing',
-  //   icon: <PlanAndPricingIcon />,
-  // },
+  {
+    label: 'Plan and Pricing',
+    route: '/pricing',
+    icon: <PlanAndPricingIcon />,
+  },
   // {
   //   label: 'Staff Payroll',
   //   route: '/staffPayroll',

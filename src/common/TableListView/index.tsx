@@ -1,6 +1,6 @@
-import type { TableHead } from "~/types/common";
-import CommonList from "../CommonList/list";
-import CommonTable from "../CommonTable/table";
+import type {TableHead} from '~/types/common'
+import CommonList from '../CommonList/list'
+import CommonTable from '../CommonTable/table'
 
 const TableListView = ({
   TABLE_HEAD,
@@ -14,21 +14,21 @@ const TableListView = ({
   currentPage,
   onHandlePageChange,
 }: {
-  TABLE_HEAD: TableHead;
+  TABLE_HEAD: TableHead
   // TABLE_ROWS: TableRows;
-  TABLE_ROWS: { [key: string]: any; id: number }[];
-  rowSelection: boolean;
-  showImage: boolean;
-  onViewClick?: (id: number) => void;
-  onEditClick?: (id: number) => void;
-  onDeleteClick?: (id: number) => void;
-  totalPages?: number;
-  currentPage?: number;
-  onHandlePageChange?: (page: number) => void;
+  TABLE_ROWS: {[key: string]: any; id: number}[]
+  rowSelection: boolean
+  showImage: boolean
+  onViewClick?: (id: number) => void
+  onEditClick?: (id: number) => void
+  onDeleteClick?: (id: number) => void
+  totalPages?: number
+  currentPage?: number
+  onHandlePageChange?: (page: number) => void
 }) => {
   return (
     <>
-      <div className="hidden lg:block">
+      <div className='hidden lg:block'>
         <CommonTable
           TABLE_HEAD={TABLE_HEAD}
           TABLE_ROWS={TABLE_ROWS}
@@ -42,21 +42,15 @@ const TableListView = ({
           onHandlePageChange={onHandlePageChange}
         />
       </div>
-      <div className="block lg:hidden">
+      {/* <div className='block lg:hidden'>
         {TABLE_ROWS &&
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           TABLE_ROWS.length > 0 &&
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-          TABLE_ROWS.map(
-            (item: { [key: string]: any; id: number }, index: number) => {
-              return (
-                <CommonList item={item} key={index} onViewClick={onViewClick} />
-              );
-            }
-          )}
-      </div>
+          TABLE_ROWS.map((item: {[key: string]: any; id: number}, index: number) => {
+            return <CommonList item={item} key={index} onViewClick={onViewClick} />
+          })}
+      </div> */}
     </>
-  );
-};
+  )
+}
 
-export default TableListView;
+export default TableListView

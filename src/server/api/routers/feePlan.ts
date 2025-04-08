@@ -106,20 +106,18 @@ export const feePlanRouter = createTRPCRouter({
         ),
         ]).then((result) => {
           const totalItems = result[0];
-          const data = result[1];
+          // const data = result[1];
 
           // Calculate total pages
           const totalPages = Math.ceil(totalItems / limit);
 
           return {
-            data,
-            meta: {
+              data: result[1],
               totalItems,
-              itemCount: data.length,
+              itemCount: result[1].length,
               itemsPerPage: limit,
               totalPages,
               currentPage: page,
-            },
           };
         });
       }

@@ -1,4 +1,4 @@
-import { FeePlans_recurringType } from "@prisma/client";
+import { FeePlans, FeePlans_recurringType } from "@prisma/client";
 
 export const FEE_PLAN_FEE_TYPE = ["free", "one_time", "recurring"] as const;
 
@@ -13,3 +13,12 @@ export const LATE_FEE_TYPE = [
   "amount",
   "percentage"
 ] as const;
+
+export type FEE_PLAN_ID = 'feeType'|'isFractionalFee'|'status'|'amount'
+
+export type FEE_PLAN_TABLE = Pick<FeePlans, 'feeType'|'isFractionalFee'|'status'|'amount'>
+
+export type FEE_PLAN_TABLE_ID = FEE_PLAN_ID | 'action'
+
+
+

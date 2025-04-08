@@ -9,7 +9,7 @@ import {
 } from '~/constants/coachConstants'
 import type {MULTI_FORM_COACH_QUALIFICATION, MULTI_FORM_TYPES} from '~/types/coach'
 import {useFormContext} from 'react-hook-form'
-import CoachCertificateTable from './CoachCertificateTable'
+import FeePlanTable from './FeePlanTable'
 
 export default function AddCoachCertificates({}) {
   // const {currentStep, setCurrentStep} =
@@ -77,10 +77,7 @@ export default function AddCoachCertificates({}) {
       >
         Add
       </Button>
-      <CoachCertificateTable
-        tableData={coachQualification}
-        onRemoveTableButton={removeCertificate}
-      />
+      <FeePlanTable tableData={coachQualification} onRemoveTableButton={removeCertificate} />
     </>
   )
 }
