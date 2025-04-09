@@ -16,7 +16,7 @@ export const LATE_FEE_TYPE = [
 
 export type FEE_PLAN_ID = 'feeType'|'isFractionalFee'|'status'|'amount'
 
-export type FEE_PLAN_TABLE = Pick<FeePlans, 'feeType'|'isFractionalFee'|'status'|'amount'>
+export type FEE_PLAN_TABLE = Pick<FeePlans, 'feeType'|'isFractionalFee'|'status'|'amount'|'id'>
 
 export type FEE_PLAN_TABLE_ID = FEE_PLAN_ID | 'action'
 

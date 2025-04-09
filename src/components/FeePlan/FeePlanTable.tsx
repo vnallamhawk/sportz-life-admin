@@ -4,24 +4,60 @@ import {COACH_CERTIFICAT_TABLE_HEADERS} from '~/constants/coachConstants'
 import {FEE_PLAN_TABLE_HEADER} from '~/constants/feePlanConstants'
 import {PLANNING_FEE_TYPE} from '~/constants/pricingConstant'
 import type {COACH_CERTIFICATE_TABLE_TYPES} from '~/types/coach'
-import type {FEE_PLAN_TABLE, FEE_PLAN_TABLE_ID} from '~/types/feePlan'
+import type {FEE_PLAN_TABLE, FEE_PLAN_TABLE, FEE_PLAN_TABLE_ID} from '~/types/feePlan'
+import {Dropdown, DropdownHeader} from 'flowbite-react'
+import Image from 'next/image'
+import Dots from '../../images/dots.svg'
+import {useRouter} from 'next/navigation'
 
 const FeePlanTable = ({
   tableData,
   onRemoveTableButton,
 }: {
-  tableData: Partial<FeePlans>[] | undefined
+  tableData: Partial<FEE_PLAN_TABLE>[] | undefined
   onRemoveTableButton?: (index: number) => void
 }) => {
-  const getTableCellContent = (id: FEE_PLAN_TABLE_ID, data: FEE_PLAN_TABLE) => {
+  const getTableCellContent = (id: FEE_PLAN_TABLE_ID, data: Partial<FEE_PLAN_TABLE>) => {
     let cellContent: React.ReactNode = undefined
+    const router = useRouter()
 
     switch (id) {
       case 'action':
         cellContent = (
-          <span className='cursor-pointer font-medium text-gray-400 hover:text-red-500'>
-            Remove
-          </span>
+          <Dropdown
+            label=''
+            dismissOnClick={false}
+            placement='top'
+            className='view-drop h-auto w-auto rounded-lg bg-black'
+            renderTrigger={() => (
+              <button className='py-2'>
+                <Image width={20} height={20} src={Dots} alt='' />
+              </button>
+            )}
+          >
+            <DropdownHeader>
+              <div className='flex items-center'>
+                {/* {onEditClick && ( */}
+                <button
+                  className='mx-1 text-white'
+                  onClick={() => (data.id ? void router.push(`/edit-fee-plan-${data?.id}`) : null)}
+                >
+                  Edit
+                </button>
+                {/* )} */}
+                {/* {onViewClick && ( */}
+                <button className='mx-1 text-white' onClick={() => onViewClick(data?.id)}>
+                  View
+                </button>
+                {/* )} */}
+                {/* {onDeleteClick && ( */}
+                <button className='mx-1 text-white' onClick={() => onDeleteClick(data?.id)}>
+                  Delete
+                </button>
+                {/* )} */}
+              </div>
+            </DropdownHeader>
+          </Dropdown>
         )
         break
 

@@ -56,7 +56,11 @@ const nextConfig = withImages({
       },
       {
         source: "/edit-plan-:id",
-        destination: "/pricing/AddPlans?search=Fee+Plan", // FIXED
+        destination: "/pricing/AddPlans?search=Fee+Plan", 
+      },
+      {
+        source: "/edit-fee-plan-:id",
+        destination: "/feePlans/AddPlan",
       },
       {
         source: "/edit-assessment-:id",

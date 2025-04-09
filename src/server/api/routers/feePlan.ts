@@ -147,7 +147,7 @@ export const feePlanRouter = createTRPCRouter({
         feeType: z.enum(FEE_PLAN_FEE_TYPE),
         isFractionalFee: z.boolean().optional(),
         recurringType: z.enum(FEE_PLAN_RECURRING_TYPE),
-        isLate: z.boolean().optional(),
+        isLateFee: z.boolean().optional(),
         lateFeeType: z.enum(LATE_FEE_TYPE).optional(),
         lateFee: z.number().optional(),
         createdBy: z.number(),
@@ -157,23 +157,22 @@ export const feePlanRouter = createTRPCRouter({
     )
     .mutation(
       async ({
-        input: { name, amount, feeType, isFractionalFee, recurringType, isLate, lateFeeType, lateFee, currency, createdBy, status },
+        input: { name, amount, feeType, isFractionalFee, recurringType, isLateFee, lateFeeType, lateFee, currency, createdBy, status },
         ctx,
       }) => {
         const dataToSave = {
           name,
           amount,
           feeType,
-          // isProrata: !!isProrata,
+          isFractionalFee,
           createdAt: new Date(),
           updatedAt: new Date(),
           recurringType,
-          // isLate: !!isLate,
           lateFeeType,
           lateFee,
-          currency: currency ?? "USD", // ✅ Provide a default value
-          // createdBy,
-          // status: status || 1
+          currency: currency ?? "USD",
+          isLateFee
+    
         };
 
         const feePlan = await ctx.prisma.feePlans.create({
@@ -191,25 +190,29 @@ export const feePlanRouter = createTRPCRouter({
         amount: z.number(),
         feeType: z.enum(FEE_PLAN_FEE_TYPE),
         isFractionalFee: z.boolean().optional(),
-        recurringType: z.enum(FEE_PLAN_RECURRING_TYPE).optional(),
+        isLateFee: z.boolean(),
+        recurringType: z.enum(FEE_PLAN_RECURRING_TYPE).nullable(),
+        lateFeeType:z.enum(['amount' , 'percentage']),
+        lateFee: z.number()
       })
     )
     .mutation(
       async ({
-        input: { feePlanId, name, amount, feeType, isFractionalFee, recurringType },
+        input: { feePlanId, name, amount, feeType, isFractionalFee, recurringType, isLateFee, lateFeeType, lateFee },
         ctx,
       }) => {
-        const dataToSave: { [key: string]: any } = {
+        const dataToSave = {
           name,
           amount,
           feeType,
+          isLateFee,
           isFractionalFee: !!isFractionalFee,
           updatedAt: new Date(),
+          lateFeeType,
+          recurringType,
+          lateFee
         };
 
-        if (recurringType) {
-          dataToSave.recurringType = recurringType;
-        }
         const response = await ctx.prisma.feePlans.update({
           where: {
             id: feePlanId,

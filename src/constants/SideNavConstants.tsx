@@ -17,7 +17,7 @@ import StaffPayrollIcon from '~/components/Icons/StaffPayrollIcon'
 import FinancialAnalyticIcon from '~/components/Icons/FinancialAnalyticIcon'
 // import InventoryIcon from "~/components/Icons/InventoryIcon";
 import SettingsIcon from '~/components/Icons/SettingsIcon'
-import FeePlan from '~/pages/feePlan'
+import FeePlan from '~/pages/feePlans'
 
 export const SIDE_NAV_ITEMS = [
   // {
@@ -77,7 +77,7 @@ export const SIDE_NAV_ITEMS = [
   // },
   {
     label: 'Fee Plan',
-    route: '/feePlan',
+    route: '/feePlans',
     icon: <PlanAndPricingIcon />,
   },
   {

@@ -24,16 +24,14 @@ interface AllData {
   addButtonText?: string
   addNewButtonUrl?: string
   addButtonUrl?: string
-  dropdownItems:
-    | {
-        changeBatch?: boolean
-        delete?: boolean
-        attendance?: boolean
-        changeCenter?: boolean
-        reminder?: boolean
-        freeze?: boolean
-      }
-    | undefined
+  dropdownItems?: {
+    changeBatch?: boolean
+    delete?: boolean
+    attendance?: boolean
+    changeCenter?: boolean
+    reminder?: boolean
+    freeze?: boolean
+  }
   TABLE_ROWS: {[key: string]: any; id: number}[]
   TABLE_HEAD: {label: string; id: string}[]
   filter?: boolean

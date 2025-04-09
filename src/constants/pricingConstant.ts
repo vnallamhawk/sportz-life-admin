@@ -1,4 +1,4 @@
-import { FeePlans_feeType } from "@prisma/client";
+import { FeePlans_feeType, FeePlans_lateFeeType, FeePlans_recurringType } from "@prisma/client";
 
 export const PRICING_TABLE_HEADER = [
   { label: "Fee Plan Name", id: "name" },
@@ -22,9 +22,14 @@ export const PLANNING_FEE_TYPE_OPTIONS = [
   { value: "free", label: "Free" },
 ];
 
-export const PLANNING_RECURRING_OPTIONS = [
-  { value: "bi_monthly", label: "Bi-Monthly" },
-  { value: "quarterly", label: "Quarterly" },
-  { value: "half_yearly", label: "Half Yearly" },
-  { value: "annually", label: "Annually" },
+export const PLANNING_RECURRING_OPTIONS:{value: FeePlans_recurringType ,label: string}[] = [
+  { value: "Bi_Monthly", label: "Bi-Monthly" },
+  { value: "Quarterly", label: "Quarterly" },
+  { value: "Half_Yearly", label: "Half Yearly" },
+  { value: "Annually", label: "Annually" },
 ];
+
+export const LATE_FEE_TYPE_OPTION : {value: FeePlans_lateFeeType, label:string}[] =  [
+  {value: 'amount', label: 'Amount'},
+  {value: 'percentage', label: 'Percentage'},
+]
