@@ -1,26 +1,18 @@
 import {Chip} from '@material-tailwind/react'
-import type {$Enums, FeePlans} from '@prisma/client'
-import {COACH_CERTIFICAT_TABLE_HEADERS} from '~/constants/coachConstants'
 import {FEE_PLAN_TABLE_HEADER} from '~/constants/feePlanConstants'
 import {PLANNING_FEE_TYPE} from '~/constants/pricingConstant'
-import type {COACH_CERTIFICATE_TABLE_TYPES} from '~/types/coach'
-import type {FEE_PLAN_TABLE, FEE_PLAN_TABLE, FEE_PLAN_TABLE_ID} from '~/types/feePlan'
+import type {FEE_PLAN_TABLE, FEE_PLAN_TABLE_ID} from '~/types/feePlan'
 import {Dropdown, DropdownHeader} from 'flowbite-react'
 import Image from 'next/image'
 import Dots from '../../images/dots.svg'
 import {useRouter} from 'next/navigation'
 import {api} from '~/utils/api'
 
-const FeePlanTable = ({
-  tableData,
-  onRemoveTableButton,
-}: {
-  tableData: Partial<FEE_PLAN_TABLE>[] | undefined
-  onRemoveTableButton?: (index: number) => void
-}) => {
+const FeePlanTable = ({tableData}: {tableData: Partial<FEE_PLAN_TABLE>[] | undefined}) => {
+  const router = useRouter()
+
   const getTableCellContent = (id: FEE_PLAN_TABLE_ID, data: Partial<FEE_PLAN_TABLE>) => {
     let cellContent: React.ReactNode = undefined
-    const router = useRouter()
 
     const {mutate: deleteFeePlanMutate} = api.feePlan.deleteFeePlan.useMutation({
       onSuccess: () => {
@@ -47,20 +39,12 @@ const FeePlanTable = ({
           >
             <DropdownHeader>
               <div className='flex items-center'>
-                {/* {onEditClick && ( */}
                 <button
                   className='mx-1 text-white'
                   onClick={() => (data.id ? void router.push(`/edit-fee-plan-${data?.id}`) : null)}
                 >
                   Edit
                 </button>
-                {/* )} */}
-                {/* {onViewClick && ( */}
-                <button className='mx-1 text-white' onClick={() => onViewClick(data?.id)}>
-                  View
-                </button>
-                {/* )} */}
-                {/* {onDeleteClick && ( */}
                 <button
                   className='mx-1 text-white'
                   onClick={() => (data.id ? deleteFeePlanMutate({feePlanId: data.id}) : null)}
