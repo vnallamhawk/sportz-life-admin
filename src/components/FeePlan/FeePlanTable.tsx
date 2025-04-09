@@ -9,6 +9,7 @@ import {Dropdown, DropdownHeader} from 'flowbite-react'
 import Image from 'next/image'
 import Dots from '../../images/dots.svg'
 import {useRouter} from 'next/navigation'
+import {api} from '~/utils/api'
 
 const FeePlanTable = ({
   tableData,
@@ -20,6 +21,15 @@ const FeePlanTable = ({
   const getTableCellContent = (id: FEE_PLAN_TABLE_ID, data: Partial<FEE_PLAN_TABLE>) => {
     let cellContent: React.ReactNode = undefined
     const router = useRouter()
+
+    const {mutate: deleteFeePlanMutate} = api.feePlan.deleteFeePlan.useMutation({
+      onSuccess: () => {
+        router.push('/feePlans') // Redirect after deletion or refetch data
+      },
+      onError: (error) => {
+        console.error('Error deleting fee plan:', error)
+      },
+    })
 
     switch (id) {
       case 'action':
@@ -51,7 +61,10 @@ const FeePlanTable = ({
                 </button>
                 {/* )} */}
                 {/* {onDeleteClick && ( */}
-                <button className='mx-1 text-white' onClick={() => onDeleteClick(data?.id)}>
+                <button
+                  className='mx-1 text-white'
+                  onClick={() => (data.id ? deleteFeePlanMutate({feePlanId: data.id}) : null)}
+                >
                   Delete
                 </button>
                 {/* )} */}

@@ -1,4 +1,4 @@
-import { FeePlans_feeType, FeePlans_lateFeeType, FeePlans_recurringType } from "@prisma/client";
+import type { FeePlans_feeType, FeePlans_lateFeeType, FeePlans_recurringType } from "@prisma/client";
 
 export const PRICING_TABLE_HEADER = [
   { label: "Fee Plan Name", id: "name" },
