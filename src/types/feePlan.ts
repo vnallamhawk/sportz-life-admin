@@ -1,4 +1,5 @@
-import { FeePlans, FeePlans_recurringType } from "@prisma/client";
+import type { FeePlans} from "@prisma/client";
+import { FeePlans_recurringType } from "@prisma/client";
 
 export const FEE_PLAN_FEE_TYPE = ["free", "one_time", "recurring"] as const;
 

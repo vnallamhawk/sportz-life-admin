@@ -1,5 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {type COACH_CERTIFICATE_TABLE_TYPES} from '~/types/coach'
+import React, {useEffect} from 'react'
 import Button from '~/components/Button'
 
 import AddForm from '~/common/AddForm/AddForm'
@@ -17,9 +16,6 @@ export default function AddCoachCertificates({}) {
   //   useContext<FormContextTypes>(FormContext)
 
   const {
-    control, // For <Controller> components
-    register, // For native inputs
-    handleSubmit, // Submission handler
     watch, // Track specific fields
     getValues, // Get current field values
     setValue, // Update a field programmatically
