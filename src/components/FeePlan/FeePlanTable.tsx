@@ -14,14 +14,14 @@ const FeePlanTable = ({tableData}: {tableData: Partial<FEE_PLAN_TABLE>[] | undef
   const getTableCellContent = (id: FEE_PLAN_TABLE_ID, data: Partial<FEE_PLAN_TABLE>) => {
     let cellContent: React.ReactNode = undefined
 
-    const {mutate: deleteFeePlanMutate} = api.feePlan.deleteFeePlan.useMutation({
-      onSuccess: () => {
-        router.push('/feePlans') // Redirect after deletion or refetch data
-      },
-      onError: (error) => {
-        console.error('Error deleting fee plan:', error)
-      },
-    })
+    // const {mutate: deleteFeePlanMutate} = api.feePlan.deleteFeePlan.useMutation({
+    //   onSuccess: () => {
+    //     router.push('/feePlans') // Redirect after deletion or refetch data
+    //   },
+    //   onError: (error) => {
+    //     console.error('Error deleting fee plan:', error)
+    //   },
+    // })
 
     switch (id) {
       case 'action':
@@ -45,13 +45,12 @@ const FeePlanTable = ({tableData}: {tableData: Partial<FEE_PLAN_TABLE>[] | undef
                 >
                   Edit
                 </button>
-                <button
+                {/* <button
                   className='mx-1 text-white'
                   onClick={() => (data.id ? deleteFeePlanMutate({feePlanId: data.id}) : null)}
                 >
                   Delete
-                </button>
-                {/* )} */}
+                </button> */}
               </div>
             </DropdownHeader>
           </Dropdown>

@@ -20,23 +20,26 @@ export const feePlanRouter = createTRPCRouter({
         ctx,
         input,
       }) => {
-        const {
-          page = 1,
-          limit = 10,
-          search,
-          feeTypes,
-          recurringTypes,
-          isFractionalFee,
-          status,
-        } = input;
-        const listQuery = {
-          skip: (page - 1) * limit,
-          take: limit,
-          where: {},
-          orderBy: {
-            createdAt: "desc",
-          },
-        };
+        const {limit, page} = input
+      const skip = (page - 1) * limit;
+
+        // const {
+        //   page = 1,
+        //   limit =,
+        //   search,
+        //   feeTypes,
+        //   recurringTypes,
+        //   isFractionalFee,
+        //   status,
+        // } = input;
+        // const listQuery = {
+        //   skip: (page - 1) * limit,
+        //   take: limit,
+        //   where: {},
+        //   orderBy: {
+        //     createdAt: "desc",
+        //   },
+        // };
         // const countQuery = {
         //   where: {},
         // };
@@ -103,6 +106,10 @@ export const feePlanRouter = createTRPCRouter({
             //   updatedAt: true,
             // },
           // }
+          {
+            skip,
+            take: limit
+          }
         ),
         ]).then((result) => {
           const totalItems = result[0];
