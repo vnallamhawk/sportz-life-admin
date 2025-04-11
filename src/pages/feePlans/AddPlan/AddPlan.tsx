@@ -16,36 +16,36 @@ import {
 } from '~/constants/pricingConstant'
 import type {FeePlans} from '@prisma/client'
 import {zodResolver} from '@hookform/resolvers/zod'
+import {Prisma} from '@prisma/client'
 
-import {z} from 'zod'
+import {z, type ZodType} from 'zod'
 import {useForm} from 'react-hook-form'
 
-// Define enums that match your Prisma enums
 const FeeType = z.enum(['free', 'one_time', 'recurring'])
-const RecurringType = z.enum(['Monthly', 'Quarterly', 'Yearly', 'Bi_Monthly'])
+const RecurringType = z.enum(['Annually', 'Quarterly', 'Half_Yearly', 'Bi_Monthly'])
 const LateFeeType = z.enum(['amount', 'percentage'])
 const Currency = z.enum(['USD', 'INR', 'GBP'])
 
-// Base schema for fee plans
-export const FeePlanSchema = z
+type FeePlanPrismaType = Prisma.FeePlansCreateInput
+export const FeePlanSchema: z.ZodType<FeePlanPrismaType> = z
   .object({
     id: z.number().optional(),
     name: z.string().min(1, 'Name is required').max(100),
-    amount: z.number().min(0, 'Amount must be positive').optional(),
-    feeType: FeeType.nullable(),
+    amount: z.number().min(0, 'Amount must be positive').default(0),
+    feeType: FeeType,
     currency: Currency.default('INR'),
-    lateFee: z.number().min(0, 'Late fee must be positive').nullable().optional(),
-    lateFeeType: LateFeeType.nullable().optional(),
-    isLateFee: z.boolean().nullable().optional(),
-    isFractionalFee: z.boolean().nullable().optional(),
-    recurringType: RecurringType.nullable().optional(),
-    createdAt: z.date().optional(),
-    updatedAt: z.date().optional(),
-    status: z.boolean().nullable().optional(),
+    lateFee: z.number().min(0, 'Late fee must be positive').optional(),
+    lateFeeType: LateFeeType.optional(),
+    isLateFee: z.boolean().optional(),
+    isFractionalFee: z.boolean().optional(),
+    recurringType: RecurringType.optional().nullable(),
+    createdAt: z.date().or(z.string()),
+    updatedAt: z.date().or(z.string()),
+    status: z.boolean().optional(),
   })
+  .strict()
   .superRefine((data, ctx) => {
-    // Custom validation for amount when feeType is not free
-    if (data.feeType !== 'free' && (data.amount === undefined || data.amount === null)) {
+    if (data.feeType !== 'free' && data.amount === undefined) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Amount is required for non-free plans',
@@ -62,7 +62,7 @@ export const FeePlanSchema = z
           path: ['lateFeeType'],
         })
       }
-      if (data.lateFee === undefined || data.lateFee === null) {
+      if (data.lateFee === undefined) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Late fee amount is required when late fee is enabled',
@@ -102,14 +102,7 @@ export default function AddPlans() {
   // Watch form values
   const formData = watch()
 
-  // Fetch Fee Plan details if ID exists
   const {data: feePlanData} = api.feePlan.getFeePlanById.useQuery({id}, {enabled: !!id})
-
-  // useEffect(() => {
-  //   if (createdBy) {
-  //     setValue('createdBy', createdBy)
-  //   }
-  // }, [createdBy, setValue])
 
   useEffect(() => {
     if (id && feePlanData) {
@@ -145,41 +138,39 @@ export default function AddPlans() {
   const onSubmit = (data: FeePlanFormData) => {
     const submissionData = {
       ...data,
-      amount: data.feeType === 'free' ? 0 : data.amount,
+      amount: !data.amount || data.feeType === 'free' ? 0 : data.amount,
+      createdAt: new Date(),
+      updatedAt: new Date(),
       // Add other transformations if needed
     }
-    console.log(submissionData)
 
-    const result = FeePlanSchema.safeParse(data)
+    const result = FeePlanSchema.safeParse(submissionData)
+    console.log(result)
 
     if (!result.success) {
-      console.log(result.errors)
       result.error.errors.forEach((err) => {
         if (err.path?.[0]) return setError(err.path[0], {message: err.message})
       })
       return
     } else {
       if (id) {
-        updateFeePlanMutate({feePlanId: id, ...submissionData})
+        updateFeePlanMutate({id, ...submissionData})
       } else {
         createFeePlanMutate(submissionData)
       }
     }
   }
 
-  const handleFeeTypeChange = (selectedOption: any) => {
+  const handleFeeTypeChange = (selectedOption) => {
     setValue('feeType', selectedOption.value)
     if (selectedOption.value === 'free') {
       setValue('amount', 0)
-      setValue('recurringType', null)
+      setValue('recurringType', undefined)
     }
   }
 
-  const handleRecurringPeriodChange = (
-    selectedOption: SingleValue<{value: string; label: string}>
-  ) => {
-    console.log(selectedOption?.value)
-    setValue('recurringType', selectedOption?.value as any)
+  const handleRecurringPeriodChange = (selectedOption) => {
+    setValue('recurringType', selectedOption?.value)
   }
 
   const handleCurrencyChange = (currency: 'USD' | 'INR' | 'GBP') => {
@@ -189,12 +180,11 @@ export default function AddPlans() {
   const handleSwitchToggle = (field: 'isFractionalFee' | 'isLateFee') => {
     setValue(field, !formData[field])
     if (field === 'isLateFee' && !formData.isLateFee) {
-      setValue('lateFeeType', null)
-      setValue('lateFee', null)
+      setValue('lateFeeType', undefined)
+      setValue('lateFee', undefined)
     }
   }
 
-  console.log({formData})
   return (
     <div className='bg-s-gray px-6 pb-7'>
       <Card className='relative col-span-12 h-full !rounded-r-none rounded-l-xl bg-white p-0 pt-10 lg:col-span-4'>
@@ -309,7 +299,7 @@ export default function AddPlans() {
                   value={LATE_FEE_TYPE_OPTION.find(
                     (feeType) => feeType.value === formData.lateFeeType
                   )}
-                  onChange={(option: any) => setValue('lateFeeType', option.value)}
+                  onChange={(option) => setValue('lateFeeType', option?.value)}
                   placeholder='Select Late Fee Type'
                   className='border-1 c-select w-full border-gray-300'
                   classNamePrefix='react-select'
@@ -334,6 +324,7 @@ export default function AddPlans() {
             <button
               className='w-full rounded-full !border-0 bg-mandy-dark px-5 py-3 text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
               type='submit'
+              // onClick={onSubmit}
             >
               {id ? 'Update Fee Plan' : 'Add Fee Plan'}
             </button>

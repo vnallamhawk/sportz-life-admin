@@ -6,7 +6,6 @@ import {Dropdown, DropdownHeader} from 'flowbite-react'
 import Image from 'next/image'
 import Dots from '../../images/dots.svg'
 import {useRouter} from 'next/navigation'
-import {api} from '~/utils/api'
 
 const FeePlanTable = ({tableData}: {tableData: Partial<FEE_PLAN_TABLE>[] | undefined}) => {
   const router = useRouter()

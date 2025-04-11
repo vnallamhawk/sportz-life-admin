@@ -1,6 +1,10 @@
 import { z } from "zod";
+import { FeePlanSchema } from "~/pages/feePlans/AddPlan/AddPlan";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { FEE_PLAN_FEE_TYPE, FEE_PLAN_RECURRING_TYPE, LATE_FEE_TYPE } from "~/types/feePlan";
+import type { RouterInputs } from "~/utils/api";
+
+type CreateFeePlanInput = RouterInputs["feePlan"]["createFeePlan"];
 
 export const feePlanRouter = createTRPCRouter({
   getAllFeePlans: publicProcedure
@@ -153,7 +157,7 @@ export const feePlanRouter = createTRPCRouter({
         amount: z.number(),
         feeType: z.enum(FEE_PLAN_FEE_TYPE),
         isFractionalFee: z.boolean().optional(),
-        recurringType: z.enum(FEE_PLAN_RECURRING_TYPE),
+        recurringType: z.enum(FEE_PLAN_RECURRING_TYPE).optional(),
         isLateFee: z.boolean().optional(),
         lateFeeType: z.enum(LATE_FEE_TYPE).optional(),
         lateFee: z.number().optional(),
@@ -190,22 +194,10 @@ export const feePlanRouter = createTRPCRouter({
       }
     ),
   editFeePlan: publicProcedure
-    .input(
-      z.object({
-        feePlanId: z.number(),
-        name: z.string(),
-        amount: z.number(),
-        feeType: z.enum(FEE_PLAN_FEE_TYPE),
-        isFractionalFee: z.boolean().optional(),
-        isLateFee: z.boolean(),
-        recurringType: z.enum(FEE_PLAN_RECURRING_TYPE).nullable(),
-        lateFeeType:z.enum(['amount' , 'percentage']),
-        lateFee: z.number()
-      })
-    )
+    .input(FeePlanSchema)
     .mutation(
       async ({
-        input: { feePlanId, name, amount, feeType, isFractionalFee, recurringType, isLateFee, lateFeeType, lateFee },
+        input: { id, name, amount, feeType, isFractionalFee, recurringType, isLateFee, lateFeeType, lateFee },
         ctx,
       }) => {
         const dataToSave = {
@@ -222,7 +214,7 @@ export const feePlanRouter = createTRPCRouter({
 
         const response = await ctx.prisma.feePlans.update({
           where: {
-            id: feePlanId,
+            id: id,
           },
           data: dataToSave,
         });
