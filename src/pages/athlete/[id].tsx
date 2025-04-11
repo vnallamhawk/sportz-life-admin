@@ -62,8 +62,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
 
   return {
     props: {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      athlete: JSON.parse(JSON.stringify(athlete)), // <== here is a solution
+      athlete: JSON.parse(JSON.stringify(athlete)),
     },
   }
 }
@@ -108,21 +107,15 @@ const tabs: TabType[] = [
 
 type ValuePiece = Date | null
 
-type Value = ValuePiece | [ValuePiece, ValuePiece]
-
-interface BatchesType extends Batches {
-  Coaches: Coaches
-  FeePlans: FeePlans
-  Sports: Sports
-  Centers: Centers
-}
-
-interface AthleteBatchesMapsType extends AthleteBatchesMaps {
-  Batches?: BatchesType
+type AthleteBatchesMapsType = AthleteBatchesMaps & {
+  Batches?: Batches & {
+    Coaches?: Coaches
+    FeePlans?: FeePlans
+  }
   Sports?: Sports
 }
 
-interface AthleteSportsMapsType extends AthleteSportsMaps {
+type AthleteSportsMapsType = AthleteSportsMaps & {
   Sports?: Sports
 }
 
@@ -132,10 +125,8 @@ type Athlete = Athletes & {
 }
 
 export default function Page({athlete}: {athlete: Athlete}) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const [selectedComponent, setSelectedComponent] = useState<any>()
+  const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>()
   const [selectedTab, setSelectedTab] = useState<string | undefined>(tabs[0]?.name)
-
   const [loading, setLoading] = useState(true)
   const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs)
   const [imageUrl, setImageUrl] = useState<string | null>(null)
@@ -147,7 +138,6 @@ export default function Page({athlete}: {athlete: Athlete}) {
     }
   }, [athlete])
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   const getSignedUrlForImage = async (key: string) => {
     try {
       const s3info = s3.getSignedUrl('getObject', {
@@ -157,6 +147,7 @@ export default function Page({athlete}: {athlete: Athlete}) {
       })
       setImageUrl(s3info)
     } catch (error) {
+      console.error('Error getting signed URL:', error)
       return null
     }
   }
@@ -167,14 +158,13 @@ export default function Page({athlete}: {athlete: Athlete}) {
       const medical_historyIndex = arr.findIndex((item: TabType) => item.name === 'medical_history')
       if (medical_historyIndex > -1 && athlete?.medicalHistory) {
         const obj: TabType = {...arr[medical_historyIndex]}
-        obj.value = 0
+        obj.value = athlete.medicalHistory.length
         arr[medical_historyIndex] = obj
       }
       const batchIndex = arr.findIndex((item: TabType) => item.name === 'batches')
       if (batchIndex > -1 && athlete?.AthleteBatchesMaps) {
         const batchObj: TabType = {...arr[batchIndex]}
-
-        batchObj.value = athlete?.AthleteBatchesMaps ? athlete?.AthleteBatchesMaps?.length : 0
+        batchObj.value = athlete?.AthleteBatchesMaps?.length || 0
         arr[batchIndex] = batchObj
       }
       if (JSON.stringify(finalTabs) !== JSON.stringify(arr)) {
@@ -198,21 +188,18 @@ export default function Page({athlete}: {athlete: Athlete}) {
         TABLE_HEAD = ATHLETE_BATCH_TABLE_HEADERS
 
         if (athlete && athlete?.AthleteBatchesMaps && athlete?.AthleteBatchesMaps?.length > 0) {
-          const batches = athlete?.AthleteBatchesMaps.map((batch) => {
-            return {
-              ...batch,
-              batchName: batch.Batches?.name ?? 'N/A', // Handle undefined
-              sport: batch.Sports?.name ?? 'N/A',
-              coach: batch.Batches?.Coaches?.name ?? 'N/A',
-              students: batch.Batches?.occupiedSeat ?? 0,
-              batchFee: `${batch.Batches?.FeePlans?.amount ?? 0}/${
-                batch.Batches?.FeePlans?.recurringType ?? 'N/A'
-              }`,
-            }
-          })
+          const batches = athlete?.AthleteBatchesMaps.map((batch) => ({
+            ...batch,
+            batchName: batch.Batches?.name ?? 'N/A',
+            sport: batch.Sports?.name ?? 'N/A',
+            coach: batch.Batches?.Coaches?.name ?? 'N/A',
+            students: batch.Batches?.occupiedSeat ?? 0,
+            batchFee: `${batch.Batches?.FeePlans?.amount ?? 0}/${
+              batch.Batches?.FeePlans?.recurringType ?? 'N/A'
+            }`,
+          }))
 
           TABLE_ROWS = batches
-
           setBatchesData(TABLE_ROWS)
         }
       } else if (tab?.name === 'payment_history') {
@@ -221,6 +208,11 @@ export default function Page({athlete}: {athlete: Athlete}) {
         TABLE_HEAD = ASSESSMENT_TABLE_HEADERS
       } else if (tab?.name === 'medical_history') {
         TABLE_HEAD = ATHLETE_MEDICAL_TABLE_HEADERS
+        TABLE_ROWS =
+          athlete?.medicalHistory?.map((history, index) => ({
+            id: index,
+            ...history,
+          })) || []
       }
       component = (
         <AllData
@@ -246,7 +238,6 @@ export default function Page({athlete}: {athlete: Athlete}) {
         handleTabClick={handleClick}
         data={{...athlete, imageUrl}}
         badgeData={athlete?.AthleteSportsMaps || []}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         selectedComponent={selectedComponent}
         selectedTab={selectedTab}
         gridColumns={3}
@@ -257,8 +248,8 @@ export default function Page({athlete}: {athlete: Athlete}) {
                 label: 'Blood Group',
                 value: athlete?.bloodGroup || '',
               },
-              {label: 'Height', value: athlete?.height || ''},
-              {label: 'Weight', value: athlete?.weight || ''},
+              {label: 'Height', value: `${athlete?.height || ''} ${athlete?.heightUnit || 'cm'}`},
+              {label: 'Weight', value: `${athlete?.weight || ''} ${athlete?.weightUnit || 'kg'}`},
               {label: 'Contact Number', value: athlete?.phone || ''},
               {label: 'Email', value: athlete?.email || ''},
               {label: 'Age', value: calculateAge(athlete?.dob) || ''},
