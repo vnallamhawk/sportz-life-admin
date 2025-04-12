@@ -39,11 +39,10 @@ export const FeePlanSchema: z.ZodType<FeePlanPrismaType> = z
     isLateFee: z.boolean().optional(),
     isFractionalFee: z.boolean().optional(),
     recurringType: RecurringType.optional().nullable(),
-    createdAt: z.date().or(z.string()),
-    updatedAt: z.date().or(z.string()),
+    // createdAt: z.date().or(z.string()),
+    // updatedAt: z.date().or(z.string()),
     status: z.boolean().optional(),
   })
-  .strict()
   .superRefine((data, ctx) => {
     if (data.feeType !== 'free' && data.amount === undefined) {
       ctx.addIssue({
@@ -81,6 +80,13 @@ export const FeePlanSchema: z.ZodType<FeePlanPrismaType> = z
     }
   })
 
+// export const FeePlanWithTimestampsSchema = FeePlanSchema.extend({
+//   createdAt: z.date().or(z.string()),
+//   updatedAt: z.date().or(z.string()),
+// })
+
+// export type FeePlanSubmissionData = z.infer<typeof FeePlanSubmissionSchema>
+
 export type FeePlanFormData = z.infer<typeof FeePlanSchema>
 
 export default function AddPlans() {
@@ -97,7 +103,12 @@ export default function AddPlans() {
     watch,
     formState: {errors},
     setError,
-  } = useForm<FeePlanFormData>()
+  } = useForm<typeof FeePlanSchema>({
+    resolver: zodResolver(FeePlanSchema),
+    defaultValues: {
+      currency: 'INR',
+    },
+  })
 
   // Watch form values
   const formData = watch()
@@ -108,9 +119,9 @@ export default function AddPlans() {
     if (id && feePlanData) {
       // Set form values from fetched data
       const defaultValues = {
-        name: feePlanData.name || '',
+        name: feePlanData.name,
         amount: feePlanData.amount || undefined,
-        currency: (feePlanData.currency as 'USD' | 'INR' | 'GBP') || 'USD',
+        currency: feePlanData.currency,
         feeType: feePlanData.feeType,
         recurringType: feePlanData.recurringType,
         isFractionalFee: feePlanData.isFractionalFee ?? false,
@@ -134,30 +145,21 @@ export default function AddPlans() {
     onSuccess: () => router.push(`/feePlans`),
     onError: (error) => console.error('Error updating fee plan:', error),
   })
+  console.log('inst')
+  console.log(errors)
 
   const onSubmit = (data: FeePlanFormData) => {
     const submissionData = {
       ...data,
-      amount: !data.amount || data.feeType === 'free' ? 0 : data.amount,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      // Add other transformations if needed
+      amount: data.feeType === 'free' ? 0 : data.amount, // Ensure amount is 0 for free plans
+      // createdAt: new Date(),
+      // updatedAt: new Date(),
     }
 
-    const result = FeePlanSchema.safeParse(submissionData)
-    console.log(result)
-
-    if (!result.success) {
-      result.error.errors.forEach((err) => {
-        if (err.path?.[0]) return setError(err.path[0], {message: err.message})
-      })
-      return
+    if (id) {
+      updateFeePlanMutate({id, ...submissionData})
     } else {
-      if (id) {
-        updateFeePlanMutate({id, ...submissionData})
-      } else {
-        createFeePlanMutate(submissionData)
-      }
+      createFeePlanMutate(submissionData)
     }
   }
 

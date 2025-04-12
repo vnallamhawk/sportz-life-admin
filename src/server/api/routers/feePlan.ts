@@ -112,7 +112,10 @@ export const feePlanRouter = createTRPCRouter({
           // }
           {
             skip,
-            take: limit
+            take: limit,
+            orderBy: {
+              createdAt: 'desc' 
+            }
           }
         ),
         ]).then((result) => {
@@ -151,24 +154,10 @@ export const feePlanRouter = createTRPCRouter({
       } catch (error) { }
     }),
   createFeePlan: publicProcedure
-    .input(
-      z.object({
-        name: z.string(),
-        amount: z.number(),
-        feeType: z.enum(FEE_PLAN_FEE_TYPE),
-        isFractionalFee: z.boolean().optional(),
-        recurringType: z.enum(FEE_PLAN_RECURRING_TYPE).optional(),
-        isLateFee: z.boolean().optional(),
-        lateFeeType: z.enum(LATE_FEE_TYPE).optional(),
-        lateFee: z.number().optional(),
-        createdBy: z.number(),
-        currency: z.string().optional(),
-        status: z.number().optional()
-      })
-    )
+    .input(FeePlanSchema)
     .mutation(
       async ({
-        input: { name, amount, feeType, isFractionalFee, recurringType, isLateFee, lateFeeType, lateFee, currency, createdBy, status },
+        input: { name, amount, feeType, isFractionalFee, recurringType, isLateFee, lateFeeType, lateFee, currency, status },
         ctx,
       }) => {
         const dataToSave = {
@@ -181,9 +170,8 @@ export const feePlanRouter = createTRPCRouter({
           recurringType,
           lateFeeType,
           lateFee,
-          currency: currency ?? "USD",
+          currency: currency ?? "INR",
           isLateFee
-    
         };
 
         const feePlan = await ctx.prisma.feePlans.create({
@@ -207,6 +195,7 @@ export const feePlanRouter = createTRPCRouter({
           isLateFee,
           isFractionalFee: !!isFractionalFee,
           updatedAt: new Date(),
+          createdAt: new Date(),
           lateFeeType,
           recurringType,
           lateFee
