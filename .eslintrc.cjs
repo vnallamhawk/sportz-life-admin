@@ -1,31 +1,51 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require("path");
+// .eslintrc.cjs
+module.exports = {
+  root: true,
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'next/core-web-vitals'
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
+    ecmaFeatures: {
+      jsx: true
+    },
+    ecmaVersion: 2021,
+    sourceType: 'module'
+  },
+  plugins: ['@typescript-eslint'],
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  },
+  rules: {
+    // Basic JavaScript/TypeScript rules
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { 
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_'
+      }
+    ],
+    
+    // React specific rules
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
 
-/** @type {import("eslint").Linter.Config} */
-const config = {
+  },
   overrides: [
     {
-      extends: [
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
-      ],
-      files: ["*.ts", "*.tsx"],
-      parserOptions: {
-        project: path.join(__dirname, "tsconfig.json"),
-      },
-    },
-  ],
-  parser: "@typescript-eslint/parser",
-  parserOptions: {
-    project: path.join(__dirname, "tsconfig.json"),
-  },
-  plugins: ["@typescript-eslint"],
-  extends: ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
-  rules: {
-    '@typescript-eslint/consistent-type-imports': 'error',
-    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
-    "@typescript-eslint/no-explicit-any": "off",
-    "no-console": ["error", { allow: ["error"] }],
-  },
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        // TypeScript specific rules
+        '@typescript-eslint/explicit-module-boundary-types': 'off'
+      }
+    }
+  ]
 };
-
-module.exports = config;
