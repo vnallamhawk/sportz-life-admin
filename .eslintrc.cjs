@@ -37,6 +37,7 @@ module.exports = {
     // React specific rules
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'no-console': ['error', { allow: ['warn', 'error'] }],
 
   },
   overrides: [

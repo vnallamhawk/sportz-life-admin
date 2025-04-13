@@ -10,7 +10,7 @@ import {useRouter} from 'next/router'
 
 export const FeePlan = () => {
   const [currentPage, setCurrentPage] = useState(1)
-  const {data, isLoading} = api?.feePlan.getAllFeePlans.useQuery({limit: 5, page: currentPage})
+  const {data, isLoading} = api.feePlan.getAllFeePlans.useQuery({limit: 5, page: currentPage})
   const totalItems = data?.totalItems
   const feePlans = data?.data
   const {pageNumbers, totalPages} = usePagination(totalItems ?? 0, 5, currentPage)

@@ -1,24 +1,21 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import Card from '~/components/Card'
 import CardTitle from '~/components/Card/CardTitle'
 import Select from 'react-select'
 import {ChevronDownIcon} from '@radix-ui/react-icons'
 import {Dropdown} from 'flowbite-react'
 import {Switch} from '@material-tailwind/react'
-import {useSession} from 'next-auth/react'
 import {api} from '~/utils/api'
 import {useRouter} from 'next/router'
-import type {SingleValue} from 'react-select' // Ensure this import exists
 import {
   PLANNING_FEE_TYPE_OPTIONS,
   PLANNING_RECURRING_OPTIONS,
   LATE_FEE_TYPE_OPTION,
 } from '~/constants/pricingConstant'
-import type {FeePlans} from '@prisma/client'
 import {zodResolver} from '@hookform/resolvers/zod'
 import {Prisma} from '@prisma/client'
 
-import {z, type ZodType} from 'zod'
+import {z} from 'zod'
 import {useForm} from 'react-hook-form'
 
 const FeeType = z.enum(['free', 'one_time', 'recurring'])
@@ -92,8 +89,6 @@ export type FeePlanFormData = z.infer<typeof FeePlanSchema>
 export default function AddPlans() {
   const router = useRouter()
   const id = Number(router?.query?.id)
-  const {data: sessionData} = useSession()
-  const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
 
   // Initialize form with react-hook-form and Zod
   const {
@@ -102,7 +97,6 @@ export default function AddPlans() {
     setValue,
     watch,
     formState: {errors},
-    setError,
   } = useForm<typeof FeePlanSchema>({
     resolver: zodResolver(FeePlanSchema),
     defaultValues: {
@@ -145,8 +139,6 @@ export default function AddPlans() {
     onSuccess: () => router.push(`/feePlans`),
     onError: (error) => console.error('Error updating fee plan:', error),
   })
-  console.log('inst')
-  console.log(errors)
 
   const onSubmit = (data: FeePlanFormData) => {
     const submissionData = {
