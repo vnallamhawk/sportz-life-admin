@@ -2,7 +2,7 @@ import React from 'react'
 
 import Datepicker from '~/components/DatePicker/DatePickerWrapper'
 import Textbox from '~/components/Textbox'
-import Timepicker from '~/components/TimePicker/TimePickerWrapper'
+// import Timepicker from '~/components/TimePicker/TimePickerWrapper'
 import Image from 'next/image'
 // import Plus from '../../images/plus.svg'
 // import Remove from '../../images/remove.svg'
@@ -146,29 +146,29 @@ const AddForm = ({formConstantValues, imageTitle, onDropCallback, uploadUrl}: Ad
           />
         )
         break
-      case 'time':
-        inputElement = (
-          <Controller
-            control={control}
-            render={() => {
-              return (
-                <Timepicker
-                  placeHolder={props.placeHolder}
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                  // @ts-expect-error TODO: FIX THIS TS ERROR
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  value={formData[id] ? formData[id] : undefined}
-                  className='h-12 '
-                  onChangeHandler={(value) => handleChangeTime(value, id)}
-                />
-              )
-            }}
-            name={id}
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            rules={rules}
-          />
-        )
-        break
+      // case 'time':
+      //   inputElement = (
+      //     <Controller
+      //       control={control}
+      //       render={() => {
+      //         return (
+      //           <Timepicker
+      //             placeHolder={props.placeHolder}
+      //             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      //             // @ts-expect-error TODO: FIX THIS TS ERROR
+      //             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      //             value={formData[id] ? formData[id] : undefined}
+      //             className='h-12 '
+      //             onChangeHandler={(value) => handleChangeTime(value, id)}
+      //           />
+      //         )
+      //       }}
+      //       name={id}
+      //       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      //       rules={rules}
+      //     />
+      //   )
+      //   break
       case 'calendar':
         inputElement = (
           <Controller
@@ -178,7 +178,7 @@ const AddForm = ({formConstantValues, imageTitle, onDropCallback, uploadUrl}: Ad
                 <Datepicker
                   {...rest}
                   placeHolder={props.placeHolder}
-                  value={value ? new Date(value) : null}
+                  value={value ? new Date(value) : undefined}
                   className='h-12'
                   onChangeHandler={onChange}
                 />
