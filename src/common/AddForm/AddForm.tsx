@@ -1,107 +1,53 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck TODO: use TS generics and fix all ts errors
-import React, {useContext, useEffect, useState, useCallback, useMemo} from 'react'
+import React from 'react'
 
 import Datepicker from '~/components/DatePicker/DatePickerWrapper'
 import Textbox from '~/components/Textbox'
 import Timepicker from '~/components/TimePicker/TimePickerWrapper'
-import CardTitle from '~/components/Card/CardTitle'
 import Image from 'next/image'
-import Plus from '../../images/plus.svg'
-import Remove from '../../images/remove.svg'
+// import Plus from '../../images/plus.svg'
+// import Remove from '../../images/remove.svg'
 import {Switch} from '@material-tailwind/react'
 import AddFile from '../../images/add-file.svg'
-import {Controller, useForm} from 'react-hook-form'
+import {Controller} from 'react-hook-form'
 // import type { ActionMeta, MultiValue, SingleValue } from "react-select";
 import Select from 'react-select'
-import Button from '~/components/Button'
+// import Button from '~/components/Button'
 import {Dropdown, Textarea} from 'flowbite-react'
-import type {FormValues, TableFields} from '~/types/common'
+import type {
+  FormValues,
+  // TableFields
+} from '~/types/common'
 import {useFormContext} from 'react-hook-form'
 
 import type {MULTI_FORM_TYPES} from '~/types/coach'
-import {useRef} from 'react'
-import isEqual from 'lodash/isEqual'
-import {defaultValues, FormContext} from '~/hooks/useMultiStepFormContext'
 
 // import {FormContext} from 'pages/addcoach'
 
 interface AddForm {
-  cardTitle?: string
-  cardSubTitle?: string
   formConstantValues?: FormValues[]
   imageTitle?: string
-  // tableTitle?: string
-  // tableDescription?: string
-  // mobileAddButtonText?: string
-  // TableHeadings?: {label: string; id: string}[]
-  // addTableData?: any
-  // tableData?: {[key: string]: any}[]
-  // tablekey?: string
-  // buttonItems?: {
-  //   prevNext?: boolean
-  //   prevFinish?: boolean
-  //   next?: boolean
-  //   finish?: boolean
-  // }
-  // setFormData?: MULTI_FORM_TYPES
-  // formData: MULTI_FORM_TYPES
-  // setCurrentStep?: any
-  // currentStep?: number
-  // finalFormSubmissionHandler?: any
-  // tableFields?: TableFields[]
-  // addTableButtonText?: string
-  // addTableButton?: any
-  // onRemoveTableButton?: any
-  // isFormTable?: boolean
-  // prevButtonText?: string
-  // finishButtonText?: string
-  // prevButtonClick?: any
-  // dependentKey?: string
-  // setDependentKey?: any
-  // shouldDisableAddTableButton?: boolean
-  // dependentKey1?: string
-  // setDependentKey1?: any
   onDropCallback?: (files: Array<File>) => void
   uploadUrl?: string
 }
-const AddForm = ({
-  cardTitle,
-  cardSubTitle,
-  formConstantValues,
-  imageTitle,
-  onDropCallback,
-  uploadUrl,
-}: AddForm) => {
+const AddForm = ({formConstantValues, imageTitle, onDropCallback, uploadUrl}: AddForm) => {
   let inputElement
 
   const {
     control,
     formState: {errors},
   } = useFormContext()
-
-  const handleChangeTime = (value: string | boolean | unknown, name: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const obj: {[key: string]: string | boolean | unknown} = {...formData}
-    obj[name] = value
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    setFormData(obj)
-  }
+  // const handleChangeTime = (value: string | boolean | unknown, name: string) => {
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  //   const obj: {[key: string]: string | boolean | unknown} = {...formData}
+  //   obj[name] = value
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  //   setFormData(obj)
+  // }
 
   const getInputElement = (props: FormValues) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const {
-      type,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      rules,
-      id,
-      pattern,
-      placeHolder,
-      dropdownKey,
-      dropdownLabel,
-      options,
-      isDisabled,
-    } = props
+    const {type, rules, id, pattern, placeHolder, dropdownKey, dropdownLabel, options, isDisabled} =
+      props
 
     switch (type) {
       case 'select':
@@ -109,17 +55,8 @@ const AddForm = ({
           <Controller
             control={control}
             name={id}
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
             render={({field: {onChange, value, ...rest}}) => {
-              // console.log(id)
-              // console.log(value)
-              // console.log(JSON.stringify(options))
-              // console.log({
-              //   options: options?.filter((option) =>
-              //     Array.isArray(value) ? value.includes(option.value) : value === option.value
-              //   ),
-              // })
               return (
                 <Select
                   {...rest}
@@ -133,28 +70,10 @@ const AddForm = ({
                   className='border-1 c-select w-full border-gray-300'
                   classNamePrefix='react-select'
                   onChange={(newValue) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const value = Array.isArray(newValue)
-                      ? // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-                        newValue.map((option) => option.value)
-                      : // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-expect-error
-                        newValue?.value
+                      ? newValue.map((option) => option.value)
+                      : newValue?.value
                     onChange(value)
-
-                    // if (id === 'centerId' || id === 'batchIds') {
-                    //   if (id === 'centerId') {
-                    //     if (!newValue) return // Ensure newValue is not null
-
-                    //     if (!Array.isArray(newValue) && 'value' in newValue) {
-                    //       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-                    //       setDependentKey?.(newValue.value) // Single value
-                    //     } else if (Array.isArray(newValue)) {
-                    //       // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-                    //       setDependentKey?.(newValue.map((item) => item.value)) // Multi select
-                    //     }
-                    //   }
-                    // }
                   }}
                 />
               )
@@ -191,7 +110,7 @@ const AddForm = ({
                           return (
                             // eslint-disable-next-line react/jsx-key
                             <Dropdown.Item
-                              onClick={() => handleChangeTime(item.value, dropdownKey)}
+                            // onClick={() => handleChangeTime(item.value, dropdownKey)}
                             >
                               {item.label}
                             </Dropdown.Item>
@@ -216,10 +135,8 @@ const AddForm = ({
               return (
                 <Switch
                   {...rest}
-                  // @ts-expect-error TODO: FIX THIS ERROR
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   value={value}
-                  onChange={(e) => handleChangeTime(e.target.checked, 'taxable')}
+                  // onChange={(e) => handleChangeTime(e.target.checked, 'taxable')}
                 />
               )
             }}
@@ -284,11 +201,9 @@ const AddForm = ({
                 className='h-20 w-full'
                 placeholder={placeHolder}
                 onChange={onChange}
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-                value={value || formData[id]}
+                value={value}
               />
             )}
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
             {...(pattern ? {pattern} : {})}
           />
@@ -305,13 +220,9 @@ const AddForm = ({
                 className='h-12 w-full'
                 placeHolder={placeHolder}
                 onChangeHandler={onChange}
-                // TODO: FIX THIS TS ERROR
-                // @ts-expect-error // FIX THIS TS ERROR
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 value={value}
               />
             )}
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             rules={rules}
             {...(pattern ? {pattern} : {})}
           />

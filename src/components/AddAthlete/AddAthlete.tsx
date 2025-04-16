@@ -53,15 +53,15 @@ export default function AddAthlete() {
     }
   }, [formConstantValues, sports, sports?.length])
 
-  const addTableData = (currentData: any) => {
-    const arr: any = [...medicalHistoryData]
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/restrict-plus-operands, @typescript-eslint/no-unsafe-member-access
-    const obj = {...currentData, ['No.']: arr.length + 1}
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    arr.push(obj)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    setMedicalHistoryData(arr)
-  }
+  // const addTableData = (currentData: any) => {
+  //   const arr: any = [...medicalHistoryData]
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/restrict-plus-operands, @typescript-eslint/no-unsafe-member-access
+  //   const obj = {...currentData, ['No.']: arr.length + 1}
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+  //   arr.push(obj)
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  //   setMedicalHistoryData(arr)
+  // }
 
   return (
     <>
