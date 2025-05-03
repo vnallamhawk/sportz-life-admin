@@ -295,7 +295,7 @@ const DetailPage = ({
                         <div className='flex h-5 w-5 items-center justify-center rounded bg-[#f3476d]'>
                           <X size={14} className='text-white' />
                         </div>
-                        <span className='text-sm'>Add Coach/'s comments</span>
+                        <span className='text-sm'>{`Add Coachs comments`}</span>
                       </div>
                     </div>
                   </div>
