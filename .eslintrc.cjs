@@ -22,18 +22,7 @@ module.exports = {
       version: 'detect'
     }
   },
-  rules: {
-    // Basic JavaScript/TypeScript rules
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-unused-vars': [
-      'warn',
-      { 
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        caughtErrorsIgnorePattern: '^_'
-      }
-    ],
-    
+  rules: {    
     // React specific rules
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',

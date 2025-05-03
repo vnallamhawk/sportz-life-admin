@@ -11,8 +11,7 @@ const nextConfig = withImages({
   images: {
     disableStaticImages: true,
   },
-  // @ts-ignore
-  webpack: (config) => {
+  webpack: (/** @type {{ module: { rules: { test: RegExp; include: RegExp; use: string[]; }[]; }; }} */ config) => {
     config.module.rules.push(
       {
         test: /\.svg$/,
