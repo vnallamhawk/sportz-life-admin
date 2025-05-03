@@ -1,24 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import React, {useContext, useEffect, useState} from 'react'
-import {useRouter} from 'next/navigation'
-import {FormContext} from '~/pages/drills/AddDrills/AddCoachingDrills'
+import React from 'react'
+// import {useRouter} from 'next/navigation'
+// import {FormContext} from '~/pages/drills/AddDrills/AddCoachingDrills'
 // import AddInventoryModal from "./AddInventoryModal";
-import {api} from '~/utils/api'
-import {useSession} from 'next-auth/react'
+// import {api} from '~/utils/api'
+// import {useSession} from 'next-auth/react'
 import AddForm from '~/common/AddForm/AddForm'
-import {DRILL_INVENTORY_TABLE_HEADERS} from '~/constants/inventoryConstant'
-import type {MultiSelectOption} from '~/types/select'
+// import {DRILL_INVENTORY_TABLE_HEADERS} from '~/constants/inventoryConstant'
+// import type {MultiSelectOption} from '~/types/select'
 
-const AddCoachingDrillInventory = (props: any) => {
-  const [inventories, setInventories] = useState<{[key: string]: any}[]>([])
-  const [finalOptions, setFinalOptions] = useState<MultiSelectOption[]>([])
-  const [showModal, setShowModal] = useState(false)
-  const [inventoryDetails, setInventoryDetails] = useState({
-    name: '',
-    category: '',
-  })
+const AddCoachingDrillInventory = () => {
+  // const [inventories] = useState<{[key: string]: any}[]>([])
+  // const [finalOptions] = useState<MultiSelectOption[]>([])
+  // const [showModal, setShowModal] = useState(false)
+  // const [inventoryDetails, setInventoryDetails] = useState({
+  //   name: '',
+  //   category: '',
+  // })
   //   const { data: allInventories } = api.inventory.getAllInventories.useQuery();
-  const {data: sessionData} = useSession()
+  // const {data: sessionData} = useSession()
 
   //   const { mutate: createMutate } = api.inventory.createInventory.useMutation({
   //     onSuccess: (response) => {
@@ -50,11 +50,11 @@ const AddCoachingDrillInventory = (props: any) => {
   //     }
   //   }, [inventories, allInventories, finalOptions]);
 
-  const {
-    stepData: {currentStep, setCurrentStep},
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    multiFormData: {formData, setFormData},
-  } = useContext(FormContext)
+  // const {
+  //   // stepData: {currentStep, setCurrentStep},
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  //   multiFormData: {formData, setFormData},
+  // } = useContext(FormContext)
 
   //   const submitCallback = () => {
   //     const finalFormData = {
@@ -109,35 +109,35 @@ const AddCoachingDrillInventory = (props: any) => {
         />
       )} */}
       <AddForm
-        cardTitle='ADD COACHING DRILL'
-        tableTitle='ADD EQUIPMENT'
-        tableDescription={''}
-        tableFields={[
-          {
-            type: 'select',
-            name: 'value',
-            placeholder: 'Select Equipment',
-            options: finalOptions,
-          },
-          {type: 'number', name: 'quantity'},
-        ]}
-        TableHeadings={DRILL_INVENTORY_TABLE_HEADERS}
-        tablekey='drill_inventory'
-        tableData={inventories}
-        // addTableData={onSaveInventories}
-        buttonItems={{prevFinish: true}}
-        setFormData={setFormData}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        formData={formData}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-        addTableButtonText={'Add'}
-        addTableButton={() => {
-          setShowModal(!showModal)
-        }}
-        mobileAddButtonText='Add'
-        // onRemoveTableButton={removeInventory}
-        // finalFormSubmissionHandler={submitCallback}
+      // cardTitle='ADD COACHING DRILL'
+      // tableTitle='ADD EQUIPMENT'
+      // tableDescription={''}
+      // tableFields={[
+      //   {
+      //     type: 'select',
+      //     name: 'value',
+      //     placeholder: 'Select Equipment',
+      //     options: finalOptions,
+      //   },
+      //   {type: 'number', name: 'quantity'},
+      // ]}
+      // TableHeadings={DRILL_INVENTORY_TABLE_HEADERS}
+      // tablekey='drill_inventory'
+      // tableData={inventories}
+      // // addTableData={onSaveInventories}
+      // buttonItems={{prevFinish: true}}
+      // setFormData={setFormData}
+      // // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      // formData={formData}
+      // currentStep={currentStep}
+      // setCurrentStep={setCurrentStep}
+      // addTableButtonText={'Add'}
+      // addTableButton={() => {
+      //   setShowModal(!showModal)
+      // }}
+      // mobileAddButtonText='Add'
+      // onRemoveTableButton={removeInventory}
+      // finalFormSubmissionHandler={submitCallback}
       />
     </>
   )

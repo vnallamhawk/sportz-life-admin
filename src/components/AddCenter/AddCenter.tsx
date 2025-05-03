@@ -1,9 +1,9 @@
-import React, {useEffect, useContext, useState, useRef} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 
-import type {CENTER_TYPES} from '~/types/coach'
+// import type {CENTER_TYPES} from '~/types/coach'
 
-import {FormContext} from '~/pages/centers/AddCenter/AddCenterForm'
-import {useForm} from 'react-hook-form'
+// import {FormContext} from '~/pages/centers/AddCenter/AddCenterForm'
+// import {useForm} from 'react-hook-form'
 import {api} from '~/utils/api'
 import {CENTER_DETAILS_CONSTANTS} from '~/constants/centerConstants'
 
@@ -11,13 +11,13 @@ import AddForm from '~/common/AddForm/AddForm'
 import type {FormValues} from '~/types/common'
 
 export default function AddCenter() {
-  const {
-    stepData: {currentStep, setCurrentStep},
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    multiFormData: {formData, setFormData},
-  } = useContext(FormContext)
+  // const {
+  //   stepData: {currentStep, setCurrentStep},
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  //   multiFormData: {formData, setFormData},
+  // } = useContext(FormContext)
 
-  const {getValues} = useForm<CENTER_TYPES>({mode: 'onSubmit'})
+  // const {getValues} = useForm<CENTER_TYPES>({mode: 'onSubmit'})
   // const currentFormValues = getValues()
   const hasExecuted = useRef(true)
   const {data: sports} = api.sports.getAllSports.useQuery()
@@ -82,16 +82,16 @@ export default function AddCenter() {
   return (
     <>
       <AddForm
-        cardTitle='ADD CENTER'
-        cardSubTitle='CENTER DETAILS'
-        formConstantValues={formConstantValues}
-        imageTitle='Center Image'
-        buttonItems={{next: true}}
-        setFormData={setFormData}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        formData={formData}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
+      // cardTitle='ADD CENTER'
+      // cardSubTitle='CENTER DETAILS'
+      // formConstantValues={formConstantValues}
+      // imageTitle='Center Image'
+      // buttonItems={{next: true}}
+      // setFormData={setFormData}
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      // formData={formData}
+      // currentStep={currentStep}
+      // setCurrentStep={setCurrentStep}
       />
       {/* <CardTitle title="" />
       <div className="text-lg font-bold">CENTER DETAILS</div>
