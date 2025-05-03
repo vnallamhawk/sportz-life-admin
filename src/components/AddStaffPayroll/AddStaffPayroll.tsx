@@ -17,32 +17,32 @@ export default function AddPayroll(props: any) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     multiFormData: {formData, setFormData},
   } = useContext(FormContext)
-  const router = useRouter()
+  // const router = useRouter()
 
   const {
-    control,
+    // control,
     getValues,
-    reset,
-    trigger,
-    formState: {errors},
+    // reset,
+    // trigger,
+    // formState: {errors},
   } = useForm<CENTER_TYPES>({mode: 'onSubmit'})
-  const currentFormValues = getValues()
+  // const currentFormValues = getValues()
   const hasExecuted = useRef(true)
   const [showDesignationModal, setShowDesignationModal] = useState(false)
   const [designation, setDesignation] = useState<string>('')
-  const {data: sessionData, status} = useSession()
+  const {data: sessionData} = useSession()
   const {data: staffDesignation} = api.staffDesignation.getAllDesignation.useQuery()
   const [designations, setDesignations] = useState<StaffDesignation[]>([])
 
   const [formConstantValues, setFormConstantValues] = useState(STAFF_DETAILS_CONSTANT)
 
   const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
-  const academyId = sessionData?.token
-    ? sessionData?.token?.academyId
-    : sessionData?.user?.academyId
+  // const academyId = sessionData?.token
+  //   ? sessionData?.token?.academyId
+  //   : sessionData?.user?.academyId
 
   const {mutate: createMutate} = api.staffDesignation.createStaffDesignation.useMutation({
-    onSuccess: (response) => {
+    onSuccess: () => {
       setShowDesignationModal(!showDesignationModal)
     },
   })

@@ -17,14 +17,8 @@ export default function AddCenter() {
     multiFormData: {formData, setFormData},
   } = useContext(FormContext)
 
-  const {
-    control,
-    getValues,
-    reset,
-    trigger,
-    formState: {errors},
-  } = useForm<CENTER_TYPES>({mode: 'onSubmit'})
-  const currentFormValues = getValues()
+  const {getValues} = useForm<CENTER_TYPES>({mode: 'onSubmit'})
+  // const currentFormValues = getValues()
   const hasExecuted = useRef(true)
   const {data: sports} = api.sports.getAllSports.useQuery()
 

@@ -34,7 +34,7 @@ export default function Post() {
   const {data: postsData} = api.post.getAll.useQuery<{postsData: PostType[]}>()
 
   const [selectedPost] = useState<PostType | null>(null)
-  const [setPreviewUrls] = useState<{[key: number]: string}>({})
+  // const [setPreviewUrls] = useState<{[key: number]: string}>({})
 
   useEffect(() => {
     if (postsData) {
@@ -46,7 +46,7 @@ export default function Post() {
             .then((response) => response.blob())
             .then((blob) => {
               previews[post.id] = URL.createObjectURL(blob)
-              setPreviewUrls((prev) => ({...prev, ...previews}))
+              // setPreviewUrls((prev) => ({...prev, ...previews}))
             })
             .catch((err) => console.error('Failed to fetch image:', err))
         }
