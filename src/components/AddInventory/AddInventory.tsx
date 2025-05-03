@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import React, {useContext, useEffect, useState} from 'react'
-import {useRouter} from 'next/navigation'
-import {FormContext} from '~/pages/centers/AddCenter/AddCenterForm'
+import React, {useEffect, useState} from 'react'
+// import {useRouter} from 'next/navigation'
+// import {FormContext} from '~/pages/centers/AddCenter/AddCenterForm'
 import AddInventoryModal from './AddInventoryModal'
 import {api} from '~/utils/api'
 import {useSession} from 'next-auth/react'
 import AddForm from '~/common/AddForm/AddForm'
-import {INVENTORY_TABLE_HEADERS} from '~/constants/inventoryConstant'
+// import {INVENTORY_TABLE_HEADERS} from '~/constants/inventoryConstant'
 import type {MultiSelectOption} from '~/types/select'
 
-const AddInventory = (props: any) => {
-  const router = useRouter()
-  const [inventories, setInventories] = useState<{[key: string]: any}[]>([])
+const AddInventory = () => {
+  // const router = useRouter()
+  const [inventories] = useState<{[key: string]: any}[]>([])
   const [finalOptions, setFinalOptions] = useState<MultiSelectOption[]>([])
   const [showModal, setShowModal] = useState(false)
   const [inventoryDetails, setInventoryDetails] = useState({
@@ -21,9 +21,9 @@ const AddInventory = (props: any) => {
   const {data: allInventories} = api.inventory.getAllInventories.useQuery()
   const {data: sessionData} = useSession()
   const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
-  const academyId = sessionData?.token
-    ? sessionData?.token?.academyId
-    : sessionData?.user?.academyId
+  // const academyId = sessionData?.token
+  //   ? sessionData?.token?.academyId
+  //   : sessionData?.user?.academyId
 
   const {mutate: createMutate} = api.inventory.createInventory.useMutation({
     onSuccess: (response) => {
@@ -53,38 +53,38 @@ const AddInventory = (props: any) => {
     }
   }, [inventories, allInventories, finalOptions])
 
-  const {
-    stepData: {currentStep, setCurrentStep},
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    multiFormData: {formData, setFormData},
-  } = useContext(FormContext)
+  // const {
+  //   stepData: {currentStep, setCurrentStep},
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  //   multiFormData: {formData, setFormData},
+  // } = useContext(FormContext)
 
-  const submitCallback = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const finalFormData = {
-      ...formData,
-      inventories,
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    props?.finalFormSubmissionHandler(finalFormData)
-  }
+  // const submitCallback = () => {
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  //   const finalFormData = {
+  //     ...formData,
+  //     inventories,
+  //   }
+  //   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+  //   props?.finalFormSubmissionHandler(finalFormData)
+  // }
 
-  const onSaveInventories = (selectedInventory: unknown) => {
-    const arr: {[key: string]: unknown}[] = [...inventories]
-    arr.push({
-      // @ts-expect-error need to fix this
-      ...selectedInventory,
-      // @ts-expect-error need to fix this
-      // inventoryId: parseInt(selectedInventory?.value),
-    })
-    setInventories(arr)
-  }
+  // const onSaveInventories = (selectedInventory: unknown) => {
+  //   const arr: {[key: string]: unknown}[] = [...inventories]
+  //   arr.push({
+  //     // @ts-expect-error need to fix this
+  //     ...selectedInventory,
+  //     // @ts-expect-error need to fix this
+  //     // inventoryId: parseInt(selectedInventory?.value),
+  //   })
+  //   setInventories(arr)
+  // }
 
-  const removeInventory = (index: number) => {
-    const arr = [...inventories]
-    arr.splice(index, 1)
-    setInventories(arr)
-  }
+  // const removeInventory = (index: number) => {
+  //   const arr = [...inventories]
+  //   arr.splice(index, 1)
+  //   setInventories(arr)
+  // }
 
   const addNewInventory = (e: {preventDefault: () => void}) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
