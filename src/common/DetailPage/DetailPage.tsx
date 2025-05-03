@@ -277,7 +277,7 @@ const DetailPage = ({
 
                   {/* Coach's Feedback */}
                   <div>
-                    <p className='mb-4 text-sm text-[#6e7280]'>Coach's Feedback</p>
+                    <p className='mb-4 text-sm text-[#6e7280]'>{`Coach's Feedback`}</p>
                     <div className='space-y-3'>
                       <div className='flex items-center gap-2'>
                         <div className='flex h-5 w-5 items-center justify-center rounded bg-[#f3476d]'>
@@ -295,7 +295,7 @@ const DetailPage = ({
                         <div className='flex h-5 w-5 items-center justify-center rounded bg-[#f3476d]'>
                           <X size={14} className='text-white' />
                         </div>
-                        <span className='text-sm'>Add Coach's comments</span>
+                        <span className='text-sm'>Add Coach/'s comments</span>
                       </div>
                     </div>
                   </div>
