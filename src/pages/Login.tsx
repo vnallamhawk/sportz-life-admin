@@ -41,7 +41,7 @@ export default function Login() {
     if (res?.error) {
       alert('Login failed')
     } else {
-      void router.push('/dashboard')
+      void router.push('/coach')
     }
   }
 
