@@ -12,7 +12,9 @@ import { BLOOD_GROUPS, GENDER_VALUES } from "~/types/coach";
 export const athleteRouter = createTRPCRouter({
   getAllAthletes: publicProcedure.query(({ ctx }) => {
     const allAthletes = ctx?.prisma.athletes?.findMany({
-
+      where: {
+        academyCode: Number(ctx?.session?.user.academyId)
+      },
       include: {
         AthleteSportsMaps: true
       }
@@ -68,6 +70,9 @@ export const athleteRouter = createTRPCRouter({
           },
           orderBy: {
             createdAt: sortOrder, // Sort by createdAt (ascending or descending)
+          },
+          where: {
+            academyCode: Number(ctx?.session?.user.academyId),
           },
         }),
         ctx.prisma.athletes.count({

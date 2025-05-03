@@ -57,7 +57,6 @@ export default function AddPost() {
           mimetype: file.type,
         })
 
-        console.log({response})
         setFormData((prev) => ({...prev, imageLink: response.url}))
       } catch (err) {
         console.error('Upload failed:', err)

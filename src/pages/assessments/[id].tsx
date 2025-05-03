@@ -140,8 +140,6 @@ export default function Page({assessment}: {assessment: AssessmentDetails}) {
   const [finalData, setFinalData] = useState<SingleAssessment | null>(null)
   const [finalAssignedData, setFinalAssignedData] = useState<AssessmentAssignedTableRow[]>([])
 
-  console.log({assessment})
-
   useEffect(() => {
     if (assessment && Object.keys(assessment).length > 0) {
       const newAssessment = {
@@ -198,7 +196,6 @@ export default function Page({assessment}: {assessment: AssessmentDetails}) {
             }
           })
 
-        console.log(formattedData)
         setFinalAssignedData(formattedData)
       } else {
         setFinalAssignedData([])

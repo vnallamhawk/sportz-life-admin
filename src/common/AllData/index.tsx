@@ -125,9 +125,9 @@ const AllData = ({
                 </div>
               </>
               {/* )} */}
-              {filter && filters && applyFilters && filters.length > 0 && (
+              {/* {filter && filters && applyFilters && filters.length > 0 && (
                 <Filter open={open} filters={filters} applyFilters={applyFilters} />
-              )}
+              )} */}
               {addButtonUrl && (
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 <button

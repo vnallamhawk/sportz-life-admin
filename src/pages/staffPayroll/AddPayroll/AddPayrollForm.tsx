@@ -1,14 +1,8 @@
 /* eslint-disable */
-import React, {
-  useState,
-  useContext,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react";
-import Card from "~/components/Card";
-import ImageWithFallback from "~/components/ImageWithFallback";
-import { useForm } from "react-hook-form";
+import React, {useState, useContext, useCallback, useEffect, useRef} from 'react'
+import Card from '~/components/Card'
+import ImageWithFallback from '~/components/ImageWithFallback'
+import {useForm} from 'react-hook-form'
 // import AddcenterCertificates from "~/components/Addcenter/AddcenterCertificates";
 // import AssignBatches from "~/components/Addcenter/AssignBatches";
 // import {
@@ -18,27 +12,27 @@ import { useForm } from "react-hook-form";
 //   type EXPERIENCE_LEVEL,
 //   type centerWithRelationsEditForm,
 // } from "~/types/center";
-import { type MULTI_FORM_TYPES } from "~/types/center";
-import { api } from "~/utils/api";
-import { useRouter } from "next/router";
-import { ToastContext } from "~/contexts/Contexts";
-import AddPayroll from "~/components/AddStaffPayroll/AddStaffPayroll";
-import { Button } from "flowbite-react";
-import Table from "~/components/Table";
-import TaxSlabTableHeader from "~/components/TaxSlab/TaxSlabTableHeader";
-import TaxSlabTableBody from "~/components/TaxSlab/TaxSlabTableBody";
-import AddTaxSlabModal from "~/components/AddStaffPayroll/AddTaxSlabModal";
-import { useSession } from "next-auth/react";
+import {type MULTI_FORM_TYPES} from '~/types/center'
+import {api} from '~/utils/api'
+import {useRouter} from 'next/router'
+import {ToastContext} from '~/contexts/Contexts'
+import AddPayroll from '~/components/AddStaffPayroll/AddStaffPayroll'
+import {Button} from 'flowbite-react'
+import Table from '~/components/Table'
+import TaxSlabTableHeader from '~/components/TaxSlab/TaxSlabTableHeader'
+import TaxSlabTableBody from '~/components/TaxSlab/TaxSlabTableBody'
+import AddTaxSlabModal from '~/components/AddStaffPayroll/AddTaxSlabModal'
+import {useSession} from 'next-auth/react'
 // const multiFormData: MULTI_FORM_TYPES = {
 //   designationId: "",
 //   grossSalary: 0,
 //   isEditMode: false,
 // };
 const multiFormData: any = {
-  designationId: "",
+  designationId: '',
   grossSalary: null,
   isEditMode: false,
-};
+}
 const defaultValues = {
   stepData: {
     currentStep: 1,
@@ -46,56 +40,49 @@ const defaultValues = {
   multiFormData: {
     formData: multiFormData,
   },
-};
+}
 export interface FormContextTypes {
   stepData: {
-    currentStep: number;
-    setCurrentStep?: React.Dispatch<React.SetStateAction<number>>;
-  };
+    currentStep: number
+    setCurrentStep?: React.Dispatch<React.SetStateAction<number>>
+  }
   multiFormData: {
-    formData: MULTI_FORM_TYPES;
+    formData: MULTI_FORM_TYPES
     // setFormData?: React.Dispatch<React.SetStateAction<MULTI_FORM_TYPES>>;
-    setFormData?: any;
-  };
+    setFormData?: any
+  }
 }
-export const FormContext = React.createContext<FormContextTypes>(defaultValues);
+export const FormContext = React.createContext<FormContextTypes>(defaultValues)
 
 export default function AddCenterForm() {
-  const router = useRouter();
-  const id = Number(router?.query?.id);
+  const router = useRouter()
+  const id = Number(router?.query?.id)
 
-  const methods = useForm();
-  const [currentStep, setCurrentStep] = useState<number>(1);
+  const methods = useForm()
+  const [currentStep, setCurrentStep] = useState<number>(1)
   // const [formData, setFormData] = useState<MULTI_FORM_TYPES>(
   //   defaultValues.multiFormData.formData
   // );
-  const [formData, setFormData] = useState<any>(
-    defaultValues.multiFormData.formData
-  );
-  const [centerId, setCenterId] = useState<number>();
+  const [formData, setFormData] = useState<any>(defaultValues.multiFormData.formData)
+  const [centerId, setCenterId] = useState<number>()
 
-  const { setOpenToast } = useContext(ToastContext);
-  const [preview, setPreview] = useState<(File & { preview: string })[]>([]);
+  const {setOpenToast} = useContext(ToastContext)
+  const [preview, setPreview] = useState<(File & {preview: string})[]>([])
 
   //   const { data: batches } = api.batches.getAllBatches.useQuery();
-  const hasCenterUseEffectRun = useRef(false);
-  const { data: taxslabs } = api.tabSlab.getAllTaxSlab.useQuery();
-  const [showTabSlabModal, setShowTabSlabModal] = useState(false);
-  const [taxSlab, setTaxSlab] = useState<any>({});
-  const { data: sessionData, status } = useSession();
-  const  createdBy= sessionData?.token?sessionData?.token?.id:sessionData?.user?.id
+  const hasCenterUseEffectRun = useRef(false)
+  const {data: taxslabs} = api.tabSlab.getAllTaxSlab.useQuery()
+  const [showTabSlabModal, setShowTabSlabModal] = useState(false)
+  const [taxSlab, setTaxSlab] = useState<any>({})
+  const {data: sessionData, status} = useSession()
+  const createdBy = sessionData?.token ? sessionData?.token?.id : sessionData?.user?.id
 
+  const {mutate: createMutateTaxSlab} = api.tabSlab.createTaxSlab.useMutation({
+    onSuccess: (response) => {
+      setShowTabSlabModal(!showTabSlabModal)
+    },
+  })
 
-
-  const { mutate: createMutateTaxSlab } = api.tabSlab.createTaxSlab.useMutation(
-    {
-      onSuccess: (response) => {
-        setShowTabSlabModal(!showTabSlabModal);
-      },
-    }
-  );
-
-  
   // useEffect(() => {
   //   if (id) {
   //     if (center && !hasCenterUseEffectRun.current) {
@@ -107,17 +94,15 @@ export default function AddCenterForm() {
 
   const formProviderData = {
     ...methods,
-    stepData: { currentStep, setCurrentStep },
-    multiFormData: { formData, setFormData },
-  };
-  const { mutate: createMutate } =
-    api.staffPayroll.createStaffPayroll.useMutation({
-      onSuccess: (response) => {
-        console.log("response data is ", response);
-        router.push("/staffPayroll");
-        return response?.id;
-      },
-    });
+    stepData: {currentStep, setCurrentStep},
+    multiFormData: {formData, setFormData},
+  }
+  const {mutate: createMutate} = api.staffPayroll.createStaffPayroll.useMutation({
+    onSuccess: (response) => {
+      router.push('/staffPayroll')
+      return response?.id
+    },
+  })
 
   // const { mutate: editMutate } = api.staffPayroll.editCenter.useMutation({
   //   onSuccess: (response) => {
@@ -130,37 +115,34 @@ export default function AddCenterForm() {
     // finalForm: Required<MULTI_FORM_TYPES>
     finalForm: any
   ) => {
-    if(createdBy){
+    if (createdBy) {
       if (formData.isEditMode) {
         // editMutate({
         //   ...finalForm,
         // });
       } else {
-
         setFormData({
           ...finalForm,
-        });
+        })
         createMutate({
           ...finalForm,
           createdBy: parseInt(createdBy as string),
-        });
+        })
       }
     }
-  
-  };
+  }
 
   const submitTaxSlab = (e: any) => {
-    e.preventDefault();
-    if(createdBy){
+    e.preventDefault()
+    if (createdBy) {
       createMutateTaxSlab({
         fromAmount: parseInt(taxSlab?.fromAmount),
         toAmount: parseInt(taxSlab?.toAmount),
         percentage: parseInt(taxSlab?.percentage),
-        createdBy:parseInt(createdBy as string),
-      });
+        createdBy: parseInt(createdBy as string),
+      })
     }
-  
-  };
+  }
   return (
     <>
       {showTabSlabModal && (
@@ -173,22 +155,19 @@ export default function AddCenterForm() {
         />
       )}
       <FormContext.Provider value={formProviderData}>
-        <div className="grid grid-cols-6 grid-rows-1">
-          <Card className="col-span-8 ml-10 h-full p-0 pl-10 pt-10">
+        <div className='grid grid-cols-6 grid-rows-1'>
+          <Card className='col-span-8 ml-10 h-full p-0 pl-10 pt-10'>
             <AddPayroll
               taxslabs={taxslabs}
               finalFormSubmissionHandler={finalFormSubmissionHandler}
             />
           </Card>
-          <Card className="col-span-8 bg-gray-100">
-            <div className="mb-10 font-bold">Taxable Salary Slabs</div>
-            <Table
-              tableHeader={TaxSlabTableHeader()}
-              tableBody={TaxSlabTableBody(taxslabs)}
-            />
+          <Card className='col-span-8 bg-gray-100'>
+            <div className='mb-10 font-bold'>Taxable Salary Slabs</div>
+            <Table tableHeader={TaxSlabTableHeader()} tableBody={TaxSlabTableBody(taxslabs)} />
             <div>
               <Button
-                className="ml-3 bg-pink-700 p-2 text-white"
+                className='ml-3 bg-pink-700 p-2 text-white'
                 onClick={() => setShowTabSlabModal(!showTabSlabModal)}
               >
                 Add Slab
@@ -198,5 +177,5 @@ export default function AddCenterForm() {
         </div>
       </FormContext.Provider>
     </>
-  );
+  )
 }

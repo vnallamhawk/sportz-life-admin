@@ -121,7 +121,6 @@ export default function AddCoachMultiFormLayout({center}: {center: CenterType}) 
 
   const {mutate: createMutateBatchTimings} = api.batchTimings.createBatchTiming.useMutation({
     onSuccess: (response) => {
-      console.log('response data is ', response)
       router.push(`/centers/${center?.id}`)
       return response
     },
