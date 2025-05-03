@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from "react";
-import Button from "~/components/Button";
-import { type BatchData } from "~/types/coach";
-import * as Tooltip from "@radix-ui/react-tooltip";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { useRouter } from "next/router";
-import { api } from "~/utils/api";
-import { Dropdown, DropdownHeader } from "flowbite-react";
-import moment from "moment-timezone";
+import React from 'react'
+// import Button from '~/components/Button'
+// import {type BatchData} from '~/types/coach'
+// import * as Tooltip from '@radix-ui/react-tooltip'
+import {DotsHorizontalIcon} from '@radix-ui/react-icons'
+// import {useRouter} from 'next/router'
+// import {api} from '~/utils/api'
+import {Dropdown, DropdownHeader} from 'flowbite-react'
+// import moment from 'moment-timezone'
 
-interface fitnessDrillFilter {
-  name: string;
-}
+// interface fitnessDrillFilter {
+//   name: string
+// }
 
 // interface coachTableFilter {
 //   name: string;
 // }
-export default function FitnessDrillTableBody(
-  filter: fitnessDrillFilter,
-  handleIsLoading: (isLoading: boolean) => void
-) {
-  const router = useRouter();
+export default function FitnessDrillTableBody() {
+  // filter: fitnessDrillFilter,
+  // handleIsLoading: (isLoading: boolean) => void
+  // const router = useRouter();
 
   //   const [tableData, setTableData] = useState([]);
 
@@ -52,69 +51,65 @@ export default function FitnessDrillTableBody(
   //   };
   const tableData = [
     {
-      drillName: "name1",
-      fitnessComp: "Agility",
-      trainingLevel: "Begineer",
+      drillName: 'name1',
+      fitnessComp: 'Agility',
+      trainingLevel: 'Begineer',
     },
     {
-      drillName: "name1",
-      fitnessComp: "Endurance",
-      trainingLevel: "Begineer",
+      drillName: 'name1',
+      fitnessComp: 'Endurance',
+      trainingLevel: 'Begineer',
     },
     {
-      drillName: "name1",
-      fitnessComp: "Agility",
-      trainingLevel: "Begineer",
+      drillName: 'name1',
+      fitnessComp: 'Agility',
+      trainingLevel: 'Begineer',
     },
-  ];
+  ]
   return (
     <>
       {tableData &&
         tableData.length > 0 &&
-        tableData?.map(({ drillName, fitnessComp, trainingLevel }, index) => (
+        tableData?.map(({drillName, fitnessComp, trainingLevel}, index) => (
           <tr
             key={`${drillName}-${index}`}
-            className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
+            className='cursor-pointer border-b border-gray-200 hover:bg-gray-100'
           >
-            <td className="whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left">
+            <td className='whitespace-nowrap border-y-2 border-solid px-6 py-3 text-left'>
               {drillName}
             </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {fitnessComp}
-            </td>
-            <td className="border-y-2 border-solid px-6 py-3 text-left">
-              {trainingLevel}
-            </td>
-            <td className="rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left">
+            <td className='border-y-2 border-solid px-6 py-3 text-left'>{fitnessComp}</td>
+            <td className='border-y-2 border-solid px-6 py-3 text-left'>{trainingLevel}</td>
+            <td className='rounded-r-lg border-y-2 border-r-2 border-solid px-6 py-3 text-left'>
               <Dropdown
-                label=""
+                label=''
                 dismissOnClick={false}
-                placement="top"
-                className="view-drop rounded-lg bg-black"
+                placement='top'
+                className='view-drop rounded-lg bg-black'
                 renderTrigger={() => (
-                  <button className="py-2">
+                  <button className='py-2'>
                     <DotsHorizontalIcon />
                   </button>
                 )}
               >
                 <DropdownHeader>
-                  <div className="flex items-center">
+                  <div className='flex items-center'>
                     <button
-                      className="mx-1 text-white"
+                      className='mx-1 text-white'
                       //   onClick={() => router.push(`/edit-center-${id}`)}
                       // onClick={() => {}}
                     >
                       Edit
                     </button>
                     <button
-                      className="mx-1 text-white"
+                      className='mx-1 text-white'
                       //   onClick={() => router.push(`/centers/${id ?? ""}`)}
                       // onClick={() => {}}
                     >
                       View
                     </button>
                     <button
-                      className="mx-1 text-white"
+                      className='mx-1 text-white'
                       //   onClick={() => deleteCenter(id)}
                       // onClick={() => {}}
                     >
@@ -127,5 +122,5 @@ export default function FitnessDrillTableBody(
           </tr>
         ))}
     </>
-  );
+  )
 }

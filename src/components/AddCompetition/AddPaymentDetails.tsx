@@ -5,8 +5,8 @@ import {useForm} from 'react-hook-form'
 import {FormContext} from '~/pages/competitions/AddCompetitions/AddCompetitionsMultiFormLayout'
 
 import AddForm from '~/common/AddForm/AddForm'
-import {STAFF_SHIFT_CONSTANTS} from '~/constants/staffConstants'
-import {STAFF_TIMINGS_TABLE_HEADERS} from '~/constants/staffTimingConstants'
+// import {STAFF_SHIFT_CONSTANTS} from '~/constants/staffConstants'
+// import {STAFF_TIMINGS_TABLE_HEADERS} from '~/constants/staffTimingConstants'
 import type {FormValues} from '~/types/common'
 import {
   Tabs,

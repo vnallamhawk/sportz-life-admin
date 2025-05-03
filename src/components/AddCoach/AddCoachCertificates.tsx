@@ -10,7 +10,7 @@ import type {MULTI_FORM_COACH_QUALIFICATION, MULTI_FORM_TYPES} from '~/types/coa
 import {useFormContext} from 'react-hook-form'
 import CoachCertificateTable from './CoachCertificateTable'
 
-export default function AddCoachCertificates({}) {
+export default function AddCoachCertificates() {
   // const {currentStep, setCurrentStep} =
   //   // multiFormData: {formData, setFormData},
   //   useContext<FormContextTypes>(FormContext)
