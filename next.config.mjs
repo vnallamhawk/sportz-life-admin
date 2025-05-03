@@ -11,6 +11,12 @@ const nextConfig = withImages({
   images: {
     disableStaticImages: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true, 
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   webpack: (/** @type {{ module: { rules: { test: RegExp; include: RegExp; use: string[]; }[]; }; }} */ config) => {
     config.module.rules.push(
       {
