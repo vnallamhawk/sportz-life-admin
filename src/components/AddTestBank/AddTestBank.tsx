@@ -73,23 +73,23 @@ export default function AddTestBank(props: {finalFormSubmissionHandler: any; phy
   return (
     <>
       <AddForm
-        cardTitle={
-          props?.physical
-            ? 'ADD PHYSICAL PERFORMANCE TESTS'
-            : 'ADD SPORTS-SPECIFIC PERFORMANCE TESTS'
-        }
-        cardSubTitle={props?.physical ? 'PHYSICAL TESTS DETAILS' : 'SPORTS-SPECIFIC TESTS DETAILS'}
-        formConstantValues={formConstantValues}
-        buttonItems={{finish: true}}
-        setFormData={setFormData}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        formData={formData}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-        setDependentKey={(value: string) => setMeasureType(value)}
-        dependentKey='measure_type'
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        finalFormSubmissionHandler={props?.finalFormSubmissionHandler}
+      // cardTitle={
+      //   props?.physical
+      //     ? 'ADD PHYSICAL PERFORMANCE TESTS'
+      //     : 'ADD SPORTS-SPECIFIC PERFORMANCE TESTS'
+      // }
+      // cardSubTitle={props?.physical ? 'PHYSICAL TESTS DETAILS' : 'SPORTS-SPECIFIC TESTS DETAILS'}
+      // formConstantValues={formConstantValues}
+      // buttonItems={{finish: true}}
+      // setFormData={setFormData}
+      // // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      // formData={formData}
+      // currentStep={currentStep}
+      // setCurrentStep={setCurrentStep}
+      // setDependentKey={(value: string) => setMeasureType(value)}
+      // dependentKey='measure_type'
+      // // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      // finalFormSubmissionHandler={props?.finalFormSubmissionHandler}
       />
     </>
   )
