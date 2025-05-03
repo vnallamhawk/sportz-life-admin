@@ -1,5 +1,5 @@
-import {useContext, useEffect, useState} from 'react'
-import type {StaticImageData} from 'next/image'
+import {useEffect, useState} from 'react'
+// import type {StaticImageData} from 'next/image'
 import CoachImg from '../../images/CoachesImg.png'
 import BatchImg from '../../images/BatchesImg.png'
 import AthleteImg from '../../images/AthelteImg.png'
@@ -19,8 +19,8 @@ import type {
   Coaches,
   Sports,
 } from '@prisma/client'
-import {ToastContext} from '~/contexts/Contexts'
-import {useRouter} from 'next/router'
+// import {ToastContext} from '~/contexts/Contexts'
+// import {useRouter} from 'next/router'
 import DetailPage from '~/common/DetailPage/DetailPage'
 import AllData from '~/common/AllData'
 // import { ASSESSMENT_DASH_ATHLETE_TABLE_HEADERS, ASSESSMENT_DASH_BATCH_TABLE_HEADERS, ASSESSMENT_DASH_COACH_TABLE_HEADERS, ASSESSMENT_DASH_CENTER_TABLE_HEADERS } from "~/constants/assessmentDashTables";
@@ -132,11 +132,11 @@ interface AssessmentAssignedTableRow {
 }
 
 export default function Page({assessment}: {assessment: AssessmentDetails}) {
-  const router = useRouter()
-  const {openToast, setOpenToast} = useContext(ToastContext)
+  // const router = useRouter()
+  // const {openToast, setOpenToast} = useContext(ToastContext)
   const [selectedTab, setSelectedTab] = useState<string | undefined>(tabs[0]?.name)
   const [selectedComponent, setSelectedComponent] = useState<React.ReactNode>()
-  const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs)
+  // const [finalTabs, setFinalTabs] = useState<TabType[]>(tabs)
   const [finalData, setFinalData] = useState<SingleAssessment | null>(null)
   const [finalAssignedData, setFinalAssignedData] = useState<AssessmentAssignedTableRow[]>([])
 
@@ -206,9 +206,9 @@ export default function Page({assessment}: {assessment: AssessmentDetails}) {
   }, [assessment])
 
   const handleClick = (tab: TabType) => {
-    let TABLE_HEAD
-    let TABLE_ROWS = []
-    let tableProps = {}
+    // let TABLE_HEAD
+    // let TABLE_ROWS = []
+    // let tableProps = {}
 
     // switch (tab?.name) {
     //   case "athletes":
@@ -235,7 +235,6 @@ export default function Page({assessment}: {assessment: AssessmentDetails}) {
     setSelectedComponent(
       <AllData
         title={tab?.allLabel || ''}
-        {...tableProps}
         dropdownItems={{}}
         TABLE_HEAD={[]}
         TABLE_ROWS={[]}

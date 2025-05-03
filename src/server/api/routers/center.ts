@@ -120,6 +120,7 @@ export const centerRouter = createTRPCRouter({
 
         return centers;
       } catch (error) {
+        console.error(error)
       }
     }),
   getCentersByName: publicProcedure

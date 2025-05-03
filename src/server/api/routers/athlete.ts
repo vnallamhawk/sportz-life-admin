@@ -111,7 +111,9 @@ export const athleteRouter = createTRPCRouter({
         });
 
         return athletes;
-      } catch (error) { }
+      } catch (error) {
+        console.error(error)
+       }
     }),
   getAthleteByName: publicProcedure
     .input(

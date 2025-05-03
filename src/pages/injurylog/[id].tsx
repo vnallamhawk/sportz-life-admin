@@ -202,11 +202,11 @@
 //   </div>
 // </Card>
 
-import {useContext, useEffect, useState} from 'react'
-import Button from '~/components/Button'
-import Card from '~/components/Card'
-import CardTitle from '~/components/Card/CardTitle'
-import Image from 'next/image'
+import {useEffect, useState} from 'react'
+// import Button from '~/components/Button'
+// import Card from '~/components/Card'
+// import CardTitle from '~/components/Card/CardTitle'
+// import Image from 'next/image'
 import {prisma} from '~/server/db'
 import {type GetServerSidePropsContext} from 'next'
 import staffCalendar from '../../images/Staff_calendar.png'
@@ -215,7 +215,7 @@ import staffPayroll from '../../images/Staff_payroll.png'
 import staffShift from '../../images/Staff_shift.png'
 import type {
   Batches,
-  Centers,
+  // Centers,
   CoachCentersBatches,
   CoachQualifications,
   CoachSportsMaps,
@@ -236,12 +236,12 @@ import // DATE_TIME_FORMAT,
 //   ExperienceLevelEnum,
 //   TrainingLevelEnum,
 // } from "~/types/coach";
-import AddCoachSuccessToast from '~/components/AddCoach/AddCoachSuccessToast'
-import {ToastContext} from '~/contexts/Contexts'
+// import AddCoachSuccessToast from '~/components/AddCoach/AddCoachSuccessToast'
+// import {ToastContext} from '~/contexts/Contexts'
 // import { dateFormat } from "~/helpers/date";
 // import CoachBatch from "~/components/Coach/Batch/CoachBatch";
 // import CoachAttendance from "~/components/Coach/Attendance/CoachAttendance";
-import router from 'next/router'
+// import router from 'next/router'
 import s3 from '../../lib/aws'
 import {calculateAge} from '~/utils/common'
 import {COACH_DASH_BATCH_TABLE_HEADERS} from '~/constants/centerDashTables'

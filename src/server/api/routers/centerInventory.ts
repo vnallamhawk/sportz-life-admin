@@ -39,6 +39,7 @@ export const centerInventoryRouter = createTRPCRouter({
 
         return centerInventories;
       } catch (error) {
+        console.error(error)
       }
     }),
   getAllCenterInventory: publicProcedure.query(({ ctx }) => {

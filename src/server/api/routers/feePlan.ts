@@ -1,10 +1,10 @@
 import { z } from "zod";
 import { FeePlanSchema } from "~/pages/feePlans/AddPlan/AddPlan";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { FEE_PLAN_FEE_TYPE, FEE_PLAN_RECURRING_TYPE, LATE_FEE_TYPE } from "~/types/feePlan";
-import type { RouterInputs } from "~/utils/api";
+// import { FEE_PLAN_FEE_TYPE, FEE_PLAN_RECURRING_TYPE, LATE_FEE_TYPE } from "~/types/feePlan";
+// import type { RouterInputs } from "~/utils/api";
 
-type CreateFeePlanInput = RouterInputs["feePlan"]["createFeePlan"];
+// type CreateFeePlanInput = RouterInputs["feePlan"]["createFeePlan"];
 
 export const feePlanRouter = createTRPCRouter({
   getAllFeePlans: publicProcedure
@@ -151,13 +151,15 @@ export const feePlanRouter = createTRPCRouter({
         });
 
         return feePlans;
-      } catch (error) { }
+      } catch (error) {
+        console.error(error)
+       }
     }),
   createFeePlan: publicProcedure
     .input(FeePlanSchema)
     .mutation(
       async ({
-        input: { name, amount, feeType, isFractionalFee, recurringType, isLateFee, lateFeeType, lateFee, currency, status },
+        input: { name, amount, feeType, isFractionalFee, recurringType, isLateFee, lateFeeType, lateFee, currency },
         ctx,
       }) => {
         const dataToSave = {
@@ -181,36 +183,36 @@ export const feePlanRouter = createTRPCRouter({
         return feePlan;
       }
     ),
-  editFeePlan: publicProcedure
-    .input(FeePlanSchema)
-    .mutation(
-      async ({
-        input: { id, name, amount, feeType, isFractionalFee, recurringType, isLateFee, lateFeeType, lateFee },
-        ctx,
-      }) => {
-        const dataToSave = {
-          name,
-          amount,
-          feeType,
-          isLateFee,
-          isFractionalFee: !!isFractionalFee,
-          updatedAt: new Date(),
-          createdAt: new Date(),
-          lateFeeType,
-          recurringType,
-          lateFee
-        };
+  // editFeePlan: publicProcedure
+  //   .input(FeePlanSchema)
+  //   .mutation(
+  //     async ({
+  //       input: { name, amount, feeType, isFractionalFee, recurringType, isLateFee, lateFeeType, lateFee },
+  //       // ctx,
+  //     }) => {
+  //       // const dataToSave = {
+  //       //   name,
+  //       //   amount,
+  //       //   feeType,
+  //       //   isLateFee,
+  //       //   isFractionalFee: !!isFractionalFee,
+  //       //   updatedAt: new Date(),
+  //       //   createdAt: new Date(),
+  //       //   lateFeeType,
+  //       //   recurringType,
+  //       //   lateFee
+  //       // };
 
-        const response = await ctx.prisma.feePlans.update({
-          where: {
-            id: id,
-          },
-          data: dataToSave,
-        });
+  //       // const response = await ctx.prisma.feePlans.update({
+  //       //   where: {
+  //       //     id: '1'
+  //       //   },
+  //       //   data: dataToSave,
+  //       // });
 
-        return response;
-      }
-    ),
+  //       // return response;
+  //     }
+  //   ),
   deleteFeePlan: publicProcedure
     .input(
       z.object({

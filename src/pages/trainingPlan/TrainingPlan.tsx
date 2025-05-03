@@ -1,54 +1,49 @@
-import React, { useState } from "react";
-import Card from "~/components/Card/Card";
-import CardTitle from "~/components/Card/CardTitle";
-import Textbox from "~/components/Textbox/Textbox";
-import Button from "~/components/Button/Button";
-import Table from "~/components/Table/Table";
-import CoachTableHeader from "../../components/AllCoaches/CoachTableHeader";
+import React, {useState} from 'react'
+// import Card from '~/components/Card/Card'
+// import CardTitle from '~/components/Card/CardTitle'
+// import Textbox from '~/components/Textbox/Textbox'
+// import Button from '~/components/Button/Button'
+// import Table from '~/components/Table/Table'
+// import CoachTableHeader from '../../components/AllCoaches/CoachTableHeader'
 // import CoachTableBody from "../../components/AllCoaches/CoachTableBody";
-import { useRouter } from "next/navigation";
-import LoadingSpinner from "~/components/LoadingSpinner/LoadingSpinner";
-import TabsComponent from "~/components/Tabs";
-import MultiTabComp from "~/common/MultiTabComp";
-import {
-  INJURY_ATHLETE_TABLE_HEADER,
-  INJURY_COACH_TABLE_HEADER,
-} from "~/constants/injuryLog";
+// import {useRouter} from 'next/navigation'
+// import LoadingSpinner from '~/components/LoadingSpinner/LoadingSpinner'
+// import TabsComponent from '~/components/Tabs'
+import MultiTabComp from '~/common/MultiTabComp'
+import {INJURY_ATHLETE_TABLE_HEADER, INJURY_COACH_TABLE_HEADER} from '~/constants/injuryLog'
 
 export default function AllTrainingPlans() {
-  const router = useRouter();
+  // const router = useRouter()
 
-  const [activeKey, setActiveKey] = useState("0");
+  const [activeKey, setActiveKey] = useState('0')
 
-  const [filterByName, setFilterByName] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState<{ [key: string]: any }>([]);
+  const [filterByName, setFilterByName] = useState('')
+  // const [loading, setLoading] = useState(true)
+  // const [filters, setFilters] = useState<{[key: string]: any}>([])
 
-  const handleFilters = (appliedFilters: { [key: string]: any }) => {
-    setFilters(appliedFilters);
-  };
-  const handleIsLoading = (isLoading: boolean) => {
-    setLoading(isLoading);
-  };
+  // const handleFilters = (appliedFilters: {[key: string]: any}) => {
+  //   setFilters(appliedFilters)
+  // }
+  // const handleIsLoading = (isLoading: boolean) => {
+  //   setLoading(isLoading);
+  // };
 
   return (
     <>
       {/* <Checkout /> */}
       <MultiTabComp
-        tab1label="FITNESS PLAN"
-        tab2label="COACHING PLAN"
-        addButtonText="Add Plan"
+        tab1label='FITNESS PLAN'
+        tab2label='COACHING PLAN'
+        addButtonText='Add Plan'
         setActiveKey={(key: string) => setActiveKey(key)}
         activeKey={activeKey}
         addButtonUrl={
-          activeKey === "0"
-            ? "/trainingPlan/AddTrainingPlan/FitnessPlan"
-            : "/trainingPlan/AddTrainingPlan/CoachingPlan"
+          activeKey === '0'
+            ? '/trainingPlan/AddTrainingPlan/FitnessPlan'
+            : '/trainingPlan/AddTrainingPlan/CoachingPlan'
         }
         filters={[]}
-        applyFilters={(appliedFilters: { [key: string]: any }) =>
-          handleFilters(appliedFilters)
-        }
+        // applyFilters={(appliedFilters: {[key: string]: any}) => handleFilters(appliedFilters)}
         dropdownItems={{}}
         table1show={true}
         table2show={true}
@@ -64,5 +59,5 @@ export default function AllTrainingPlans() {
         // onDeleteClick={(id: number) => {}}
       />
     </>
-  );
+  )
 }

@@ -4,7 +4,7 @@ import {
   publicProcedure,
   // protectedProcedure,
 } from "~/server/api/trpc";
-import { GENDER_VALUES } from "~/types/coach";
+// import { GENDER_VALUES } from "~/types/coach";
 
 // Now add this object into an array
 

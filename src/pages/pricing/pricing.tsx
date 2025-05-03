@@ -9,14 +9,13 @@ import {
 // import DownloadPink from "../../images/download-pink.svg";
 // import Visa from "../../images/visa.svg";
 // import { Radio } from "flowbite-react";
-import {
-  // Switch,
-  DialogHeader,
-  Dialog,
-  DialogBody,
-} from '@material-tailwind/react'
-import Image from 'next/image'
-import Cross from '../../images/cross.svg'
+import // Switch,
+// DialogHeader,
+// Dialog,
+// DialogBody,
+'@material-tailwind/react'
+// import Image from 'next/image'
+// import Cross from '../../images/cross.svg'
 import {api} from '~/utils/api'
 import PricingTable from './pricingSections/PricingTable'
 
@@ -25,10 +24,10 @@ export default function Pricing() {
   const [activeKey, setActiveKey] = useState('0')
   // const [filters, setFilters] = useState<{ [key: string]: any }>([]);
 
-  const [modalOpen, setModalOpen] = useState(false)
-  const modalHandleOpen = () => setModalOpen(!modalOpen)
-  const [renewOpen, setRenewOpen] = useState(false)
-  const renewHandleOpen = () => setRenewOpen(!renewOpen)
+  // const [modalOpen, setModalOpen] = useState(false)
+  // const modalHandleOpen = () => setModalOpen(!modalOpen)
+  // const [renewOpen, setRenewOpen] = useState(false)
+  // const renewHandleOpen = () => setRenewOpen(!renewOpen)
 
   // const handleFilters = (appliedFilters: { [key: string]: any }) => {
   //   setFilters(appliedFilters);

@@ -34,6 +34,7 @@ export const centerSportsRouter = createTRPCRouter({
 
         return centerSports;
       } catch (error) {
+        console.error(error)
       }
     }),
   createCenterSports: publicProcedure.input(centerSportInfoSchema).mutation(async ({ input: data, ctx }) => {

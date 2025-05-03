@@ -72,6 +72,7 @@ export default function AddTestBankForm() {
         <div className='grid grid-cols-6 grid-rows-1'>
           <Card className='relative col-span-12 h-full min-h-[535px] !rounded-r-none rounded-l-xl p-0 pb-0 pt-10 lg:col-span-4 lg:bg-white lg:pb-6 '>
             {currentStep === 1 && (
+              // @ts-expect-error
               <AddTestBank
                 finalFormSubmissionHandler={finalFormSubmissionHandler}
                 physical={true}

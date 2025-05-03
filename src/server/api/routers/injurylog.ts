@@ -160,7 +160,9 @@ export const injuryLogRouter = createTRPCRouter({
         });
 
         return injuryLogs;
-      } catch (error) {}
+      } catch (error) {
+        console.error(error)
+      }
     }),
   createInjuryLog: publicProcedure
     .input(

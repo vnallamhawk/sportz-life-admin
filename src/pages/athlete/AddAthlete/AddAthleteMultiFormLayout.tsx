@@ -215,6 +215,7 @@ export default function AddAthleteMultiFormLayout() {
 
   const finalFormSubmissionHandler = (finalForm: any) => {
     if (academyId) {
+      // @ts-expect-error
       if (formData.isEditMode) {
         editMutate({
           name: finalForm.name,

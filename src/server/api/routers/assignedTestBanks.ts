@@ -29,7 +29,9 @@ export const assignedTestBankRouter = createTRPCRouter({
                 });
 
                 return assignedTestBanks;
-            } catch (error) { }
+            } catch (error) {
+                console.error(error)
+             }
         }),
 
     createMany: publicProcedure

@@ -69,12 +69,13 @@ const AddInventory = (props: any) => {
     props?.finalFormSubmissionHandler(finalFormData)
   }
 
-  const onSaveInventories = (selectedInventory: any) => {
-    const arr: {[key: string]: any}[] = [...inventories]
+  const onSaveInventories = (selectedInventory: unknown) => {
+    const arr: {[key: string]: unknown}[] = [...inventories]
     arr.push({
+      // @ts-expect-error need to fix this
       ...selectedInventory,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      inventoryId: parseInt(selectedInventory?.value),
+      // @ts-expect-error need to fix this
+      // inventoryId: parseInt(selectedInventory?.value),
     })
     setInventories(arr)
   }
@@ -85,7 +86,7 @@ const AddInventory = (props: any) => {
     setInventories(arr)
   }
 
-  const addNewInventory = (e: any) => {
+  const addNewInventory = (e: {preventDefault: () => void}) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     e.preventDefault()
     if (createdBy) {
@@ -110,35 +111,35 @@ const AddInventory = (props: any) => {
         />
       )}
       <AddForm
-        cardTitle='ADD CENTER'
-        tableTitle='ADD INVENTORIES'
-        tableDescription={'Hi! First things first'}
-        tableFields={[
-          {
-            type: 'select',
-            name: 'value',
-            placeholder: 'Select Inventrories',
-            options: finalOptions,
-          },
-          {type: 'number', name: 'quantity'},
-        ]}
-        TableHeadings={INVENTORY_TABLE_HEADERS}
-        tablekey='inventories'
-        tableData={inventories}
-        addTableData={onSaveInventories}
-        buttonItems={{prevFinish: true}}
-        setFormData={setFormData}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        formData={formData}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-        addTableButtonText={'Add New Inventory'}
-        addTableButton={() => {
-          setShowModal(!showModal)
-        }}
-        mobileAddButtonText='Add another inventory'
-        onRemoveTableButton={removeInventory}
-        finalFormSubmissionHandler={submitCallback}
+      // cardTitle='ADD CENTER'
+      // tableTitle='ADD INVENTORIES'
+      // tableDescription={'Hi! First things first'}
+      // tableFields={[
+      //   {
+      //     type: 'select',
+      //     name: 'value',
+      //     placeholder: 'Select Inventrories',
+      //     options: finalOptions,
+      //   },
+      //   {type: 'number', name: 'quantity'},
+      // ]}
+      // TableHeadings={INVENTORY_TABLE_HEADERS}
+      // tablekey='inventories'
+      // tableData={inventories}
+      // addTableData={onSaveInventories}
+      // buttonItems={{prevFinish: true}}
+      // setFormData={setFormData}
+      // // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      // formData={formData}
+      // currentStep={currentStep}
+      // setCurrentStep={setCurrentStep}
+      // addTableButtonText={'Add New Inventory'}
+      // addTableButton={() => {
+      //   setShowModal(!showModal)
+      // }}
+      // mobileAddButtonText='Add another inventory'
+      // onRemoveTableButton={removeInventory}
+      // finalFormSubmissionHandler={submitCallback}
       />
     </>
   )

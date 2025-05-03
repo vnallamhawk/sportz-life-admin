@@ -152,6 +152,7 @@ export const coachRouter = createTRPCRouter({
       })),  
     };
       } catch (error) {
+        console.error(error)
       }
     }),
   createCoach: publicProcedure

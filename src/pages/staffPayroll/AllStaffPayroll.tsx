@@ -1,21 +1,21 @@
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { api } from "~/utils/api";
-import { STAFF_PAYROLL_TABLE_HEADERS } from "~/constants/staffPayroll";
-import AllData from "~/common/AllData";
-import moment from "moment-timezone";
-import type { StaffPayroll } from "@prisma/client";
+import {useRouter} from 'next/navigation'
+import React, {useEffect, useState} from 'react'
+import {api} from '~/utils/api'
+import {STAFF_PAYROLL_TABLE_HEADERS} from '~/constants/staffPayroll'
+import AllData from '~/common/AllData'
+import moment from 'moment-timezone'
+import type {StaffPayroll} from '@prisma/client'
 
 const AllStaffPayroll = () => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const handleIsLoading = (isLoading: boolean) => {
-    setLoading(isLoading);
-  };
+  const router = useRouter()
+  // const [loading, setLoading] = useState(true);
+  // const handleIsLoading = (isLoading: boolean) => {
+  //   setLoading(isLoading);
+  // };
 
-  const [finalData, setFinalData] = useState<StaffPayroll[]>([]);
+  const [finalData, setFinalData] = useState<StaffPayroll[]>([])
 
-  const { data: staffPayroll } = api.staffPayroll.getAllPayroll.useQuery();
+  const {data: staffPayroll} = api.staffPayroll.getAllPayroll.useQuery()
 
   useEffect(() => {
     if (staffPayroll && staffPayroll?.length > 0) {
@@ -24,36 +24,34 @@ const AllStaffPayroll = () => {
           ...payroll,
           designation: payroll?.StaffDesignation?.designation,
           tax: payroll?.grossSalary - payroll?.netSalary,
-        };
-      });
-      setFinalData(updatedStaffPayroll);
+        }
+      })
+      setFinalData(updatedStaffPayroll)
     }
-  }, [staffPayroll]);
+  }, [staffPayroll])
 
-  const { mutate: deleteMutate } = api.staffPayroll.deletePayroll.useMutation({
+  const {mutate: deleteMutate} = api.staffPayroll.deletePayroll.useMutation({
     onSuccess: (response) => {
-      const arr:StaffPayroll[] = [...finalData];
-      const index = finalData?.findIndex(
-        (item: StaffPayroll) => item?.id == response?.id
-      );
+      const arr: StaffPayroll[] = [...finalData]
+      const index = finalData?.findIndex((item: StaffPayroll) => item?.id == response?.id)
       if (index > -1) {
-        arr.splice(index, 1);
+        arr.splice(index, 1)
       }
-      setFinalData(arr);
-      return response;
+      setFinalData(arr)
+      return response
     },
-  });
+  })
 
   const deletePayroll = (id: number) => {
-    deleteMutate({ payrollId: id, deletedAt: moment().toISOString() });
-  };
+    deleteMutate({payrollId: id, deletedAt: moment().toISOString()})
+  }
 
   return (
     <>
       <AllData
-        title="ALL PAYROLLS"
-        addButtonText="ADD Payroll"
-        addButtonUrl="/staffPayroll/AddPayroll"
+        title='ALL PAYROLLS'
+        addButtonText='ADD Payroll'
+        addButtonUrl='/staffPayroll/AddPayroll'
         dropdownItems={{}}
         filter={false}
         TABLE_HEAD={STAFF_PAYROLL_TABLE_HEADERS}
@@ -64,7 +62,7 @@ const AllStaffPayroll = () => {
         onDeleteClick={(id: number) => deletePayroll(id)}
       />
     </>
-  );
-};
+  )
+}
 
-export default AllStaffPayroll;
+export default AllStaffPayroll

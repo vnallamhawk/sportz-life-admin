@@ -2,12 +2,12 @@ import Image from 'next/image'
 import Card from '~/components/Card'
 import SearchIcon from '../../images/search.png'
 import Link from 'next/link'
-import User from '../../images/user.png'
-import {Dropdown} from 'flowbite-react'
-import Dots from '../../images/dots.svg'
+// import User from '../../images/user.png'
+// import {Dropdown} from 'flowbite-react'
+// import Dots from '../../images/dots.svg'
 import {IconButton} from '@material-tailwind/react'
 import PostDetail from './postDetail'
-import {useSession} from 'next-auth/react'
+// import {useSession} from 'next-auth/react'
 import {api} from '~/utils/api'
 import {useEffect, useState} from 'react'
 
@@ -24,23 +24,22 @@ type PostType = {
 }
 
 export default function Post() {
-  const {data: sessionData} = useSession()
+  // const {data: sessionData} = useSession()
 
-  const academyId = sessionData?.token
-    ? sessionData?.token?.academyId
-    : sessionData?.user?.academyId
+  // const academyId = sessionData?.token
+  //   ? sessionData?.token?.academyId
+  //   : sessionData?.user?.academyId
 
   // Ensure correct typing for API response
   const {data: postsData} = api.post.getAll.useQuery<{postsData: PostType[]}>()
 
-  console.log('Fetched postsData:', postsData)
-
-  const [selectedPost, setSelectedPost] = useState<PostType | null>(null)
-  const [previewUrls, setPreviewUrls] = useState<{[key: number]: string}>({})
+  const [selectedPost] = useState<PostType | null>(null)
+  const [setPreviewUrls] = useState<{[key: number]: string}>({})
 
   useEffect(() => {
     if (postsData) {
       const previews: {[key: number]: string} = {}
+      // @ts-expect-error fix this later
       postsData.forEach((post: PostType) => {
         if (post.imageLink.startsWith('uploads/')) {
           fetch(`/${post.imageLink}`)
@@ -85,87 +84,6 @@ export default function Post() {
           </div>
 
           {/* Dynamic Posts Grid */}
-          <div className='grid grid-cols-12 gap-x-8 gap-y-12'>
-            {postsData && postsData.length > 0 ? (
-              postsData.map((post: PostType) => (
-                <div
-                  key={post.id}
-                  className='col-span-12 cursor-pointer lg:col-span-3'
-                  onClick={() =>
-                    setSelectedPost({...post, imageLink: previewUrls[post.id] ?? post.imageLink})
-                  }
-                >
-                  <div>
-                    {/* Ensure image path is correctly handled */}
-                    <Image
-                      src={previewUrls[post.id] || ''}
-                      alt={post.title}
-                      width={100}
-                      height={150}
-                      className='h-[150px] w-full object-cover'
-                    />
-                    <div>
-                      <div className='flex items-center justify-between py-5'>
-                        <div className='flex items-center'>
-                          <Image
-                            width={20}
-                            height={20}
-                            src={User}
-                            className='h-5 w-5 rounded'
-                            alt='User'
-                          />
-                          <div className='ml-2 text-sm font-medium text-[#6E7280]'>
-                            {post.title}
-                          </div>
-                        </div>
-                        <div className='pl-2'>
-                          <Dropdown
-                            label='Options'
-                            dismissOnClick={false}
-                            placement='right'
-                            renderTrigger={() => (
-                              <button>
-                                <Image
-                                  width={20}
-                                  height={20}
-                                  src={Dots}
-                                  className='rotate-90 transform'
-                                  alt='Menu'
-                                />
-                              </button>
-                            )}
-                            className='post-dropdown w-50 rounded-lg border-0 bg-[#303030] p-3 text-white'
-                          >
-                            <Dropdown.Item className='text-white hover:bg-black focus:bg-black'>
-                              Edit Post
-                            </Dropdown.Item>
-                            <Dropdown.Item className='text-white hover:bg-black focus:bg-black'>
-                              Hide Post
-                            </Dropdown.Item>
-                            <Dropdown.Item className='text-white hover:bg-black focus:bg-black'>
-                              Copy Post URL
-                            </Dropdown.Item>
-                            <Dropdown.Item className='text-white hover:bg-black focus:bg-black'>
-                              Delete Post
-                            </Dropdown.Item>
-                          </Dropdown>
-                        </div>
-                      </div>
-                      <div className='font-heading text-2xl font-medium leading-6'>
-                        {post.postDetails.substring(0, 100)}...
-                      </div>
-                      <div className='pt-4 text-sm font-medium text-[#6E7280]'>
-                        {new Date(post.createdAt).toLocaleDateString()} at{' '}
-                        {new Date(post.createdAt).toLocaleTimeString()}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className='col-span-12 text-center text-gray-500'>No posts available.</div>
-            )}
-          </div>
 
           {/* Pagination (Placeholder) */}
           <div className='mt-6 flex items-center justify-center p-4'>

@@ -28,7 +28,9 @@ export const testsRouter = createTRPCRouter({
                 });
 
                 return resp;
-            } catch (error) { }
+            } catch (error) { 
+                console.error(error)
+            }
         }),
 
 })

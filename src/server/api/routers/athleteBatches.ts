@@ -33,7 +33,7 @@ export const athleteBatchesRouter = createTRPCRouter({
 
   // Get athletes based on batchId
   getAthletesByBatchId: publicProcedure
-    .query(async ({ input, ctx }) => {
+    .query(async ({ ctx }) => {
       const athletes = await ctx.prisma.athleteBatchesMaps.findMany({
         include: {
           Athletes: true, // Assuming you have an `athlete` relation in Prisma

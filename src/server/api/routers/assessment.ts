@@ -8,7 +8,7 @@ import {
   ASSESSMENT_INTERVAL,
   ASSESSMENT_STATUS,
 } from "~/types/assessment";
-import type { AssessmentAssignedAthletes, AssessmentBatches, AssessmentCenterBatches, AssessmentCenters, AssessmentSports } from "@prisma/client";
+import type { AssessmentAssignedAthletes, AssessmentBatches, AssessmentCenters, AssessmentSports } from "@prisma/client";
 
 async function createAssessmentChilds({
   ctx,
@@ -343,7 +343,9 @@ export const assessmentRouter = createTRPCRouter({
         });
 
         return assessments;
-      } catch (error) { }
+      } catch (error) {
+        console.error(error)
+       }
     }),
   createAssessmentByChild: publicProcedure
     .input(
@@ -488,7 +490,7 @@ export const assessmentRouter = createTRPCRouter({
           startDate,
           endDate,
           participants,
-          centerId, // discussion
+          // centerId, // discussion
           assessmentStatus, // discussion
           status, // discussion
         },

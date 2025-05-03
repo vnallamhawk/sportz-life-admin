@@ -1,9 +1,9 @@
-import {useState, ChangeEvent, FormEvent, useCallback} from 'react'
+import {useState, ChangeEvent, FormEvent} from 'react'
 import Card from '~/components/Card'
 import CardTitle from '~/components/Card/CardTitle'
 import {Switch} from '@material-tailwind/react'
 import {api} from '~/utils/api'
-import {useRouter} from 'next/router'
+// import {useRouter} from 'next/router'
 import {useSession} from 'next-auth/react'
 
 interface FormDataState {
@@ -14,7 +14,7 @@ interface FormDataState {
 }
 
 export default function AddPost() {
-  const router = useRouter()
+  // const router = useRouter()
   const {data: sessionData} = useSession()
 
   const uploadImage = api.upload.uploadImage.useMutation()
@@ -78,7 +78,6 @@ export default function AddPost() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('Form Data Submitted:', formData)
     // Perform API request here
 
     createMutate({

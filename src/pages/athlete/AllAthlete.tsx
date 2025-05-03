@@ -1,14 +1,23 @@
-import React, { useEffect, useState } from "react";
-import AllData from "~/common/AllData";
-import { useRouter } from "next/router";
-import { api } from "~/utils/api";
-import moment from "moment-timezone";
-import type { AthleteBatchesMaps, Athletes, AthleteSportsMaps, Batches, Centers, Coaches, FeePlans, Sports } from "@prisma/client";
+import React, {useEffect, useState} from 'react'
+import AllData from '~/common/AllData'
+import {useRouter} from 'next/router'
+import {api} from '~/utils/api'
+import moment from 'moment-timezone'
+import type {
+  AthleteBatchesMaps,
+  Athletes,
+  AthleteSportsMaps,
+  Batches,
+  Centers,
+  Coaches,
+  FeePlans,
+  Sports,
+} from '@prisma/client'
 
 interface BatchesType extends Batches {
-  Coaches?: Coaches,
-  FeePlans?: FeePlans,
-  Sports?: Sports,
+  Coaches?: Coaches
+  FeePlans?: FeePlans
+  Sports?: Sports
   Centers?: Centers
 }
 
@@ -17,54 +26,53 @@ interface AthleteBatchesMapsType extends AthleteBatchesMaps {
 }
 
 interface AthleteSportsMapsType extends AthleteSportsMaps {
-  Sports?: Sports,
+  Sports?: Sports
   Centers?: Centers
 }
 
-
 type AthletesType = Athletes & {
-  AthleteSportsMaps: AthleteSportsMapsType[];
+  AthleteSportsMaps: AthleteSportsMapsType[]
   AthleteBatchesMaps: AthleteBatchesMapsType[]
-};
+}
 
 const TABLE_HEAD = [
-  { label: "Athlete Name", id: "name" },
+  {label: 'Athlete Name', id: 'name'},
   // { label: "Training Level", id: "t_level" },
-  { label: "Center", id: "center" },
-  { label: "Batch", id: "batches" },
-  { label: "Fee Status of the Month", id: "status" },
-  { label: "Action", id: "action" },
-];
+  {label: 'Center', id: 'center'},
+  {label: 'Batch', id: 'batches'},
+  {label: 'Fee Status of the Month', id: 'status'},
+  {label: 'Action', id: 'action'},
+]
 
 export default function Athlete() {
-  const [filterByName, setFilterByName] = useState("");
-  const router = useRouter();
-  const [finalData, setFinalData] = useState<Athletes[]>([]);
+  const [filterByName, setFilterByName] = useState('')
+  const router = useRouter()
+  const [finalData, setFinalData] = useState<Athletes[]>([])
   // const [filters, setFilters] = useState<{ [key: string]: any }>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1)
 
-  const athletesData: any =
-    filterByName == ""
+  const athletesData =
+    filterByName == ''
       ? api.athlete.getAllAthletesWithPagination.useQuery({
-        page: currentPage,
-        limit: 10,
-      })
-      : api.athlete.getAthleteByName.useQuery({ name: filterByName });
-  const { data: sports } = api.sports.getAllSports.useQuery();
-  const { data: centers } = api.center.getAllCenters.useQuery();
-  const { data: batches } = api.batches.getAllBatches.useQuery();
+          page: currentPage,
+          limit: 10,
+        })
+      : api.athlete.getAthleteByName.useQuery({name: filterByName})
+  const {data: sports} = api.sports.getAllSports.useQuery()
+  const {data: centers} = api.center.getAllCenters.useQuery()
+  const {data: batches} = api.batches.getAllBatches.useQuery()
 
   // eslint-disable-next-line
-  const athletes = athletesData?.data?.data ?? []; // Ensure it's an array
+  const athletes = athletesData?.data?.data ?? [] // Ensure it's an array
 
   // eslint-disable-next-line
-  const totalPages = athletesData?.data?.totalPages ?? 1; // Ensure a valid number
+  const totalPages = athletesData?.data?.totalPages ?? 1 // Ensure a valid number
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
+      setCurrentPage(page)
     }
-  };
+  }
 
   const dropdownObj = {
     changeCenter: true,
@@ -73,21 +81,19 @@ export default function Athlete() {
     attendance: true,
     reminder: true,
     freeze: true,
-  };
+  }
 
-  const { mutate: deleteMutate } = api.athlete.deleteAthlete.useMutation({
+  const {mutate: deleteMutate} = api.athlete.deleteAthlete.useMutation({
     onSuccess: (response) => {
-      const arr: Athletes[] = [...finalData];
-      const index = finalData?.findIndex(
-        (item: Athletes) => item?.id == response?.id
-      );
+      const arr: Athletes[] = [...finalData]
+      const index = finalData?.findIndex((item: Athletes) => item?.id == response?.id)
       if (index > -1) {
-        arr.splice(index, 1);
+        arr.splice(index, 1)
       }
-      setFinalData(arr);
-      return response;
+      setFinalData(arr)
+      return response
     },
-  });
+  })
 
   useEffect(() => {
     // eslint-disable-next-line
@@ -99,19 +105,19 @@ export default function Athlete() {
           batches: athletes?.AthleteBatchesMaps.map(
             // eslint-disable-next-line
             (map: any) => map.Batches.name
-          ).join(", "),
-          center: athletes?.AthleteSportsMaps[0]?.Centers?.name
+          ).join(', '),
+          center: athletes?.AthleteSportsMaps[0]?.Centers?.name,
 
           // status: athlete?.designation,
-        };
-      });
-      setFinalData(updatedAthletes);
+        }
+      })
+      setFinalData(updatedAthletes)
     }
-  }, [athletes]);
+  }, [athletes])
 
   const deleteAthlete = (id: number) => {
-    deleteMutate({ athleteId: id, deletedAt: moment().toISOString() });
-  };
+    deleteMutate({athleteId: id, deletedAt: moment().toISOString()})
+  }
 
   // const handleFilters = (appliedFilters: { [key: string]: any }) => {
   //   setFilters(appliedFilters);
@@ -120,9 +126,9 @@ export default function Athlete() {
   return (
     <>
       <AllData
-        title="ALL ATHLETES"
-        addButtonText="Add Athlete"
-        addButtonUrl="/athlete/AddAthlete"
+        title='ALL ATHLETES'
+        addButtonText='Add Athlete'
+        addButtonUrl='/athlete/AddAthlete'
         dropdownItems={dropdownObj}
         TABLE_HEAD={TABLE_HEAD}
         TABLE_ROWS={finalData}
@@ -131,61 +137,58 @@ export default function Athlete() {
         filter={true}
         filters={[
           {
-            label: "Filter by Sports",
-            id: "sports",
-            type: "multiSelect",
+            label: 'Filter by Sports',
+            id: 'sports',
+            type: 'multiSelect',
             data: sports,
           },
           {
-            label: "Filter by Center",
-            id: "centers",
-            type: "multiSelect",
+            label: 'Filter by Center',
+            id: 'centers',
+            type: 'multiSelect',
             data: centers,
           },
           {
-            label: "Filter by Batches",
-            id: "batches",
-            type: "multiSelect",
+            label: 'Filter by Batches',
+            id: 'batches',
+            type: 'multiSelect',
             data: batches,
           },
           {
-            label: "Filter by Age",
-            id: "age",
-            type: "bar",
+            label: 'Filter by Age',
+            id: 'age',
+            type: 'bar',
           },
           {
-            label: "Filter by Payment Status",
-            id: "payment_status",
-            type: "multiSelect",
+            label: 'Filter by Payment Status',
+            id: 'payment_status',
+            type: 'multiSelect',
             data: [
-              { id: 1, name: "Payment Dues" },
-              { id: 2, name: "Paid" },
+              {id: 1, name: 'Payment Dues'},
+              {id: 2, name: 'Paid'},
             ],
           },
           {
-            label: "Filter by Gender",
-            id: "gender",
-            type: "multiSelect",
+            label: 'Filter by Gender',
+            id: 'gender',
+            type: 'multiSelect',
             data: [
-              { id: 1, name: "Male" },
-              { id: 2, name: "Female" },
+              {id: 1, name: 'Male'},
+              {id: 2, name: 'Female'},
             ],
           },
         ]}
         applyFilters={() =>
-        // appliedFilters: { [key: string]: any }
-        {
-          // handleFilters(appliedFilters);
-        }
+          // appliedFilters: { [key: string]: any }
+          {
+            // handleFilters(appliedFilters);
+          }
         }
         // eslint-disable-next-line
-        onViewClick={(id: number) =>
-          router.replace(`/athlete/${id}`).then(() => router.reload())
-        }
+        onViewClick={(id: number) => router.replace(`/athlete/${id}`).then(() => router.reload())}
         // eslint-disable-next-line
         onEditClick={(id: number) =>
           router.replace(`/edit-athlete-${id}`).then(() => router.reload())
-
         }
         onDeleteClick={(id: number) => deleteAthlete(id)}
         rowSelection={true}
@@ -195,5 +198,5 @@ export default function Athlete() {
         onHandlePageChange={handlePageChange}
       />
     </>
-  );
+  )
 }

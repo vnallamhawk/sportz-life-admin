@@ -141,6 +141,7 @@ export default function Page({staff}: {staff: StaffDetails}) {
     } else {
       if (tab?.name === 'centers') {
         TABLE_HEAD = STAFF_DASH_CENTER_TABLE_HEADERS
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment, no-unsafe-optional-chaining
         TABLE_ROWS = staff?.Centers ? [...staff?.Centers] : []
       } else if (tab?.name === 'payroll') {
         TABLE_HEAD = STAFF_DASH_PAYROLL_TABLE_HEADERS

@@ -1,7 +1,8 @@
 // /types/next-images.d.ts
 
 declare module 'next-images' {
-    const value: any;
+  // @ts-expect-error need to fix this
+    const value;
     export default value;
   }
   

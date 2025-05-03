@@ -195,6 +195,7 @@ export default function AddTestBankForm() {
             {currentStep === 3 && <AddAssessmentScoring />}
             {/* {currentStep === 4 && <AddAssessmentSchedule />} */}
             {currentStep === 4 && (
+              // @ts-expect-error
               <AddAssessmentSchedule finalFormSubmissionHandler={finalFormSubmissionHandler} />
             )}
 

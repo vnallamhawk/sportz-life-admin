@@ -1,11 +1,11 @@
-import React, {useState, useCallback, useEffect, useRef, useContext} from 'react'
+import React, {useState, useContext} from 'react'
 import Card from '~/components/Card'
-import ImageWithFallback from '~/components/ImageWithFallback'
+// import ImageWithFallback from '~/components/ImageWithFallback'
 import {useForm} from 'react-hook-form'
 // import { type MULTI_FORM_TYPES } from "~/types/coach";
-import FileUpload from '~/components/FileUpload'
+// import FileUpload from '~/components/FileUpload'
 import AddPaymentDetails from '~/components/AddCompetition/AddPaymentDetails'
-import AddStaff from '~/components/AddStaff/AddStaff'
+// import AddStaff from '~/components/AddStaff/AddStaff'
 import {useRouter} from 'next/router'
 import {api} from '~/utils/api'
 import {ToastContext} from '~/contexts/Contexts'
@@ -49,12 +49,12 @@ export const FormContext = React.createContext<FormContextTypes>(defaultValues)
 export default function AddCompetitionMultiFormLayout() {
   const methods = useForm()
   const router = useRouter()
-  const id = Number(router?.query?.id)
+  // const id = Number(router?.query?.id)
   const {data: sessionData} = useSession()
   const [currentStep, setCurrentStep] = useState<number>(1)
   const [formData, setFormData] = useState(defaultValues.multiFormData.formData)
 
-  const [staffId, setStaffId] = useState<number>()
+  // const [staffId, setStaffId] = useState<number>()
 
   const {setOpenToast} = useContext(ToastContext)
 
@@ -68,18 +68,18 @@ export default function AddCompetitionMultiFormLayout() {
   const {mutate: createMutate} = api.staff.createStaff.useMutation({
     onSuccess: (response) => {
       setOpenToast(true)
-      setStaffId(response?.id)
+      // setStaffId(response?.id)
       return response?.id
     },
   })
 
-  const {mutate: createMutateStaffTimings} = api.staffTimings.createStaffTiming.useMutation({
-    onSuccess: (response) => {
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      void router.push(`/staff/${staffId}`)
-      return response
-    },
-  })
+  // const {mutate: createMutateStaffTimings} = api.staffTimings.createStaffTiming.useMutation({
+  //   onSuccess: (response) => {
+  //     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  //     void router.push(`/staff/${staffId}`)
+  //     return response
+  //   },
+  // })
   const {mutate: editMutate} = api.staff.editStaff.useMutation({
     onSuccess: (response) => {
       setOpenToast(true)
