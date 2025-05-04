@@ -66,7 +66,8 @@ export const athleteRouter = createTRPCRouter({
               include: {
                 Centers: true, // Include Batches associated with the coach
               },
-            }
+            },
+            InjuryLogs: true,
           },
           orderBy: {
             createdAt: sortOrder, // Sort by createdAt (ascending or descending)
@@ -103,6 +104,7 @@ export const athleteRouter = createTRPCRouter({
             id: opts.input.id,
           },
           include: {
+            InjuryLogs: true,
             // CoachSportsMaps: true,
             // batches: true,
             // centers: true,

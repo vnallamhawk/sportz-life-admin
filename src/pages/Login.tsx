@@ -7,7 +7,6 @@ import Image from 'next/image'
 import React, {useState} from 'react'
 import {useRouter} from 'next/router'
 import {signIn} from 'next-auth/react'
-import {api} from '~/utils/api'
 
 interface LoginDetails {
   [key: string]: string
