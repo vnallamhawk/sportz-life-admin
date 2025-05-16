@@ -1,3 +1,4 @@
+import {useRouter} from 'next/router'
 import {useContext, useEffect, useRef, useState} from 'react'
 import {useForm} from 'react-hook-form'
 import AddForm from '~/common/AddForm/AddForm'
@@ -26,6 +27,7 @@ export default function AddAthlete() {
   const currentFormValues = getValues()
   const hasExecuted = useRef(true)
   const {data: sports} = api.sports.getAllSports.useQuery()
+  const router = useRouter()
 
   const [formConstantValues, setFormConstantValues] =
     useState<FormValues[]>(ATHLETE_DETAILS_CONSTANTS)
@@ -65,41 +67,8 @@ export default function AddAthlete() {
 
   return (
     <>
-      <h1 className='text-2xl font-bold text-gray-800'>ADD ATHLETE</h1>
       <h2 className='mt-5 text-sm font-bold text-gray-800'>ATHLETE PERSONAL DETAILS</h2>
-
-      <AddForm
-        // cardTitle='ADD ATHLETE'
-        // cardSubTitle='Athlete Personal Details'
-        formConstantValues={formConstantValues}
-        imageTitle='Attach Athlete Image'
-        // tableTitle='Medical History'
-        // tableDescription={
-        //   'Kindly list down if your child has any allergies, major injuries, chronic diseases, physical disabilities & Children with special needs (CWSN)'
-        // }
-        // mobileAddButtonText='Add another medical history'
-        // TableHeadings={[
-        //   {label: '#', id: 'No.'},
-        //   {label: 'Medical History', id: 'message'},
-        //   {label: 'Action', id: 'action'},
-        // ]}
-        // tableFields={[
-        //   {
-        //     type: 'textarea',
-        //     name: 'message',
-        //     placeholder: 'Medical Pre-History 1',
-        //   },
-        // ]}
-        // tablekey='medicalHistory'
-        // tableData={medicalHistoryData}
-        // addTableData={addTableData}
-        // buttonItems={{next: true}}
-        // setFormData={setFormData}
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        // formData={formData}
-        // currentStep={currentStep}
-        // setCurrentStep={setCurrentStep}
-      />
+      <AddForm formConstantValues={formConstantValues} imageTitle='Attach Athlete Image' />
     </>
   )
 }

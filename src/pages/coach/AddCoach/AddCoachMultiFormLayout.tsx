@@ -103,30 +103,6 @@ export default function AddCoachMultiFormLayout() {
     }
   }, [coachData?.data, methods.getValues('isEditMode')])
 
-  // useEffect(() => {
-  //   if (formData.isEditMode && coachData?.data) {
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       ...coachData?.data,
-  //       centerId: coachData?.data?.centerId ?? undefined,
-  //       phone: coachData?.data?.phone ?? undefined,
-  //       email: coachData?.data?.email ?? undefined,
-  //       image: coachData?.data?.image ?? undefined,
-  //     }))
-  //   }
-  // }, [coachData?.data, formData.isEditMode])
-
-  // useEffect(() => {
-  //   if (router.isReady) {
-  //     if (router.asPath.includes('edit')) {
-  //       setFormData((prevFormData) => ({
-  //         ...prevFormData,
-  //         isEditMode: true,
-  //       }))
-  //     }
-  //   }
-  // }, [router.isReady, router.asPath])
-
   useEffect(() => {
     const fetchSignedUrl = async () => {
       if (imageUrl) {
@@ -137,10 +113,6 @@ export default function AddCoachMultiFormLayout() {
     void fetchSignedUrl()
   }, [imageUrl])
 
-  // const formProviderData = {
-  // stepData: {currentStep, setCurrentStep, totalSteps},
-  // multiFormData: {formData, setFormData},
-  // }
   const {mutate: createMutate} = api.coach.createCoach.useMutation({
     onSuccess: async (response) => {
       await router.push('/coach')

@@ -96,9 +96,7 @@ export default function Athlete() {
   })
 
   useEffect(() => {
-    // eslint-disable-next-line
     if (athletes && athletes?.length > 0) {
-      // eslint-disable-next-line
       const updatedAthletes: AthletesType[] = athletes.map((athletes: AthletesType) => {
         return {
           ...athletes,

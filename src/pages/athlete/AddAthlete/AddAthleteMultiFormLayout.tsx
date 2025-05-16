@@ -14,58 +14,19 @@ import {useRouter} from 'next/router'
 import {ToastContext} from '~/contexts/Contexts'
 import FileUpload from '~/components/FileUpload'
 import {getSportsDictionaryServices} from '~/services/sportServices'
+import {FormContext} from '~/hooks/useMultiStepFormContext'
 
 import AddAthlete from '../../../components/AddAthlete/AddAthlete'
 import DashboardHeader from '~/components/DashboardHeader'
 import AddGeneralDetails from '~/components/AddAthlete/AddGeneralDetails'
 import {useSession} from 'next-auth/react'
-import {FormContext} from '~/hooks/useMultiStepFormContext'
-
-// const multiFormData: MULTI_FORM_TYPES = {
-const multiFormData = {
-  phone: '',
-  name: '',
-  bloodGroup: '',
-  email: '',
-  about: '',
-  dob: undefined,
-  payroll: '',
-  coachingSports: [],
-  certificates: [],
-  batchIds: [],
-  centerId: undefined,
-  isEditMode: false,
-  coachId: undefined,
-}
-
-// const defaultValues = {
-//   stepData: {
-//     currentStep: 1,
-//   },
-//   multiFormData: {
-//     formData: multiFormData,
-//   },
-// }
-// export interface FormContextTypes {
-//   stepData: {
-//     currentStep: number
-//     setCurrentStep?: React.Dispatch<React.SetStateAction<number>>
-//   }
-//   multiFormData: {
-//     formData: any
-//     setFormData?: React.Dispatch<React.SetStateAction<any>>
-//   }
-// }
-// export const FormContext = React.createContext<FormContextTypes>(defaultValues)
+import {Athletes} from '@prisma/client'
+import Button from '~/components/Button'
 
 export default function AddAthleteMultiFormLayout() {
   const router = useRouter()
+  console.log(router)
   const id = Number(router?.query?.id)
-  const hasRun = useRef(false) // Track if useEffect has already run
-
-  // const methods = useForm()
-  // const [currentStep, setCurrentStep] = useState<number>(1)
-  // const [formData, setFormData] = useState<any>(defaultValues.multiFormData.formData)
   const {data: sessionData} = useSession()
   const [athleteId, setAthleteId] = useState<number>()
 
@@ -79,23 +40,45 @@ export default function AddAthleteMultiFormLayout() {
   const [uploadUrl, setUploadUrl] = useState<string>('')
   const uploadImage = api.upload.uploadImage.useMutation()
   const athleteData = id && api.athlete.getAthleteById.useQuery({id})
-  const hasUseEffectRun = useRef(false)
+  console.log({athleteData})
   const [currentStep, setCurrentStep] = useState<number>(1)
   const totalSteps = 3
   const methods = useForm({
-    defaultValues: multiFormData,
     shouldUnregister: false,
   })
+  const data = athleteData?.data
+  const image = data?.image
+  const [imageUrl, setImageUrl] = useState(image)
+  const [signedS3Url, setSignedS3Url] = useState('')
+  const [previewUrl, setPreviewUrl] = useState('')
 
   useEffect(() => {
-    if (athleteData && athleteData.data && !hasUseEffectRun.current) {
-      let obj: any = {...athleteData.data}
-
-      obj.isEditMode = true
-      // setFormData(obj)
-      hasUseEffectRun.current = true
+    if (router.asPath.includes('edit') && athleteData?.data) {
+      methods.reset({
+        ...athleteData.data,
+        // batches: coachData?.data?.CoachCentersBatches?.map(({batchId}) => batchId),
+        // centerId: coachData.data.centerId ?? undefined,
+        // phone: coachData.data.phone ?? undefined,
+        // email: coachData.data.email ?? undefined,
+        // image: coachData.data.image ?? undefined,
+        // coachingSports: coachData?.data?.CoachSportsMaps?.map(({sportId}) => sportId),
+      })
     }
-  }, [athleteData])
+  }, [athleteData?.data])
+
+  //  useEffect(() => {
+  //     if (router.asPath.includes('edit') && coachData?.data) {
+  //       methods.reset({
+  //         ...coachData.data,
+  //         batches: coachData?.data?.CoachCentersBatches?.map(({batchId}) => batchId),
+  //         centerId: coachData.data.centerId ?? undefined,
+  //         phone: coachData.data.phone ?? undefined,
+  //         email: coachData.data.email ?? undefined,
+  //         image: coachData.data.image ?? undefined,
+  //         coachingSports: coachData?.data?.CoachSportsMaps?.map(({sportId}) => sportId),
+  //       })
+  //     }
+  //   }, [coachData?.data, methods.getValues('isEditMode')])
 
   // const formProviderData = {
   //   ...methods,
@@ -269,10 +252,46 @@ export default function AddAthleteMultiFormLayout() {
         <FormProvider {...methods}>
           <div className='relative grid grid-cols-6 grid-rows-1'>
             <Card className='relative col-span-12 h-full !rounded-r-none rounded-l-xl bg-white p-0 pt-10 lg:col-span-4'>
+              <div className=' text-center font-heading text-3xl font-medium uppercase lg:text-left'>
+                {router?.asPath?.includes('edit') ? 'EDIT ATHLETE' : 'ADD ATHLETE'}
+              </div>
               {currentStep === 1 && <AddAthlete />}
               {currentStep === 2 && (
-                <AddGeneralDetails finalFormSubmissionHandler={finalFormSubmissionHandler} />
+                <AddGeneralDetails
+                // finalFormSubmissionHandler={finalFormSubmissionHandler}
+                />
               )}
+              <div className='flex justify-end'>
+                {currentStep > 1 && (
+                  <Button
+                    type='button'
+                    className='ml-3 mt-10 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
+                    onClick={() => setCurrentStep?.(currentStep - 1)}
+                  >
+                    Prev
+                  </Button>
+                )}
+                {currentStep && totalSteps && currentStep < totalSteps && (
+                  <Button
+                    type='button'
+                    className='ml-3 mt-10 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
+                    onClick={() => {
+                      setCurrentStep(currentStep + 1)
+                    }}
+                  >
+                    Next
+                  </Button>
+                )}
+                {currentStep === totalSteps && (
+                  <Button
+                    type='button'
+                    className='ml-3 mt-10 w-full rounded-full !border-0 bg-mandy-dark px-5 py-3   text-white outline-0 hover:bg-mandy-dark focus:outline-none focus:ring focus:ring-0 lg:w-auto lg:rounded lg:py-1.5'
+                    onClick={() => finalFormSubmissionHandler(methods.getValues())}
+                  >
+                    Finish
+                  </Button>
+                )}
+              </div>
             </Card>
             <Card className='col-span-2 hidden !rounded-l-none rounded-r-xl bg-stone-100 px-7 lg:block'>
               <div className='mb-10 font-heading text-2xl font-medium uppercase'>Athlete Image</div>

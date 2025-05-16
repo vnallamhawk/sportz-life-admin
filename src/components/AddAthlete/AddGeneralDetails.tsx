@@ -10,10 +10,10 @@ import type {FormValues} from '~/types/common'
 import {Centers, Sports} from '@prisma/client'
 
 export default function AddGeneralDetails({finalFormSubmissionHandler}: any) {
-  const {
-    stepData: {currentStep, setCurrentStep},
-    multiFormData: {formData, setFormData},
-  } = useContext(FormContext)
+  // const {
+  //   stepData: {currentStep, setCurrentStep},
+  //   multiFormData: {formData, setFormData},
+  // } = useContext(FormContext)
 
   const {
     control,
@@ -29,145 +29,100 @@ export default function AddGeneralDetails({finalFormSubmissionHandler}: any) {
   const [formConstantValues, setFormConstantValues] =
     useState<FormValues[]>(ATHLETE_GENRAL_CONSTANTS)
 
-  const [formConstantValues1, setFormConstantValues1] =
-    useState<FormValues[]>(ATHLETE_CONTACT_CONSTANTS)
+  // const [formConstantValues1, setFormConstantValues1] =
+  //   useState<FormValues[]>(ATHLETE_CONTACT_CONSTANTS)
 
-  useEffect(() => {
-    if (centers?.length) {
-      let updatedFormConstantValues: FormValues[] = formConstantValues
+  // useEffect(() => {
+  //   if (centers?.length) {
+  //     let updatedFormConstantValues: FormValues[] = formConstantValues
 
-      updatedFormConstantValues = formConstantValues?.map((formConstant: FormValues) => {
-        if (
-          formConstant.id === 'centerId' &&
-          formConstant?.options &&
-          formConstant?.options.length == 0
-        ) {
-          return {
-            ...formConstant,
-            options: centers.map((center) => ({
-              label: center.name,
-              value: center?.id.toString(),
-            })),
-          }
-        } else {
-          return formConstant
-        }
-      })
-      setFormConstantValues(updatedFormConstantValues)
-    }
-  }, [formConstantValues, centers, centers?.length])
+  //     updatedFormConstantValues = formConstantValues?.map((formConstant: FormValues) => {
+  //       if (
+  //         formConstant.id === 'centerId' &&
+  //         formConstant?.options &&
+  //         formConstant?.options.length == 0
+  //       ) {
+  //         return {
+  //           ...formConstant,
+  //           options: centers.map((center) => ({
+  //             label: center.name,
+  //             value: center?.id.toString(),
+  //           })),
+  //         }
+  //       } else {
+  //         return formConstant
+  //       }
+  //     })
+  //     setFormConstantValues(updatedFormConstantValues)
+  //   }
+  // }, [formConstantValues, centers, centers?.length])
 
-  useEffect(() => {
-    if (centerId && formConstantValues && formConstantValues.length > 0) {
-      const center = centers?.find((item) => item?.id == centerId)
-      let updatedFormConstantValues: FormValues[] = formConstantValues
-      if (center?.CenterSports && center?.CenterSports?.length > 0) {
-        updatedFormConstantValues = formConstantValues?.map((formConstant: FormValues) => {
-          if (
-            formConstant.id === 'sportId' &&
-            formConstant?.options &&
-            formConstant?.options.length == 0
-          ) {
-            const data = {
-              ...formConstant,
-              options: center.CenterSports.map((CenterSport) => ({
-                label: CenterSport?.Sports?.name,
-                value: CenterSport?.Sports?.id.toString(),
-              })),
-            }
+  // useEffect(() => {
+  //   if (sportIds && sportIds.length > 0 && formConstantValues && formConstantValues.length > 0) {
+  //     let updatedFormConstantValues: FormValues[] = formConstantValues
+  //     const center = centers?.find((item) => item?.id == centerId)
+  //     const finalBatches = center?.Batches?.filter((item) => sportIds.includes(item?.sportId))
 
-            return data
-          } else {
-            return formConstant
-          }
-        })
-      }
+  //     updatedFormConstantValues = updatedFormConstantValues?.map((formConstant: FormValues) => {
+  //       if (
+  //         formConstant.id === 'batch' &&
+  //         formConstant?.options &&
+  //         formConstant?.options.length == 0
+  //       ) {
+  //         return {
+  //           ...formConstant,
+  //           options: finalBatches?.map((batch: {name: string; id: number}) => ({
+  //             label: batch.name,
+  //             value: batch.id.toString(),
+  //           })),
+  //         }
+  //       } else {
+  //         return formConstant
+  //       }
+  //     })
+  //     setFormConstantValues(updatedFormConstantValues)
+  //   }
+  // }, [centerId, centers, formConstantValues, sportIds])
 
-      if (center?.Batches && center?.Batches?.length > 0) {
-        updatedFormConstantValues = updatedFormConstantValues?.map((formConstant: FormValues) => {
-          if (
-            formConstant.id === 'batch' &&
-            formConstant?.options &&
-            formConstant?.options.length == 0
-          ) {
-            return {
-              ...formConstant,
-              options: center.Batches.map((batch) => ({
-                label: batch?.name,
-                value: batch?.id.toString(),
-              })),
-            }
-          } else {
-            return formConstant
-          }
-        })
-      }
-
-      setFormConstantValues(updatedFormConstantValues)
-    }
-  }, [centers, centerId, formConstantValues])
-
-  useEffect(() => {
-    if (sportIds && sportIds.length > 0 && formConstantValues && formConstantValues.length > 0) {
-      let updatedFormConstantValues: FormValues[] = formConstantValues
-      const center = centers?.find((item) => item?.id == centerId)
-      const finalBatches = center?.Batches?.filter((item) => sportIds.includes(item?.sportId))
-
-      updatedFormConstantValues = updatedFormConstantValues?.map((formConstant: FormValues) => {
-        if (
-          formConstant.id === 'batch' &&
-          formConstant?.options &&
-          formConstant?.options.length == 0
-        ) {
-          return {
-            ...formConstant,
-            options: finalBatches?.map((batch: {name: string; id: number}) => ({
-              label: batch.name,
-              value: batch.id.toString(),
-            })),
-          }
-        } else {
-          return formConstant
-        }
-      })
-      setFormConstantValues(updatedFormConstantValues)
-    }
-  }, [centerId, centers, formConstantValues, sportIds])
+  console.log(formConstantValues)
 
   // console.log({ formConstantValues, centerId })
   return (
     <>
+      <div className=' mt-5 text-center font-heading text-xl font-medium uppercase lg:text-left'>
+        ATHLETE GENERAL DETAILS
+      </div>
       <AddForm
-        cardTitle='ADD ATHLETE'
-        cardSubTitle='Athlete General Details'
+        // cardTitle='ADD ATHLETE'
+        // cardSubTitle='Athlete General Details'
         formConstantValues={formConstantValues}
-        setFormData={setFormData}
+        // setFormData={setFormData}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        formData={formData}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-        dependentKey='centerId'
-        dependentKey1='sportId'
-        setDependentKey1={(value: string) => {
-          const arr: number[] = [...sportIds]
-          arr.push(parseInt(value))
-          setSportIds(arr)
-        }}
-        setDependentKey={(value: number) => setCenterId(value)}
-        buttonItems={{}}
+        // formData={formData}
+        // currentStep={currentStep}
+        // setCurrentStep={setCurrentStep}
+        // dependentKey='centerId'
+        // dependentKey1='sportId'
+        // setDependentKey1={(value: string) => {
+        //   const arr: number[] = [...sportIds]
+        //   arr.push(parseInt(value))
+        //   setSportIds(arr)
+        // }}
+        // setDependentKey={(value: number) => setCenterId(value)}
+        // buttonItems={{}}
       />
 
-      <AddForm
-        cardSubTitle='Contact Details'
-        formConstantValues={formConstantValues1}
-        setFormData={setFormData}
-        formData={formData}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-        buttonItems={{prevFinish: true}}
+      {/* <AddForm
+        // cardSubTitle='Contact Details'
+        formConstantValues={formConstantValues}
+        // setFormData={setFormData}
+        // formData={formData}
+        // currentStep={currentStep}
+        // setCurrentStep={setCurrentStep}
+        // buttonItems={{prevFinish: true}}
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        finalFormSubmissionHandler={finalFormSubmissionHandler}
-      />
+        // finalFormSubmissionHandler={finalFormSubmissionHandler}
+      /> */}
     </>
   )
 }

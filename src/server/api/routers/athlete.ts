@@ -105,6 +105,9 @@ export const athleteRouter = createTRPCRouter({
           },
           include: {
             InjuryLogs: true,
+            AthleteBatchesMaps: true,
+            AthleteSportsMaps: true,
+            AthleteAttendances: true,
             // CoachSportsMaps: true,
             // batches: true,
             // centers: true,
